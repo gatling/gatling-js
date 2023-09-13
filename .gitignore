@@ -1,4 +1,10 @@
+# sbt
 target/
 .bsp/
-.idea/
+
+# yarn
+node_modules/
+
+# IntelliJ
 *.iml
+.idea/
