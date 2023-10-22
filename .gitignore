@@ -4,10 +4,12 @@ target/
 
 # yarn
 node_modules/
+dist/
+/gatling-poc/tmp
 
 # IntelliJ
 *.iml
 .idea/
 
 # Gatlign run results
-/gatling-poc/js-simulation/results/
+results/

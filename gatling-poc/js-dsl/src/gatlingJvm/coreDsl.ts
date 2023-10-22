@@ -23,7 +23,10 @@ export interface ActionBuilder {}
 
 export interface PopulationBuilder {}
 
-export interface Session {}
+export interface Session {
+  get<T>(key: string): T;
+  set(key: string, value: any): Session;
+}
 
 export interface Execs<T extends Execs<T>> {
   exec(f: (session: Session) => Session): T;

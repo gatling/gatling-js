@@ -1,5 +1,6 @@
 import * as jvm from "../gatlingJvm/coreDsl";
 import { Wrapper } from "../common";
+import { wrapCallback } from "../gatlingJvm/callbacks";
 
 // OpenInjectionSupport
 export interface OpenInjectionStep extends Wrapper<jvm.OpenInjectionStep> {}
@@ -44,10 +45,17 @@ export const constantUsersPerSec = (rate: number): OpenInjectionStepConstantRate
 
 export interface ProtocolBuilder extends Wrapper<jvm.ProtocolBuilder> {}
 
-export interface Session extends Wrapper<jvm.Session> {}
+export interface Session extends Wrapper<jvm.Session> {
+  get<T>(key: string): T;
+  set(key: string, value: any): Session;
+}
 
 export type SessionTransform = (session: Session) => Session;
-const wrapSession = (_underlying: jvm.Session): Session => ({ _underlying });
+const wrapSession = (_underlying: jvm.Session): Session => ({
+  _underlying,
+  get: <T>(key: string): T => _underlying.get(key),
+  set: (key: string, value: any): Session => wrapSession(_underlying.set(key, value))
+});
 export const underlyingSessionTransform =
   (f: SessionTransform): ((jvmSession: jvm.Session) => jvm.Session) =>
   (jvmSession: jvm.Session) =>
@@ -67,7 +75,7 @@ export interface ChainBuilder extends Execs<ChainBuilder>, Wrapper<jvm.ChainBuil
 export type Exec = SessionTransform | ActionBuilder | ChainBuilder[];
 export const underlyingExec = (exec: Exec) =>
   typeof exec === "function"
-    ? underlyingSessionTransform(exec)
+    ? wrapCallback(underlyingSessionTransform(exec))
     : Array.isArray(exec)
     ? exec.map((e) => e._underlying)
     : exec._underlying;

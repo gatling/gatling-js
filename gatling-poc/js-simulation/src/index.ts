@@ -1,17 +1,17 @@
-import { runSimulation } from "gatling-js";
-import { exec, scenario, constantUsersPerSec } from "gatling-js/core";
-import { http, httpProtocol } from "gatling-js/http";
+import { core, http, runSimulation } from "gatling-js";
 
-runSimulation((setUp) => {
-  const browseRequest = http("Browse page 1").get("/computers?p=1");
-  const browse = exec(browseRequest);
+export const mySimulation = runSimulation((setUp) => {
+  const browse = core
+    .exec((session) => session.set("page", 1))
+    .exec(http.http("Browse page 1").get("/computers?p=#{page}"));
+  // const browse = exec(http("Browse page 1").get("/computers?p=1"));
 
-  const scn = scenario("My scenario").exec([browse]);
+  const scn = core.scenario("My scenario").exec([browse]);
 
-  const openInjectionStep = constantUsersPerSec(1).during(30);
+  const openInjectionStep = core.constantUsersPerSec(1).during(30);
   const populationBuilder = scn.injectOpen([openInjectionStep]);
 
-  const protocolBuilder = httpProtocol().baseUrl("https://computer-database.gatling.io");
+  const protocolBuilder = http.httpProtocol().baseUrl("https://computer-database.gatling.io");
 
   setUp([populationBuilder]).protocols([protocolBuilder]);
 });

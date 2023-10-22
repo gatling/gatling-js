@@ -14,7 +14,11 @@ scalacOptions := Seq(
   "-language:postfixOps"
 )
 
-libraryDependencies += "io.gatling.highcharts" % "gatling-charts-highcharts" % "3.10.0.JS-SNAPSHOT"
+libraryDependencies ++= Seq(
+  "io.gatling.highcharts" % "gatling-charts-highcharts" % "3.9.5",
+  "org.graalvm.polyglot" % "polyglot" % "23.1.0",
+  "org.graalvm.polyglot" % "js-community" % "23.1.0",
+)
 
 assemblyMergeStrategy := {
   case PathList(ps @ _*) if ps.last == "io.netty.versions.properties" =>

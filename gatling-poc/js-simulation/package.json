@@ -2,17 +2,19 @@
   "name": "gatling-js",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "main": "target/index",
-  "dependencies": {
-
-  },
+  "dependencies": {},
   "devDependencies": {
-    "typescript": "5.2.2",
+    "@types/node": "16.18.50",
+    "esbuild": "0.19.5",
+    "esbuild-plugin-tsc": "0.4.0",
     "prettier": "2.8.6",
-    "@types/node": "16.18.50"
+    "typescript": "5.2.2"
   },
   "scripts": {
     "format": "prettier --write '**/*.ts'",
-    "build": "tsc -p ."
+    "build": "node ./build/build.js",
+    "analyze": "node ./build/analyze.js"
   }
 }

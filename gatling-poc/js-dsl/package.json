@@ -2,11 +2,7 @@
   "name": "gatling-js",
   "version": "1.0.0",
   "private": true,
-  "exports": {
-    ".": "./target/index.js",
-    "./core": "./target/core/index.js",
-    "./http": "./target/http/index.js"
-  },
+  "main": "target/index.js",
   "types": "target/index.d.ts",
   "dependencies": {
   },
