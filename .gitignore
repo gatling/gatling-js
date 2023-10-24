@@ -1,15 +1,16 @@
 # sbt
-target/
 .bsp/
 
 # yarn
 node_modules/
-dist/
-/gatling-poc/tmp
+
+# build targets
+target/
+/tmp
 
 # IntelliJ
 *.iml
 .idea/
 
-# Gatlign run results
+# Gatling run results
 results/

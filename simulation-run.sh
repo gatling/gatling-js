@@ -11,6 +11,6 @@ root_dir="$(dirname "$(realpath -- "$0")")"
 
 cd "$root_dir/jvm-adapter"
 sbt -java-home "$GRAALVM_HOME" \
-  "-Dgatling.js.bundlePath=$root_dir/js-simulation/dist/bundle.js" \
+  "-Dgatling.js.bundlePath=$root_dir/js-simulation/target/bundle.js" \
   "-Dgatling.js.entryPoint=mySimulation" \
   "runMain io.gatling.app.Gatling --simulation io.gatling.js.JsSimulation"

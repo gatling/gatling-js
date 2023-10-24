@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "main": "target/index",
+  "main": "target/bundle",
   "dependencies": {},
   "devDependencies": {
     "@types/node": "16.18.50",
