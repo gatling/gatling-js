@@ -16,16 +16,18 @@ scalacOptions := Seq(
 
 libraryDependencies ++= Seq(
   "io.gatling.highcharts" % "gatling-charts-highcharts" % "3.9.5",
-  "org.graalvm.polyglot" % "polyglot" % "23.1.0",
   "org.graalvm.polyglot" % "js-community" % "23.1.0",
 )
 
-assemblyMergeStrategy := {
-  case PathList(ps @ _*) if ps.last == "io.netty.versions.properties" =>
-    MergeStrategy.first
-  case PathList(ps @ _*) if ps.last == "module-info.class" =>
-    MergeStrategy.discard
-  case x =>
-    val oldStrategy = (ThisBuild / assemblyMergeStrategy).value
-    oldStrategy(x)
-}
+enablePlugins(GatlingPlugin)
+
+
+//assemblyMergeStrategy := {
+//  case PathList(ps @ _*) if ps.last == "io.netty.versions.properties" =>
+//    MergeStrategy.first
+//  case PathList(ps @ _*) if ps.last == "module-info.class" =>
+//    MergeStrategy.discard
+//  case x =>
+//    val oldStrategy = (ThisBuild / assemblyMergeStrategy).value
+//    oldStrategy(x)
+//}

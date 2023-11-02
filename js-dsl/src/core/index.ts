@@ -68,7 +68,9 @@ export const underlyingSessionToString =
 
 export interface ActionBuilder extends Wrapper<jvm.ActionBuilder> {}
 
-export interface PopulationBuilder extends Wrapper<jvm.PopulationBuilder> {}
+export interface PopulationBuilder extends Wrapper<jvm.PopulationBuilder> {
+  andThen(children: PopulationBuilder[]): PopulationBuilder;
+}
 
 export interface ChainBuilder extends Execs<ChainBuilder>, Wrapper<jvm.ChainBuilder> {}
 
@@ -84,25 +86,50 @@ export interface Execs<T extends Execs<T>> {
   exec(exec: Exec): T;
 }
 
-const wrapChainBuilder = (jvmChainBuilder: jvm.ChainBuilder): ChainBuilder => ({
-  _underlying: jvmChainBuilder,
+export interface On<T extends StructureBuilder<T>> {
+  on(chain: ChainBuilder): T;
+}
+
+export interface During<T extends StructureBuilder<T>> {
+  during(duration: number): On<T>;
+}
+
+export interface Repeat<T extends StructureBuilder<T>> {
+  repeat(times: number): On<T>;
+}
+
+export interface StructureBuilder<T extends StructureBuilder<T>> extends Execs<T>, During<T>, Repeat<T> {}
+
+const wrapChainBuilder = (_underlying: jvm.ChainBuilder): ChainBuilder => ({
+  _underlying,
   exec: (exec: Exec): ChainBuilder => {
-    return wrapChainBuilder(jvmChainBuilder.exec(underlyingExec(exec)));
+    return wrapChainBuilder(_underlying.exec(underlyingExec(exec)));
   }
 });
 
-const wrapPopulationBuilder = (jvmPopulationBuilder: jvm.PopulationBuilder): PopulationBuilder => ({
-  _underlying: jvmPopulationBuilder
+const wrapPopulationBuilder = (_underlying: jvm.PopulationBuilder): PopulationBuilder => ({
+  _underlying,
+  andThen: (children: PopulationBuilder[]): PopulationBuilder =>
+    wrapPopulationBuilder(_underlying.andThen(children.map((c) => c._underlying)))
 });
 
-export interface ScenarioBuilder extends Execs<ScenarioBuilder> {
+const wrapOn = <JvmT extends jvm.StructureBuilder<JvmT>, T extends StructureBuilder<T>>(
+  jvmOn: jvm.On<JvmT>,
+  wrap: (underlying: JvmT) => T
+): On<T> => ({
+  on: (chain: ChainBuilder): T => wrap(jvmOn.on(chain._underlying))
+});
+
+export interface ScenarioBuilder extends StructureBuilder<ScenarioBuilder> {
   injectOpen(steps: OpenInjectionStep[]): PopulationBuilder;
 }
 
 const wrapScenarioBuilder = (jvmScenarioBuilder: jvm.ScenarioBuilder): ScenarioBuilder => ({
   injectOpen: (steps: OpenInjectionStep[]): PopulationBuilder =>
     wrapPopulationBuilder(jvmScenarioBuilder.injectOpen(steps.map((s) => s._underlying))),
-  exec: (exec) => wrapScenarioBuilder(jvmScenarioBuilder.exec(underlyingExec(exec)))
+  during: (duration: number): On<ScenarioBuilder> => wrapOn(jvmScenarioBuilder.during(duration), wrapScenarioBuilder),
+  exec: (exec) => wrapScenarioBuilder(jvmScenarioBuilder.exec(underlyingExec(exec))),
+  repeat: (times: number): On<ScenarioBuilder> => wrapOn(jvmScenarioBuilder.repeat(times), wrapScenarioBuilder)
 });
 
 export const scenario = (name: string): ScenarioBuilder => {

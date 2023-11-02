@@ -21,7 +21,10 @@ export interface ProtocolBuilder {}
 
 export interface ActionBuilder {}
 
-export interface PopulationBuilder {}
+export interface PopulationBuilder {
+  andThen(...children: PopulationBuilder[]): PopulationBuilder;
+  andThen(children: PopulationBuilder[]): PopulationBuilder;
+}
 
 export interface Session {
   get<T>(key: string): T;
@@ -35,9 +38,23 @@ export interface Execs<T extends Execs<T>> {
   exec(chainBuilders: ChainBuilder[]): T;
 }
 
+export interface On<T extends StructureBuilder<T>> {
+  on(chain: ChainBuilder): T;
+}
+
+export interface During<T extends StructureBuilder<T>> {
+  during(duration: number): On<T>;
+}
+
+export interface Repeat<T extends StructureBuilder<T>> {
+  repeat(times: number): On<T>;
+}
+
+export interface StructureBuilder<T extends StructureBuilder<T>> extends Execs<T>, During<T>, Repeat<T> {}
+
 export interface ChainBuilder extends Execs<ChainBuilder> {}
 
-export interface ScenarioBuilder extends Execs<ScenarioBuilder> {
+export interface ScenarioBuilder extends StructureBuilder<ScenarioBuilder> {
   injectOpen(...steps: OpenInjectionStep[]): PopulationBuilder;
   injectOpen(steps: OpenInjectionStep[]): PopulationBuilder;
 }
