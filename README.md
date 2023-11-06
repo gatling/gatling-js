@@ -1,3 +1,3 @@
-# graalvm-js-poc
+# gatling-js-poc
 
 

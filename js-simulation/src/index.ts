@@ -3,12 +3,15 @@ import { core, http, runSimulation } from "gatling-js";
 export const mySimulation = runSimulation((setUp) => {
   const browse = core
     .exec((session) => session.set("page", 1))
+    .exec((session) => session.set("page", 1))
+    .exec((session) => session.set("page", 1))
     .exec(http.http("Browse page 1").get("/computers?p=#{page}"));
   // const browse = exec(http("Browse page 1").get("/computers?p=1"));
 
   const scn = core.scenario("My scenario").exec([browse]);
 
-  const openInjectionStep = core.constantUsersPerSec(2).during(30);
+  const openInjectionStep = //core.constantUsersPerSec(2).during(30);
+    core.atOnceUsers(1000);
   const populationBuilder = scn.injectOpen([openInjectionStep]);
 
   const protocolBuilder = http.httpProtocol().baseUrl("https://computer-database.gatling.io");

@@ -1,13 +1,10 @@
 package io.gatling.js.callbacks;
 
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.function.Function;
 import javax.annotation.Nonnull;
 
 public final class CallbackWrapper<T, R> implements Function<T, R> {
-    private static final ExecutorService EXECUTOR = Executors.newSingleThreadExecutor();
+    private static final Object lock = new Object();
 
     public static <T, R> CallbackWrapper<T, R> wrap(@Nonnull Function<T, R> f) {
             return new CallbackWrapper<>(f);
@@ -21,14 +18,8 @@ public final class CallbackWrapper<T, R> implements Function<T, R> {
 
     @Override
     public R apply(T t) {
-        try {
-            return EXECUTOR
-                    .submit(() ->  f.apply(t))
-                    .get();
-        } catch (InterruptedException | ExecutionException e) {
-            // TODO handle errors
-            e.printStackTrace();
-            return null;
+        synchronized (lock) {
+            return f.apply(t);
         }
     }
 
