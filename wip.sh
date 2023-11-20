@@ -45,6 +45,8 @@ classpath=$(
     "org.graalvm.polyglot:js-community:$graalvm_js_version"
 )
 # Local JVM adapter instead of resolved
+cd "$root_dir/jvm-adapter"
+sbt package
 classpath="$root_dir/jvm-adapter/target/scala-2.13/gatling-jvm-to-js-adapter_2.13-1.0.0-SNAPSHOT.jar:$classpath"
 # Add bundle directory to classpath
 classpath="$root_dir/js-simulation/target:$classpath"

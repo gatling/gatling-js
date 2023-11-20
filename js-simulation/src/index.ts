@@ -10,8 +10,7 @@ export const mySimulation = runSimulation((setUp) => {
 
   const scn = core.scenario("My scenario").exec([browse]);
 
-  const openInjectionStep = //core.constantUsersPerSec(2).during(30);
-    core.atOnceUsers(1000);
+  const openInjectionStep = core.constantUsersPerSec(2).during(30);
   const populationBuilder = scn.injectOpen([openInjectionStep]);
 
   const protocolBuilder = http.httpProtocol().baseUrl("https://computer-database.gatling.io");

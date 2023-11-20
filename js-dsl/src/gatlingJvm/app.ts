@@ -1,4 +1,5 @@
-import { PopulationBuilder, ProtocolBuilder } from "./coreDsl";
+import PopulationBuilder = io.gatling.javaapi.core.PopulationBuilder;
+import ProtocolBuilder = io.gatling.javaapi.core.ProtocolBuilder;
 
 export interface SetUp {
   protocols(...protocols: ProtocolBuilder[]): SetUp;
