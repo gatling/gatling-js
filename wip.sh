@@ -3,8 +3,8 @@
 set -eu
 
 root_dir="$(dirname "$(realpath -- "$0")")"
-gatling_version="3.9.5"
-graalvm_js_version="23.1.1"
+gatling_version="3.10.3"
+graalvm_js_version="23.1.2"
 
 # GraalVM install
 graalvm_home_path="$root_dir/tmp/graalvm/Contents/Home" # Depends on platform, seems to be just "$root_dir/tmp/graalvm" on Linux

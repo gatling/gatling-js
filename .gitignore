@@ -14,3 +14,5 @@ target/
 
 # Gatling run results
 results/
+
+tmp/

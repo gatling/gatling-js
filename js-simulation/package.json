@@ -15,6 +15,7 @@
   "scripts": {
     "format": "prettier --write '**/*.ts'",
     "build": "node ./build/build.js",
-    "analyze": "node ./build/analyze.js"
+    "analyze": "node ./build/analyze.js",
+    "gatling-js-cli": "gatling-js-cli"
   }
 }
