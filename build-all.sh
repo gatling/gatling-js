@@ -4,11 +4,12 @@ set -e
 
 root_dir="$(dirname "$(realpath -- "$0")")"
 
-rm -rf "$root_dir/tmp/js-dsl"
-mkdir -p "$root_dir/tmp/js-dsl"
+"$root_dir/build-jvm.sh"
 
-./yarn-link-js-dsl.sh
+"$root_dir/build-js-cli.sh"
 
+"$root_dir/build-js-dsl.sh"
+
+# Rebuild js-simulation
 cd "$root_dir/js-simulation"
-yarn link "gatling-js"
 yarn build

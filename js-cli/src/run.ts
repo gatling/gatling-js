@@ -1,38 +1,51 @@
-import { logger } from "./log";
 import { spawn } from "child_process";
-import  * as path  from "path";
-import util from "util";
-import stream from "stream";
+import * as path from "path";
 
-const pipeline = util.promisify(stream.pipeline);
+import { logger } from "./log";
 
 export interface RunOptions {
-    graalvmHomePath: string,
-    classpath: string,
-    entryPoint: string,
-    bundleFilePath: string
+  graalvmHomePath: string;
+  jvmClasspath: string;
+  entryPointName: string;
+  bundleFilePath: string;
 }
 
 export const run = async (options: RunOptions): Promise<void> => {
-    const bundleDir = path.parse(options.bundleFilePath).base
-    const bundleFileName = options.bundleFilePath.split('/')
+  logger.info(`Running a Gatling simulation with options:
+ - entryPointName: ${options.entryPointName}
+ - bundleFilePath: ${options.bundleFilePath}`);
 
-    const command = `${options.graalvmHomePath}/bin/java`
-    const args = [
-        "-server",
-        "-XX:+HeapDumpOnOutOfMemoryError",
-        "-XX:MaxInlineLevel=20",
-        "-XX:MaxTrivialSize=12",
-        "-Xmx1G",
-        "-classpath",
-        `${options.bundleFilePath}:${options.classpath}` ,
-        `-Dgatling.js.bundle.resourcePath=${bundleFileName}` ,
-        `-Dgatling.js.entryPoint=${options.entryPoint}`,
-        "io.gatling.app.Gatling",
-        "--simulation",
-        "io.gatling.js.JsSimulation"
-    ]
+  const bundleDir = path.parse(options.bundleFilePath).dir;
+  const bundleFileName = path.parse(options.bundleFilePath).base;
 
-    const process = spawn(command, args)
+  const command = `${options.graalvmHomePath}/bin/java`;
+  const args = [
+    "-server",
+    "-XX:+HeapDumpOnOutOfMemoryError",
+    "-XX:MaxInlineLevel=20",
+    "-XX:MaxTrivialSize=12",
+    "-Xmx1G",
+    "-classpath",
+    `${bundleDir}:${options.jvmClasspath}`,
+    `-Dgatling.js.bundle.resourcePath=${bundleFileName}`,
+    `-Dgatling.js.entryPointName=${options.entryPointName}`,
+    "io.gatling.app.Gatling",
+    "--simulation",
+    "io.gatling.js.JsSimulation"
+  ];
 
-}
+  const process = spawn(command, args);
+
+  return new Promise((resolve, reject) => {
+    process.stdout.on("data", (data) => logger.info(data.toString()));
+    process.stderr.on("data", (data) => logger.error(data.toString()));
+    process.on("error", (error) => logger.error("Failed to run Gatling process: " + error.toString()));
+    process.on("close", (code) => {
+      if (code === 0) {
+        resolve();
+      } else {
+        reject(Error("Gatling process finished with code " + code));
+      }
+    });
+  });
+};

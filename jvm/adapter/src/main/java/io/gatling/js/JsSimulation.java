@@ -6,6 +6,7 @@ import io.gatling.javaapi.core.Simulation;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Source;
 import org.graalvm.polyglot.TypeLiteral;
+import org.graalvm.polyglot.Value;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -21,7 +22,7 @@ public class JsSimulation extends Simulation {
     private static final String JS = "js";
 
     public JsSimulation() {
-        var entryPoint = Optional.ofNullable(System.getProperty("gatling.js.entryPoint")).orElseThrow(() -> new NoSuchElementException("System property gatling.js.entryPoint must be defined"));
+        var entryPointName = Optional.ofNullable(System.getProperty("gatling.js.entryPointName")).orElseThrow(() -> new NoSuchElementException("System property gatling.js.entryPointName must be defined"));
         var bundleUrl =
                 Optional.ofNullable(System.getProperty("gatling.js.bundle.filePath")).map(this::filePathToUrl)
                         .or(() -> Optional.ofNullable(System.getProperty("gatling.js.bundle.resourcePath")).map(this::resourcePathToUrl))
@@ -39,10 +40,9 @@ public class JsSimulation extends Simulation {
             throw new IllegalStateException("Cannot load Javascript bundle file at " + bundleUrl, e);
         }
 
-        Consumer<Function<List<PopulationBuilder>, SetUp>> jsSimulation = context.getBindings(JS)
-                .getMember("gatling")
-                .getMember(entryPoint)
-                .as(new TypeLiteral<>() {});
+        Value jsIifeWrapper = context.getBindings(JS).getMember("gatling");
+        Value jsSimulationValue = jsIifeWrapper.getMember(entryPointName);
+        Consumer<Function<List<PopulationBuilder>, SetUp>> jsSimulation = jsSimulationValue.as(new TypeLiteral<>() {});
 
         jsSimulation.accept(this::setUp);
     }

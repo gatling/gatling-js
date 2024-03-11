@@ -1,22 +1,23 @@
-import { logger } from "./log";
 import * as esbuild from "esbuild";
 import esbuildPluginTsc from "esbuild-plugin-tsc";
 
+import { logger } from "./log";
+
 export interface BundleOptions {
-  entryPoint: string;
-  outfile: string;
+  entryPointFile: string;
+  bundleFilePath: string;
   typescript: boolean;
 }
 
 export const bundle = async (options: BundleOptions): Promise<void> => {
   logger.info(`Packaging a Gatling simulation with options:
- - entryPoint: ${options.entryPoint}
- - outfile: ${options.outfile}`);
+ - entryPointFile: ${options.entryPointFile}
+ - bundleFilePath: ${options.bundleFilePath}`);
 
   const plugins = options.typescript ? [esbuildPluginTsc({ force: true })] : [];
   await esbuild.build({
-    entryPoints: [options.entryPoint],
-    outfile: options.outfile,
+    entryPoints: [options.entryPointFile],
+    outfile: options.bundleFilePath,
     bundle: true,
     minify: false,
     sourcemap: true,

@@ -6,16 +6,15 @@
   "main": "target/bundle",
   "dependencies": {},
   "devDependencies": {
-    "@types/node": "16.18.50",
-    "esbuild": "0.19.5",
-    "esbuild-plugin-tsc": "0.4.0",
-    "prettier": "2.8.6",
-    "typescript": "5.2.2"
+    "rimraf": "5.0.5",
+    "prettier": "3.2.5",
+    "typescript": "5.4.2"
   },
   "scripts": {
+    "clean": "rimraf target results tmp",
     "format": "prettier --write '**/*.ts'",
-    "build": "node ./build/build.js",
-    "analyze": "node ./build/analyze.js",
-    "gatling-js-cli": "gatling-js-cli"
+    "setup": "gatling-js-cli install",
+    "build": "gatling-js-cli build --typescript",
+    "start": "gatling-js-cli run --typescript"
   }
 }

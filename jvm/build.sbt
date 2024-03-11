@@ -1,6 +1,6 @@
 ThisBuild / organization := "io.gatling"
-ThisBuild / version := "3.10.3-SNAPSHOT"
-ThisBuild / scalaVersion := "2.13.12"
+ThisBuild / version := "3.10.4-SNAPSHOT"
+ThisBuild / scalaVersion := "2.13.13"
 
 ThisBuild / crossPaths := false
 

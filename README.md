@@ -1,3 +1,1 @@
 # gatling-js-poc
-
-
