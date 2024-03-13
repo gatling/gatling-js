@@ -97,8 +97,8 @@ export const underlyingExec = <T>(jvmExecs: JvmExecs, exec: Exec): T =>
   typeof exec === "function"
     ? jvmExecs.exec<T>(wrapCallback(underlyingSessionTransform(exec)))
     : Array.isArray(exec)
-    ? jvmExecs.exec<T>(exec.map((e) => e._underlying))
-    : jvmExecs.exec<T>(exec._underlying);
+      ? jvmExecs.exec<T>(exec.map((e) => e._underlying))
+      : jvmExecs.exec<T>(exec._underlying);
 
 export interface Execs<T extends Execs<T>> {
   exec(exec: Exec): T;

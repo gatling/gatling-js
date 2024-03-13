@@ -2,7 +2,7 @@ import * as jvm from "./gatlingJvm/app";
 import { ProtocolBuilder, PopulationBuilder } from "./core";
 
 export * as core from "./core";
-export * as http from "./http";
+export * from "./http";
 
 export interface SetUp {
   protocols(protocols: ProtocolBuilder[]): SetUp;
