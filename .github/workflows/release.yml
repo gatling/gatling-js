@@ -1,0 +1,87 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  id-token: write
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_SANDBOX_GATLING_JS }}
+          aws-region: ${{ secrets.AWS_CODEARTIFACT_REGION }}
+
+      - name: Repository
+        id: repository
+        env:
+          GITHUB_REF: ${{ github.ref }}
+        run: |
+          token=$(aws codeartifact get-authorization-token --domain ${{ secrets.AWS_CODEARTIFACT_DOMAIN }} --domain-owner ${{ secrets.AWS_CODEARTIFACT_OWNER }} --query authorizationToken --output text)
+          echo "::add-mask::$token"
+          echo "token=$token" >> $GITHUB_OUTPUT
+          
+          version="${GITHUB_REF_NAME:1}"
+          echo "version=$version"
+          echo "version=$version" >> $GITHUB_OUTPUT
+
+#      - name: Set up JDK 21
+#        uses: actions/setup-java@v4
+#        with:
+#          distribution: 'zulu'
+#          java-version: '21'
+#
+#      - name: Prepare environment
+#        env:
+#          PRIVATE_REPOSITORY_SBT: ${{ secrets.PRIVATE_REPOSITORY_SBT }}
+#        run: |
+#          mkdir --parents ~/.sbt/1.0 || true
+#          echo "$PRIVATE_REPOSITORY_SBT" > ~/.sbt/1.0/privateRepository.sbt
+#
+#      - name: Deploy JVM adapter
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Deploy CLI
+        env:
+          AWS_CODEARTIFACT_DOMAIN: ${{ secrets.AWS_CODEARTIFACT_DOMAIN }}
+          AWS_CODEARTIFACT_OWNER: ${{ secrets.AWS_CODEARTIFACT_OWNER }}
+          AWS_CODEARTIFACT_REGION: ${{ secrets.AWS_CODEARTIFACT_REGION }}
+          NODE_AUTH_TOKEN: ${{ steps.repository.outputs.token }}
+        working-directory: ./js-cli
+        run: |
+          npm ci
+          npm run build
+          npm version "${{ steps.repository.outputs.version }}"
+          npm publish
+
+      - name: Deploy DSL
+        env:
+          AWS_CODEARTIFACT_DOMAIN: ${{ secrets.AWS_CODEARTIFACT_DOMAIN }}
+          AWS_CODEARTIFACT_OWNER: ${{ secrets.AWS_CODEARTIFACT_OWNER }}
+          AWS_CODEARTIFACT_REGION: ${{ secrets.AWS_CODEARTIFACT_REGION }}
+          NODE_AUTH_TOKEN: ${{ steps.repository.outputs.token }}
+        working-directory: ./js-dsl
+        run: |
+          npm ci
+          npm run build
+          npm version "${{ steps.repository.outputs.version }}"
+          npm publish

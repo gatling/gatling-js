@@ -4,10 +4,13 @@
   "private": true,
   "type": "module",
   "main": "target/bundle",
-  "dependencies": {},
+  "dependencies": {
+    "@gatling/js": "0.0.1"
+  },
   "devDependencies": {
-    "rimraf": "5.0.5",
+    "@gatling/js-cli": "0.0.1",
     "prettier": "3.2.5",
+    "rimraf": "5.0.5",
     "typescript": "5.4.2"
   },
   "scripts": {

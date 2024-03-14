@@ -38,19 +38,3 @@ lazy val java2ts = (project in file("java2ts"))
     publish := false
   )
   .settings(Java2ts.java2tsSettings)
-
-
-
-
-
-
-
-//assemblyMergeStrategy := {
-//  case PathList(ps @ _*) if ps.last == "io.netty.versions.properties" =>
-//    MergeStrategy.first
-//  case PathList(ps @ _*) if ps.last == "module-info.class" =>
-//    MergeStrategy.discard
-//  case x =>
-//    val oldStrategy = (ThisBuild / assemblyMergeStrategy).value
-//    oldStrategy(x)
-//}

@@ -12,4 +12,4 @@ root_dir="$(dirname "$(realpath -- "$0")")"
 
 # Rebuild js-simulation
 cd "$root_dir/js-simulation"
-yarn build
+npm run build

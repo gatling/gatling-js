@@ -1,6 +1,6 @@
-import { OpenInjectionStep } from "gatling-js";
-import { atOnceUsers, constantUsersPerSec, http, nothingFor, scenario } from "gatling-js";
-import { runSimulation } from "gatling-js";
+import { OpenInjectionStep } from "@gatling/js";
+import { atOnceUsers, constantUsersPerSec, http, nothingFor, scenario } from "@gatling/js";
+import { runSimulation } from "@gatling/js";
 
 const mySimulation = runSimulation((setUp) => {
 

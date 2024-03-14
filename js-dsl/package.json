@@ -1,7 +1,6 @@
 {
-  "name": "gatling-js",
-  "version": "1.0.0",
-  "private": true,
+  "name": "@gatling/js",
+  "version": "0.0.0",
   "main": "target/index.js",
   "types": "target/index.d.ts",
   "dependencies": {},
