@@ -8,7 +8,7 @@ object Java2ts {
 
   def java2tsSettings = Seq(
     resolvers += Resolver.mavenLocal,
-    libraryDependencies += "org.bsc.processor" % "java2ts-processor" % "1.4.0-SNAPSHOT",
+    libraryDependencies += "io.gatling" % "java2ts-processor" % "1.4.0-M1",
     javacOptions += "-proc:none",
     processJava2tsAnnotations := {
       val log = streams.value.log
