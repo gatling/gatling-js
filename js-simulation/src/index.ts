@@ -1,20 +1,25 @@
-import { core, http, runSimulation} from "gatling-js";
+import { OpenInjectionStep, runSimulation } from "gatling-js";
+import { atOnceUsers, constantUsersPerSec, http, nothingFor, scenario } from "gatling-js";
+import { runSimulation } from "gatling-js";
 
 const mySimulation = runSimulation((setUp) => {
 
   const baseHttpProtocol =
     http.baseUrl("https://computer-database.gatling.io");
 
-  const browse = core
+  const scn = scenario("My scenario")
     .exec((session) => session.set("page", 1))
     .exec(http("Browse page 1").get("/computers?p=#{page}"));
 
-  const scn = core.scenario("My scenario").exec([browse]);
+  const injectionSteps: OpenInjectionStep[] = [
+    atOnceUsers(10),
+    nothingFor(5),
+    constantUsersPerSec(2).during(30)
+  ];
 
-  const openInjectionStep = core.constantUsersPerSec(2).during(30);
-  const populationBuilder = scn.injectOpen([openInjectionStep]);
-
-  setUp([populationBuilder]).protocols([baseHttpProtocol]);
+  setUp(
+    scn.injectOpen(...injectionSteps),
+  ).protocols(baseHttpProtocol);
 });
 
 export default mySimulation;

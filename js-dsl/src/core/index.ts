@@ -49,7 +49,7 @@ export const constantUsersPerSec = (rate: number): OpenInjectionStepConstantRate
   };
 };
 // rampUsersPerSec(rate: number): OpenInjectionStepRampRate;
-// nothingFor(durationSeconds: number): OpenInjectionStep;
+export const nothingFor = (durationSeconds: number): OpenInjectionStep => wrapOpenInjectionStep(JvmCoreDsl.nothingFor(durationSeconds));
 // nothingFor(duration: Duration): OpenInjectionStep;
 // incrementUsersPerSec(rateIncrement: number): OpenInjectionStepStairs;
 
@@ -145,11 +145,11 @@ const wrapOn = <JvmT extends JvmStructureBuilder<JvmT, any>, T extends Structure
 });
 
 export interface ScenarioBuilder extends StructureBuilder<ScenarioBuilder> {
-  injectOpen(steps: OpenInjectionStep[]): PopulationBuilder;
+  injectOpen(...steps: OpenInjectionStep[]): PopulationBuilder;
 }
 
 const wrapScenarioBuilder = (jvmScenarioBuilder: JvmScenarioBuilder): ScenarioBuilder => ({
-  injectOpen: (steps: OpenInjectionStep[]): PopulationBuilder =>
+  injectOpen: (...steps: OpenInjectionStep[]): PopulationBuilder =>
     wrapPopulationBuilder(jvmScenarioBuilder.injectOpen(steps.map((s) => s._underlying))),
   during: (duration: number): On<ScenarioBuilder> =>
     wrapOn(jvmScenarioBuilder.during<JvmScenarioBuilder>(duration), wrapScenarioBuilder),
