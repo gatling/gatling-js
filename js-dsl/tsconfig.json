@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
     "baseUrl": "./",
+    "paths": {
+      "@src/*": ["src/*"]
+    },
+    "rootDir": "src",
     "outDir": "target",
     "lib": ["es2021"],
     "target": "es2021",
@@ -9,8 +13,9 @@
     "moduleResolution": "node16",
     "declaration": true,
     "strict": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["**/*.test.ts"]
+  "exclude": ["**/*.test.ts", "jest.config.ts"]
 }
