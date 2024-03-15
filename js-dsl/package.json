@@ -14,5 +14,9 @@
     "clean": "rimraf target results tmp",
     "format": "prettier --write '**/*.ts'",
     "build": "tsc -p ."
-  }
+  },
+  "files": [
+    "src/**/*.d.ts",
+    "target"
+  ]
 }

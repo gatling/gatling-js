@@ -90,6 +90,32 @@ interface ChoiceStatic {
 
 export const Choice: ChoiceStatic = Java.type("io.gatling.javaapi.core.Choice");
 
+interface ChronoUnitStatic {
+  NANOS: java.time.temporal.ChronoUnit;
+  MICROS: java.time.temporal.ChronoUnit;
+  MILLIS: java.time.temporal.ChronoUnit;
+  SECONDS: java.time.temporal.ChronoUnit;
+  MINUTES: java.time.temporal.ChronoUnit;
+  HOURS: java.time.temporal.ChronoUnit;
+  HALF_DAYS: java.time.temporal.ChronoUnit;
+  DAYS: java.time.temporal.ChronoUnit;
+  WEEKS: java.time.temporal.ChronoUnit;
+  MONTHS: java.time.temporal.ChronoUnit;
+  YEARS: java.time.temporal.ChronoUnit;
+  DECADES: java.time.temporal.ChronoUnit;
+  CENTURIES: java.time.temporal.ChronoUnit;
+  MILLENNIA: java.time.temporal.ChronoUnit;
+  ERAS: java.time.temporal.ChronoUnit;
+  FOREVER: java.time.temporal.ChronoUnit;
+
+  readonly class: any;
+  valueOf<T>(arg0: java.lang.Class<T>, arg1: string): T;
+  valueOf(arg0: string): java.time.temporal.ChronoUnit;
+  values(): [java.time.temporal.ChronoUnit];
+}
+
+export const ChronoUnit: ChronoUnitStatic = Java.type("java.time.temporal.ChronoUnit");
+
 interface ClosedInjectionStepStatic {
   readonly class: any;
 }
@@ -106,6 +132,7 @@ interface CollectionsStatic {
   ): any /*java.util.NavigableSet*/;
   emptyNavigableSet(): any /*java.util.NavigableSet*/;
   checkedQueue<E>(arg0: any /*java.util.Queue*/, arg1: java.lang.Class<E>): any /*java.util.Queue*/;
+  newSequencedSetFromMap(arg0: any /*java.util.SequencedMap*/): any /*java.util.SequencedSet*/;
   checkedSet<E>(arg0: java.util.Set<E>, arg1: java.lang.Class<E>): java.util.Set<E>;
   newSetFromMap<E>(arg0: java.util.Map<E, boolean | null>): java.util.Set<E>;
   checkedSortedSet<E>(arg0: any /*java.util.SortedSet*/, arg1: java.lang.Class<E>): any /*java.util.SortedSet*/;
@@ -121,6 +148,7 @@ interface CollectionsStatic {
   ): any /*java.util.NavigableMap*/;
   synchronizedNavigableMap(arg0: any /*java.util.NavigableMap*/): any /*java.util.NavigableMap*/;
   unmodifiableNavigableMap(arg0: any /*java.util.NavigableMap*/): any /*java.util.NavigableMap*/;
+  unmodifiableSequencedMap(arg0: any /*java.util.SequencedMap*/): any /*java.util.SequencedMap*/;
   checkedSortedMap<K, V>(
     arg0: any /*java.util.SortedMap*/,
     arg1: java.lang.Class<K>,
@@ -153,6 +181,8 @@ interface CollectionsStatic {
   synchronizedNavigableSet(arg0: any /*java.util.NavigableSet*/): any /*java.util.NavigableSet*/;
   unmodifiableNavigableSet(arg0: any /*java.util.NavigableSet*/): any /*java.util.NavigableSet*/;
   asLifoQueue(arg0: any /*java.util.Deque*/): any /*java.util.Queue*/;
+  unmodifiableSequencedCollection(arg0: any /*java.util.SequencedCollection*/): any /*java.util.SequencedCollection*/;
+  unmodifiableSequencedSet(arg0: any /*java.util.SequencedSet*/): any /*java.util.SequencedSet*/;
   singleton<T>(arg0: T): java.util.Set<T>;
   synchronizedSet<T>(arg0: java.util.Set<T>): java.util.Set<T>;
   unmodifiableSet<T>(arg0: java.util.Set<T>): java.util.Set<T>;
@@ -180,6 +210,7 @@ interface CollectionsStatic {
   rotate(arg0: java.util.List<any /*java.lang.Object*/>, arg1: int): void;
   shuffle(arg0: java.util.List<any /*java.lang.Object*/>): void;
   shuffle(arg0: java.util.List<any /*java.lang.Object*/>, arg1: any /*java.util.Random*/): void;
+  shuffle(arg0: java.util.List<any /*java.lang.Object*/>, arg1: any /*java.util.random.RandomGenerator*/): void;
   swap(arg0: java.util.List<any /*java.lang.Object*/>, arg1: int, arg2: int): void;
 }
 
@@ -281,7 +312,7 @@ export const Collectors: CollectorsStatic = Java.type("java.util.stream.Collecto
 interface ConstantRate$ConstantRateOpenInjectionStepStatic {
   readonly class: any;
   atOnceUsers(arg0: int): io.gatling.javaapi.core.OpenInjectionStep;
-  nothingFor(arg0: any /*java.time.Duration*/): io.gatling.javaapi.core.OpenInjectionStep;
+  nothingFor(arg0: java.time.Duration): io.gatling.javaapi.core.OpenInjectionStep;
 }
 
 export const ConstantRate$ConstantRateOpenInjectionStep: ConstantRate$ConstantRateOpenInjectionStepStatic = Java.type(
@@ -364,26 +395,22 @@ interface CoreDslStatic {
   pace(arg0: string): io.gatling.javaapi.core.ChainBuilder;
   pace(arg0: string, arg1: string): io.gatling.javaapi.core.ChainBuilder;
   pace(arg0: string, arg1: string, arg2: string): io.gatling.javaapi.core.ChainBuilder;
-  pace(arg0: any /*java.time.Duration*/): io.gatling.javaapi.core.ChainBuilder;
-  pace(arg0: any /*java.time.Duration*/, arg1: string): io.gatling.javaapi.core.ChainBuilder;
-  pace(arg0: any /*java.time.Duration*/, arg1: any /*java.time.Duration*/): io.gatling.javaapi.core.ChainBuilder;
+  pace(arg0: java.time.Duration): io.gatling.javaapi.core.ChainBuilder;
+  pace(arg0: java.time.Duration, arg1: string): io.gatling.javaapi.core.ChainBuilder;
+  pace(arg0: java.time.Duration, arg1: java.time.Duration): io.gatling.javaapi.core.ChainBuilder;
+  pace(arg0: java.time.Duration, arg1: java.time.Duration, arg2: string): io.gatling.javaapi.core.ChainBuilder;
+  pace(arg0: Func<io.gatling.javaapi.core.Session, java.time.Duration>): io.gatling.javaapi.core.ChainBuilder;
   pace(
-    arg0: any /*java.time.Duration*/,
-    arg1: any /*java.time.Duration*/,
-    arg2: string
-  ): io.gatling.javaapi.core.ChainBuilder;
-  pace(arg0: Func<io.gatling.javaapi.core.Session, any /*java.time.Duration*/>): io.gatling.javaapi.core.ChainBuilder;
-  pace(
-    arg0: Func<io.gatling.javaapi.core.Session, any /*java.time.Duration*/>,
+    arg0: Func<io.gatling.javaapi.core.Session, java.time.Duration>,
     arg1: string
   ): io.gatling.javaapi.core.ChainBuilder;
   pace(
-    arg0: Func<io.gatling.javaapi.core.Session, any /*java.time.Duration*/>,
-    arg1: Func<io.gatling.javaapi.core.Session, any /*java.time.Duration*/>
+    arg0: Func<io.gatling.javaapi.core.Session, java.time.Duration>,
+    arg1: Func<io.gatling.javaapi.core.Session, java.time.Duration>
   ): io.gatling.javaapi.core.ChainBuilder;
   pace(
-    arg0: Func<io.gatling.javaapi.core.Session, any /*java.time.Duration*/>,
-    arg1: Func<io.gatling.javaapi.core.Session, any /*java.time.Duration*/>,
+    arg0: Func<io.gatling.javaapi.core.Session, java.time.Duration>,
+    arg1: Func<io.gatling.javaapi.core.Session, java.time.Duration>,
     arg2: string
   ): io.gatling.javaapi.core.ChainBuilder;
   pace(arg0: long): io.gatling.javaapi.core.ChainBuilder;
@@ -394,29 +421,26 @@ interface CoreDslStatic {
   pause(arg0: string, arg1: io.gatling.javaapi.core.PauseType): io.gatling.javaapi.core.ChainBuilder;
   pause(arg0: string, arg1: string): io.gatling.javaapi.core.ChainBuilder;
   pause(arg0: string, arg1: string, arg2: io.gatling.javaapi.core.PauseType): io.gatling.javaapi.core.ChainBuilder;
-  pause(arg0: any /*java.time.Duration*/): io.gatling.javaapi.core.ChainBuilder;
+  pause(arg0: java.time.Duration): io.gatling.javaapi.core.ChainBuilder;
+  pause(arg0: java.time.Duration, arg1: io.gatling.javaapi.core.PauseType): io.gatling.javaapi.core.ChainBuilder;
+  pause(arg0: java.time.Duration, arg1: java.time.Duration): io.gatling.javaapi.core.ChainBuilder;
   pause(
-    arg0: any /*java.time.Duration*/,
-    arg1: io.gatling.javaapi.core.PauseType
-  ): io.gatling.javaapi.core.ChainBuilder;
-  pause(arg0: any /*java.time.Duration*/, arg1: any /*java.time.Duration*/): io.gatling.javaapi.core.ChainBuilder;
-  pause(
-    arg0: any /*java.time.Duration*/,
-    arg1: any /*java.time.Duration*/,
+    arg0: java.time.Duration,
+    arg1: java.time.Duration,
     arg2: io.gatling.javaapi.core.PauseType
   ): io.gatling.javaapi.core.ChainBuilder;
-  pause(arg0: Func<io.gatling.javaapi.core.Session, any /*java.time.Duration*/>): io.gatling.javaapi.core.ChainBuilder;
+  pause(arg0: Func<io.gatling.javaapi.core.Session, java.time.Duration>): io.gatling.javaapi.core.ChainBuilder;
   pause(
-    arg0: Func<io.gatling.javaapi.core.Session, any /*java.time.Duration*/>,
+    arg0: Func<io.gatling.javaapi.core.Session, java.time.Duration>,
     arg1: io.gatling.javaapi.core.PauseType
   ): io.gatling.javaapi.core.ChainBuilder;
   pause(
-    arg0: Func<io.gatling.javaapi.core.Session, any /*java.time.Duration*/>,
-    arg1: Func<io.gatling.javaapi.core.Session, any /*java.time.Duration*/>
+    arg0: Func<io.gatling.javaapi.core.Session, java.time.Duration>,
+    arg1: Func<io.gatling.javaapi.core.Session, java.time.Duration>
   ): io.gatling.javaapi.core.ChainBuilder;
   pause(
-    arg0: Func<io.gatling.javaapi.core.Session, any /*java.time.Duration*/>,
-    arg1: Func<io.gatling.javaapi.core.Session, any /*java.time.Duration*/>,
+    arg0: Func<io.gatling.javaapi.core.Session, java.time.Duration>,
+    arg1: Func<io.gatling.javaapi.core.Session, java.time.Duration>,
     arg2: io.gatling.javaapi.core.PauseType
   ): io.gatling.javaapi.core.ChainBuilder;
   pause(arg0: long): io.gatling.javaapi.core.ChainBuilder;
@@ -516,7 +540,7 @@ interface CoreDslStatic {
   DenyList(...arg0: string[]): any /*io.gatling.javaapi.core.Filter$DenyList*/;
   DenyList(arg0: java.util.List<string>): any /*io.gatling.javaapi.core.Filter$DenyList*/;
   atOnceUsers(arg0: int): io.gatling.javaapi.core.OpenInjectionStep;
-  nothingFor(arg0: any /*java.time.Duration*/): io.gatling.javaapi.core.OpenInjectionStep;
+  nothingFor(arg0: java.time.Duration): io.gatling.javaapi.core.OpenInjectionStep;
   nothingFor(arg0: long): io.gatling.javaapi.core.OpenInjectionStep;
   constantUsersPerSec(arg0: double): io.gatling.javaapi.core.OpenInjectionStep$ConstantRate;
   rampUsers(arg0: int): any /*io.gatling.javaapi.core.OpenInjectionStep$Ramp*/;
@@ -525,11 +549,11 @@ interface CoreDslStatic {
   stressPeakUsers(arg0: int): any /*io.gatling.javaapi.core.OpenInjectionStep$StressPeak*/;
   customPauses(arg0: Func<io.gatling.javaapi.core.Session, long | null>): io.gatling.javaapi.core.PauseType;
   normalPausesWithPercentageDuration(arg0: double): io.gatling.javaapi.core.PauseType;
-  normalPausesWithStdDevDuration(arg0: any /*java.time.Duration*/): io.gatling.javaapi.core.PauseType;
-  uniformPausesPlusOrMinusDuration(arg0: any /*java.time.Duration*/): io.gatling.javaapi.core.PauseType;
+  normalPausesWithStdDevDuration(arg0: java.time.Duration): io.gatling.javaapi.core.PauseType;
+  uniformPausesPlusOrMinusDuration(arg0: java.time.Duration): io.gatling.javaapi.core.PauseType;
   uniformPausesPlusOrMinusPercentage(arg0: double): io.gatling.javaapi.core.PauseType;
   scenario(arg0: string): io.gatling.javaapi.core.ScenarioBuilder;
-  holdFor(arg0: any /*java.time.Duration*/): io.gatling.javaapi.core.ThrottleStep;
+  holdFor(arg0: java.time.Duration): io.gatling.javaapi.core.ThrottleStep;
   holdFor(arg0: long): io.gatling.javaapi.core.ThrottleStep;
   jumpToRps(arg0: int): io.gatling.javaapi.core.ThrottleStep;
   reachRps(arg0: int): any /*io.gatling.javaapi.core.ThrottleStep$ReachIntermediate*/;
@@ -661,41 +685,41 @@ interface CoreDslStatic {
   ): io.gatling.javaapi.core.loop.AsLongAsDuring$On<io.gatling.javaapi.core.ChainBuilder>;
   asLongAsDuring(
     arg0: string,
-    arg1: any /*java.time.Duration*/
+    arg1: java.time.Duration
   ): io.gatling.javaapi.core.loop.AsLongAsDuring$On<io.gatling.javaapi.core.ChainBuilder>;
   asLongAsDuring(
     arg0: string,
-    arg1: any /*java.time.Duration*/,
+    arg1: java.time.Duration,
     arg2: boolean
   ): io.gatling.javaapi.core.loop.AsLongAsDuring$On<io.gatling.javaapi.core.ChainBuilder>;
   asLongAsDuring(
     arg0: string,
-    arg1: any /*java.time.Duration*/,
+    arg1: java.time.Duration,
     arg2: string
   ): io.gatling.javaapi.core.loop.AsLongAsDuring$On<io.gatling.javaapi.core.ChainBuilder>;
   asLongAsDuring(
     arg0: string,
-    arg1: any /*java.time.Duration*/,
+    arg1: java.time.Duration,
     arg2: string,
     arg3: boolean
   ): io.gatling.javaapi.core.loop.AsLongAsDuring$On<io.gatling.javaapi.core.ChainBuilder>;
   asLongAsDuring(
     arg0: string,
-    arg1: Func<io.gatling.javaapi.core.Session, any /*java.time.Duration*/>
+    arg1: Func<io.gatling.javaapi.core.Session, java.time.Duration>
   ): io.gatling.javaapi.core.loop.AsLongAsDuring$On<io.gatling.javaapi.core.ChainBuilder>;
   asLongAsDuring(
     arg0: string,
-    arg1: Func<io.gatling.javaapi.core.Session, any /*java.time.Duration*/>,
+    arg1: Func<io.gatling.javaapi.core.Session, java.time.Duration>,
     arg2: boolean
   ): io.gatling.javaapi.core.loop.AsLongAsDuring$On<io.gatling.javaapi.core.ChainBuilder>;
   asLongAsDuring(
     arg0: string,
-    arg1: Func<io.gatling.javaapi.core.Session, any /*java.time.Duration*/>,
+    arg1: Func<io.gatling.javaapi.core.Session, java.time.Duration>,
     arg2: string
   ): io.gatling.javaapi.core.loop.AsLongAsDuring$On<io.gatling.javaapi.core.ChainBuilder>;
   asLongAsDuring(
     arg0: string,
-    arg1: Func<io.gatling.javaapi.core.Session, any /*java.time.Duration*/>,
+    arg1: Func<io.gatling.javaapi.core.Session, java.time.Duration>,
     arg2: string,
     arg3: boolean
   ): io.gatling.javaapi.core.loop.AsLongAsDuring$On<io.gatling.javaapi.core.ChainBuilder>;
@@ -721,41 +745,41 @@ interface CoreDslStatic {
   ): io.gatling.javaapi.core.loop.AsLongAsDuring$On<io.gatling.javaapi.core.ChainBuilder>;
   asLongAsDuring(
     arg0: Func<io.gatling.javaapi.core.Session, boolean | null>,
-    arg1: any /*java.time.Duration*/
+    arg1: java.time.Duration
   ): io.gatling.javaapi.core.loop.AsLongAsDuring$On<io.gatling.javaapi.core.ChainBuilder>;
   asLongAsDuring(
     arg0: Func<io.gatling.javaapi.core.Session, boolean | null>,
-    arg1: any /*java.time.Duration*/,
+    arg1: java.time.Duration,
     arg2: boolean
   ): io.gatling.javaapi.core.loop.AsLongAsDuring$On<io.gatling.javaapi.core.ChainBuilder>;
   asLongAsDuring(
     arg0: Func<io.gatling.javaapi.core.Session, boolean | null>,
-    arg1: any /*java.time.Duration*/,
+    arg1: java.time.Duration,
     arg2: string
   ): io.gatling.javaapi.core.loop.AsLongAsDuring$On<io.gatling.javaapi.core.ChainBuilder>;
   asLongAsDuring(
     arg0: Func<io.gatling.javaapi.core.Session, boolean | null>,
-    arg1: any /*java.time.Duration*/,
+    arg1: java.time.Duration,
     arg2: string,
     arg3: boolean
   ): io.gatling.javaapi.core.loop.AsLongAsDuring$On<io.gatling.javaapi.core.ChainBuilder>;
   asLongAsDuring(
     arg0: Func<io.gatling.javaapi.core.Session, boolean | null>,
-    arg1: Func<io.gatling.javaapi.core.Session, any /*java.time.Duration*/>
+    arg1: Func<io.gatling.javaapi.core.Session, java.time.Duration>
   ): io.gatling.javaapi.core.loop.AsLongAsDuring$On<io.gatling.javaapi.core.ChainBuilder>;
   asLongAsDuring(
     arg0: Func<io.gatling.javaapi.core.Session, boolean | null>,
-    arg1: Func<io.gatling.javaapi.core.Session, any /*java.time.Duration*/>,
+    arg1: Func<io.gatling.javaapi.core.Session, java.time.Duration>,
     arg2: boolean
   ): io.gatling.javaapi.core.loop.AsLongAsDuring$On<io.gatling.javaapi.core.ChainBuilder>;
   asLongAsDuring(
     arg0: Func<io.gatling.javaapi.core.Session, boolean | null>,
-    arg1: Func<io.gatling.javaapi.core.Session, any /*java.time.Duration*/>,
+    arg1: Func<io.gatling.javaapi.core.Session, java.time.Duration>,
     arg2: string
   ): io.gatling.javaapi.core.loop.AsLongAsDuring$On<io.gatling.javaapi.core.ChainBuilder>;
   asLongAsDuring(
     arg0: Func<io.gatling.javaapi.core.Session, boolean | null>,
-    arg1: Func<io.gatling.javaapi.core.Session, any /*java.time.Duration*/>,
+    arg1: Func<io.gatling.javaapi.core.Session, java.time.Duration>,
     arg2: string,
     arg3: boolean
   ): io.gatling.javaapi.core.loop.AsLongAsDuring$On<io.gatling.javaapi.core.ChainBuilder>;
@@ -810,41 +834,41 @@ interface CoreDslStatic {
   ): io.gatling.javaapi.core.loop.DoWhileDuring$On<io.gatling.javaapi.core.ChainBuilder>;
   doWhileDuring(
     arg0: string,
-    arg1: any /*java.time.Duration*/
+    arg1: java.time.Duration
   ): io.gatling.javaapi.core.loop.DoWhileDuring$On<io.gatling.javaapi.core.ChainBuilder>;
   doWhileDuring(
     arg0: string,
-    arg1: any /*java.time.Duration*/,
+    arg1: java.time.Duration,
     arg2: boolean
   ): io.gatling.javaapi.core.loop.DoWhileDuring$On<io.gatling.javaapi.core.ChainBuilder>;
   doWhileDuring(
     arg0: string,
-    arg1: any /*java.time.Duration*/,
+    arg1: java.time.Duration,
     arg2: string
   ): io.gatling.javaapi.core.loop.DoWhileDuring$On<io.gatling.javaapi.core.ChainBuilder>;
   doWhileDuring(
     arg0: string,
-    arg1: any /*java.time.Duration*/,
+    arg1: java.time.Duration,
     arg2: string,
     arg3: boolean
   ): io.gatling.javaapi.core.loop.DoWhileDuring$On<io.gatling.javaapi.core.ChainBuilder>;
   doWhileDuring(
     arg0: string,
-    arg1: Func<io.gatling.javaapi.core.Session, any /*java.time.Duration*/>
+    arg1: Func<io.gatling.javaapi.core.Session, java.time.Duration>
   ): io.gatling.javaapi.core.loop.DoWhileDuring$On<io.gatling.javaapi.core.ChainBuilder>;
   doWhileDuring(
     arg0: string,
-    arg1: Func<io.gatling.javaapi.core.Session, any /*java.time.Duration*/>,
+    arg1: Func<io.gatling.javaapi.core.Session, java.time.Duration>,
     arg2: boolean
   ): io.gatling.javaapi.core.loop.DoWhileDuring$On<io.gatling.javaapi.core.ChainBuilder>;
   doWhileDuring(
     arg0: string,
-    arg1: Func<io.gatling.javaapi.core.Session, any /*java.time.Duration*/>,
+    arg1: Func<io.gatling.javaapi.core.Session, java.time.Duration>,
     arg2: string
   ): io.gatling.javaapi.core.loop.DoWhileDuring$On<io.gatling.javaapi.core.ChainBuilder>;
   doWhileDuring(
     arg0: string,
-    arg1: Func<io.gatling.javaapi.core.Session, any /*java.time.Duration*/>,
+    arg1: Func<io.gatling.javaapi.core.Session, java.time.Duration>,
     arg2: string,
     arg3: boolean
   ): io.gatling.javaapi.core.loop.DoWhileDuring$On<io.gatling.javaapi.core.ChainBuilder>;
@@ -870,41 +894,41 @@ interface CoreDslStatic {
   ): io.gatling.javaapi.core.loop.DoWhileDuring$On<io.gatling.javaapi.core.ChainBuilder>;
   doWhileDuring(
     arg0: Func<io.gatling.javaapi.core.Session, boolean | null>,
-    arg1: any /*java.time.Duration*/
+    arg1: java.time.Duration
   ): io.gatling.javaapi.core.loop.DoWhileDuring$On<io.gatling.javaapi.core.ChainBuilder>;
   doWhileDuring(
     arg0: Func<io.gatling.javaapi.core.Session, boolean | null>,
-    arg1: any /*java.time.Duration*/,
+    arg1: java.time.Duration,
     arg2: boolean
   ): io.gatling.javaapi.core.loop.DoWhileDuring$On<io.gatling.javaapi.core.ChainBuilder>;
   doWhileDuring(
     arg0: Func<io.gatling.javaapi.core.Session, boolean | null>,
-    arg1: any /*java.time.Duration*/,
+    arg1: java.time.Duration,
     arg2: string
   ): io.gatling.javaapi.core.loop.DoWhileDuring$On<io.gatling.javaapi.core.ChainBuilder>;
   doWhileDuring(
     arg0: Func<io.gatling.javaapi.core.Session, boolean | null>,
-    arg1: any /*java.time.Duration*/,
+    arg1: java.time.Duration,
     arg2: string,
     arg3: boolean
   ): io.gatling.javaapi.core.loop.DoWhileDuring$On<io.gatling.javaapi.core.ChainBuilder>;
   doWhileDuring(
     arg0: Func<io.gatling.javaapi.core.Session, boolean | null>,
-    arg1: Func<io.gatling.javaapi.core.Session, any /*java.time.Duration*/>
+    arg1: Func<io.gatling.javaapi.core.Session, java.time.Duration>
   ): io.gatling.javaapi.core.loop.DoWhileDuring$On<io.gatling.javaapi.core.ChainBuilder>;
   doWhileDuring(
     arg0: Func<io.gatling.javaapi.core.Session, boolean | null>,
-    arg1: Func<io.gatling.javaapi.core.Session, any /*java.time.Duration*/>,
+    arg1: Func<io.gatling.javaapi.core.Session, java.time.Duration>,
     arg2: boolean
   ): io.gatling.javaapi.core.loop.DoWhileDuring$On<io.gatling.javaapi.core.ChainBuilder>;
   doWhileDuring(
     arg0: Func<io.gatling.javaapi.core.Session, boolean | null>,
-    arg1: Func<io.gatling.javaapi.core.Session, any /*java.time.Duration*/>,
+    arg1: Func<io.gatling.javaapi.core.Session, java.time.Duration>,
     arg2: string
   ): io.gatling.javaapi.core.loop.DoWhileDuring$On<io.gatling.javaapi.core.ChainBuilder>;
   doWhileDuring(
     arg0: Func<io.gatling.javaapi.core.Session, boolean | null>,
-    arg1: Func<io.gatling.javaapi.core.Session, any /*java.time.Duration*/>,
+    arg1: Func<io.gatling.javaapi.core.Session, java.time.Duration>,
     arg2: string,
     arg3: boolean
   ): io.gatling.javaapi.core.loop.DoWhileDuring$On<io.gatling.javaapi.core.ChainBuilder>;
@@ -936,35 +960,33 @@ interface CoreDslStatic {
     arg1: string,
     arg2: boolean
   ): io.gatling.javaapi.core.loop.During$On<io.gatling.javaapi.core.ChainBuilder>;
+  during(arg0: java.time.Duration): io.gatling.javaapi.core.loop.During$On<io.gatling.javaapi.core.ChainBuilder>;
   during(
-    arg0: any /*java.time.Duration*/
-  ): io.gatling.javaapi.core.loop.During$On<io.gatling.javaapi.core.ChainBuilder>;
-  during(
-    arg0: any /*java.time.Duration*/,
+    arg0: java.time.Duration,
     arg1: boolean
   ): io.gatling.javaapi.core.loop.During$On<io.gatling.javaapi.core.ChainBuilder>;
   during(
-    arg0: any /*java.time.Duration*/,
+    arg0: java.time.Duration,
     arg1: string
   ): io.gatling.javaapi.core.loop.During$On<io.gatling.javaapi.core.ChainBuilder>;
   during(
-    arg0: any /*java.time.Duration*/,
+    arg0: java.time.Duration,
     arg1: string,
     arg2: boolean
   ): io.gatling.javaapi.core.loop.During$On<io.gatling.javaapi.core.ChainBuilder>;
   during(
-    arg0: Func<io.gatling.javaapi.core.Session, any /*java.time.Duration*/>
+    arg0: Func<io.gatling.javaapi.core.Session, java.time.Duration>
   ): io.gatling.javaapi.core.loop.During$On<io.gatling.javaapi.core.ChainBuilder>;
   during(
-    arg0: Func<io.gatling.javaapi.core.Session, any /*java.time.Duration*/>,
+    arg0: Func<io.gatling.javaapi.core.Session, java.time.Duration>,
     arg1: boolean
   ): io.gatling.javaapi.core.loop.During$On<io.gatling.javaapi.core.ChainBuilder>;
   during(
-    arg0: Func<io.gatling.javaapi.core.Session, any /*java.time.Duration*/>,
+    arg0: Func<io.gatling.javaapi.core.Session, java.time.Duration>,
     arg1: string
   ): io.gatling.javaapi.core.loop.During$On<io.gatling.javaapi.core.ChainBuilder>;
   during(
-    arg0: Func<io.gatling.javaapi.core.Session, any /*java.time.Duration*/>,
+    arg0: Func<io.gatling.javaapi.core.Session, java.time.Duration>,
     arg1: string,
     arg2: boolean
   ): io.gatling.javaapi.core.loop.During$On<io.gatling.javaapi.core.ChainBuilder>;
@@ -1118,6 +1140,23 @@ interface DoWhileStatic {
 }
 
 export const DoWhile: DoWhileStatic = Java.type("io.gatling.javaapi.core.loop.DoWhile");
+
+interface DurationStatic {
+  readonly class: any;
+  between(arg0: any /*java.time.temporal.Temporal*/, arg1: any /*java.time.temporal.Temporal*/): java.time.Duration;
+  from(arg0: any /*java.time.temporal.TemporalAmount*/): java.time.Duration;
+  of(arg0: long, arg1: java.time.temporal.TemporalUnit): java.time.Duration;
+  ofDays(arg0: long): java.time.Duration;
+  ofHours(arg0: long): java.time.Duration;
+  ofMillis(arg0: long): java.time.Duration;
+  ofMinutes(arg0: long): java.time.Duration;
+  ofNanos(arg0: long): java.time.Duration;
+  ofSeconds(arg0: long): java.time.Duration;
+  ofSeconds(arg0: long, arg1: long): java.time.Duration;
+  parse(arg0: any /*java.lang.CharSequence*/): java.time.Duration;
+}
+
+export const Duration: DurationStatic = Java.type("java.time.Duration");
 
 interface During$OnStatic {
   readonly class: any;
@@ -1366,7 +1405,7 @@ export const OpenInjectionStep$ConstantRate: OpenInjectionStep$ConstantRateStati
 interface OpenInjectionStepStatic {
   readonly class: any;
   atOnceUsers(arg0: int): io.gatling.javaapi.core.OpenInjectionStep;
-  nothingFor(arg0: any /*java.time.Duration*/): io.gatling.javaapi.core.OpenInjectionStep;
+  nothingFor(arg0: java.time.Duration): io.gatling.javaapi.core.OpenInjectionStep;
 }
 
 export const OpenInjectionStep: OpenInjectionStepStatic = Java.type("io.gatling.javaapi.core.OpenInjectionStep");
@@ -1565,13 +1604,13 @@ export const Stream: StreamStatic = Java.type("java.util.stream.Stream");
 
 interface StringStatic {
   readonly class: any;
-  new (arg0: any /*java.lang.StringBuffer*/): string;
   new (arg0: any /*java.lang.StringBuilder*/): string;
   new (arg0: bytearray, arg1: int, arg2: int, arg3: any /*java.nio.charset.Charset*/): string;
   new (arg0: bytearray, arg1: string): string;
   new (arg0: bytearray, arg1: any /*java.nio.charset.Charset*/): string;
   new (arg0: bytearray, arg1: int, arg2: int): string;
   new (arg0: bytearray): string;
+  new (arg0: any /*java.lang.StringBuffer*/): string;
   new (arg0: chararray, arg1: int, arg2: int): string;
   new (arg0: chararray): string;
   new (arg0: string): string;
@@ -1604,6 +1643,12 @@ interface StructureBuilderStatic {
 }
 
 export const StructureBuilder: StructureBuilderStatic = Java.type("io.gatling.javaapi.core.StructureBuilder");
+
+interface TemporalUnitStatic {
+  readonly class: any;
+}
+
+export const TemporalUnit: TemporalUnitStatic = Java.type("java.time.temporal.TemporalUnit");
 
 interface ThrottleStepStatic {
   readonly class: any;

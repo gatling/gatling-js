@@ -15,6 +15,6 @@
     "format": "prettier --write '**/*.ts'",
     "setup": "gatling-js-cli install",
     "build": "gatling-js-cli build --typescript",
-    "start": "gatling-js-cli run --typescript"
+    "start": "tsc --noEmit && gatling-js-cli run --typescript"
   }
 }

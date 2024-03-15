@@ -10,7 +10,8 @@ export interface SetUp {
 }
 
 const wrapSetUp = (jvmSetUp: jvm.SetUp): SetUp => ({
-  protocols: (...protocols: ProtocolBuilder[]): SetUp => wrapSetUp(jvmSetUp.protocols(protocols.map((p) => p._underlying)))
+  protocols: (...protocols: ProtocolBuilder[]): SetUp =>
+    wrapSetUp(jvmSetUp.protocols(protocols.map((p) => p._underlying)))
 });
 
 export type SetUpFunction = (...populationBuilders: PopulationBuilder[]) => SetUp;

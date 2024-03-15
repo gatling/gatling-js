@@ -1,7 +1,9 @@
+/// <reference path="../gatlingJvm/gatling.d.ts"/>
 import { Wrapper } from "../common";
 import { wrapCallback } from "../gatlingJvm/callbacks";
-
 import { CoreDsl as JvmCoreDsl } from "../gatlingJvm/gatling-types";
+import { TimeUnit, toJvmDuration } from "../gatlingJvm/java-types";
+
 import JvmOpenInjectionStep = io.gatling.javaapi.core.OpenInjectionStep;
 import JvmConstantRateOpenInjectionStep = io.gatling.javaapi.core.ConstantRate$ConstantRateOpenInjectionStep;
 import JvmProtocolBuilder = io.gatling.javaapi.core.ProtocolBuilder;
@@ -49,7 +51,9 @@ export const constantUsersPerSec = (rate: number): OpenInjectionStepConstantRate
   };
 };
 // rampUsersPerSec(rate: number): OpenInjectionStepRampRate;
-export const nothingFor = (durationSeconds: number): OpenInjectionStep => wrapOpenInjectionStep(JvmCoreDsl.nothingFor(durationSeconds));
+
+export const nothingFor = (duration: number, timeUnit?: TimeUnit): OpenInjectionStep =>
+  wrapOpenInjectionStep(JvmCoreDsl.nothingFor(toJvmDuration(duration, timeUnit)));
 // nothingFor(duration: Duration): OpenInjectionStep;
 // incrementUsersPerSec(rateIncrement: number): OpenInjectionStepStairs;
 
