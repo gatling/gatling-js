@@ -1,7 +1,9 @@
-ThisBuild / organization := "io.gatling"
-ThisBuild / version := "3.10.4-SNAPSHOT"
-ThisBuild / scalaVersion := "2.13.13"
+import scala.collection.Seq
 
+import net.moznion.sbt.SbtSpotless.autoImport.{ spotless, spotlessJava, spotlessKotlin }
+import net.moznion.sbt.spotless.config.{ GoogleJavaFormatConfig, JavaConfig, KotlinConfig, SpotlessConfig }
+
+ThisBuild / scalaVersion := "2.13.13"
 ThisBuild / crossPaths := false
 
 lazy val root = (project in file("."))
@@ -9,17 +11,28 @@ lazy val root = (project in file("."))
 
 lazy val adapter = (project in file("adapter"))
   .withId("gatling-jvm-to-js-adapter")
-  .enablePlugins(GatlingPlugin)
+  .enablePlugins(
+    // GatlingCorpPlugin, but without AutomateHeaderPlugin
+    GatlingAutomatedScalafixPlugin,
+    GatlingAutomatedScalafmtPlugin,
+    GatlingVersioningPlugin,
+    GatlingBasicInfoPlugin,
+    GatlingCompilerSettingsPlugin,
+    GatlingPublishPlugin,
+    GatlingReleasePlugin,
+    GatlingEnvPlugin,
+  )
   .settings(
     name := "gatling-jvm-to-js-adapter",
-    scalacOptions := Seq(
-      "-encoding", "UTF-8",
-      "-release", "17",
-      "-deprecation",
-      "-feature",
-      "-unchecked",
-      "-language:implicitConversions",
-      "-language:postfixOps"
+    gatlingCompilerRelease := 21,
+    releasePublishArtifactsAction := Keys.publish.value,
+    Compile / javacOptions ++= Seq("-encoding", "utf8", "-Xdoclint:none"), // FIXME: see why -Xdoclint:none does not seem to work
+    Test / javacOptions ++= Seq("-encoding", "utf8"),
+    spotless := SpotlessConfig(
+      applyOnCompile = !sys.env.getOrElse("CI", "false").toBoolean
+    ),
+    spotlessJava := JavaConfig(
+      googleJavaFormat = GoogleJavaFormatConfig()
     ),
     libraryDependencies ++= Seq(
       "io.gatling.highcharts" % "gatling-charts-highcharts" % "3.10.4",

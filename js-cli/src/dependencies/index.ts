@@ -44,7 +44,7 @@ const versions = {
   coursier: "2.1.9",
   gatling: {
     core: "3.10.4",
-    jsAdapter: "3.10.4-SNAPSHOT"
+    jsAdapter: "0.0.0+21-e6d55f80+20240318-1611-SNAPSHOT"
   }
 };
 

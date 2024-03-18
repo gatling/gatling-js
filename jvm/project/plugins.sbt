@@ -1,2 +1,2 @@
-//addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "2.1.3")
-addSbtPlugin("io.gatling" % "gatling-sbt" % "4.7.0")
+addSbtPlugin("io.gatling" % "gatling-build-plugin" % "6.1.2")
+addSbtPlugin("net.moznion.sbt" % "sbt-spotless" % "0.1.3")
