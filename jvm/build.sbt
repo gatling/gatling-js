@@ -1,10 +1,11 @@
 import scala.collection.Seq
 
-import net.moznion.sbt.SbtSpotless.autoImport.{ spotless, spotlessJava, spotlessKotlin }
-import net.moznion.sbt.spotless.config.{ GoogleJavaFormatConfig, JavaConfig, KotlinConfig, SpotlessConfig }
+import net.moznion.sbt.spotless.config.{ GoogleJavaFormatConfig, JavaConfig, SpotlessConfig }
 
 ThisBuild / scalaVersion := "2.13.13"
 ThisBuild / crossPaths := false
+
+Global / publishTo := Some(Resolver.mavenLocal)
 
 lazy val root = (project in file("."))
   .aggregate(adapter, java2ts)

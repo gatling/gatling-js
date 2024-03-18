@@ -35,25 +35,39 @@ jobs:
           token=$(aws codeartifact get-authorization-token --domain ${{ secrets.AWS_CODEARTIFACT_DOMAIN }} --domain-owner ${{ secrets.AWS_CODEARTIFACT_OWNER }} --query authorizationToken --output text)
           echo "::add-mask::$token"
           echo "token=$token" >> $GITHUB_OUTPUT
-          
-          version="${GITHUB_REF_NAME:1}"
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '21'
+
+      - name: Prepare environment
+        env:
+          PRIVATE_REPOSITORY_SBT: ${{ secrets.PRIVATE_REPOSITORY_SBT }}
+        run: |
+          mkdir --parents ~/.sbt/1.0 || true
+          echo "$PRIVATE_REPOSITORY_SBT" > ~/.sbt/1.0/privateRepository.sbt
+
+      - name: Deploy Java adapter
+        id: deploy-jvm
+        working-directory: ./jvm
+        run: |
+          sbt "project gatling-jvm-to-js-adapter" "release with-defaults"
+          version="$(cat adapter/target/release-info)"
           echo "version=$version"
           echo "version=$version" >> $GITHUB_OUTPUT
-
-#      - name: Set up JDK 21
-#        uses: actions/setup-java@v4
-#        with:
-#          distribution: 'zulu'
-#          java-version: '21'
-#
-#      - name: Prepare environment
-#        env:
-#          PRIVATE_REPOSITORY_SBT: ${{ secrets.PRIVATE_REPOSITORY_SBT }}
-#        run: |
-#          mkdir --parents ~/.sbt/1.0 || true
-#          echo "$PRIVATE_REPOSITORY_SBT" > ~/.sbt/1.0/privateRepository.sbt
-#
-#      - name: Deploy JVM adapter
+          aws \
+              --region ${{ secrets.AWS_CODEARTIFACT_REGION }} \
+              codeartifact update-package-versions-status \
+              --domain ${{ secrets.AWS_CODEARTIFACT_DOMAIN }} \
+              --domain-owner ${{ secrets.AWS_CODEARTIFACT_OWNER }} \
+              --repository previews \
+              --format maven \
+              --namespace io.gatling \
+              --package gatling-jvm-to-js-adapter \
+              --versions "$version" \
+              --target-status Published
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -70,7 +84,7 @@ jobs:
         run: |
           npm ci
           npm run build
-          npm version "${{ steps.repository.outputs.version }}"
+          npm version "${{ steps.deploy-jvm.outputs.version }}"
           npm publish
 
       - name: Deploy DSL
@@ -83,5 +97,5 @@ jobs:
         run: |
           npm ci
           npm run build
-          npm version "${{ steps.repository.outputs.version }}"
+          npm version "${{ steps.deploy-jvm.outputs.version }}"
           npm publish
