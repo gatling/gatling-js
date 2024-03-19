@@ -6,7 +6,8 @@ node_modules/
 
 # build targets
 target/
-/tmp
+/tmp/
+/js-cli/src/dependencies/versions.ts
 
 # IntelliJ
 *.iml
@@ -14,5 +15,3 @@ target/
 
 # Gatling run results
 results/
-
-tmp/

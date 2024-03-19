@@ -7,6 +7,7 @@ import { promisify } from "util";
 
 import { downloadFile } from "./download";
 import { logger } from "../log";
+import { versions } from "./versions";
 
 export const execAsync = promisify(exec);
 export interface DependenciesOptions {
@@ -34,18 +35,6 @@ export const installAll = async (options: DependenciesOptions): Promise<Resolved
     coursierPath,
     jvmClasspath: classpath.trim()
   };
-};
-
-const versions = {
-  graalvm: {
-    jdk: "21.0.2",
-    js: "23.1.2"
-  },
-  coursier: "2.1.9",
-  gatling: {
-    core: "3.10.4",
-    jsAdapter: "0.0.0+21-e6d55f80+20240318-1611-SNAPSHOT"
-  }
 };
 
 const installGraalVm = async (gatlingHomeDir: string, downloadDir: string): Promise<string> => {
