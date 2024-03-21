@@ -1,0 +1,16 @@
+{
+  "name": "@gatling.io/js",
+  "version": "0.0.0",
+  "workspaces": [
+    "cli",
+    "jvm-types",
+    "core",
+    "http"
+  ],
+  "devDependencies": {
+    "workspace-version": "0.1.4"
+  },
+  "scripts": {
+    "version": "workspace-version --jsonIndent 2"
+  }
+}

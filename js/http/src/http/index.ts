@@ -1,6 +1,6 @@
-import * as core from "../core";
+import * as core from "@gatling.io/core";
 
-import { HttpDsl as JvmHttpDsl } from "../gatlingJvm/gatling-types";
+import { HttpDsl as JvmHttpDsl } from "@gatling.io/jvm-types";
 import JvmHttp = io.gatling.javaapi.http.Http;
 import JvmHttpProtocolBuilder = io.gatling.javaapi.http.HttpProtocolBuilder;
 import JvmHttpRequestActionBuilder = io.gatling.javaapi.http.HttpRequestActionBuilder;

@@ -1,4 +1,4 @@
-import { Duration as JvmDuration } from "./gatling-types";
+import { Duration as JvmDuration } from "@gatling.io/jvm-types";
 
 export type TimeUnit = "milliseconds" | "seconds" | "minutes";
 

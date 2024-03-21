@@ -1,7 +1,8 @@
-/// <reference path="../gatlingJvm/gatling.d.ts"/>
+import "@gatling.io/jvm-types";
+import { CoreDsl as JvmCoreDsl } from "@gatling.io/jvm-types";
+
 import { Wrapper } from "../common";
 import { wrapCallback } from "../gatlingJvm/callbacks";
-import { CoreDsl as JvmCoreDsl } from "../gatlingJvm/gatling-types";
 import { TimeUnit, toJvmDuration } from "../gatlingJvm/java-types";
 
 import JvmOpenInjectionStep = io.gatling.javaapi.core.OpenInjectionStep;

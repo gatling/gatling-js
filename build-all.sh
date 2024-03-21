@@ -6,9 +6,7 @@ root_dir="$(dirname "$(realpath -- "$0")")"
 
 "$root_dir/build-jvm.sh"
 
-"$root_dir/build-js-cli.sh"
-
-"$root_dir/build-js-dsl.sh"
+"$root_dir/build-js.sh"
 
 # Rebuild js-simulation
 cd "$root_dir/js-simulation"

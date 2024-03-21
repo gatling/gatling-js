@@ -5,10 +5,11 @@
   "type": "module",
   "main": "target/bundle",
   "dependencies": {
-    "@gatling/js": "0.0.1"
+    "@gatling.io/core": "0.0.0",
+    "@gatling.io/http": "0.0.0"
   },
   "devDependencies": {
-    "@gatling/js-cli": "0.0.1",
+    "@gatling.io/cli": "0.0.0",
     "prettier": "3.2.5",
     "rimraf": "5.0.5",
     "typescript": "5.4.2"
@@ -17,7 +18,8 @@
     "clean": "rimraf target results tmp",
     "format": "prettier --write '**/*.ts'",
     "setup": "gatling-js-cli install",
-    "build": "gatling-js-cli build --typescript",
-    "start": "tsc --noEmit && gatling-js-cli run --typescript"
+    "check": "tsc --noEmit",
+    "build": "tsc --noEmit && gatling-js-cli build --typescript",
+    "start": "gatling-js-cli run --typescript"
   }
 }

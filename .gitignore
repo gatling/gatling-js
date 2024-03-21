@@ -1,5 +1,6 @@
 # sbt
 .bsp/
+version.sbt
 
 # yarn
 node_modules/
@@ -7,7 +8,9 @@ node_modules/
 # build targets
 target/
 /tmp/
-/js-cli/src/dependencies/versions.ts
+/js/cli/src/dependencies/versions.ts
+/js/jvm-types/index.js
+/js/jvm-types/index.d.ts
 
 # IntelliJ
 *.iml

@@ -3,7 +3,6 @@ import { ProtocolBuilder, PopulationBuilder } from "./core";
 
 // no export *
 export * from "./core";
-export * from "./http";
 
 export interface SetUp {
   protocols(...protocols: ProtocolBuilder[]): SetUp;

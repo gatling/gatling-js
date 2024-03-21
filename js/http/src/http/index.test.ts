@@ -1,5 +1,5 @@
-import { atOnceUsers, scenario } from "../core";
-import { Simulation } from "../index";
+import { atOnceUsers, scenario } from "@gatling.io/core/target/core";
+import { Simulation } from "@gatling.io/core";
 import { http } from "./index";
 
 const runSimulationMock = (_: Simulation): void => {};

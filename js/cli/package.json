@@ -1,5 +1,5 @@
 {
-  "name": "@gatling/js-cli",
+  "name": "@gatling.io/cli",
   "version": "0.0.0",
   "bin": {
     "gatling-js-cli": "target/index.js"

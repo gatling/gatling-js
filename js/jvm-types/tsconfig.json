@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "lib": ["es2021"],
+    "target": "es2021",
+    "module": "node16",
+    "esModuleInterop": true,
+    "moduleResolution": "node16",
+    "declaration": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true
+  },
+  "files": [
+    "gatling.d.ts",
+    "index.ts"
+  ]
+}

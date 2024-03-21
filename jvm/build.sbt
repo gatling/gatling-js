@@ -44,7 +44,7 @@ lazy val adapter = (project in file("adapter"))
     ),
     Compile / sourceGenerators += Def.task {
       // Bit of a hack, generate a file directly into the CLI project to share version numbers
-      val path = (ThisBuild / baseDirectory).value / ".." / "js-cli" / "src" / "dependencies" / "versions.ts"
+      val path = (ThisBuild / baseDirectory).value / ".." / "js" / "cli" / "src" / "dependencies" / "versions.ts"
       val jsAdapterVersion = version.value
       val content =
         s"""export const versions = {

@@ -1,9 +1,12 @@
 {
-  "name": "@gatling/js",
+  "name": "@gatling.io/http",
   "version": "0.0.0",
   "main": "target/index.js",
   "types": "target/index.d.ts",
-  "dependencies": {},
+  "dependencies": {
+    "@gatling.io/jvm-types": "0.0.0",
+    "@gatling.io/core": "0.0.0"
+  },
   "devDependencies": {
     "@types/jest": "29.5.12",
     "jest": "29.7.0",
@@ -14,13 +17,9 @@
     "typescript": "5.4.2"
   },
   "scripts": {
-    "clean": "rimraf target results tmp",
+    "clean": "rimraf target",
     "format": "prettier --write '**/*.ts'",
     "test": "jest",
     "build": "tsc -p ."
-  },
-  "files": [
-    "src/**/*.d.ts",
-    "target"
-  ]
+  }
 }

@@ -74,28 +74,17 @@ jobs:
         with:
           node-version: 20
 
-      - name: Deploy CLI
+      - name: Deploy JS packages
         env:
           AWS_CODEARTIFACT_DOMAIN: ${{ secrets.AWS_CODEARTIFACT_DOMAIN }}
           AWS_CODEARTIFACT_OWNER: ${{ secrets.AWS_CODEARTIFACT_OWNER }}
           AWS_CODEARTIFACT_REGION: ${{ secrets.AWS_CODEARTIFACT_REGION }}
           NODE_AUTH_TOKEN: ${{ steps.repository.outputs.token }}
-        working-directory: ./js-cli
+        working-directory: ./js
         run: |
           npm ci
-          npm run build
           npm version "${{ steps.deploy-jvm.outputs.version }}"
-          npm publish
-
-      - name: Deploy DSL
-        env:
-          AWS_CODEARTIFACT_DOMAIN: ${{ secrets.AWS_CODEARTIFACT_DOMAIN }}
-          AWS_CODEARTIFACT_OWNER: ${{ secrets.AWS_CODEARTIFACT_OWNER }}
-          AWS_CODEARTIFACT_REGION: ${{ secrets.AWS_CODEARTIFACT_REGION }}
-          NODE_AUTH_TOKEN: ${{ steps.repository.outputs.token }}
-        working-directory: ./js-dsl
-        run: |
-          npm ci
-          npm run build
-          npm version "${{ steps.deploy-jvm.outputs.version }}"
-          npm publish
+          npm run build --workspaces
+          for pkg in "cli" "jvm-types" "core" "http"; do
+            npm publish "--workspace=@gatling.io/$pkg"
+          done
