@@ -116,6 +116,57 @@ interface ChronoUnitStatic {
 
 export const ChronoUnit: ChronoUnitStatic = Java.type("java.time.temporal.ChronoUnit");
 
+interface ClosedInjectionStep$CompositeStatic {
+  readonly class: any;
+}
+
+export const ClosedInjectionStep$Composite: ClosedInjectionStep$CompositeStatic = Java.type(
+  "io.gatling.javaapi.core.ClosedInjectionStep$Composite"
+);
+
+interface ClosedInjectionStep$ConstantStatic {
+  readonly class: any;
+}
+
+export const ClosedInjectionStep$Constant: ClosedInjectionStep$ConstantStatic = Java.type(
+  "io.gatling.javaapi.core.ClosedInjectionStep$Constant"
+);
+
+interface ClosedInjectionStep$RampStatic {
+  readonly class: any;
+  new (arg0: int): io.gatling.javaapi.core.ClosedInjectionStep$Ramp;
+}
+
+export const ClosedInjectionStep$Ramp: ClosedInjectionStep$RampStatic = Java.type(
+  "io.gatling.javaapi.core.ClosedInjectionStep$Ramp"
+);
+
+interface ClosedInjectionStep$RampToStatic {
+  readonly class: any;
+  new (arg0: int, arg1: int): io.gatling.javaapi.core.ClosedInjectionStep$RampTo;
+}
+
+export const ClosedInjectionStep$RampTo: ClosedInjectionStep$RampToStatic = Java.type(
+  "io.gatling.javaapi.core.ClosedInjectionStep$RampTo"
+);
+
+interface ClosedInjectionStep$StairsStatic {
+  readonly class: any;
+}
+
+export const ClosedInjectionStep$Stairs: ClosedInjectionStep$StairsStatic = Java.type(
+  "io.gatling.javaapi.core.ClosedInjectionStep$Stairs"
+);
+
+interface ClosedInjectionStep$StairsWithTimeStatic {
+  readonly class: any;
+  new (arg0: int, arg1: int): io.gatling.javaapi.core.ClosedInjectionStep$StairsWithTime;
+}
+
+export const ClosedInjectionStep$StairsWithTime: ClosedInjectionStep$StairsWithTimeStatic = Java.type(
+  "io.gatling.javaapi.core.ClosedInjectionStep$StairsWithTime"
+);
+
 interface ClosedInjectionStepStatic {
   readonly class: any;
 }
@@ -512,9 +563,9 @@ interface CoreDslStatic {
   form(arg0: Func<io.gatling.javaapi.core.Session, string>): any /*io.gatling.javaapi.core.CheckBuilder$MultipleFind*/;
   onCase(arg0: any /*java.lang.Object*/): any /*io.gatling.javaapi.core.Choice$WithKey$Then*/;
   percent(arg0: double): any /*io.gatling.javaapi.core.Choice$WithWeight$Then*/;
-  constantConcurrentUsers(arg0: int): any /*io.gatling.javaapi.core.ClosedInjectionStep$Constant*/;
-  rampConcurrentUsers(arg0: int): any /*io.gatling.javaapi.core.ClosedInjectionStep$Ramp*/;
-  incrementConcurrentUsers(arg0: int): any /*io.gatling.javaapi.core.ClosedInjectionStep$Stairs*/;
+  constantConcurrentUsers(arg0: int): io.gatling.javaapi.core.ClosedInjectionStep$Constant;
+  rampConcurrentUsers(arg0: int): io.gatling.javaapi.core.ClosedInjectionStep$Ramp;
+  incrementConcurrentUsers(arg0: int): io.gatling.javaapi.core.ClosedInjectionStep$Stairs;
   csv(arg0: string): any /*io.gatling.javaapi.core.FeederBuilder$Batchable*/;
   csv(arg0: string, arg1: any /*char*/): any /*io.gatling.javaapi.core.FeederBuilder$Batchable*/;
   separatedValues(arg0: string, arg1: any /*char*/): any /*io.gatling.javaapi.core.FeederBuilder$Batchable*/;
@@ -543,10 +594,10 @@ interface CoreDslStatic {
   nothingFor(arg0: java.time.Duration): io.gatling.javaapi.core.OpenInjectionStep;
   nothingFor(arg0: long): io.gatling.javaapi.core.OpenInjectionStep;
   constantUsersPerSec(arg0: double): io.gatling.javaapi.core.OpenInjectionStep$ConstantRate;
-  rampUsers(arg0: int): any /*io.gatling.javaapi.core.OpenInjectionStep$Ramp*/;
-  rampUsersPerSec(arg0: double): any /*io.gatling.javaapi.core.OpenInjectionStep$RampRate*/;
-  incrementUsersPerSec(arg0: double): any /*io.gatling.javaapi.core.OpenInjectionStep$Stairs*/;
-  stressPeakUsers(arg0: int): any /*io.gatling.javaapi.core.OpenInjectionStep$StressPeak*/;
+  rampUsers(arg0: int): io.gatling.javaapi.core.OpenInjectionStep$Ramp;
+  rampUsersPerSec(arg0: double): io.gatling.javaapi.core.OpenInjectionStep$RampRate;
+  incrementUsersPerSec(arg0: double): io.gatling.javaapi.core.OpenInjectionStep$Stairs;
+  stressPeakUsers(arg0: int): io.gatling.javaapi.core.OpenInjectionStep$StressPeak;
   customPauses(arg0: Func<io.gatling.javaapi.core.Session, long | null>): io.gatling.javaapi.core.PauseType;
   normalPausesWithPercentageDuration(arg0: double): io.gatling.javaapi.core.PauseType;
   normalPausesWithStdDevDuration(arg0: java.time.Duration): io.gatling.javaapi.core.PauseType;
@@ -1402,6 +1453,38 @@ export const OpenInjectionStep$ConstantRate: OpenInjectionStep$ConstantRateStati
   "io.gatling.javaapi.core.OpenInjectionStep$ConstantRate"
 );
 
+interface OpenInjectionStep$RampRateStatic {
+  readonly class: any;
+}
+
+export const OpenInjectionStep$RampRate: OpenInjectionStep$RampRateStatic = Java.type(
+  "io.gatling.javaapi.core.OpenInjectionStep$RampRate"
+);
+
+interface OpenInjectionStep$RampStatic {
+  readonly class: any;
+}
+
+export const OpenInjectionStep$Ramp: OpenInjectionStep$RampStatic = Java.type(
+  "io.gatling.javaapi.core.OpenInjectionStep$Ramp"
+);
+
+interface OpenInjectionStep$StairsStatic {
+  readonly class: any;
+}
+
+export const OpenInjectionStep$Stairs: OpenInjectionStep$StairsStatic = Java.type(
+  "io.gatling.javaapi.core.OpenInjectionStep$Stairs"
+);
+
+interface OpenInjectionStep$StressPeakStatic {
+  readonly class: any;
+}
+
+export const OpenInjectionStep$StressPeak: OpenInjectionStep$StressPeakStatic = Java.type(
+  "io.gatling.javaapi.core.OpenInjectionStep$StressPeak"
+);
+
 interface OpenInjectionStepStatic {
   readonly class: any;
   atOnceUsers(arg0: int): io.gatling.javaapi.core.OpenInjectionStep;
@@ -1461,6 +1544,24 @@ interface ProxyStatic {
 }
 
 export const Proxy: ProxyStatic = Java.type("io.gatling.javaapi.http.Proxy");
+
+interface RampRate$DuringStatic {
+  readonly class: any;
+}
+
+export const RampRate$During: RampRate$DuringStatic = Java.type(
+  "io.gatling.javaapi.core.OpenInjectionStep$RampRate$During"
+);
+
+interface RampRate$RampRateOpenInjectionStepStatic {
+  readonly class: any;
+  atOnceUsers(arg0: int): io.gatling.javaapi.core.OpenInjectionStep;
+  nothingFor(arg0: java.time.Duration): io.gatling.javaapi.core.OpenInjectionStep;
+}
+
+export const RampRate$RampRateOpenInjectionStep: RampRate$RampRateOpenInjectionStepStatic = Java.type(
+  "io.gatling.javaapi.core.OpenInjectionStep$RampRate$RampRateOpenInjectionStep"
+);
 
 interface RandomSwitch$OnStatic {
   readonly class: any;
@@ -1586,6 +1687,22 @@ interface SseStatic {
 }
 
 export const Sse: SseStatic = Java.type("io.gatling.javaapi.http.Sse");
+
+interface Stairs$CompositeStatic {
+  readonly class: any;
+  atOnceUsers(arg0: int): io.gatling.javaapi.core.OpenInjectionStep;
+  nothingFor(arg0: java.time.Duration): io.gatling.javaapi.core.OpenInjectionStep;
+}
+
+export const Stairs$Composite: Stairs$CompositeStatic = Java.type(
+  "io.gatling.javaapi.core.OpenInjectionStep$Stairs$Composite"
+);
+
+interface Stairs$TimesStatic {
+  readonly class: any;
+}
+
+export const Stairs$Times: Stairs$TimesStatic = Java.type("io.gatling.javaapi.core.OpenInjectionStep$Stairs$Times");
 
 interface StreamStatic {
   readonly class: any;

@@ -504,6 +504,54 @@ declare namespace io.gatling.javaapi.core {
   } // end Choice
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
+  class ClosedInjectionStep$Composite /* extends ClosedInjectionStep*/ {
+    asScala(): any /*io.gatling.core.controller.inject.closed.ClosedInjectionStep*/;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    separatedByRampsLasting(arg0: java.time.Duration): ClosedInjectionStep$Composite;
+    separatedByRampsLasting(arg0: long): ClosedInjectionStep$Composite;
+    startingFrom(arg0: int): ClosedInjectionStep$Composite;
+    toString(): string;
+  } // end ClosedInjectionStep$Composite
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
+  class ClosedInjectionStep$Constant /* extends java.lang.Object*/ {
+    during(arg0: java.time.Duration): ClosedInjectionStep;
+    during(arg0: long): ClosedInjectionStep;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toString(): string;
+  } // end ClosedInjectionStep$Constant
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
+  class ClosedInjectionStep$Ramp /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    to(arg0: int): ClosedInjectionStep$RampTo;
+    toString(): string;
+  } // end ClosedInjectionStep$Ramp
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
+  class ClosedInjectionStep$RampTo /* extends java.lang.Object*/ {
+    during(arg0: java.time.Duration): ClosedInjectionStep;
+    during(arg0: long): ClosedInjectionStep;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toString(): string;
+  } // end ClosedInjectionStep$RampTo
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
+  class ClosedInjectionStep$Stairs /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    times(arg0: int): ClosedInjectionStep$StairsWithTime;
+    toString(): string;
+  } // end ClosedInjectionStep$Stairs
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
+  class ClosedInjectionStep$StairsWithTime /* extends java.lang.Object*/ {
+    eachLevelLasting(arg0: java.time.Duration): ClosedInjectionStep$Composite;
+    eachLevelLasting(arg0: long): ClosedInjectionStep$Composite;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toString(): string;
+  } // end ClosedInjectionStep$StairsWithTime
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
   class ClosedInjectionStep /* extends java.lang.Object*/ {
     asScala(): any /*io.gatling.core.controller.inject.closed.ClosedInjectionStep*/;
     equals(arg0: any /*java.lang.Object*/): boolean;
@@ -540,6 +588,36 @@ declare namespace io.gatling.javaapi.core {
   } // end OpenInjectionStep$ConstantRate
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
+  class OpenInjectionStep$Ramp /* extends java.lang.Object*/ {
+    during(arg0: java.time.Duration): OpenInjectionStep;
+    during(arg0: long): OpenInjectionStep;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toString(): string;
+  } // end OpenInjectionStep$Ramp
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
+  class OpenInjectionStep$RampRate /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    to(arg0: double): RampRate$During;
+    toString(): string;
+  } // end OpenInjectionStep$RampRate
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
+  class OpenInjectionStep$Stairs /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    times(arg0: int): Stairs$Times;
+    toString(): string;
+  } // end OpenInjectionStep$Stairs
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
+  class OpenInjectionStep$StressPeak /* extends java.lang.Object*/ {
+    during(arg0: java.time.Duration): OpenInjectionStep;
+    during(arg0: long): OpenInjectionStep;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toString(): string;
+  } // end OpenInjectionStep$StressPeak
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
   class OpenInjectionStep /* extends java.lang.Object*/ {
     asScala(): any /*io.gatling.core.controller.inject.open.OpenInjectionStep*/;
     equals(arg0: any /*java.lang.Object*/): boolean;
@@ -573,6 +651,22 @@ declare namespace io.gatling.javaapi.core {
     uniformPauses(arg0: double): PopulationBuilder;
     uniformPauses(arg0: java.time.Duration): PopulationBuilder;
   } // end PopulationBuilder
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
+  class RampRate$During /* extends java.lang.Object*/ {
+    during(arg0: java.time.Duration): RampRate$RampRateOpenInjectionStep;
+    during(arg0: long): RampRate$RampRateOpenInjectionStep;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toString(): string;
+  } // end RampRate$During
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
+  class RampRate$RampRateOpenInjectionStep /* extends OpenInjectionStep*/ {
+    asScala(): any /*io.gatling.core.controller.inject.open.OpenInjectionStep*/;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    randomized(): OpenInjectionStep;
+    toString(): string;
+  } // end RampRate$RampRateOpenInjectionStep
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
   class ScenarioBuilder /* extends StructureBuilder<any, any>*/ {
@@ -1050,6 +1144,24 @@ declare namespace io.gatling.javaapi.core {
     setUp(arg0: java.util.List<PopulationBuilder>): any /*io.gatling.javaapi.core.Simulation$SetUp*/;
     toString(): string;
   } // end Simulation
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
+  class Stairs$Composite /* extends OpenInjectionStep*/ {
+    asScala(): any /*io.gatling.core.controller.inject.open.OpenInjectionStep*/;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    separatedByRampsLasting(arg0: java.time.Duration): Stairs$Composite;
+    separatedByRampsLasting(arg0: long): Stairs$Composite;
+    startingFrom(arg0: double): Stairs$Composite;
+    toString(): string;
+  } // end Stairs$Composite
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
+  class Stairs$Times /* extends java.lang.Object*/ {
+    eachLevelLasting(arg0: java.time.Duration): Stairs$Composite;
+    eachLevelLasting(arg0: long): Stairs$Composite;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toString(): string;
+  } // end Stairs$Times
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
   class StructureBuilder<

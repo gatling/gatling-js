@@ -30,17 +30,25 @@
         @Type(value = io.gatling.javaapi.core.CheckBuilder.class, export = true),
         @Type(value = io.gatling.javaapi.core.Choice.class, export = true),
         @Type(value = io.gatling.javaapi.core.ClosedInjectionStep.class, export = true),
-        // TODO other ClosedInjectionStep.*
+        @Type(value = io.gatling.javaapi.core.ClosedInjectionStep.Constant.class, export = true),
+        @Type(value = io.gatling.javaapi.core.ClosedInjectionStep.Ramp.class, export = true),
+        @Type(value = io.gatling.javaapi.core.ClosedInjectionStep.RampTo.class, export = true),
+        @Type(value = io.gatling.javaapi.core.ClosedInjectionStep.Stairs.class, export = true),
+        @Type(value = io.gatling.javaapi.core.ClosedInjectionStep.StairsWithTime.class, export = true),
+        @Type(value = io.gatling.javaapi.core.ClosedInjectionStep.Composite.class, export = true),
         @Type(value = io.gatling.javaapi.core.FeederBuilder.class, export = true),
         @Type(value = io.gatling.javaapi.core.Filter.class, export = true),
         @Type(value = io.gatling.javaapi.core.OpenInjectionStep.class, export = true),
+        @Type(value = io.gatling.javaapi.core.OpenInjectionStep.Ramp.class, export = true),
+        @Type(value = io.gatling.javaapi.core.OpenInjectionStep.StressPeak.class, export = true),
         @Type(value = io.gatling.javaapi.core.OpenInjectionStep.ConstantRate.class, export = true),
-        @Type(
-            value =
-                io.gatling.javaapi.core.OpenInjectionStep.ConstantRate.ConstantRateOpenInjectionStep
-                    .class,
-            export = true),
-        // TODO other OpenInjectionStep.*
+        @Type(value = io.gatling.javaapi.core.OpenInjectionStep.ConstantRate.ConstantRateOpenInjectionStep.class, export = true),
+        @Type(value = io.gatling.javaapi.core.OpenInjectionStep.RampRate.class, export = true),
+        @Type(value = io.gatling.javaapi.core.OpenInjectionStep.RampRate.During.class, export = true),
+        @Type(value = io.gatling.javaapi.core.OpenInjectionStep.RampRate.RampRateOpenInjectionStep.class, export = true),
+        @Type(value = io.gatling.javaapi.core.OpenInjectionStep.Stairs.class, export = true),
+        @Type(value = io.gatling.javaapi.core.OpenInjectionStep.Stairs.Times.class, export = true),
+        @Type(value = io.gatling.javaapi.core.OpenInjectionStep.Stairs.Composite.class, export = true),
         @Type(value = io.gatling.javaapi.core.PauseType.class, export = true),
         @Type(value = io.gatling.javaapi.core.PopulationBuilder.class, export = true),
         @Type(value = io.gatling.javaapi.core.ProtocolBuilder.class, export = true),

@@ -3,10 +3,6 @@ import { CoreDsl as JvmCoreDsl } from "@gatling.io/jvm-types";
 
 import { Wrapper } from "../common";
 import { wrapCallback } from "../gatlingJvm/callbacks";
-import { TimeUnit, toJvmDuration } from "../gatlingJvm/java-types";
-
-import JvmOpenInjectionStep = io.gatling.javaapi.core.OpenInjectionStep;
-import JvmConstantRateOpenInjectionStep = io.gatling.javaapi.core.ConstantRate$ConstantRateOpenInjectionStep;
 import JvmProtocolBuilder = io.gatling.javaapi.core.ProtocolBuilder;
 import JvmSession = io.gatling.javaapi.core.Session;
 import JvmActionBuilder = io.gatling.javaapi.core.ActionBuilder;
@@ -15,50 +11,11 @@ import JvmPopulationBuilder = io.gatling.javaapi.core.PopulationBuilder;
 import JvmStructureBuilder = io.gatling.javaapi.core.StructureBuilder;
 import JvmScenarioBuilder = io.gatling.javaapi.core.ScenarioBuilder;
 
-// import JvmOn = io.gatling.javaapi.core.loop.During$On
+import { ClosedInjectionStep } from "./closedInjection";
+import { OpenInjectionStep } from "./openInjection";
 
-// OpenInjectionSupport
-export interface OpenInjectionStep extends Wrapper<JvmOpenInjectionStep> {}
-export interface ConstantRateOpenInjectionStep extends OpenInjectionStep {
-  randomized(): OpenInjectionStep;
-}
-const wrapOpenInjectionStep = (jvmOpenInjectionStep: JvmOpenInjectionStep): OpenInjectionStep => ({
-  _underlying: jvmOpenInjectionStep
-});
-const wrapConstantRateOpenInjectionStep = (
-  jvmOpenInjectionStep: JvmConstantRateOpenInjectionStep
-): ConstantRateOpenInjectionStep => ({
-  _underlying: jvmOpenInjectionStep,
-  randomized: (): OpenInjectionStep => wrapOpenInjectionStep(jvmOpenInjectionStep.randomized())
-});
-
-// export interface OpenInjectionStepRamp {}
-// export interface OpenInjectionStepStressPeak {}
-export interface OpenInjectionStepConstantRate {
-  during(durationSeconds: number): ConstantRateOpenInjectionStep;
-  // during(duration: Duration): ConstantRateOpenInjectionStep;
-}
-// export interface OpenInjectionStepRampRate {}
-// export interface OpenInjectionStepStairs {}
-
-// rampUsers(users: number): OpenInjectionStepRamp;
-// stressPeakUsers(users: number): OpenInjectionStepStressPeak;
-export const atOnceUsers = (users: number): OpenInjectionStep => wrapOpenInjectionStep(JvmCoreDsl.atOnceUsers(users));
-export const constantUsersPerSec = (rate: number): OpenInjectionStepConstantRate => {
-  const jvmOpenInjectionStepConstantRate = JvmCoreDsl.constantUsersPerSec(rate);
-  return {
-    during: (durationSeconds: number): ConstantRateOpenInjectionStep =>
-      wrapConstantRateOpenInjectionStep(jvmOpenInjectionStepConstantRate.during(durationSeconds))
-  };
-};
-// rampUsersPerSec(rate: number): OpenInjectionStepRampRate;
-
-export const nothingFor = (duration: number, timeUnit?: TimeUnit): OpenInjectionStep =>
-  wrapOpenInjectionStep(JvmCoreDsl.nothingFor(toJvmDuration(duration, timeUnit)));
-// nothingFor(duration: Duration): OpenInjectionStep;
-// incrementUsersPerSec(rateIncrement: number): OpenInjectionStepStairs;
-
-// end OpenInjectionSupport
+export * from "./closedInjection";
+export * from "./openInjection";
 
 export interface ProtocolBuilder extends Wrapper<JvmProtocolBuilder> {}
 
@@ -151,11 +108,14 @@ const wrapOn = <JvmT extends JvmStructureBuilder<JvmT, any>, T extends Structure
 
 export interface ScenarioBuilder extends StructureBuilder<ScenarioBuilder> {
   injectOpen(...steps: OpenInjectionStep[]): PopulationBuilder;
+  injectClosed(...steps: ClosedInjectionStep[]): PopulationBuilder;
 }
 
 const wrapScenarioBuilder = (jvmScenarioBuilder: JvmScenarioBuilder): ScenarioBuilder => ({
   injectOpen: (...steps: OpenInjectionStep[]): PopulationBuilder =>
     wrapPopulationBuilder(jvmScenarioBuilder.injectOpen(steps.map((s) => s._underlying))),
+  injectClosed: (...steps: ClosedInjectionStep[]): PopulationBuilder =>
+    wrapPopulationBuilder(jvmScenarioBuilder.injectClosed(steps.map((s) => s._underlying))),
   during: (duration: number): On<ScenarioBuilder> =>
     wrapOn(jvmScenarioBuilder.during<JvmScenarioBuilder>(duration), wrapScenarioBuilder),
   exec: (exec) => wrapScenarioBuilder(underlyingExec<JvmScenarioBuilder>(jvmScenarioBuilder, exec)),
