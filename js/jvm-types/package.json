@@ -6,7 +6,7 @@
   },
   "scripts": {
     "clean": "rm -f ./index.js ./index.d.ts",
-    "format": "prettier --write '**/*.ts'",
+    "format": "prettier --write 'gatling.d.ts' 'index.ts'",
     "build": "tsc -p ."
   }
 }
