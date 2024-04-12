@@ -74,18 +74,31 @@ interface CheckBuilderStatic {
 
 export const CheckBuilder: CheckBuilderStatic = Java.type("io.gatling.javaapi.core.CheckBuilder");
 
+interface Choice$WithKeyStatic {
+  readonly class: any;
+}
+
+export const Choice$WithKey: Choice$WithKeyStatic = Java.type("io.gatling.javaapi.core.Choice$WithKey");
+
+interface Choice$WithWeightStatic {
+  readonly class: any;
+  new (arg0: double, arg1: io.gatling.javaapi.core.ChainBuilder): io.gatling.javaapi.core.Choice$WithWeight;
+}
+
+export const Choice$WithWeight: Choice$WithWeightStatic = Java.type("io.gatling.javaapi.core.Choice$WithWeight");
+
 interface ChoiceStatic {
   readonly class: any;
   withKey(
     arg0: any /*java.lang.Object*/,
-    arg1: any /*io.gatling.javaapi.core.exec.Executable*/,
-    ...arg2: any /*io.gatling.javaapi.core.exec.Executable*/[]
-  ): any /*io.gatling.javaapi.core.Choice$WithKey*/;
+    arg1: io.gatling.javaapi.core.exec.Executable,
+    ...arg2: io.gatling.javaapi.core.exec.Executable[]
+  ): io.gatling.javaapi.core.Choice$WithKey;
   withWeight(
     arg0: double,
-    arg1: any /*io.gatling.javaapi.core.exec.Executable*/,
-    ...arg2: any /*io.gatling.javaapi.core.exec.Executable*/[]
-  ): any /*io.gatling.javaapi.core.Choice$WithWeight*/;
+    arg1: io.gatling.javaapi.core.exec.Executable,
+    ...arg2: io.gatling.javaapi.core.exec.Executable[]
+  ): io.gatling.javaapi.core.Choice$WithWeight;
 }
 
 export const Choice: ChoiceStatic = Java.type("io.gatling.javaapi.core.Choice");
@@ -391,8 +404,8 @@ interface CoreDslStatic {
   StringBody(arg0: string): any /*io.gatling.javaapi.core.Body$WithString*/;
   StringBody(arg0: Func<io.gatling.javaapi.core.Session, string>): any /*io.gatling.javaapi.core.Body$WithString*/;
   exec(
-    arg0: any /*io.gatling.javaapi.core.exec.Executable*/,
-    ...arg1: any /*io.gatling.javaapi.core.exec.Executable*/[]
+    arg0: io.gatling.javaapi.core.exec.Executable,
+    ...arg1: io.gatling.javaapi.core.exec.Executable[]
   ): io.gatling.javaapi.core.ChainBuilder;
   exec(arg0: java.util.List<io.gatling.javaapi.core.ChainBuilder>): io.gatling.javaapi.core.ChainBuilder;
   exec(
@@ -561,8 +574,8 @@ interface CoreDslStatic {
   ): any /*io.gatling.javaapi.core.CheckBuilder$MultipleFind*/;
   form(arg0: string): any /*io.gatling.javaapi.core.CheckBuilder$MultipleFind*/;
   form(arg0: Func<io.gatling.javaapi.core.Session, string>): any /*io.gatling.javaapi.core.CheckBuilder$MultipleFind*/;
-  onCase(arg0: any /*java.lang.Object*/): any /*io.gatling.javaapi.core.Choice$WithKey$Then*/;
-  percent(arg0: double): any /*io.gatling.javaapi.core.Choice$WithWeight$Then*/;
+  onCase(arg0: any /*java.lang.Object*/): io.gatling.javaapi.core.WithKey$Then;
+  percent(arg0: double): io.gatling.javaapi.core.WithWeight$Then;
   constantConcurrentUsers(arg0: int): io.gatling.javaapi.core.ClosedInjectionStep$Constant;
   rampConcurrentUsers(arg0: int): io.gatling.javaapi.core.ClosedInjectionStep$Ramp;
   incrementConcurrentUsers(arg0: int): io.gatling.javaapi.core.ClosedInjectionStep$Stairs;
@@ -678,18 +691,22 @@ interface CoreDslStatic {
   randomSwitchOrElse(): io.gatling.javaapi.core.condition.RandomSwitchOrElse$On<io.gatling.javaapi.core.ChainBuilder>;
   roundRobinSwitch(): io.gatling.javaapi.core.condition.RoundRobinSwitch$On<io.gatling.javaapi.core.ChainBuilder>;
   uniformRandomSwitch(): io.gatling.javaapi.core.condition.UniformRandomSwitch$On<io.gatling.javaapi.core.ChainBuilder>;
-  exitBlockOnFail(): any /*io.gatling.javaapi.core.error.Errors$ExitBlockOnFail*/;
-  tryMax(arg0: int): any /*io.gatling.javaapi.core.error.Errors$TryMax*/;
-  tryMax(arg0: int, arg1: string): any /*io.gatling.javaapi.core.error.Errors$TryMax*/;
-  tryMax(arg0: string): any /*io.gatling.javaapi.core.error.Errors$TryMax*/;
-  tryMax(arg0: string, arg1: string): any /*io.gatling.javaapi.core.error.Errors$TryMax*/;
-  tryMax(arg0: Func<io.gatling.javaapi.core.Session, int | null>): any /*io.gatling.javaapi.core.error.Errors$TryMax*/;
+  exitBlockOnFail(): io.gatling.javaapi.core.error.Errors$ExitBlockOnFail<io.gatling.javaapi.core.ChainBuilder>;
+  tryMax(arg0: int): io.gatling.javaapi.core.error.Errors$TryMax<io.gatling.javaapi.core.ChainBuilder>;
+  tryMax(arg0: int, arg1: string): io.gatling.javaapi.core.error.Errors$TryMax<io.gatling.javaapi.core.ChainBuilder>;
+  tryMax(arg0: string): io.gatling.javaapi.core.error.Errors$TryMax<io.gatling.javaapi.core.ChainBuilder>;
+  tryMax(arg0: string, arg1: string): io.gatling.javaapi.core.error.Errors$TryMax<io.gatling.javaapi.core.ChainBuilder>;
+  tryMax(
+    arg0: Func<io.gatling.javaapi.core.Session, int | null>
+  ): io.gatling.javaapi.core.error.Errors$TryMax<io.gatling.javaapi.core.ChainBuilder>;
   tryMax(
     arg0: Func<io.gatling.javaapi.core.Session, int | null>,
     arg1: string
-  ): any /*io.gatling.javaapi.core.error.Errors$TryMax*/;
-  group(arg0: string): any /*io.gatling.javaapi.core.group.Groups$On*/;
-  group(arg0: Func<io.gatling.javaapi.core.Session, string>): any /*io.gatling.javaapi.core.group.Groups$On*/;
+  ): io.gatling.javaapi.core.error.Errors$TryMax<io.gatling.javaapi.core.ChainBuilder>;
+  group(arg0: string): io.gatling.javaapi.core.group.Groups$On<io.gatling.javaapi.core.ChainBuilder>;
+  group(
+    arg0: Func<io.gatling.javaapi.core.Session, string>
+  ): io.gatling.javaapi.core.group.Groups$On<io.gatling.javaapi.core.ChainBuilder>;
   asLongAs(arg0: string): io.gatling.javaapi.core.loop.AsLongAs$On<io.gatling.javaapi.core.ChainBuilder>;
   asLongAs(arg0: string, arg1: boolean): io.gatling.javaapi.core.loop.AsLongAs$On<io.gatling.javaapi.core.ChainBuilder>;
   asLongAs(arg0: string, arg1: string): io.gatling.javaapi.core.loop.AsLongAs$On<io.gatling.javaapi.core.ChainBuilder>;
@@ -1124,6 +1141,14 @@ interface DoIfEqualsStatic {
 
 export const DoIfEquals: DoIfEqualsStatic = Java.type("io.gatling.javaapi.core.condition.DoIfEquals");
 
+interface DoIfOrElse$OrElseStatic {
+  readonly class: any;
+}
+
+export const DoIfOrElse$OrElse: DoIfOrElse$OrElseStatic = Java.type(
+  "io.gatling.javaapi.core.condition.DoIfOrElse$OrElse"
+);
+
 interface DoIfOrElse$ThenStatic {
   readonly class: any;
 }
@@ -1154,6 +1179,14 @@ interface DoSwitchOrElse$OnStatic {
 
 export const DoSwitchOrElse$On: DoSwitchOrElse$OnStatic = Java.type(
   "io.gatling.javaapi.core.condition.DoSwitchOrElse$On"
+);
+
+interface DoSwitchOrElse$OrElseStatic {
+  readonly class: any;
+}
+
+export const DoSwitchOrElse$OrElse: DoSwitchOrElse$OrElseStatic = Java.type(
+  "io.gatling.javaapi.core.condition.DoSwitchOrElse$OrElse"
 );
 
 interface DoSwitchOrElseStatic {
@@ -1221,6 +1254,20 @@ interface DuringStatic {
 
 export const During: DuringStatic = Java.type("io.gatling.javaapi.core.loop.During");
 
+interface Errors$ExitBlockOnFailStatic {
+  readonly class: any;
+}
+
+export const Errors$ExitBlockOnFail: Errors$ExitBlockOnFailStatic = Java.type(
+  "io.gatling.javaapi.core.error.Errors$ExitBlockOnFail"
+);
+
+interface Errors$TryMaxStatic {
+  readonly class: any;
+}
+
+export const Errors$TryMax: Errors$TryMaxStatic = Java.type("io.gatling.javaapi.core.error.Errors$TryMax");
+
 interface ErrorsStatic {
   readonly class: any;
 }
@@ -1232,6 +1279,12 @@ interface ExecsStatic {
 }
 
 export const Execs: ExecsStatic = Java.type("io.gatling.javaapi.core.exec.Execs");
+
+interface ExecutableStatic {
+  readonly class: any;
+}
+
+export const Executable: ExecutableStatic = Java.type("io.gatling.javaapi.core.exec.Executable");
 
 interface FeederBuilderStatic {
   readonly class: any;
@@ -1280,6 +1333,12 @@ interface GetCookieStatic {
 }
 
 export const GetCookie: GetCookieStatic = Java.type("io.gatling.javaapi.http.GetCookie");
+
+interface Groups$OnStatic {
+  readonly class: any;
+}
+
+export const Groups$On: Groups$OnStatic = Java.type("io.gatling.javaapi.core.group.Groups$On");
 
 interface GroupsStatic {
   readonly class: any;
@@ -1508,6 +1567,45 @@ interface PacesStatic {
 
 export const Paces: PacesStatic = Java.type("io.gatling.javaapi.core.pause.Paces");
 
+interface PauseType$CustomStatic {
+  readonly class: any;
+}
+
+export const PauseType$Custom: PauseType$CustomStatic = Java.type("io.gatling.javaapi.core.PauseType$Custom");
+
+interface PauseType$NormalWithPercentageDurationStatic {
+  readonly class: any;
+}
+
+export const PauseType$NormalWithPercentageDuration: PauseType$NormalWithPercentageDurationStatic = Java.type(
+  "io.gatling.javaapi.core.PauseType$NormalWithPercentageDuration"
+);
+
+interface PauseType$NormalWithStdDevDurationStatic {
+  readonly class: any;
+}
+
+export const PauseType$NormalWithStdDevDuration: PauseType$NormalWithStdDevDurationStatic = Java.type(
+  "io.gatling.javaapi.core.PauseType$NormalWithStdDevDuration"
+);
+
+interface PauseType$UniformDurationStatic {
+  readonly class: any;
+  new (arg0: java.time.Duration): io.gatling.javaapi.core.PauseType$UniformDuration;
+}
+
+export const PauseType$UniformDuration: PauseType$UniformDurationStatic = Java.type(
+  "io.gatling.javaapi.core.PauseType$UniformDuration"
+);
+
+interface PauseType$UniformPercentageStatic {
+  readonly class: any;
+}
+
+export const PauseType$UniformPercentage: PauseType$UniformPercentageStatic = Java.type(
+  "io.gatling.javaapi.core.PauseType$UniformPercentage"
+);
+
 interface PauseTypeStatic {
   readonly class: any;
 }
@@ -1575,6 +1673,14 @@ interface RandomSwitchOrElse$OnStatic {
 
 export const RandomSwitchOrElse$On: RandomSwitchOrElse$OnStatic = Java.type(
   "io.gatling.javaapi.core.condition.RandomSwitchOrElse$On"
+);
+
+interface RandomSwitchOrElse$OrElseStatic {
+  readonly class: any;
+}
+
+export const RandomSwitchOrElse$OrElse: RandomSwitchOrElse$OrElseStatic = Java.type(
+  "io.gatling.javaapi.core.condition.RandomSwitchOrElse$OrElse"
 );
 
 interface RandomSwitchOrElseStatic {
@@ -1788,6 +1894,20 @@ interface UniformRandomSwitchStatic {
 export const UniformRandomSwitch: UniformRandomSwitchStatic = Java.type(
   "io.gatling.javaapi.core.condition.UniformRandomSwitch"
 );
+
+interface WithKey$ThenStatic {
+  readonly class: any;
+  new (arg0: any /*java.lang.Object*/): io.gatling.javaapi.core.WithKey$Then;
+}
+
+export const WithKey$Then: WithKey$ThenStatic = Java.type("io.gatling.javaapi.core.Choice$WithKey$Then");
+
+interface WithWeight$ThenStatic {
+  readonly class: any;
+  new (arg0: double): io.gatling.javaapi.core.WithWeight$Then;
+}
+
+export const WithWeight$Then: WithWeight$ThenStatic = Java.type("io.gatling.javaapi.core.Choice$WithWeight$Then");
 
 interface WsAwaitActionBuilderStatic {
   readonly class: any;

@@ -384,12 +384,9 @@ declare namespace io.gatling.javaapi.core {
     during<T>(arg0: string, arg1: string, arg2: boolean): io.gatling.javaapi.core.loop.During$On<T>;
     equals(arg0: any /*java.lang.Object*/): boolean;
     exec<T>(arg0: Func<Session, Session>): T;
-    exec<T>(
-      arg0: any /*io.gatling.javaapi.core.exec.Executable*/,
-      ...arg1: any /*io.gatling.javaapi.core.exec.Executable*/[]
-    ): T;
+    exec<T>(arg0: io.gatling.javaapi.core.exec.Executable, ...arg1: io.gatling.javaapi.core.exec.Executable[]): T;
     exec<T>(arg0: java.util.List<ChainBuilder>): T;
-    exitBlockOnFail(): any /*io.gatling.javaapi.core.error.Errors$ExitBlockOnFail*/;
+    exitBlockOnFail<T>(): io.gatling.javaapi.core.error.Errors$ExitBlockOnFail<T>;
     exitHere<T>(): T;
     exitHereIf<T>(arg0: Func<Session, boolean | null>): T;
     exitHereIf<T>(arg0: string): T;
@@ -434,8 +431,8 @@ declare namespace io.gatling.javaapi.core {
     foreach<T>(arg0: string, arg1: string, arg2: string): io.gatling.javaapi.core.loop.ForEach$On<T>;
     forever<T>(): io.gatling.javaapi.core.loop.Forever$On<T>;
     forever<T>(arg0: string): io.gatling.javaapi.core.loop.Forever$On<T>;
-    group(arg0: Func<Session, string>): any /*io.gatling.javaapi.core.group.Groups$On*/;
-    group(arg0: string): any /*io.gatling.javaapi.core.group.Groups$On*/;
+    group<T>(arg0: Func<Session, string>): io.gatling.javaapi.core.group.Groups$On<T>;
+    group<T>(arg0: string): io.gatling.javaapi.core.group.Groups$On<T>;
     make(
       arg0: Func<any /*io.gatling.core.structure.ChainBuilder*/, any /*io.gatling.core.structure.ChainBuilder*/>
     ): ChainBuilder;
@@ -488,14 +485,26 @@ declare namespace io.gatling.javaapi.core {
     stopInjectorIf<T>(arg0: string, arg1: string): T;
     toChainBuilder(): ChainBuilder;
     toString(): string;
-    tryMax(arg0: Func<Session, int | null>): any /*io.gatling.javaapi.core.error.Errors$TryMax*/;
-    tryMax(arg0: Func<Session, int | null>, arg1: string): any /*io.gatling.javaapi.core.error.Errors$TryMax*/;
-    tryMax(arg0: int): any /*io.gatling.javaapi.core.error.Errors$TryMax*/;
-    tryMax(arg0: int, arg1: string): any /*io.gatling.javaapi.core.error.Errors$TryMax*/;
-    tryMax(arg0: string): any /*io.gatling.javaapi.core.error.Errors$TryMax*/;
-    tryMax(arg0: string, arg1: string): any /*io.gatling.javaapi.core.error.Errors$TryMax*/;
+    tryMax<T>(arg0: Func<Session, int | null>): io.gatling.javaapi.core.error.Errors$TryMax<T>;
+    tryMax<T>(arg0: Func<Session, int | null>, arg1: string): io.gatling.javaapi.core.error.Errors$TryMax<T>;
+    tryMax<T>(arg0: int): io.gatling.javaapi.core.error.Errors$TryMax<T>;
+    tryMax<T>(arg0: int, arg1: string): io.gatling.javaapi.core.error.Errors$TryMax<T>;
+    tryMax<T>(arg0: string): io.gatling.javaapi.core.error.Errors$TryMax<T>;
+    tryMax<T>(arg0: string, arg1: string): io.gatling.javaapi.core.error.Errors$TryMax<T>;
     uniformRandomSwitch<T>(): io.gatling.javaapi.core.condition.UniformRandomSwitch$On<T>;
   } // end ChainBuilder
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
+  class Choice$WithKey /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toString(): string;
+  } // end Choice$WithKey
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
+  class Choice$WithWeight /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toString(): string;
+  } // end Choice$WithWeight
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
   class Choice /* extends java.lang.Object*/ {
@@ -623,6 +632,41 @@ declare namespace io.gatling.javaapi.core {
     equals(arg0: any /*java.lang.Object*/): boolean;
     toString(): string;
   } // end OpenInjectionStep
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
+  class PauseType$Custom /* extends PauseType*/ {
+    asScala(): any /*io.gatling.core.pause.PauseType*/;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toString(): string;
+  } // end PauseType$Custom
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
+  class PauseType$NormalWithPercentageDuration /* extends PauseType*/ {
+    asScala(): any /*io.gatling.core.pause.PauseType*/;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toString(): string;
+  } // end PauseType$NormalWithPercentageDuration
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
+  class PauseType$NormalWithStdDevDuration /* extends PauseType*/ {
+    asScala(): any /*io.gatling.core.pause.PauseType*/;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toString(): string;
+  } // end PauseType$NormalWithStdDevDuration
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
+  class PauseType$UniformDuration /* extends PauseType*/ {
+    asScala(): any /*io.gatling.core.pause.PauseType*/;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toString(): string;
+  } // end PauseType$UniformDuration
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
+  class PauseType$UniformPercentage /* extends PauseType*/ {
+    asScala(): any /*io.gatling.core.pause.PauseType*/;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toString(): string;
+  } // end PauseType$UniformPercentage
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
   class PauseType /* extends java.lang.Object*/ {
@@ -984,12 +1028,9 @@ declare namespace io.gatling.javaapi.core {
     during<T>(arg0: string, arg1: string, arg2: boolean): io.gatling.javaapi.core.loop.During$On<T>;
     equals(arg0: any /*java.lang.Object*/): boolean;
     exec<T>(arg0: Func<Session, Session>): T;
-    exec<T>(
-      arg0: any /*io.gatling.javaapi.core.exec.Executable*/,
-      ...arg1: any /*io.gatling.javaapi.core.exec.Executable*/[]
-    ): T;
+    exec<T>(arg0: io.gatling.javaapi.core.exec.Executable, ...arg1: io.gatling.javaapi.core.exec.Executable[]): T;
     exec<T>(arg0: java.util.List<ChainBuilder>): T;
-    exitBlockOnFail(): any /*io.gatling.javaapi.core.error.Errors$ExitBlockOnFail*/;
+    exitBlockOnFail<T>(): io.gatling.javaapi.core.error.Errors$ExitBlockOnFail<T>;
     exitHere<T>(): T;
     exitHereIf<T>(arg0: Func<Session, boolean | null>): T;
     exitHereIf<T>(arg0: string): T;
@@ -1034,8 +1075,8 @@ declare namespace io.gatling.javaapi.core {
     foreach<T>(arg0: string, arg1: string, arg2: string): io.gatling.javaapi.core.loop.ForEach$On<T>;
     forever<T>(): io.gatling.javaapi.core.loop.Forever$On<T>;
     forever<T>(arg0: string): io.gatling.javaapi.core.loop.Forever$On<T>;
-    group(arg0: Func<Session, string>): any /*io.gatling.javaapi.core.group.Groups$On*/;
-    group(arg0: string): any /*io.gatling.javaapi.core.group.Groups$On*/;
+    group<T>(arg0: Func<Session, string>): io.gatling.javaapi.core.group.Groups$On<T>;
+    group<T>(arg0: string): io.gatling.javaapi.core.group.Groups$On<T>;
     injectClosed(...arg0: ClosedInjectionStep[]): PopulationBuilder;
     injectClosed(arg0: java.util.List<ClosedInjectionStep>): PopulationBuilder;
     injectOpen(...arg0: OpenInjectionStep[]): PopulationBuilder;
@@ -1091,12 +1132,12 @@ declare namespace io.gatling.javaapi.core {
     stopInjectorIf<T>(arg0: string, arg1: Func<Session, boolean | null>): T;
     stopInjectorIf<T>(arg0: string, arg1: string): T;
     toString(): string;
-    tryMax(arg0: Func<Session, int | null>): any /*io.gatling.javaapi.core.error.Errors$TryMax*/;
-    tryMax(arg0: Func<Session, int | null>, arg1: string): any /*io.gatling.javaapi.core.error.Errors$TryMax*/;
-    tryMax(arg0: int): any /*io.gatling.javaapi.core.error.Errors$TryMax*/;
-    tryMax(arg0: int, arg1: string): any /*io.gatling.javaapi.core.error.Errors$TryMax*/;
-    tryMax(arg0: string): any /*io.gatling.javaapi.core.error.Errors$TryMax*/;
-    tryMax(arg0: string, arg1: string): any /*io.gatling.javaapi.core.error.Errors$TryMax*/;
+    tryMax<T>(arg0: Func<Session, int | null>): io.gatling.javaapi.core.error.Errors$TryMax<T>;
+    tryMax<T>(arg0: Func<Session, int | null>, arg1: string): io.gatling.javaapi.core.error.Errors$TryMax<T>;
+    tryMax<T>(arg0: int): io.gatling.javaapi.core.error.Errors$TryMax<T>;
+    tryMax<T>(arg0: int, arg1: string): io.gatling.javaapi.core.error.Errors$TryMax<T>;
+    tryMax<T>(arg0: string): io.gatling.javaapi.core.error.Errors$TryMax<T>;
+    tryMax<T>(arg0: string, arg1: string): io.gatling.javaapi.core.error.Errors$TryMax<T>;
     uniformRandomSwitch<T>(): io.gatling.javaapi.core.condition.UniformRandomSwitch$On<T>;
   } // end ScenarioBuilder
 } // end namespace io.gatling.javaapi.core
@@ -1479,12 +1520,9 @@ declare namespace io.gatling.javaapi.core {
     during(arg0: string, arg1: string, arg2: boolean): io.gatling.javaapi.core.loop.During$On<T>;
     equals(arg0: any /*java.lang.Object*/): boolean;
     exec(arg0: Func<Session, Session>): T;
-    exec(
-      arg0: any /*io.gatling.javaapi.core.exec.Executable*/,
-      ...arg1: any /*io.gatling.javaapi.core.exec.Executable*/[]
-    ): T;
+    exec(arg0: io.gatling.javaapi.core.exec.Executable, ...arg1: io.gatling.javaapi.core.exec.Executable[]): T;
     exec(arg0: java.util.List<ChainBuilder>): T;
-    exitBlockOnFail(): any /*io.gatling.javaapi.core.error.Errors$ExitBlockOnFail*/;
+    exitBlockOnFail(): io.gatling.javaapi.core.error.Errors$ExitBlockOnFail<T>;
     exitHere(): T;
     exitHereIf(arg0: Func<Session, boolean | null>): T;
     exitHereIf(arg0: string): T;
@@ -1523,8 +1561,8 @@ declare namespace io.gatling.javaapi.core {
     foreach(arg0: string, arg1: string, arg2: string): io.gatling.javaapi.core.loop.ForEach$On<T>;
     forever(): io.gatling.javaapi.core.loop.Forever$On<T>;
     forever(arg0: string): io.gatling.javaapi.core.loop.Forever$On<T>;
-    group(arg0: Func<Session, string>): any /*io.gatling.javaapi.core.group.Groups$On*/;
-    group(arg0: string): any /*io.gatling.javaapi.core.group.Groups$On*/;
+    group(arg0: Func<Session, string>): io.gatling.javaapi.core.group.Groups$On<T>;
+    group(arg0: string): io.gatling.javaapi.core.group.Groups$On<T>;
     make(arg0: Func<W, W>): T;
     make(arg0: Func<W, W>): T;
     make(arg0: Func<W, W>): T;
@@ -1598,12 +1636,12 @@ declare namespace io.gatling.javaapi.core {
     stopInjectorIf(arg0: string, arg1: Func<Session, boolean | null>): T;
     stopInjectorIf(arg0: string, arg1: string): T;
     toString(): string;
-    tryMax(arg0: Func<Session, int | null>): any /*io.gatling.javaapi.core.error.Errors$TryMax*/;
-    tryMax(arg0: Func<Session, int | null>, arg1: string): any /*io.gatling.javaapi.core.error.Errors$TryMax*/;
-    tryMax(arg0: int): any /*io.gatling.javaapi.core.error.Errors$TryMax*/;
-    tryMax(arg0: int, arg1: string): any /*io.gatling.javaapi.core.error.Errors$TryMax*/;
-    tryMax(arg0: string): any /*io.gatling.javaapi.core.error.Errors$TryMax*/;
-    tryMax(arg0: string, arg1: string): any /*io.gatling.javaapi.core.error.Errors$TryMax*/;
+    tryMax(arg0: Func<Session, int | null>): io.gatling.javaapi.core.error.Errors$TryMax<T>;
+    tryMax(arg0: Func<Session, int | null>, arg1: string): io.gatling.javaapi.core.error.Errors$TryMax<T>;
+    tryMax(arg0: int): io.gatling.javaapi.core.error.Errors$TryMax<T>;
+    tryMax(arg0: int, arg1: string): io.gatling.javaapi.core.error.Errors$TryMax<T>;
+    tryMax(arg0: string): io.gatling.javaapi.core.error.Errors$TryMax<T>;
+    tryMax(arg0: string, arg1: string): io.gatling.javaapi.core.error.Errors$TryMax<T>;
     uniformRandomSwitch(): io.gatling.javaapi.core.condition.UniformRandomSwitch$On<T>;
   } // end StructureBuilder
 } // end namespace io.gatling.javaapi.core
@@ -1613,6 +1651,26 @@ declare namespace io.gatling.javaapi.core {
     equals(arg0: any /*java.lang.Object*/): boolean;
     toString(): string;
   } // end ThrottleStep
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
+  class WithKey$Then /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    then(
+      arg0: io.gatling.javaapi.core.exec.Executable,
+      ...arg1: io.gatling.javaapi.core.exec.Executable[]
+    ): Choice$WithKey;
+    toString(): string;
+  } // end WithKey$Then
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
+  class WithWeight$Then /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    then(
+      arg0: io.gatling.javaapi.core.exec.Executable,
+      ...arg1: io.gatling.javaapi.core.exec.Executable[]
+    ): Choice$WithWeight;
+    toString(): string;
+  } // end WithWeight$Then
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
   interface ActionBuilder /* extends io.gatling.javaapi.core.exec.Executable*/ {
@@ -1647,20 +1705,14 @@ declare namespace io.gatling.javaapi.core {
 declare namespace io.gatling.javaapi.core.condition {
   class DoIf$Then<T> /* extends java.lang.Object*/ {
     equals(arg0: any /*java.lang.Object*/): boolean;
-    then(
-      arg0: any /*io.gatling.javaapi.core.exec.Executable*/,
-      ...arg1: any /*io.gatling.javaapi.core.exec.Executable*/[]
-    ): T;
+    then(arg0: io.gatling.javaapi.core.exec.Executable, ...arg1: io.gatling.javaapi.core.exec.Executable[]): T;
     toString(): string;
   } // end DoIf$Then
 } // end namespace io.gatling.javaapi.core.condition
 declare namespace io.gatling.javaapi.core.condition {
   class DoIfEquals$Then<T> /* extends java.lang.Object*/ {
     equals(arg0: any /*java.lang.Object*/): boolean;
-    then(
-      arg0: any /*io.gatling.javaapi.core.exec.Executable*/,
-      ...arg1: any /*io.gatling.javaapi.core.exec.Executable*/[]
-    ): T;
+    then(arg0: io.gatling.javaapi.core.exec.Executable, ...arg1: io.gatling.javaapi.core.exec.Executable[]): T;
     toString(): string;
   } // end DoIfEquals$Then
 } // end namespace io.gatling.javaapi.core.condition
@@ -1668,69 +1720,79 @@ declare namespace io.gatling.javaapi.core.condition {
   class DoIfEqualsOrElse$Then<T> /* extends java.lang.Object*/ {
     equals(arg0: any /*java.lang.Object*/): boolean;
     then(
-      arg0: any /*io.gatling.javaapi.core.exec.Executable*/,
-      ...arg1: any /*io.gatling.javaapi.core.exec.Executable*/[]
+      arg0: io.gatling.javaapi.core.exec.Executable,
+      ...arg1: io.gatling.javaapi.core.exec.Executable[]
     ): any /*io.gatling.javaapi.core.condition.DoIfEqualsOrElse$OrElse*/;
     toString(): string;
   } // end DoIfEqualsOrElse$Then
 } // end namespace io.gatling.javaapi.core.condition
 declare namespace io.gatling.javaapi.core.condition {
+  class DoIfOrElse$OrElse<T> /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    orElse(arg0: io.gatling.javaapi.core.exec.Executable, ...arg1: io.gatling.javaapi.core.exec.Executable[]): T;
+    toString(): string;
+  } // end DoIfOrElse$OrElse
+} // end namespace io.gatling.javaapi.core.condition
+declare namespace io.gatling.javaapi.core.condition {
   class DoIfOrElse$Then<T> /* extends java.lang.Object*/ {
     equals(arg0: any /*java.lang.Object*/): boolean;
     then(
-      arg0: any /*io.gatling.javaapi.core.exec.Executable*/,
-      ...arg1: any /*io.gatling.javaapi.core.exec.Executable*/[]
-    ): any /*io.gatling.javaapi.core.condition.DoIfOrElse$OrElse*/;
+      arg0: io.gatling.javaapi.core.exec.Executable,
+      ...arg1: io.gatling.javaapi.core.exec.Executable[]
+    ): DoIfOrElse$OrElse<T>;
     toString(): string;
   } // end DoIfOrElse$Then
 } // end namespace io.gatling.javaapi.core.condition
 declare namespace io.gatling.javaapi.core.condition {
   class DoSwitch$On<T> /* extends java.lang.Object*/ {
     equals(arg0: any /*java.lang.Object*/): boolean;
-    on(...arg0: any /*io.gatling.javaapi.core.Choice$WithKey*/[]): T;
-    on(arg0: java.util.List<any /*io.gatling.javaapi.core.Choice$WithKey*/>): T;
+    on(...arg0: io.gatling.javaapi.core.Choice$WithKey[]): T;
+    on(arg0: java.util.List<io.gatling.javaapi.core.Choice$WithKey>): T;
     toString(): string;
   } // end DoSwitch$On
 } // end namespace io.gatling.javaapi.core.condition
 declare namespace io.gatling.javaapi.core.condition {
   class DoSwitchOrElse$On<T> /* extends java.lang.Object*/ {
     equals(arg0: any /*java.lang.Object*/): boolean;
-    on(
-      ...arg0: any /*io.gatling.javaapi.core.Choice$WithKey*/[]
-    ): any /*io.gatling.javaapi.core.condition.DoSwitchOrElse$OrElse*/;
-    on(
-      arg0: java.util.List<any /*io.gatling.javaapi.core.Choice$WithKey*/>
-    ): any /*io.gatling.javaapi.core.condition.DoSwitchOrElse$OrElse*/;
+    on(...arg0: io.gatling.javaapi.core.Choice$WithKey[]): DoSwitchOrElse$OrElse<T>;
+    on(arg0: java.util.List<io.gatling.javaapi.core.Choice$WithKey>): DoSwitchOrElse$OrElse<T>;
     toString(): string;
   } // end DoSwitchOrElse$On
 } // end namespace io.gatling.javaapi.core.condition
 declare namespace io.gatling.javaapi.core.condition {
+  class DoSwitchOrElse$OrElse<T> /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    orElse(arg0: io.gatling.javaapi.core.exec.Executable, ...arg1: io.gatling.javaapi.core.exec.Executable[]): T;
+    toString(): string;
+  } // end DoSwitchOrElse$OrElse
+} // end namespace io.gatling.javaapi.core.condition
+declare namespace io.gatling.javaapi.core.condition {
   class RandomSwitch$On<T> /* extends java.lang.Object*/ {
     equals(arg0: any /*java.lang.Object*/): boolean;
-    on(...arg0: any /*io.gatling.javaapi.core.Choice$WithWeight*/[]): T;
-    on(arg0: java.util.List<any /*io.gatling.javaapi.core.Choice$WithWeight*/>): T;
+    on(...arg0: io.gatling.javaapi.core.Choice$WithWeight[]): T;
+    on(arg0: java.util.List<io.gatling.javaapi.core.Choice$WithWeight>): T;
     toString(): string;
   } // end RandomSwitch$On
 } // end namespace io.gatling.javaapi.core.condition
 declare namespace io.gatling.javaapi.core.condition {
   class RandomSwitchOrElse$On<T> /* extends java.lang.Object*/ {
     equals(arg0: any /*java.lang.Object*/): boolean;
-    on(
-      ...arg0: any /*io.gatling.javaapi.core.Choice$WithWeight*/[]
-    ): any /*io.gatling.javaapi.core.condition.RandomSwitchOrElse$OrElse*/;
-    on(
-      arg0: java.util.List<any /*io.gatling.javaapi.core.Choice$WithWeight*/>
-    ): any /*io.gatling.javaapi.core.condition.RandomSwitchOrElse$OrElse*/;
+    on(...arg0: io.gatling.javaapi.core.Choice$WithWeight[]): RandomSwitchOrElse$OrElse<T>;
+    on(arg0: java.util.List<io.gatling.javaapi.core.Choice$WithWeight>): RandomSwitchOrElse$OrElse<T>;
     toString(): string;
   } // end RandomSwitchOrElse$On
 } // end namespace io.gatling.javaapi.core.condition
 declare namespace io.gatling.javaapi.core.condition {
+  class RandomSwitchOrElse$OrElse<T> /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    orElse(arg0: io.gatling.javaapi.core.exec.Executable, ...arg1: io.gatling.javaapi.core.exec.Executable[]): T;
+    toString(): string;
+  } // end RandomSwitchOrElse$OrElse
+} // end namespace io.gatling.javaapi.core.condition
+declare namespace io.gatling.javaapi.core.condition {
   class RoundRobinSwitch$On<T> /* extends java.lang.Object*/ {
     equals(arg0: any /*java.lang.Object*/): boolean;
-    on(
-      arg0: any /*io.gatling.javaapi.core.exec.Executable*/,
-      ...arg1: any /*io.gatling.javaapi.core.exec.Executable*/[]
-    ): T;
+    on(arg0: io.gatling.javaapi.core.exec.Executable, ...arg1: io.gatling.javaapi.core.exec.Executable[]): T;
     on(arg0: java.util.List<io.gatling.javaapi.core.ChainBuilder>): T;
     toString(): string;
   } // end RoundRobinSwitch$On
@@ -1738,10 +1800,7 @@ declare namespace io.gatling.javaapi.core.condition {
 declare namespace io.gatling.javaapi.core.condition {
   class UniformRandomSwitch$On<T> /* extends java.lang.Object*/ {
     equals(arg0: any /*java.lang.Object*/): boolean;
-    on(
-      arg0: any /*io.gatling.javaapi.core.exec.Executable*/,
-      ...arg1: any /*io.gatling.javaapi.core.exec.Executable*/[]
-    ): T;
+    on(arg0: io.gatling.javaapi.core.exec.Executable, ...arg1: io.gatling.javaapi.core.exec.Executable[]): T;
     on(arg0: java.util.List<io.gatling.javaapi.core.ChainBuilder>): T;
     toString(): string;
   } // end UniformRandomSwitch$On
@@ -1839,8 +1898,22 @@ declare namespace io.gatling.javaapi.core.condition {
   } // end UniformRandomSwitch
 } // end namespace io.gatling.javaapi.core.condition
 declare namespace io.gatling.javaapi.core.error {
+  class Errors$ExitBlockOnFail<T> /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    on(arg0: io.gatling.javaapi.core.exec.Executable, ...arg1: io.gatling.javaapi.core.exec.Executable[]): T;
+    toString(): string;
+  } // end Errors$ExitBlockOnFail
+} // end namespace io.gatling.javaapi.core.error
+declare namespace io.gatling.javaapi.core.error {
+  class Errors$TryMax<T> /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    on(arg0: io.gatling.javaapi.core.exec.Executable, ...arg1: io.gatling.javaapi.core.exec.Executable[]): T;
+    toString(): string;
+  } // end Errors$TryMax
+} // end namespace io.gatling.javaapi.core.error
+declare namespace io.gatling.javaapi.core.error {
   interface Errors<T, W> {
-    exitBlockOnFail(): any /*io.gatling.javaapi.core.error.Errors$ExitBlockOnFail*/;
+    exitBlockOnFail(): Errors$ExitBlockOnFail<T>;
     exitHere(): T;
     exitHereIf(arg0: Func<io.gatling.javaapi.core.Session, boolean | null>): T;
     exitHereIf(arg0: string): T;
@@ -1855,29 +1928,26 @@ declare namespace io.gatling.javaapi.core.error {
     stopInjectorIf(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): T;
     stopInjectorIf(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, boolean | null>): T;
     stopInjectorIf(arg0: string, arg1: string): T;
-    tryMax(
-      arg0: Func<io.gatling.javaapi.core.Session, int | null>
-    ): any /*io.gatling.javaapi.core.error.Errors$TryMax*/;
-    tryMax(
-      arg0: Func<io.gatling.javaapi.core.Session, int | null>,
-      arg1: string
-    ): any /*io.gatling.javaapi.core.error.Errors$TryMax*/;
-    tryMax(arg0: int): any /*io.gatling.javaapi.core.error.Errors$TryMax*/;
-    tryMax(arg0: int, arg1: string): any /*io.gatling.javaapi.core.error.Errors$TryMax*/;
-    tryMax(arg0: string): any /*io.gatling.javaapi.core.error.Errors$TryMax*/;
-    tryMax(arg0: string, arg1: string): any /*io.gatling.javaapi.core.error.Errors$TryMax*/;
+    tryMax(arg0: Func<io.gatling.javaapi.core.Session, int | null>): Errors$TryMax<T>;
+    tryMax(arg0: Func<io.gatling.javaapi.core.Session, int | null>, arg1: string): Errors$TryMax<T>;
+    tryMax(arg0: int): Errors$TryMax<T>;
+    tryMax(arg0: int, arg1: string): Errors$TryMax<T>;
+    tryMax(arg0: string): Errors$TryMax<T>;
+    tryMax(arg0: string, arg1: string): Errors$TryMax<T>;
   } // end Errors
 } // end namespace io.gatling.javaapi.core.error
 declare namespace io.gatling.javaapi.core.exec {
   interface Execs<T, W> {
+    exec(arg0: Executable, ...arg1: Executable[]): T;
     exec(arg0: Func<io.gatling.javaapi.core.Session, io.gatling.javaapi.core.Session>): T;
-    exec(
-      arg0: any /*io.gatling.javaapi.core.exec.Executable*/,
-      ...arg1: any /*io.gatling.javaapi.core.exec.Executable*/[]
-    ): T;
     exec(arg0: java.util.List<io.gatling.javaapi.core.ChainBuilder>): T;
     make(arg0: Func<W, W>): T;
   } // end Execs
+} // end namespace io.gatling.javaapi.core.exec
+declare namespace io.gatling.javaapi.core.exec {
+  interface Executable {
+    toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
+  } // end Executable
 } // end namespace io.gatling.javaapi.core.exec
 declare namespace io.gatling.javaapi.core.feed {
   interface Feeds<T, W> {
@@ -1906,89 +1976,72 @@ declare namespace io.gatling.javaapi.core.feed {
   } // end Feeds
 } // end namespace io.gatling.javaapi.core.feed
 declare namespace io.gatling.javaapi.core.group {
+  class Groups$On<T> /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    on(arg0: io.gatling.javaapi.core.exec.Executable, ...arg1: io.gatling.javaapi.core.exec.Executable[]): T;
+    toString(): string;
+  } // end Groups$On
+} // end namespace io.gatling.javaapi.core.group
+declare namespace io.gatling.javaapi.core.group {
   interface Groups<T, W> {
-    group(arg0: Func<io.gatling.javaapi.core.Session, string>): any /*io.gatling.javaapi.core.group.Groups$On*/;
-    group(arg0: string): any /*io.gatling.javaapi.core.group.Groups$On*/;
+    group(arg0: Func<io.gatling.javaapi.core.Session, string>): Groups$On<T>;
+    group(arg0: string): Groups$On<T>;
     make(arg0: Func<W, W>): T;
   } // end Groups
 } // end namespace io.gatling.javaapi.core.group
 declare namespace io.gatling.javaapi.core.loop {
   class AsLongAs$On<T> /* extends java.lang.Object*/ {
     equals(arg0: any /*java.lang.Object*/): boolean;
-    on(
-      arg0: any /*io.gatling.javaapi.core.exec.Executable*/,
-      ...arg1: any /*io.gatling.javaapi.core.exec.Executable*/[]
-    ): T;
+    on(arg0: io.gatling.javaapi.core.exec.Executable, ...arg1: io.gatling.javaapi.core.exec.Executable[]): T;
     toString(): string;
   } // end AsLongAs$On
 } // end namespace io.gatling.javaapi.core.loop
 declare namespace io.gatling.javaapi.core.loop {
   class AsLongAsDuring$On<T> /* extends java.lang.Object*/ {
     equals(arg0: any /*java.lang.Object*/): boolean;
-    on(
-      arg0: any /*io.gatling.javaapi.core.exec.Executable*/,
-      ...arg1: any /*io.gatling.javaapi.core.exec.Executable*/[]
-    ): T;
+    on(arg0: io.gatling.javaapi.core.exec.Executable, ...arg1: io.gatling.javaapi.core.exec.Executable[]): T;
     toString(): string;
   } // end AsLongAsDuring$On
 } // end namespace io.gatling.javaapi.core.loop
 declare namespace io.gatling.javaapi.core.loop {
   class DoWhile$On<T> /* extends java.lang.Object*/ {
     equals(arg0: any /*java.lang.Object*/): boolean;
-    on(
-      arg0: any /*io.gatling.javaapi.core.exec.Executable*/,
-      ...arg1: any /*io.gatling.javaapi.core.exec.Executable*/[]
-    ): T;
+    on(arg0: io.gatling.javaapi.core.exec.Executable, ...arg1: io.gatling.javaapi.core.exec.Executable[]): T;
     toString(): string;
   } // end DoWhile$On
 } // end namespace io.gatling.javaapi.core.loop
 declare namespace io.gatling.javaapi.core.loop {
   class DoWhileDuring$On<T> /* extends java.lang.Object*/ {
     equals(arg0: any /*java.lang.Object*/): boolean;
-    on(
-      arg0: any /*io.gatling.javaapi.core.exec.Executable*/,
-      ...arg1: any /*io.gatling.javaapi.core.exec.Executable*/[]
-    ): T;
+    on(arg0: io.gatling.javaapi.core.exec.Executable, ...arg1: io.gatling.javaapi.core.exec.Executable[]): T;
     toString(): string;
   } // end DoWhileDuring$On
 } // end namespace io.gatling.javaapi.core.loop
 declare namespace io.gatling.javaapi.core.loop {
   class During$On<T> /* extends java.lang.Object*/ {
     equals(arg0: any /*java.lang.Object*/): boolean;
-    on(
-      arg0: any /*io.gatling.javaapi.core.exec.Executable*/,
-      ...arg1: any /*io.gatling.javaapi.core.exec.Executable*/[]
-    ): T;
+    on(arg0: io.gatling.javaapi.core.exec.Executable, ...arg1: io.gatling.javaapi.core.exec.Executable[]): T;
     toString(): string;
   } // end During$On
 } // end namespace io.gatling.javaapi.core.loop
 declare namespace io.gatling.javaapi.core.loop {
   class ForEach$On<T> /* extends java.lang.Object*/ {
     equals(arg0: any /*java.lang.Object*/): boolean;
-    on(
-      arg0: any /*io.gatling.javaapi.core.exec.Executable*/,
-      ...arg1: any /*io.gatling.javaapi.core.exec.Executable*/[]
-    ): T;
+    on(arg0: io.gatling.javaapi.core.exec.Executable, ...arg1: io.gatling.javaapi.core.exec.Executable[]): T;
     toString(): string;
   } // end ForEach$On
 } // end namespace io.gatling.javaapi.core.loop
 declare namespace io.gatling.javaapi.core.loop {
   class Forever$On<T> /* extends java.lang.Object*/ {
     equals(arg0: any /*java.lang.Object*/): boolean;
-    on(
-      arg0: any /*io.gatling.javaapi.core.exec.Executable*/,
-      ...arg1: any /*io.gatling.javaapi.core.exec.Executable*/[]
-    ): T;
+    on(arg0: io.gatling.javaapi.core.exec.Executable, ...arg1: io.gatling.javaapi.core.exec.Executable[]): T;
     toString(): string;
   } // end Forever$On
 } // end namespace io.gatling.javaapi.core.loop
 declare namespace io.gatling.javaapi.core.loop {
   class Repeat$On<T> /* extends java.lang.Object*/ {
     equals(arg0: any /*java.lang.Object*/): boolean;
-    on(
-      arg0: any /*io.gatling.javaapi.core.exec.Executable*/,
-      ...arg1: any /*io.gatling.javaapi.core.exec.Executable*/[]
-    ): T;
+    on(arg0: io.gatling.javaapi.core.exec.Executable, ...arg1: io.gatling.javaapi.core.exec.Executable[]): T;
     toString(): string;
   } // end Repeat$On
 } // end namespace io.gatling.javaapi.core.loop
