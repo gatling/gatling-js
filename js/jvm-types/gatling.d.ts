@@ -54,6 +54,80 @@ declare namespace Java {
 // Generated declarations
 //
 
+declare namespace io.gatling.http.client {
+  class Request /* extends java.lang.Object*/ {
+    copyWithCopiedHeaders(): Request;
+    copyWithHttp2PriorKnowledge(arg0: any /*io.gatling.http.client.Http2PriorKnowledge*/): Request;
+    copyWithNewBody(arg0: io.gatling.http.client.body.RequestBody): Request;
+    copyWithNewUri(arg0: any /*io.gatling.http.client.uri.Uri*/): Request;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    getBody(): io.gatling.http.client.body.RequestBody;
+    getCookies(): java.util.List<any /*io.netty.handler.codec.http.cookie.Cookie*/>;
+    getHeaders(): io.netty.handler.codec.http.HttpHeaders;
+    getHttp2PriorKnowledge(): any /*io.gatling.http.client.Http2PriorKnowledge*/;
+    getLocalIpV4Address(): any /*java.net.InetAddress*/;
+    getLocalIpV6Address(): any /*java.net.InetAddress*/;
+    getMethod(): any /*io.netty.handler.codec.http.HttpMethod*/;
+    getName(): string;
+    getNameResolver(): any /*io.gatling.http.client.resolver.InetAddressNameResolver*/;
+    getProxyServer(): any /*io.gatling.http.client.proxy.ProxyServer*/;
+    getRealm(): any /*io.gatling.http.client.realm.Realm*/;
+    getRequestTimeout(): long;
+    getSignatureCalculator(): Func<Request, Request>;
+    getUri(): any /*io.gatling.http.client.uri.Uri*/;
+    getVirtualHost(): string;
+    getWsSubprotocol(): string;
+    isAutoOrigin(): boolean;
+    isHttp2Enabled(): boolean;
+    toString(): string;
+  } // end Request
+} // end namespace io.gatling.http.client
+declare namespace io.gatling.http.client.body {
+  interface RequestBody {
+    build(arg0: any /*io.netty.buffer.ByteBufAllocator*/): any /*io.gatling.http.client.body.WritableContent*/;
+    getBytes(): bytearray;
+    getPatchedContentType(): any /*java.lang.CharSequence*/;
+    newBuilder(): any /*io.gatling.http.client.body.RequestBodyBuilder*/;
+    print(arg0: int): string;
+  } // end RequestBody
+} // end namespace io.gatling.http.client.body
+declare namespace io.gatling.http.response {
+  class Response /* extends java.lang.Object implements HttpResult, scala.Product, java.io.Serializable*/ {
+    body(): any /*io.gatling.http.response.ResponseBody*/;
+    canEqual(x$1: any /*java.lang.Object*/): boolean;
+    checksum(algorithm: any /*io.gatling.core.check.ChecksumAlgorithm*/): any /*scala.Option*/;
+    checksums(): any /*scala.collection.immutable.Map*/;
+    cookies(): any /*scala.collection.immutable.List*/;
+    copy(
+      request: io.gatling.http.client.Request,
+      startTimestamp: long,
+      endTimestamp: long,
+      status: any /*io.netty.handler.codec.http.HttpResponseStatus*/,
+      headers: io.netty.handler.codec.http.HttpHeaders,
+      body: any /*io.gatling.http.response.ResponseBody*/,
+      checksums: any /*scala.collection.immutable.Map*/,
+      isHttp2: boolean
+    ): Response;
+    endTimestamp(): long;
+    equals(x$1: any /*java.lang.Object*/): boolean;
+    header(name: any /*java.lang.CharSequence*/): any /*scala.Option*/;
+    headers(): io.netty.handler.codec.http.HttpHeaders;
+    headers(name: any /*java.lang.CharSequence*/): any /*scala.collection.immutable.Seq*/;
+    isHttp2(): boolean;
+    isRedirect(): boolean;
+    lastModifiedOrEtag(protocol: any /*io.gatling.http.protocol.HttpProtocol*/): any /*scala.Option*/;
+    productArity(): int;
+    productElement(x$1: int): any /*java.lang.Object*/;
+    productElementName(x$1: int): string;
+    productElementNames(): any /*scala.collection.Iterator*/;
+    productIterator(): any /*scala.collection.Iterator*/;
+    productPrefix(): string;
+    request(): io.gatling.http.client.Request;
+    startTimestamp(): long;
+    status(): any /*io.netty.handler.codec.http.HttpResponseStatus*/;
+    toString(): string;
+  } // end Response
+} // end namespace io.gatling.http.response
 declare namespace io.gatling.javaapi.core {
   class Assertion /* extends java.lang.Object*/ {
     asScala(): any /*io.gatling.commons.stats.assertion.Assertion*/;
@@ -2413,7 +2487,7 @@ declare namespace io.gatling.javaapi.http {
     check(...arg0: io.gatling.javaapi.core.CheckBuilder[]): HttpProtocolBuilder;
     check(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): HttpProtocolBuilder;
     checkIf(
-      arg0: BiFunction<any /*io.gatling.http.response.Response*/, io.gatling.javaapi.core.Session, boolean | null>
+      arg0: BiFunction<io.gatling.http.response.Response, io.gatling.javaapi.core.Session, boolean | null>
     ): any /*io.gatling.javaapi.http.HttpProtocolBuilder$TypedCondition*/;
     checkIf(
       arg0: Func<io.gatling.javaapi.core.Session, boolean | null>
@@ -2478,15 +2552,9 @@ declare namespace io.gatling.javaapi.http {
     ): HttpProtocolBuilder;
     shareConnections(): HttpProtocolBuilder;
     sign(
-      arg0: BiFunction<
-        any /*io.gatling.http.client.Request*/,
-        io.gatling.javaapi.core.Session,
-        any /*io.gatling.http.client.Request*/
-      >
+      arg0: BiFunction<io.gatling.http.client.Request, io.gatling.javaapi.core.Session, io.gatling.http.client.Request>
     ): HttpProtocolBuilder;
-    sign(
-      arg0: Func<any /*io.gatling.http.client.Request*/, any /*io.gatling.http.client.Request*/>
-    ): HttpProtocolBuilder;
+    sign(arg0: Func<io.gatling.http.client.Request, io.gatling.http.client.Request>): HttpProtocolBuilder;
     signWithOAuth1(
       arg0: Func<io.gatling.javaapi.core.Session, string>,
       arg1: Func<io.gatling.javaapi.core.Session, string>,
@@ -2508,9 +2576,9 @@ declare namespace io.gatling.javaapi.http {
     toString(): string;
     transformResponse(
       arg0: BiFunction<
-        any /*io.gatling.http.response.Response*/,
+        io.gatling.http.response.Response,
         io.gatling.javaapi.core.Session,
-        any /*io.gatling.http.response.Response*/
+        io.gatling.http.response.Response
       >
     ): HttpProtocolBuilder;
     upgradeInsecureRequestsHeader(arg0: Func<io.gatling.javaapi.core.Session, string>): HttpProtocolBuilder;
@@ -2552,7 +2620,7 @@ declare namespace io.gatling.javaapi.http {
     check(...arg0: io.gatling.javaapi.core.CheckBuilder[]): HttpRequestActionBuilder;
     check(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): HttpRequestActionBuilder;
     checkIf(
-      arg0: BiFunction<any /*io.gatling.http.response.Response*/, io.gatling.javaapi.core.Session, boolean | null>
+      arg0: BiFunction<io.gatling.http.response.Response, io.gatling.javaapi.core.Session, boolean | null>
     ): any /*io.gatling.javaapi.http.HttpRequestActionBuilder$TypedCondition*/;
     checkIf(
       arg0: Func<io.gatling.javaapi.core.Session, boolean | null>
@@ -2661,13 +2729,9 @@ declare namespace io.gatling.javaapi.http {
     resources(...arg0: HttpRequestActionBuilder[]): HttpRequestActionBuilder;
     resources(arg0: java.util.List<HttpRequestActionBuilder>): HttpRequestActionBuilder;
     sign<T>(
-      arg0: BiFunction<
-        any /*io.gatling.http.client.Request*/,
-        io.gatling.javaapi.core.Session,
-        any /*io.gatling.http.client.Request*/
-      >
+      arg0: BiFunction<io.gatling.http.client.Request, io.gatling.javaapi.core.Session, io.gatling.http.client.Request>
     ): T;
-    sign<T>(arg0: Func<any /*io.gatling.http.client.Request*/, any /*io.gatling.http.client.Request*/>): T;
+    sign<T>(arg0: Func<io.gatling.http.client.Request, io.gatling.http.client.Request>): T;
     signWithOAuth1<T>(
       arg0: Func<io.gatling.javaapi.core.Session, string>,
       arg1: Func<io.gatling.javaapi.core.Session, string>,
@@ -2680,9 +2744,9 @@ declare namespace io.gatling.javaapi.http {
     toString(): string;
     transformResponse(
       arg0: BiFunction<
-        any /*io.gatling.http.response.Response*/,
+        io.gatling.http.response.Response,
         io.gatling.javaapi.core.Session,
-        any /*io.gatling.http.response.Response*/
+        io.gatling.http.response.Response
       >
     ): HttpRequestActionBuilder;
     virtualHost<T>(arg0: Func<io.gatling.javaapi.core.Session, string>): T;
@@ -2769,13 +2833,9 @@ declare namespace io.gatling.javaapi.http {
     queryParamSeq(arg0: java.util.List<any /*java.util.Map$Entry*/>): T;
     queryParamSeq(arg0: string): T;
     sign(
-      arg0: BiFunction<
-        any /*io.gatling.http.client.Request*/,
-        io.gatling.javaapi.core.Session,
-        any /*io.gatling.http.client.Request*/
-      >
+      arg0: BiFunction<io.gatling.http.client.Request, io.gatling.javaapi.core.Session, io.gatling.http.client.Request>
     ): T;
-    sign(arg0: Func<any /*io.gatling.http.client.Request*/, any /*io.gatling.http.client.Request*/>): T;
+    sign(arg0: Func<io.gatling.http.client.Request, io.gatling.http.client.Request>): T;
     signWithOAuth1(
       arg0: Func<io.gatling.javaapi.core.Session, string>,
       arg1: Func<io.gatling.javaapi.core.Session, string>,
@@ -2864,13 +2924,9 @@ declare namespace io.gatling.javaapi.http {
     queryParamSeq<T>(arg0: java.util.List<any /*java.util.Map$Entry*/>): T;
     queryParamSeq<T>(arg0: string): T;
     sign<T>(
-      arg0: BiFunction<
-        any /*io.gatling.http.client.Request*/,
-        io.gatling.javaapi.core.Session,
-        any /*io.gatling.http.client.Request*/
-      >
+      arg0: BiFunction<io.gatling.http.client.Request, io.gatling.javaapi.core.Session, io.gatling.http.client.Request>
     ): T;
-    sign<T>(arg0: Func<any /*io.gatling.http.client.Request*/, any /*io.gatling.http.client.Request*/>): T;
+    sign<T>(arg0: Func<io.gatling.http.client.Request, io.gatling.http.client.Request>): T;
     signWithOAuth1<T>(
       arg0: Func<io.gatling.javaapi.core.Session, string>,
       arg1: Func<io.gatling.javaapi.core.Session, string>,
@@ -2994,6 +3050,60 @@ declare namespace io.gatling.javaapi.http {
     toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
   } // end WsAwaitActionBuilder
 } // end namespace io.gatling.javaapi.http
+declare namespace io.netty.handler.codec.http {
+  class HttpHeaders /* extends java.lang.Object implements java.lang.Iterable<any>*/ {
+    add(arg0: HttpHeaders): HttpHeaders;
+    add(arg0: any /*java.lang.CharSequence*/, arg1: any /*java.lang.Object*/): HttpHeaders;
+    add(arg0: any /*java.lang.CharSequence*/, arg1: java.lang.Iterable<any /*java.lang.Object*/>): HttpHeaders;
+    add(arg0: string, arg1: any /*java.lang.Object*/): HttpHeaders;
+    add(arg0: string, arg1: java.lang.Iterable<any /*java.lang.Object*/>): HttpHeaders;
+    addInt(arg0: any /*java.lang.CharSequence*/, arg1: int): HttpHeaders;
+    addShort(arg0: any /*java.lang.CharSequence*/, arg1: any /*short*/): HttpHeaders;
+    clear(): HttpHeaders;
+    contains(arg0: any /*java.lang.CharSequence*/): boolean;
+    contains(arg0: any /*java.lang.CharSequence*/, arg1: any /*java.lang.CharSequence*/, arg2: boolean): boolean;
+    contains(arg0: string): boolean;
+    contains(arg0: string, arg1: string, arg2: boolean): boolean;
+    containsValue(arg0: any /*java.lang.CharSequence*/, arg1: any /*java.lang.CharSequence*/, arg2: boolean): boolean;
+    copy(): HttpHeaders;
+    entries(): java.util.List<any /*java.util.Map$Entry*/>;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    forEach<T>(arg0: Consumer<T>): void;
+    get(arg0: any /*java.lang.CharSequence*/): string;
+    get(arg0: any /*java.lang.CharSequence*/, arg1: string): string;
+    get(arg0: string): string;
+    getAll(arg0: any /*java.lang.CharSequence*/): java.util.List<string>;
+    getAll(arg0: string): java.util.List<string>;
+    getAllAsString(arg0: any /*java.lang.CharSequence*/): java.util.List<string>;
+    getAsString(arg0: any /*java.lang.CharSequence*/): string;
+    getInt(arg0: any /*java.lang.CharSequence*/): int | null;
+    getInt(arg0: any /*java.lang.CharSequence*/, arg1: int): int;
+    getShort(arg0: any /*java.lang.CharSequence*/): any /*java.lang.Short*/;
+    getShort(arg0: any /*java.lang.CharSequence*/, arg1: any /*short*/): any /*short*/;
+    getTimeMillis(arg0: any /*java.lang.CharSequence*/): long | null;
+    getTimeMillis(arg0: any /*java.lang.CharSequence*/, arg1: long): long;
+    isEmpty(): boolean;
+    iterator(): java.util.Iterator<any /*java.util.Map$Entry*/>;
+    iteratorAsString(): java.util.Iterator<any /*java.util.Map$Entry*/>;
+    iteratorCharSequence(): java.util.Iterator<any /*java.util.Map$Entry*/>;
+    names(): java.util.Set<string>;
+    remove(arg0: any /*java.lang.CharSequence*/): HttpHeaders;
+    remove(arg0: string): HttpHeaders;
+    set(arg0: HttpHeaders): HttpHeaders;
+    set(arg0: any /*java.lang.CharSequence*/, arg1: any /*java.lang.Object*/): HttpHeaders;
+    set(arg0: any /*java.lang.CharSequence*/, arg1: java.lang.Iterable<any /*java.lang.Object*/>): HttpHeaders;
+    set(arg0: string, arg1: any /*java.lang.Object*/): HttpHeaders;
+    set(arg0: string, arg1: java.lang.Iterable<any /*java.lang.Object*/>): HttpHeaders;
+    setAll(arg0: HttpHeaders): HttpHeaders;
+    setInt(arg0: any /*java.lang.CharSequence*/, arg1: int): HttpHeaders;
+    setShort(arg0: any /*java.lang.CharSequence*/, arg1: any /*short*/): HttpHeaders;
+    size(): int;
+    spliterator(): any /*java.util.Spliterator*/;
+    toString(): string;
+    valueCharSequenceIterator(arg0: any /*java.lang.CharSequence*/): java.util.Iterator<any /*java.lang.CharSequence*/>;
+    valueStringIterator(arg0: any /*java.lang.CharSequence*/): java.util.Iterator<string>;
+  } // end HttpHeaders
+} // end namespace io.netty.handler.codec.http
 declare namespace java.lang {
   class String /* extends Object implements java.io.Serializable, Comparable<any>, CharSequence, java.lang.constant.Constable, java.lang.constant.ConstantDesc*/ {
     charAt(arg0: int): any /*char*/;

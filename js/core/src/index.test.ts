@@ -1,6 +1,5 @@
-import { Simulation } from "./index";
+import { Simulation, Session, StringBody } from "./index";
 import { atOnceUsers, constantUsersPerSec, exec, scenario, onCase, percent } from "./index";
-import { Session } from "./index";
 
 const runSimulationMock = (_: Simulation): void => {};
 
@@ -16,8 +15,8 @@ const chain2 = exec(chain1, chain1).exec(chain1);
 //const group2 = group(session -> "group").on(chain1);
 
 // bodies
-//const stringBody1 = StringBody("static #{dynamic} static");
-//const stringBody2 = StringBody(session -> "body");
+const stringBody1 = StringBody("static #{dynamic} static");
+const stringBody2 = StringBody((_: Session) => "body");
 //const rawFileBody1 = RawFileBody("path");
 //const rawFileBody2 = RawFileBody(session -> "path");
 //const elFileBody1 = ElFileBody("path");

@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "target",
-    "lib": ["es2021"],
+    "lib": ["es2021", "dom"],
     "target": "es2021",
 //    "module": "node16",
 //    "moduleResolution": "node16",

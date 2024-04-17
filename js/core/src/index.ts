@@ -4,6 +4,10 @@ import { PopulationBuilder } from "./population";
 import { ProtocolBuilder } from "./protocol";
 
 // FIXME no export *
+export * from "./gatlingJvm/callbacks";
+
+export * from "./body";
+export * from "./common";
 export * from "./closedInjection";
 export * from "./openInjection";
 export * from "./population";

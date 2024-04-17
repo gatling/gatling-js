@@ -1,107 +1,120 @@
-import { atOnceUsers, scenario } from "@gatling.io/core/target/core";
-import { Simulation } from "@gatling.io/core";
-import { http } from "./index";
+import { Simulation, Session } from "@gatling.io/core";
+import { atOnceUsers, scenario } from "@gatling.io/core";
+
+import { http, Proxy } from "./index";
 
 const runSimulationMock = (_: Simulation): void => {};
 
-const httpProtocol = http.baseUrl("url");
-//.baseUrls("url1", "urls2")
-//.baseUrls(List.of("url"))
-//.warmUp("url")
-//.disableWarmUp()
-//.shareConnections()
-//.virtualHost("host")
-//.virtualHost(session -> "host")
-//.localAddress("127.0.0.1")
-//.localAddresses("127.0.0.1", "127.0.0.2")
-//.localAddresses(List.of("127.0.0.1"))
-//.useAllLocalAddresses()
-//.useAllLocalAddressesMatching("pattern")
-//.maxConnectionsPerHost(1)
-//.perUserKeyManagerFactory(
-//  session -> {
-//    try {
-//      return KeyManagerFactory.getInstance("TLS");
-//    } catch (NoSuchAlgorithmException e) {
-//      throw new RuntimeException(e);
-//    }
-//  })
-//.disableAutoReferer()
-//.disableAutoOrigin()
-//.disableCaching()
-//.header("name", "value")
-//.header("name", session -> "value")
-//.headers(Map.of("key", "value"))
-//.acceptHeader("value")
-//.acceptHeader(session -> "value")
-//.acceptCharsetHeader("value")
-//.acceptCharsetHeader(session -> "value")
-//.acceptEncodingHeader("value")
-//.acceptEncodingHeader(session -> "value")
-//.acceptLanguageHeader("value")
-//.acceptEncodingHeader(session -> "value")
-//.acceptLanguageHeader("value")
-//.acceptLanguageHeader(session -> "value")
-//.authorizationHeader("value")
-//.authorizationHeader(session -> "value")
-//.connectionHeader("value")
-//.connectionHeader(session -> "value")
-//.contentTypeHeader("value")
-//.contentTypeHeader(session -> "value")
-//.doNotTrackHeader("value")
-//.doNotTrackHeader(session -> "value")
-//.originHeader("value")
-//.originHeader(session -> "value")
-//.userAgentHeader("value")
-//.userAgentHeader(session -> "value")
-//.upgradeInsecureRequestsHeader("value")
-//.upgradeInsecureRequestsHeader(session -> "value")
-//.basicAuth("username", "password")
-//.basicAuth("username", session -> "password")
-//.basicAuth(session -> "username", "password")
-//.basicAuth(session -> "username", session -> "password")
-//.digestAuth(session -> "username", "password")
-//.digestAuth(session -> "username", session -> "password")
-//.silentResources()
-//.silentUri("regex")
-//.disableUrlEncoding()
-//.sign(request -> request)
-//.sign((request, session) -> request)
-//.signWithOAuth1("consumerKey", "clientSharedSecret", "token", "tokenSecret")
-//.signWithOAuth1(
-//  session -> "consumerKey",
-//  session -> "clientSharedSecret",
-//  session -> "token",
-//  session -> "tokenSecret")
-//.enableHttp2()
-//.http2PriorKnowledge(Map.of("host", true))
-//.disableFollowRedirect()
-//.maxRedirects(1)
-//.strict302Handling()
-//.redirectNamingStrategy(
-//  (uri, originalRequestName, redirectCount) ->
-//    originalRequestName + " Redirect " + redirectCount)
-//.transformResponse((response, session) -> response)
-//.inferHtmlResources()
-//.inferHtmlResources(AllowList("allow"))
-//.inferHtmlResources(DenyList("deny"))
-//.inferHtmlResources(AllowList("allow"), DenyList("deny"))
-//.nameInferredHtmlResourcesAfterUrlTail()
-//.nameInferredHtmlResourcesAfterAbsoluteUrl()
-//.nameInferredHtmlResourcesAfterRelativeUrl()
-//.nameInferredHtmlResourcesAfterPath()
-//.nameInferredHtmlResourcesAfterLastPathElement()
-//.nameInferredHtmlResources(uri -> "foo")
-//.noProxyFor("host1", "host2")
-//.proxy(Proxy("172.31.76.106", 8080))
-//.proxy(Proxy("172.31.76.106", 8080).credentials("username", "password"))
-//.proxy(Proxy("172.31.76.106", 8080).httpsPort(8081))
-//.proxy(Proxy("172.31.76.106", 8080).http())
-//.proxy(Proxy("172.31.76.106", 8080).socks4())
-//.proxy(Proxy("172.31.76.106", 8080).socks5())
-//.asyncNameResolution("dnsServer1", "dnsServer2")
-//.asyncNameResolution(new InetSocketAddress[] {null})
-//.perUserNameResolution()
+const httpProtocol = http
+  .baseUrl("url")
+  .baseUrls("url1", "urls2")
+  //.baseUrls(...["url"])
+  .warmUp("url")
+  .disableWarmUp()
+  .shareConnections()
+  .localAddress("127.0.0.1")
+  .localAddresses("127.0.0.1", "127.0.0.2")
+  //.localAddresses(...["127.0.0.1"])
+  .useAllLocalAddresses()
+  .useAllLocalAddressesMatching("pattern")
+  .maxConnectionsPerHost(1)
+  //.perUserKeyManagerFactory(
+  //  session -> {
+  //    try {
+  //      return KeyManagerFactory.getInstance("TLS");
+  //    } catch (NoSuchAlgorithmException e) {
+  //      throw new RuntimeException(e);
+  //    }
+  //  })
+  .disableAutoReferer()
+  .disableAutoOrigin()
+  .disableCaching()
+  .header("name", "value")
+  .header("name", (_: Session) => "value")
+  .headers({ key: "value" })
+  .acceptHeader("value")
+  .acceptHeader((_: Session) => "value")
+  .acceptCharsetHeader("value")
+  .acceptCharsetHeader((_: Session) => "value")
+  .acceptEncodingHeader("value")
+  .acceptEncodingHeader((_: Session) => "value")
+  .acceptLanguageHeader("value")
+  .acceptLanguageHeader((_: Session) => "value")
+  .acceptLanguageHeader("value")
+  .acceptLanguageHeader((_: Session) => "value")
+  .authorizationHeader("value")
+  .authorizationHeader((_: Session) => "value")
+  .connectionHeader("value")
+  .connectionHeader((_: Session) => "value")
+  .contentTypeHeader("value")
+  .contentTypeHeader((_: Session) => "value")
+  .doNotTrackHeader("value")
+  .doNotTrackHeader((_: Session) => "value")
+  .originHeader("value")
+  .originHeader((_: Session) => "value")
+  .userAgentHeader("value")
+  .userAgentHeader((_: Session) => "value")
+  .upgradeInsecureRequestsHeader("value")
+  .upgradeInsecureRequestsHeader((_: Session) => "value")
+  .basicAuth("username", "password")
+  .basicAuth("username", (_: Session) => "password")
+  .basicAuth((_: Session) => "username", "password")
+  .basicAuth(
+    (_: Session) => "username",
+    (_: Session) => "password"
+  )
+  .digestAuth((_: Session) => "username", "password")
+  .digestAuth(
+    (_: Session) => "username",
+    (_: Session) => "password"
+  )
+  .silentResources()
+  .silentUri("regex")
+  .disableUrlEncoding()
+  .sign((request) => request)
+  .sign((request, _: Session) => request)
+  .signWithOAuth1("consumerKey", "clientSharedSecret", "token", "tokenSecret")
+  .signWithOAuth1("consumerKey", "clientSharedSecret", "token", "tokenSecret", true)
+  .signWithOAuth1(
+    (_: Session) => "consumerKey",
+    (_: Session) => "clientSharedSecret",
+    (_: Session) => "token",
+    (_: Session) => "tokenSecret"
+  )
+  .signWithOAuth1(
+    (_: Session) => "consumerKey",
+    (_: Session) => "clientSharedSecret",
+    (_: Session) => "token",
+    (_: Session) => "tokenSecret",
+    true
+  )
+  .enableHttp2()
+  .http2PriorKnowledge({ host: true })
+  .disableFollowRedirect()
+  .maxRedirects(1)
+  .strict302Handling()
+  //.redirectNamingStrategy(
+  //  (uri, originalRequestName, redirectCount) ->
+  //    originalRequestName + " Redirect " + redirectCount)
+  //.transformResponse((response, session) -> response)
+  .inferHtmlResources()
+  //.inferHtmlResources(AllowList("allow"))
+  //.inferHtmlResources(DenyList("deny"))
+  //.inferHtmlResources(AllowList("allow"), DenyList("deny"))
+  .nameInferredHtmlResourcesAfterUrlTail()
+  .nameInferredHtmlResourcesAfterAbsoluteUrl()
+  .nameInferredHtmlResourcesAfterRelativeUrl()
+  .nameInferredHtmlResourcesAfterPath()
+  .nameInferredHtmlResourcesAfterLastPathElement()
+  //.nameInferredHtmlResources(uri -> "foo")
+  .noProxyFor("host1", "host2")
+  .proxy(Proxy("172.31.76.106", 8080))
+  .proxy(Proxy("172.31.76.106", 8080).credentials("username", "password"))
+  .proxy(Proxy("172.31.76.106", 8080).http())
+  .proxy(Proxy("172.31.76.106", 8080).socks4())
+  .proxy(Proxy("172.31.76.106", 8080).socks5())
+  .asyncNameResolution("dnsServer1", "dnsServer2")
+  .perUserNameResolution();
 //.check(
 //  bodyBytes(),
 //  bodyBytes().is("foo".getBytes(UTF_8)),
@@ -191,7 +204,6 @@ const httpProtocol = http.baseUrl("url");
 //.checkIf("#{bool}").then(jsonPath("$..foo"))
 //.checkIf("#{bool}").then(jsonPath("$..foo"), jsonPath("$..foo"))
 //.checkIf((response, session) -> true).then(jsonPath("$..foo"));
-
 const scn = scenario("scenario")
   .exec(
     http("name").get("url")

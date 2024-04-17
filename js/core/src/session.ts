@@ -8,11 +8,14 @@ export interface Session extends Wrapper<JvmSession> {
   get<T>(key: string): T;
   set(key: string, value: any): Session;
 }
-const wrapSession = (_underlying: JvmSession): Session => ({
+
+export const wrapSession = (_underlying: JvmSession): Session => ({
   _underlying,
   get: <T>(key: string): T => _underlying.get(key),
   set: (key: string, value: any): Session => wrapSession(_underlying.set(key, value))
 });
+
+export type Expression<T> = T | ((session: Session) => T);
 
 export type SessionTransform = (session: Session) => Session;
 export const underlyingSessionTransform =
