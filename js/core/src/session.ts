@@ -20,38 +20,13 @@ export const underlyingSessionTransform =
   (jvmSession: JvmSession) =>
     f(wrapSession(jvmSession))._underlying;
 
-export type SessionToString = (session: Session) => string;
-export const underlyingSessionToString =
-  (f: SessionToString): ((jvmSession: JvmSession) => string) =>
+export type SessionTo<T> = (session: Session) => T;
+export const underlyingSessionTo =
+  <T>(f: SessionTo<T>): ((jvmSession: JvmSession) => T) =>
   (jvmSession: JvmSession) =>
     f(wrapSession(jvmSession));
 
-export type SessionToNumber = (session: Session) => number;
-export const underlyingSessionToNumber =
-  (f: SessionToNumber): ((jvmSession: JvmSession) => number) =>
-  (jvmSession: JvmSession) =>
-    f(wrapSession(jvmSession));
-
-export type SessionToBoolean = (session: Session) => boolean;
-export const underlyingSessionToBoolean =
-  (f: SessionToBoolean): ((jvmSession: JvmSession) => boolean) =>
-  (jvmSession: JvmSession) =>
-    f(wrapSession(jvmSession));
-
-export type SessionToDuration = (session: Session) => Duration;
 export const underlyingSessionToDuration =
-  (f: SessionToDuration): ((jvmSession: JvmSession) => java.time.Duration) =>
+  (f: SessionTo<Duration>): ((jvmSession: JvmSession) => java.time.Duration) =>
   (jvmSession: JvmSession) =>
     toJvmDuration(f(wrapSession(jvmSession)));
-
-export type SessionToUnknown = (session: Session) => unknown;
-export const underlyingSessionToUnknown =
-  (f: SessionToUnknown): ((jvmSession: JvmSession) => unknown) =>
-  (jvmSession: JvmSession) =>
-    f(wrapSession(jvmSession));
-
-export type SessionToArray<T> = (session: Session) => T[];
-export const underlyingSessionToArray =
-  <T>(f: SessionToArray<T>): ((jvmSession: JvmSession) => T[]) =>
-  (jvmSession: JvmSession) =>
-    f(wrapSession(jvmSession));

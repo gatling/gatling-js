@@ -1,7 +1,7 @@
 import "@gatling.io/jvm-types";
 import JvmForEach = io.gatling.javaapi.core.loop.ForEach;
 
-import { SessionToArray, underlyingSessionToArray } from "../session";
+import { SessionTo, underlyingSessionTo } from "../session";
 import { wrapCallback } from "../gatlingJvm/callbacks";
 
 import { On, wrapOn } from "./on";
@@ -36,7 +36,7 @@ export interface ForEachFunction<T extends ForEach<T>> {
    * @param counterName - the name of the loop counter, as stored in the Session
    * @returns a DSL component to define the loop content
    */
-  (seq: SessionToArray<unknown>, attributeName: string, counterName?: string): On<T>;
+  (seq: SessionTo<Array<unknown>>, attributeName: string, counterName?: string): On<T>;
 }
 
 export interface ForEach<T extends ForEach<T>> {
@@ -48,15 +48,12 @@ export const foreachImpl =
     jvmForEach: J1,
     wrap: (wrapped: J2) => T
   ): ForEachFunction<T> =>
-  (seq: unknown[] | string | SessionToArray<unknown>, attributeName: string, counterName?: string): On<T> => {
+  (seq: unknown[] | string | SessionTo<Array<unknown>>, attributeName: string, counterName?: string): On<T> => {
     if (typeof seq === "function") {
       if (counterName !== undefined) {
-        return wrapOn(
-          jvmForEach.foreach(wrapCallback(underlyingSessionToArray(seq)), attributeName, counterName),
-          wrap
-        );
+        return wrapOn(jvmForEach.foreach(wrapCallback(underlyingSessionTo(seq)), attributeName, counterName), wrap);
       } else {
-        return wrapOn(jvmForEach.foreach(wrapCallback(underlyingSessionToArray(seq)), attributeName), wrap);
+        return wrapOn(jvmForEach.foreach(wrapCallback(underlyingSessionTo(seq)), attributeName), wrap);
       }
     } else if (typeof seq === "string") {
       if (counterName !== undefined) {

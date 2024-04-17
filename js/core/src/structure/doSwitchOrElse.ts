@@ -3,7 +3,7 @@ import JvmDoSwitchOrElse = io.gatling.javaapi.core.condition.DoSwitchOrElse;
 import JvmOn = io.gatling.javaapi.core.condition.DoSwitchOrElse$On;
 import JvmOrElse = io.gatling.javaapi.core.condition.DoSwitchOrElse$OrElse;
 
-import { SessionToUnknown, underlyingSessionToUnknown } from "../session";
+import { SessionTo, underlyingSessionTo } from "../session";
 import { wrapCallback } from "../gatlingJvm/callbacks";
 
 import { ChoiceWithKey } from "./choices";
@@ -43,7 +43,7 @@ export interface DoSwitchOrElseFunction<T extends DoSwitchOrElse<T>> {
    * @param actual - the actual value expressed as a function
    * @returns a DSL component for defining the "choices"
    */
-  (actual: SessionToUnknown): On<T>;
+  (actual: SessionTo<unknown>): On<T>;
 }
 
 export interface DoSwitchOrElse<T extends DoSwitchOrElse<T>> {
@@ -55,10 +55,10 @@ export const doSwitchOrElseImpl =
     jvmDoSwitchOrElse: J1,
     wrap: (wrapped: J2) => T
   ) =>
-  (actual: string | SessionToUnknown): On<T> =>
+  (actual: string | SessionTo<unknown>): On<T> =>
     wrapOn(
       typeof actual === "function"
-        ? jvmDoSwitchOrElse.doSwitchOrElse(wrapCallback(underlyingSessionToUnknown(actual)))
+        ? jvmDoSwitchOrElse.doSwitchOrElse(wrapCallback(underlyingSessionTo(actual)))
         : jvmDoSwitchOrElse.doSwitchOrElse(actual),
       wrap
     );

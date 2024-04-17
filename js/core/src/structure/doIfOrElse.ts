@@ -3,7 +3,7 @@ import JvmDoIfOrElse = io.gatling.javaapi.core.condition.DoIfOrElse;
 import JvmDoIfEqualsOrElse = io.gatling.javaapi.core.condition.DoIfEqualsOrElse;
 import JvmExecutable = io.gatling.javaapi.core.exec.Executable;
 
-import { SessionToBoolean, SessionToUnknown, underlyingSessionToBoolean, underlyingSessionToUnknown } from "../session";
+import { SessionTo, underlyingSessionTo } from "../session";
 import { wrapCallback } from "../gatlingJvm/callbacks";
 
 import { Executable } from "./execs";
@@ -50,7 +50,7 @@ export interface DoIfOrElseFunction<T extends DoIfOrElse<T>> {
    * @param condition - the condition expressed as a function
    * @returns a DSL component for defining the "then" block
    */
-  (condition: SessionToBoolean): Then<T>;
+  (condition: SessionTo<boolean>): Then<T>;
 }
 
 export interface DoIfOrElse<T extends DoIfOrElse<T>> {
@@ -59,10 +59,10 @@ export interface DoIfOrElse<T extends DoIfOrElse<T>> {
 
 export const doIfOrElseImpl =
   <J2, J1 extends JvmDoIfOrElse<J2, any>, T extends DoIfOrElse<T>>(jvmDoIfOrElse: J1, wrap: (wrapped: J2) => T) =>
-  (condition: string | SessionToBoolean): Then<T> =>
+  (condition: string | SessionTo<boolean>): Then<T> =>
     wrapThen(
       typeof condition === "function"
-        ? jvmDoIfOrElse.doIfOrElse(wrapCallback(underlyingSessionToBoolean(condition)))
+        ? jvmDoIfOrElse.doIfOrElse(wrapCallback(underlyingSessionTo(condition)))
         : jvmDoIfOrElse.doIfOrElse(condition),
       wrap
     );
@@ -93,7 +93,7 @@ export interface DoIfEqualsOrElseFunction<T extends DoIfEqualsOrElse<T>> {
    * @param expected - the expected value expressed as a Gatling Expression Language String
    * @returns a DSL component for defining the "then" block
    */
-  (actual: string, expected: SessionToUnknown): Then<T>;
+  (actual: string, expected: SessionTo<unknown>): Then<T>;
 
   /**
    * Execute the "then" block only if the actual value is equal to the expected one
@@ -102,7 +102,7 @@ export interface DoIfEqualsOrElseFunction<T extends DoIfEqualsOrElse<T>> {
    * @param expected - the expected value expressed as a Gatling Expression Language String
    * @returns a DSL component for defining the "then" block
    */
-  (actual: SessionToUnknown, expected: string): Then<T>;
+  (actual: SessionTo<unknown>, expected: string): Then<T>;
 
   /**
    * Execute the "then" block only if the actual value is equal to the expected one
@@ -111,7 +111,7 @@ export interface DoIfEqualsOrElseFunction<T extends DoIfEqualsOrElse<T>> {
    * @param expected - the expected static value
    * @returns a DSL component for defining the "then" block
    */
-  (actual: SessionToUnknown, expected: unknown): Then<T>;
+  (actual: SessionTo<unknown>, expected: unknown): Then<T>;
 
   /**
    * Execute the "then" block only if the actual value is equal to the expected one
@@ -120,7 +120,7 @@ export interface DoIfEqualsOrElseFunction<T extends DoIfEqualsOrElse<T>> {
    * @param expected - the expected value expressed as a function
    * @returns a DSL component for defining the "then" block
    */
-  (actual: SessionToUnknown, expected: SessionToUnknown): Then<T>;
+  (actual: SessionTo<unknown>, expected: SessionTo<unknown>): Then<T>;
 }
 
 export interface DoIfEqualsOrElse<T extends DoIfEqualsOrElse<T>> {
@@ -132,14 +132,14 @@ export const doIfEqualsOrElseImpl =
     jvmDoIfEqualsOrElse: J1,
     wrap: (wrapped: J2) => T
   ) =>
-  (actual: string | SessionToUnknown, expected: string | SessionToUnknown | unknown): Then<T> => {
+  (actual: string | SessionTo<unknown>, expected: string | SessionTo<unknown> | unknown): Then<T> => {
     if (typeof actual === "function") {
-      const wrappedActual = wrapCallback(underlyingSessionToUnknown(actual));
+      const wrappedActual = wrapCallback(underlyingSessionTo(actual));
       if (typeof expected === "function") {
         return wrapThen(
           jvmDoIfEqualsOrElse.doIfEqualsOrElse(
             wrappedActual,
-            wrapCallback(underlyingSessionToUnknown(expected as SessionToUnknown))
+            wrapCallback(underlyingSessionTo(expected as SessionTo<unknown>))
           ),
           wrap
         );
@@ -153,7 +153,7 @@ export const doIfEqualsOrElseImpl =
         return wrapThen(
           jvmDoIfEqualsOrElse.doIfEqualsOrElse(
             actual,
-            wrapCallback(underlyingSessionToUnknown(expected as SessionToUnknown))
+            wrapCallback(underlyingSessionTo(expected as SessionTo<unknown>))
           ),
           wrap
         );

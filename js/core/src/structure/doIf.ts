@@ -3,7 +3,7 @@ import JvmDoIf = io.gatling.javaapi.core.condition.DoIf;
 import JvmDoIfEquals = io.gatling.javaapi.core.condition.DoIfEquals;
 import JvmExecutable = io.gatling.javaapi.core.exec.Executable;
 
-import { SessionToBoolean, underlyingSessionToBoolean, SessionToUnknown, underlyingSessionToUnknown } from "../session";
+import { SessionTo, underlyingSessionTo } from "../session";
 import { wrapCallback } from "../gatlingJvm/callbacks";
 
 import { Executable } from "./execs";
@@ -38,7 +38,7 @@ export interface DoIfFunction<T extends DoIf<T>> {
    * @param condition - the condition expressed as a function
    * @returns a DSL component for defining the "then" block
    */
-  (condition: SessionToBoolean): Then<T>;
+  (condition: SessionTo<boolean>): Then<T>;
 }
 
 export interface DoIf<T extends DoIf<T>> {
@@ -47,10 +47,10 @@ export interface DoIf<T extends DoIf<T>> {
 
 export const doIfImpl =
   <J2, J1 extends JvmDoIf<J2, any>, T extends DoIf<T>>(jvmDoIf: J1, wrap: (wrapped: J2) => T) =>
-  (condition: string | SessionToBoolean): Then<T> =>
+  (condition: string | SessionTo<boolean>): Then<T> =>
     wrapThen(
       typeof condition === "function"
-        ? jvmDoIf.doIf(wrapCallback(underlyingSessionToBoolean(condition)))
+        ? jvmDoIf.doIf(wrapCallback(underlyingSessionTo(condition)))
         : jvmDoIf.doIf(condition),
       wrap
     );
@@ -81,7 +81,7 @@ export interface DoIfEqualsFunction<T extends DoIfEquals<T>> {
    * @param expected - the expected value expressed as a function
    * @returns a DSL component for defining the "then" block
    */
-  (actual: string, expected: SessionToUnknown): Then<T>;
+  (actual: string, expected: SessionTo<unknown>): Then<T>;
 
   /**
    * Execute the "then" block only if the actual value is equal to the expected one
@@ -90,7 +90,7 @@ export interface DoIfEqualsFunction<T extends DoIfEquals<T>> {
    * @param expected - the expected value expressed as a Gatling Expression Language String
    * @returns a DSL component for defining the "then" block
    */
-  (actual: SessionToUnknown, expected: string): Then<T>;
+  (actual: SessionTo<unknown>, expected: string): Then<T>;
 
   /**
    * Execute the "then" block only if the actual value is equal to the expected one
@@ -99,7 +99,7 @@ export interface DoIfEqualsFunction<T extends DoIfEquals<T>> {
    * @param expected - the expected static value
    * @returns a DSL component for defining the "then" block
    */
-  (actual: SessionToUnknown, expected: unknown): Then<T>;
+  (actual: SessionTo<unknown>, expected: unknown): Then<T>;
 
   /**
    * Execute the "then" block only if the actual value is equal to the expected one
@@ -108,7 +108,7 @@ export interface DoIfEqualsFunction<T extends DoIfEquals<T>> {
    * @param expected - the expected value expressed as a function
    * @returns a DSL component for defining the "then" block
    */
-  (actual: SessionToUnknown, expected: SessionToUnknown): Then<T>;
+  (actual: SessionTo<unknown>, expected: SessionTo<unknown>): Then<T>;
 }
 
 export interface DoIfEquals<T extends DoIfEquals<T>> {
@@ -117,15 +117,12 @@ export interface DoIfEquals<T extends DoIfEquals<T>> {
 
 export const doIfEqualsImpl =
   <J2, J1 extends JvmDoIfEquals<J2, any>, T extends DoIfEquals<T>>(jvmDoIfEquals: J1, wrap: (wrapped: J2) => T) =>
-  (actual: string | SessionToUnknown, expected: string | SessionToUnknown | unknown): Then<T> => {
+  (actual: string | SessionTo<unknown>, expected: string | SessionTo<unknown> | unknown): Then<T> => {
     if (typeof actual === "function") {
-      const wrappedActual = wrapCallback(underlyingSessionToUnknown(actual));
+      const wrappedActual = wrapCallback(underlyingSessionTo(actual));
       if (typeof expected === "function") {
         return wrapThen(
-          jvmDoIfEquals.doIfEquals(
-            wrappedActual,
-            wrapCallback(underlyingSessionToUnknown(expected as SessionToUnknown))
-          ),
+          jvmDoIfEquals.doIfEquals(wrappedActual, wrapCallback(underlyingSessionTo(expected as SessionTo<unknown>))),
           wrap
         );
       } else if (typeof expected === "string") {
@@ -136,7 +133,7 @@ export const doIfEqualsImpl =
     } else {
       if (typeof expected === "function") {
         return wrapThen(
-          jvmDoIfEquals.doIfEquals(actual, wrapCallback(underlyingSessionToUnknown(expected as SessionToUnknown))),
+          jvmDoIfEquals.doIfEquals(actual, wrapCallback(underlyingSessionTo(expected as SessionTo<unknown>))),
           wrap
         );
       } else if (typeof expected === "string") {

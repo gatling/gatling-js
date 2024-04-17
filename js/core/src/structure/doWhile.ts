@@ -1,7 +1,7 @@
 import "@gatling.io/jvm-types";
 import JvmDoWhile = io.gatling.javaapi.core.loop.DoWhile;
 
-import { SessionToBoolean, underlyingSessionToBoolean } from "../session";
+import { SessionTo, underlyingSessionTo } from "../session";
 import { wrapCallback } from "../gatlingJvm/callbacks";
 
 import { On, wrapOn } from "./on";
@@ -25,7 +25,7 @@ export interface DoWhileFunction<T extends DoWhile<T>> {
    * @param counterName the name of the loop counter, as stored in the Session
    * @return a DSL component for defining the loop content
    */
-  (condition: SessionToBoolean, counterName?: string): On<T>;
+  (condition: SessionTo<boolean>, counterName?: string): On<T>;
 }
 
 export interface DoWhile<T extends DoWhile<T>> {
@@ -34,18 +34,18 @@ export interface DoWhile<T extends DoWhile<T>> {
 
 export const doWhileImpl =
   <J2, J1 extends JvmDoWhile<J2, any>, T extends DoWhile<T>>(jvmDoWhile: J1, wrap: (wrapped: J2) => T) =>
-  (condition: SessionToBoolean | string, counterName?: string): On<T> => {
+  (condition: SessionTo<boolean> | string, counterName?: string): On<T> => {
     if (counterName !== undefined) {
       // doWhile(condition, counterName)
       if (typeof condition === "function") {
-        return wrapOn(jvmDoWhile.doWhile(wrapCallback(underlyingSessionToBoolean(condition)), counterName), wrap);
+        return wrapOn(jvmDoWhile.doWhile(wrapCallback(underlyingSessionTo(condition)), counterName), wrap);
       } else {
         return wrapOn(jvmDoWhile.doWhile(condition, counterName), wrap);
       }
     } else {
       // doWhile(condition)
       if (typeof condition === "function") {
-        return wrapOn(jvmDoWhile.doWhile(wrapCallback(underlyingSessionToBoolean(condition))), wrap);
+        return wrapOn(jvmDoWhile.doWhile(wrapCallback(underlyingSessionTo(condition))), wrap);
       } else {
         return wrapOn(jvmDoWhile.doWhile(condition), wrap);
       }

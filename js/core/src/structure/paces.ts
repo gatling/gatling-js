@@ -2,7 +2,7 @@ import "@gatling.io/jvm-types";
 import JvmPaces = io.gatling.javaapi.core.pause.Paces;
 
 import { Duration, isDuration, toJvmDuration } from "../utils/duration";
-import { SessionToDuration, underlyingSessionToDuration } from "../session";
+import { SessionTo, underlyingSessionToDuration } from "../session";
 import { wrapCallback } from "../gatlingJvm/callbacks";
 
 export interface PaceFunction<T extends Paces<T>> {
@@ -29,7 +29,7 @@ export interface PaceFunction<T extends Paces<T>> {
    * @param duration - the duration of the pace as a function
    * @returns a new StructureBuilder
    */
-  (duration: SessionToDuration): T;
+  (duration: SessionTo<Duration>): T;
 
   /**
    * Attach a pace action
@@ -57,7 +57,7 @@ export interface PaceFunction<T extends Paces<T>> {
    * @param counterName - the name of the loop counter, as stored in the Session
    * @returns a new StructureBuilder
    */
-  (duration: SessionToDuration, counterName: string): T;
+  (duration: SessionTo<Duration>, counterName: string): T;
 
   /**
    * Attach a pace action where the duration is random between 2 bounds
@@ -75,7 +75,7 @@ export interface PaceFunction<T extends Paces<T>> {
    * @param max - the duration of the pace as a function
    * @returns a new StructureBuilder
    */
-  (min: SessionToDuration, max: SessionToDuration): T;
+  (min: SessionTo<Duration>, max: SessionTo<Duration>): T;
 
   /**
    * Attach a pace action where the duration is random between 2 bounds
@@ -106,7 +106,7 @@ export interface PaceFunction<T extends Paces<T>> {
    * @param counterName - the name of the loop counter, as stored in the Session
    * @returns a new StructureBuilder
    */
-  (min: SessionToDuration, max: SessionToDuration, counterName: string): T;
+  (min: SessionTo<Duration>, max: SessionTo<Duration>, counterName: string): T;
 }
 
 export interface Paces<T extends Paces<T>> {
@@ -115,7 +115,7 @@ export interface Paces<T extends Paces<T>> {
 
 export const paceImpl =
   <J2, J1 extends JvmPaces<J2, any>, T extends Paces<T>>(jvmGroups: J1, wrap: (wrapped: J2) => T) =>
-  (arg0: Duration | SessionToDuration | string, arg1?: Duration | SessionToDuration | string, arg2?: string): T => {
+  (arg0: Duration | SessionTo<Duration> | string, arg1?: Duration | SessionTo<Duration> | string, arg2?: string): T => {
     if (arg2 !== undefined) {
       // pace(min, max, counterName)
       if (typeof arg0 === "string" && typeof arg1 === "string") {

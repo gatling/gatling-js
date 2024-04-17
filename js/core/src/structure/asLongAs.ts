@@ -1,7 +1,7 @@
 import "@gatling.io/jvm-types";
 import JvmAsLongAs = io.gatling.javaapi.core.loop.AsLongAs;
 
-import { SessionToBoolean, underlyingSessionToBoolean } from "../session";
+import { SessionTo, underlyingSessionTo } from "../session";
 import { wrapCallback } from "../gatlingJvm/callbacks";
 
 import { On, wrapOn } from "./on";
@@ -49,7 +49,7 @@ export interface AsLongAsFunction<T extends AsLongAs<T>> {
    * @param condition - the condition, expressed as a function
    * @returns a DSL component for defining the loop content
    */
-  (condition: SessionToBoolean): On<T>;
+  (condition: SessionTo<boolean>): On<T>;
 
   /**
    * Define a loop that will iterate as long as the condition holds true
@@ -58,7 +58,7 @@ export interface AsLongAsFunction<T extends AsLongAs<T>> {
    * @param exitASAP - if the loop must be interrupted if the condition becomes false inside the loop
    * @returns a DSL component for defining the loop content
    */
-  (condition: SessionToBoolean, exitASAP: boolean): On<T>;
+  (condition: SessionTo<boolean>, exitASAP: boolean): On<T>;
 
   /**
    * Define a loop that will iterate as long as the condition holds true
@@ -67,7 +67,7 @@ export interface AsLongAsFunction<T extends AsLongAs<T>> {
    * @param counterName - the name of the loop counter, as stored in the Session
    * @returns a DSL component for defining the loop content
    */
-  (condition: SessionToBoolean, counterName: string): On<T>;
+  (condition: SessionTo<boolean>, counterName: string): On<T>;
 
   /**
    * Define a loop that will iterate as long as the condition holds true
@@ -77,7 +77,7 @@ export interface AsLongAsFunction<T extends AsLongAs<T>> {
    * @param exitASAP - if the loop must be interrupted if the condition becomes false inside the loop
    * @returns a DSL component for defining the loop content
    */
-  (condition: SessionToBoolean, counterName: string, exitASAP: boolean): On<T>;
+  (condition: SessionTo<boolean>, counterName: string, exitASAP: boolean): On<T>;
 }
 
 export interface AsLongAs<T extends AsLongAs<T>> {
@@ -86,32 +86,32 @@ export interface AsLongAs<T extends AsLongAs<T>> {
 
 export const asLongAsImpl =
   <J2, J1 extends JvmAsLongAs<J2, any>, T extends AsLongAs<T>>(jvmAsLongAs: J1, wrap: (wrapped: J2) => T) =>
-  (condition: SessionToBoolean | string, arg1?: boolean | string, arg2?: boolean): On<T> => {
+  (condition: SessionTo<boolean> | string, arg1?: boolean | string, arg2?: boolean): On<T> => {
     if (arg2 !== undefined && typeof arg1 === "string") {
       // asLongAs(condition, counterName, exitASAP)
       if (typeof condition === "function") {
-        wrapOn(jvmAsLongAs.asLongAs(wrapCallback(underlyingSessionToBoolean(condition)), arg1, arg2), wrap);
+        wrapOn(jvmAsLongAs.asLongAs(wrapCallback(underlyingSessionTo(condition)), arg1, arg2), wrap);
       } else {
         wrapOn(jvmAsLongAs.asLongAs(condition, arg1, arg2), wrap);
       }
     } else if (typeof arg1 === "string") {
       // asLongAs(condition, counterName)
       if (typeof condition === "function") {
-        wrapOn(jvmAsLongAs.asLongAs(wrapCallback(underlyingSessionToBoolean(condition)), arg1), wrap);
+        wrapOn(jvmAsLongAs.asLongAs(wrapCallback(underlyingSessionTo(condition)), arg1), wrap);
       } else {
         wrapOn(jvmAsLongAs.asLongAs(condition, arg1), wrap);
       }
     } else if (typeof arg1 === "boolean") {
       // asLongAs(condition, exitASAP)
       if (typeof condition === "function") {
-        wrapOn(jvmAsLongAs.asLongAs(wrapCallback(underlyingSessionToBoolean(condition)), arg1), wrap);
+        wrapOn(jvmAsLongAs.asLongAs(wrapCallback(underlyingSessionTo(condition)), arg1), wrap);
       } else {
         wrapOn(jvmAsLongAs.asLongAs(condition, arg1), wrap);
       }
     } else if (arg1 === undefined) {
       // asLongAs(condition)
       if (typeof condition === "function") {
-        wrapOn(jvmAsLongAs.asLongAs(wrapCallback(underlyingSessionToBoolean(condition))), wrap);
+        wrapOn(jvmAsLongAs.asLongAs(wrapCallback(underlyingSessionTo(condition))), wrap);
       } else {
         wrapOn(jvmAsLongAs.asLongAs(condition), wrap);
       }

@@ -1,7 +1,7 @@
 import "@gatling.io/jvm-types";
 import JvmRepeat = io.gatling.javaapi.core.loop.Repeat;
 
-import { SessionToNumber, underlyingSessionToNumber } from "../session";
+import { SessionTo, underlyingSessionTo } from "../session";
 import { wrapCallback } from "../gatlingJvm/callbacks";
 
 import { On, wrapOn } from "./on";
@@ -32,7 +32,7 @@ export interface RepeatFunction<T extends Repeat<T>> {
    * @param counterName - the name of the loop counter, as stored in the Session
    * @returns a DSL component for defining the loop content
    */
-  (times: SessionToNumber, counterName?: string): On<T>;
+  (times: SessionTo<number>, counterName?: string): On<T>;
 }
 
 export interface Repeat<T extends Repeat<T>> {
@@ -41,7 +41,7 @@ export interface Repeat<T extends Repeat<T>> {
 
 export const repeatImpl =
   <J2, J1 extends JvmRepeat<J2, any>, T extends Repeat<T>>(jvmRepeat: J1, wrap: (wrapped: J2) => T) =>
-  (times: number | string | SessionToNumber, counterName?: string): On<T> => {
+  (times: number | string | SessionTo<number>, counterName?: string): On<T> => {
     if (counterName !== undefined) {
       // repeat(times, counterName
       if (typeof times === "number") {
@@ -49,7 +49,7 @@ export const repeatImpl =
       } else if (typeof times === "string") {
         return wrapOn(jvmRepeat.repeat(times, counterName), wrap);
       } else {
-        return wrapOn(jvmRepeat.repeat(wrapCallback(underlyingSessionToNumber(times)), counterName), wrap);
+        return wrapOn(jvmRepeat.repeat(wrapCallback(underlyingSessionTo(times)), counterName), wrap);
       }
     } else {
       // repeat(times)
@@ -58,7 +58,7 @@ export const repeatImpl =
       } else if (typeof times === "string") {
         return wrapOn(jvmRepeat.repeat(times), wrap);
       } else {
-        return wrapOn(jvmRepeat.repeat(wrapCallback(underlyingSessionToNumber(times))), wrap);
+        return wrapOn(jvmRepeat.repeat(wrapCallback(underlyingSessionTo(times))), wrap);
       }
     }
   };

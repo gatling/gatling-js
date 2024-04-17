@@ -2,12 +2,7 @@ import "@gatling.io/jvm-types";
 import JvmAsLongAsDuring = io.gatling.javaapi.core.loop.AsLongAsDuring;
 
 import { Duration, isDuration, toJvmDuration } from "../utils/duration";
-import {
-  SessionToBoolean,
-  SessionToDuration,
-  underlyingSessionToBoolean,
-  underlyingSessionToDuration
-} from "../session";
+import { SessionTo, underlyingSessionTo, underlyingSessionToDuration } from "../session";
 import { wrapCallback } from "../gatlingJvm/callbacks";
 
 import { On, wrapOn } from "./on";
@@ -67,7 +62,7 @@ export interface AsLongAsDuringFunction<T extends AsLongAsDuring<T>> {
    * @param duration - the maximum duration, expressed as a function
    * @returns a DSL component for defining the loop content
    */
-  (condition: string, duration: SessionToDuration): On<T>;
+  (condition: string, duration: SessionTo<Duration>): On<T>;
 
   /**
    * Define a loop that will iterate as long as the condition holds true and a maximum duration
@@ -78,7 +73,7 @@ export interface AsLongAsDuringFunction<T extends AsLongAsDuring<T>> {
    * @param counterName - the name of the loop counter, as stored in the Session
    * @returns a DSL component for defining the loop content
    */
-  (condition: string, duration: SessionToDuration, counterName: string): On<T>;
+  (condition: string, duration: SessionTo<Duration>, counterName: string): On<T>;
 
   /**
    * Define a loop that will iterate as long as the condition holds true and a maximum duration
@@ -90,7 +85,7 @@ export interface AsLongAsDuringFunction<T extends AsLongAsDuring<T>> {
    * inside the loop
    * @returns a DSL component for defining the loop content
    */
-  (condition: string, duration: SessionToDuration, exitASAP: boolean): On<T>;
+  (condition: string, duration: SessionTo<Duration>, exitASAP: boolean): On<T>;
 
   /**
    * Define a loop that will iterate as long as the condition holds true and a maximum duration
@@ -103,7 +98,7 @@ export interface AsLongAsDuringFunction<T extends AsLongAsDuring<T>> {
    * inside the loop
    * @returns a DSL component for defining the loop content
    */
-  (condition: string, duration: SessionToDuration, counterName: string, exitASAP: boolean): On<T>;
+  (condition: string, duration: SessionTo<Duration>, counterName: string, exitASAP: boolean): On<T>;
 
   /**
    * Define a loop that will iterate as long as the condition holds true and a maximum duration
@@ -159,7 +154,7 @@ export interface AsLongAsDuringFunction<T extends AsLongAsDuring<T>> {
    * @param duration - the maximum duration, in seconds or with an explicit time unit
    * @returns a DSL component for defining the loop content
    */
-  (condition: SessionToBoolean, duration: Duration): On<T>;
+  (condition: SessionTo<boolean>, duration: Duration): On<T>;
 
   /**
    * Define a loop that will iterate as long as the condition holds true and a maximum duration
@@ -170,7 +165,7 @@ export interface AsLongAsDuringFunction<T extends AsLongAsDuring<T>> {
    * @param counterName - the name of the loop counter, as stored in the Session
    * @returns a DSL component for defining the loop content
    */
-  (condition: SessionToBoolean, duration: Duration, counterName: string): On<T>;
+  (condition: SessionTo<boolean>, duration: Duration, counterName: string): On<T>;
 
   /**
    * Define a loop that will iterate as long as the condition holds true and a maximum duration
@@ -182,7 +177,7 @@ export interface AsLongAsDuringFunction<T extends AsLongAsDuring<T>> {
    * inside the loop
    * @returns a DSL component for defining the loop content
    */
-  (condition: SessionToBoolean, duration: Duration, exitASAP: boolean): On<T>;
+  (condition: SessionTo<boolean>, duration: Duration, exitASAP: boolean): On<T>;
 
   /**
    * Define a loop that will iterate as long as the condition holds true and a maximum duration
@@ -195,7 +190,7 @@ export interface AsLongAsDuringFunction<T extends AsLongAsDuring<T>> {
    * inside the loop
    * @returns a DSL component for defining the loop content
    */
-  (condition: SessionToBoolean, duration: Duration, counterName: string, exitASAP: boolean): On<T>;
+  (condition: SessionTo<boolean>, duration: Duration, counterName: string, exitASAP: boolean): On<T>;
 
   /**
    * Define a loop that will iterate as long as the condition holds true and a maximum duration
@@ -205,7 +200,7 @@ export interface AsLongAsDuringFunction<T extends AsLongAsDuring<T>> {
    * @param duration - the maximum duration, expressed as a function
    * @returns a DSL component for defining the loop content
    */
-  (condition: SessionToBoolean, duration: SessionToDuration): On<T>;
+  (condition: SessionTo<boolean>, duration: SessionTo<Duration>): On<T>;
 
   /**
    * Define a loop that will iterate as long as the condition holds true and a maximum duration
@@ -216,7 +211,7 @@ export interface AsLongAsDuringFunction<T extends AsLongAsDuring<T>> {
    * @param counterName - the name of the loop counter, as stored in the Session
    * @returns a DSL component for defining the loop content
    */
-  (condition: SessionToBoolean, duration: SessionToDuration, counterName: string): On<T>;
+  (condition: SessionTo<boolean>, duration: SessionTo<Duration>, counterName: string): On<T>;
 
   /**
    * Define a loop that will iterate as long as the condition holds true and a maximum duration
@@ -228,7 +223,7 @@ export interface AsLongAsDuringFunction<T extends AsLongAsDuring<T>> {
    * inside the loop
    * @returns a DSL component for defining the loop content
    */
-  (condition: SessionToBoolean, duration: SessionToDuration, exitASAP: boolean): On<T>;
+  (condition: SessionTo<boolean>, duration: SessionTo<Duration>, exitASAP: boolean): On<T>;
 
   /**
    * Define a loop that will iterate as long as the condition holds true and a maximum duration
@@ -241,7 +236,7 @@ export interface AsLongAsDuringFunction<T extends AsLongAsDuring<T>> {
    * inside the loop
    * @returns a DSL component for defining the loop content
    */
-  (condition: SessionToBoolean, duration: SessionToDuration, counterName: string, exitASAP: boolean): On<T>;
+  (condition: SessionTo<boolean>, duration: SessionTo<Duration>, counterName: string, exitASAP: boolean): On<T>;
 }
 
 export interface AsLongAsDuring<T extends AsLongAsDuring<T>> {
@@ -254,15 +249,15 @@ export const asLongAsDuringImpl =
     wrap: (wrapped: J2) => T
   ) =>
   (
-    condition: SessionToBoolean | string,
-    duration: Duration | SessionToDuration | string,
+    condition: SessionTo<boolean> | string,
+    duration: Duration | SessionTo<Duration> | string,
     arg2?: string | boolean,
     arg3?: boolean
   ): On<T> => {
     if (arg3 !== undefined && typeof arg2 === "string") {
       // asLongAsDuring(condition, duration, counterName, exitASAP)
       if (typeof condition === "function") {
-        const wrappedCondition = wrapCallback(underlyingSessionToBoolean(condition));
+        const wrappedCondition = wrapCallback(underlyingSessionTo(condition));
         if (isDuration(duration)) {
           wrapOn(jvmAsLongAsDuring.asLongAsDuring(wrappedCondition, toJvmDuration(duration), arg2, arg3), wrap);
         } else if (typeof duration === "function") {
@@ -294,7 +289,7 @@ export const asLongAsDuringImpl =
     } else if (typeof arg2 === "string") {
       // asLongAsDuring(condition, duration, counterName)
       if (typeof condition === "function") {
-        const wrappedCondition = wrapCallback(underlyingSessionToBoolean(condition));
+        const wrappedCondition = wrapCallback(underlyingSessionTo(condition));
         if (isDuration(duration)) {
           wrapOn(jvmAsLongAsDuring.asLongAsDuring(wrappedCondition, toJvmDuration(duration), arg2), wrap);
         } else if (typeof duration === "function") {
@@ -320,7 +315,7 @@ export const asLongAsDuringImpl =
     } else if (typeof arg2 === "boolean") {
       // asLongAsDuring(condition, duration, exitASAP)
       if (typeof condition === "function") {
-        const wrappedCondition = wrapCallback(underlyingSessionToBoolean(condition));
+        const wrappedCondition = wrapCallback(underlyingSessionTo(condition));
         if (isDuration(duration)) {
           wrapOn(jvmAsLongAsDuring.asLongAsDuring(wrappedCondition, toJvmDuration(duration), arg2), wrap);
         } else if (typeof duration === "function") {
@@ -346,7 +341,7 @@ export const asLongAsDuringImpl =
     } else if (arg2 === undefined) {
       // asLongAsDuring(condition, duration)
       if (typeof condition === "function") {
-        const wrappedCondition = wrapCallback(underlyingSessionToBoolean(condition));
+        const wrappedCondition = wrapCallback(underlyingSessionTo(condition));
         if (isDuration(duration)) {
           wrapOn(jvmAsLongAsDuring.asLongAsDuring(wrappedCondition, toJvmDuration(duration)), wrap);
         } else if (typeof duration === "function") {

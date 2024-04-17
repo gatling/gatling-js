@@ -2,7 +2,7 @@ import "@gatling.io/jvm-types";
 import JvmDoSwitch = io.gatling.javaapi.core.condition.DoSwitch;
 import JvmOn = io.gatling.javaapi.core.condition.DoSwitch$On;
 
-import { SessionToUnknown, underlyingSessionToUnknown } from "../session";
+import { SessionTo, underlyingSessionTo } from "../session";
 import { wrapCallback } from "../gatlingJvm/callbacks";
 
 import { ChoiceWithKey } from "./choices";
@@ -30,7 +30,7 @@ export interface DoSwitchFunction<T extends DoSwitch<T>> {
    * @param actual - the actual value expressed as a function
    * @returns a DSL component for defining the "choices"
    */
-  (actual: SessionToUnknown): On<T>;
+  (actual: SessionTo<unknown>): On<T>;
 }
 
 export interface DoSwitch<T extends DoSwitch<T>> {
@@ -39,10 +39,10 @@ export interface DoSwitch<T extends DoSwitch<T>> {
 
 export const doSwitchImpl =
   <J2, J1 extends JvmDoSwitch<J2, any>, T extends DoSwitch<T>>(jvmDoSwitch: J1, wrap: (wrapped: J2) => T) =>
-  (actual: string | SessionToUnknown): On<T> =>
+  (actual: string | SessionTo<unknown>): On<T> =>
     wrapOn(
       typeof actual === "function"
-        ? jvmDoSwitch.doSwitch(wrapCallback(underlyingSessionToUnknown(actual)))
+        ? jvmDoSwitch.doSwitch(wrapCallback(underlyingSessionTo(actual)))
         : jvmDoSwitch.doSwitch(actual),
       wrap
     );

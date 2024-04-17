@@ -2,7 +2,7 @@ import "@gatling.io/jvm-types";
 import JvmDuring = io.gatling.javaapi.core.loop.During;
 
 import { Duration, isDuration, toJvmDuration } from "../utils/duration";
-import { SessionToDuration, underlyingSessionToDuration } from "../session";
+import { SessionTo, underlyingSessionToDuration } from "../session";
 import { wrapCallback } from "../gatlingJvm/callbacks";
 
 import { On, wrapOn } from "./on";
@@ -99,7 +99,7 @@ export interface DuringFunction<T extends During<T>> {
    * @param duration - the maximum duration as a function
    * @returns a DSL component for defining the loop content
    */
-  (duration: SessionToDuration): On<T>;
+  (duration: SessionTo<Duration>): On<T>;
 
   /**
    * Define a loop that will iterate for a given duration. The condition is evaluated at the end of
@@ -109,7 +109,7 @@ export interface DuringFunction<T extends During<T>> {
    * @param exitASAP - if the loop must be interrupted if the max duration is reached inside the loop
    * @returns a DSL component for defining the loop content
    */
-  (duration: SessionToDuration, exitASAP: boolean): On<T>;
+  (duration: SessionTo<Duration>, exitASAP: boolean): On<T>;
 
   /**
    * Define a loop that will iterate for a given duration. The condition is evaluated at the end of
@@ -119,7 +119,7 @@ export interface DuringFunction<T extends During<T>> {
    * @param counterName - the name of the loop counter, as stored in the Session
    * @returns a DSL component for defining the loop content
    */
-  (duration: SessionToDuration, counterName: string): On<T>;
+  (duration: SessionTo<Duration>, counterName: string): On<T>;
 
   /**
    * Define a loop that will iterate for a given duration. The condition is evaluated at the end of
@@ -130,7 +130,7 @@ export interface DuringFunction<T extends During<T>> {
    * @param exitASAP - if the loop must be interrupted if the max duration is reached inside the loop
    * @returns a DSL component for defining the loop content
    */
-  (duration: SessionToDuration, counterName: string, exitASAP: boolean): On<T>;
+  (duration: SessionTo<Duration>, counterName: string, exitASAP: boolean): On<T>;
 }
 
 export interface During<T extends During<T>> {
@@ -139,7 +139,7 @@ export interface During<T extends During<T>> {
 
 export const duringImpl =
   <J2, J1 extends JvmDuring<J2, any>, T extends During<T>>(jvmDuring: J1, wrap: (wrapped: J2) => T) =>
-  (duration: Duration | SessionToDuration | string, arg1?: boolean | string, arg2?: boolean): On<T> => {
+  (duration: Duration | SessionTo<Duration> | string, arg1?: boolean | string, arg2?: boolean): On<T> => {
     if (arg2 !== undefined && typeof arg1 === "string") {
       // during(duration, counterName, exitASAP)
       if (isDuration(duration)) {

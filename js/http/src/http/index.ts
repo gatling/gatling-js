@@ -26,7 +26,7 @@ const wrapHttpRequestActionBuilder = (_underlying: JvmHttpRequestActionBuilder):
   _underlying
 });
 
-type Name = string | core.SessionToString;
+type Name = string | core.SessionTo<string>;
 
 export interface Http {
   get(url: Name): HttpRequestActionBuilder;
@@ -36,15 +36,14 @@ const wrapHttp = (jvmHttp: JvmHttp): Http => ({
   get: (url: Name): HttpRequestActionBuilder => {
     // Handle overloading
     const jvmHttpRequestActionBuilder =
-      typeof url === "string" ? jvmHttp.get(url) : jvmHttp.get(core.underlyingSessionToString(url));
+      typeof url === "string" ? jvmHttp.get(url) : jvmHttp.get(core.underlyingSessionTo(url));
     return wrapHttpRequestActionBuilder(jvmHttpRequestActionBuilder);
   }
 });
 
 const httpApply = (name: Name): Http => {
   // Handle overloading
-  const jvmHttp =
-    typeof name === "string" ? JvmHttpDsl.http(name) : JvmHttpDsl.http(core.underlyingSessionToString(name));
+  const jvmHttp = typeof name === "string" ? JvmHttpDsl.http(name) : JvmHttpDsl.http(core.underlyingSessionTo(name));
   return wrapHttp(jvmHttp);
 };
 

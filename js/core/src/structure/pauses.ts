@@ -3,7 +3,7 @@ import JvmPauses = io.gatling.javaapi.core.pause.Pauses;
 import JvmPauseType = io.gatling.javaapi.core.PauseType;
 
 import { Duration, isDuration, toJvmDuration } from "../utils/duration";
-import { SessionToDuration, SessionToNumber, underlyingSessionToDuration, underlyingSessionToNumber } from "../session";
+import { SessionTo, underlyingSessionTo, underlyingSessionToDuration } from "../session";
 import { wrapCallback } from "../gatlingJvm/callbacks";
 
 export type PauseType =
@@ -12,7 +12,7 @@ export type PauseType =
   | "Exponential"
   | { type: "NormalWithPercentageDuration"; stdDev: number }
   | { type: "NormalWithStdDevDuration"; stdDev: Duration }
-  | { type: "Custom"; f: SessionToNumber }
+  | { type: "Custom"; f: SessionTo<number> }
   | { type: "UniformPercentage"; plusOrMinus: number }
   | { type: "UniformDuration"; plusOrMinus: Duration };
 
@@ -43,7 +43,7 @@ export interface PauseFunction<T extends Pauses<T>> {
    * @param duration - the pause duration as a function
    * @returns a new StructureBuilder
    */
-  (duration: SessionToDuration): T;
+  (duration: SessionTo<Duration>): T;
 
   /**
    * Attach a pause
@@ -71,7 +71,7 @@ export interface PauseFunction<T extends Pauses<T>> {
    * @param pauseType - the type of pause
    * @returns a new StructureBuilder
    */
-  (duration: SessionToDuration, pauseType: PauseType): T;
+  (duration: SessionTo<Duration>, pauseType: PauseType): T;
 
   /**
    * Attach a pause computed randomly between 2 values
@@ -98,7 +98,7 @@ export interface PauseFunction<T extends Pauses<T>> {
    * @param max the pause maximum as a function
    * @return a new StructureBuilder
    */
-  (min: SessionToDuration, max: SessionToDuration): T;
+  (min: SessionTo<Duration>, max: SessionTo<Duration>): T;
 
   /**
    * Attach a pause computed randomly between 2 values
@@ -129,7 +129,7 @@ export interface PauseFunction<T extends Pauses<T>> {
    * @param pauseType - the type of pause
    * @return a new StructureBuilder
    */
-  (min: SessionToDuration, max: SessionToDuration, pauseType: PauseType): T;
+  (min: SessionTo<Duration>, max: SessionTo<Duration>, pauseType: PauseType): T;
 }
 
 export interface Pauses<T extends Pauses<T>> {
@@ -139,8 +139,8 @@ export interface Pauses<T extends Pauses<T>> {
 export const pauseImpl =
   <J2, J1 extends JvmPauses<J2, any>, T extends Pauses<T>>(jvmGroups: J1, wrap: (wrapped: J2) => T) =>
   (
-    arg0: Duration | SessionToDuration | string,
-    arg1?: Duration | SessionToDuration | string | PauseType,
+    arg0: Duration | SessionTo<Duration> | string,
+    arg1?: Duration | SessionTo<Duration> | string | PauseType,
     arg2?: PauseType
   ): T => {
     const toJvmPauseType = (pauseType: PauseType): JvmPauseType => {
@@ -157,7 +157,7 @@ export const pauseImpl =
       } else if (pauseType.type === "NormalWithStdDevDuration") {
         return JvmCoreDsl.normalPausesWithStdDevDuration(toJvmDuration(pauseType.stdDev));
       } else if (pauseType.type === "Custom") {
-        return JvmCoreDsl.customPauses(wrapCallback(underlyingSessionToNumber(pauseType.f)));
+        return JvmCoreDsl.customPauses(wrapCallback(underlyingSessionTo(pauseType.f)));
       } else if (pauseType.type === "UniformPercentage") {
         return JvmCoreDsl.uniformPausesPlusOrMinusPercentage(pauseType.plusOrMinus);
       } else if (pauseType.type === "UniformDuration") {
