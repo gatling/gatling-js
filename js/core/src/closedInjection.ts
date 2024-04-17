@@ -1,8 +1,8 @@
 import "@gatling.io/jvm-types";
 import { CoreDsl as JvmCoreDsl } from "@gatling.io/jvm-types";
 
-import { Wrapper } from "../common";
-import { TimeUnit, toJvmDuration } from "../utils/duration";
+import { Wrapper } from "./common";
+import { Duration, toJvmDuration } from "./utils/duration";
 
 import JvmClosedInjectionStep = io.gatling.javaapi.core.ClosedInjectionStep;
 import JvmClosedInjectionStepConstant = io.gatling.javaapi.core.ClosedInjectionStep$Constant;
@@ -16,12 +16,11 @@ export interface ClosedInjectionStep extends Wrapper<JvmClosedInjectionStep> {}
 const wrapClosedInjectionStep = (_underlying: JvmClosedInjectionStep): ClosedInjectionStep => ({ _underlying });
 
 export interface ClosedInjectionStepConstant extends Wrapper<JvmClosedInjectionStepConstant> {
-  during(duration: number, timeUnit?: TimeUnit): ClosedInjectionStep;
+  during(duration: Duration): ClosedInjectionStep;
 }
 const wrapClosedInjectionStepConstant = (_underlying: JvmClosedInjectionStepConstant): ClosedInjectionStepConstant => ({
   _underlying,
-  during: (duration: number, timeUnit?: TimeUnit) =>
-    wrapClosedInjectionStep(_underlying.during(toJvmDuration(duration, timeUnit)))
+  during: (duration: Duration) => wrapClosedInjectionStep(_underlying.during(toJvmDuration(duration)))
 });
 
 export interface ClosedInjectionStepRamp extends Wrapper<JvmClosedInjectionStepRamp> {
@@ -33,12 +32,11 @@ const wrapClosedInjectionStepRamp = (_underlying: JvmClosedInjectionStepRamp): C
 });
 
 export interface ClosedInjectionStepRampTo extends Wrapper<JvmClosedInjectionStepRampTo> {
-  during(duration: number, timeUnit?: TimeUnit): ClosedInjectionStep;
+  during(duration: Duration): ClosedInjectionStep;
 }
 const wrapClosedInjectionStepRampTo = (_underlying: JvmClosedInjectionStepRampTo): ClosedInjectionStepRampTo => ({
   _underlying,
-  during: (duration: number, timeUnit?: TimeUnit) =>
-    wrapClosedInjectionStep(_underlying.during(toJvmDuration(duration, timeUnit)))
+  during: (duration: Duration) => wrapClosedInjectionStep(_underlying.during(toJvmDuration(duration)))
 });
 
 export interface ClosedInjectionStepStairs extends Wrapper<JvmClosedInjectionStepStairs> {
@@ -50,27 +48,27 @@ const wrapClosedInjectionStepStairs = (_underlying: JvmClosedInjectionStepStairs
 });
 
 export interface ClosedInjectionStepStairsWithTime extends Wrapper<JvmClosedInjectionStepStairsWithTime> {
-  eachLevelLasting(duration: number, timeUnit?: TimeUnit): ClosedInjectionStepComposite;
+  eachLevelLasting(duration: Duration): ClosedInjectionStepComposite;
 }
 const wrapClosedInjectionStepStairsWithTime = (
   _underlying: JvmClosedInjectionStepStairsWithTime
 ): ClosedInjectionStepStairsWithTime => ({
   _underlying,
-  eachLevelLasting: (duration: number, timeUnit?: TimeUnit) =>
-    wrapClosedInjectionStepComposite(_underlying.eachLevelLasting(toJvmDuration(duration, timeUnit)))
+  eachLevelLasting: (duration: Duration) =>
+    wrapClosedInjectionStepComposite(_underlying.eachLevelLasting(toJvmDuration(duration)))
 });
 
 export interface ClosedInjectionStepComposite extends ClosedInjectionStep {
   startingFrom(startingUsers: number): ClosedInjectionStepComposite;
-  separatedByRampsLasting(duration: number, timeUnit?: TimeUnit): ClosedInjectionStepComposite;
+  separatedByRampsLasting(duration: Duration): ClosedInjectionStepComposite;
 }
 const wrapClosedInjectionStepComposite = (
   _underlying: JvmClosedInjectionStepComposite
 ): ClosedInjectionStepComposite => ({
   _underlying,
   startingFrom: (startingUsers: number) => wrapClosedInjectionStepComposite(_underlying.startingFrom(startingUsers)),
-  separatedByRampsLasting: (duration: number, timeUnit?: TimeUnit) =>
-    wrapClosedInjectionStepComposite(_underlying.separatedByRampsLasting(toJvmDuration(duration, timeUnit)))
+  separatedByRampsLasting: (duration: Duration) =>
+    wrapClosedInjectionStepComposite(_underlying.separatedByRampsLasting(toJvmDuration(duration)))
 });
 
 export const constantConcurrentUsers = (users: number): ClosedInjectionStepConstant =>

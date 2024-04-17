@@ -433,9 +433,6 @@ declare namespace io.gatling.javaapi.core {
     forever<T>(arg0: string): io.gatling.javaapi.core.loop.Forever$On<T>;
     group<T>(arg0: Func<Session, string>): io.gatling.javaapi.core.group.Groups$On<T>;
     group<T>(arg0: string): io.gatling.javaapi.core.group.Groups$On<T>;
-    make(
-      arg0: Func<any /*io.gatling.core.structure.ChainBuilder*/, any /*io.gatling.core.structure.ChainBuilder*/>
-    ): ChainBuilder;
     pace<T>(arg0: Func<Session, java.time.Duration>): T;
     pace<T>(arg0: Func<Session, java.time.Duration>, arg1: Func<Session, java.time.Duration>): T;
     pace<T>(arg0: Func<Session, java.time.Duration>, arg1: Func<Session, java.time.Duration>, arg2: string): T;
@@ -1081,9 +1078,6 @@ declare namespace io.gatling.javaapi.core {
     injectClosed(arg0: java.util.List<ClosedInjectionStep>): PopulationBuilder;
     injectOpen(...arg0: OpenInjectionStep[]): PopulationBuilder;
     injectOpen(arg0: java.util.List<OpenInjectionStep>): PopulationBuilder;
-    make(
-      arg0: Func<any /*io.gatling.core.structure.ScenarioBuilder*/, any /*io.gatling.core.structure.ScenarioBuilder*/>
-    ): ScenarioBuilder;
     pace<T>(arg0: Func<Session, java.time.Duration>): T;
     pace<T>(arg0: Func<Session, java.time.Duration>, arg1: Func<Session, java.time.Duration>): T;
     pace<T>(arg0: Func<Session, java.time.Duration>, arg1: Func<Session, java.time.Duration>, arg2: string): T;
@@ -1563,31 +1557,6 @@ declare namespace io.gatling.javaapi.core {
     forever(arg0: string): io.gatling.javaapi.core.loop.Forever$On<T>;
     group(arg0: Func<Session, string>): io.gatling.javaapi.core.group.Groups$On<T>;
     group(arg0: string): io.gatling.javaapi.core.group.Groups$On<T>;
-    make(arg0: Func<W, W>): T;
-    make(arg0: Func<W, W>): T;
-    make(arg0: Func<W, W>): T;
-    make(arg0: Func<W, W>): T;
-    make(arg0: Func<W, W>): T;
-    make(arg0: Func<W, W>): T;
-    make(arg0: Func<W, W>): T;
-    make(arg0: Func<W, W>): T;
-    make(arg0: Func<W, W>): T;
-    make(arg0: Func<W, W>): T;
-    make(arg0: Func<W, W>): T;
-    make(arg0: Func<W, W>): T;
-    make(arg0: Func<W, W>): T;
-    make(arg0: Func<W, W>): T;
-    make(arg0: Func<W, W>): T;
-    make(arg0: Func<W, W>): T;
-    make(arg0: Func<W, W>): T;
-    make(arg0: Func<W, W>): T;
-    make(arg0: Func<W, W>): T;
-    make(arg0: Func<W, W>): T;
-    make(arg0: Func<W, W>): T;
-    make(arg0: Func<W, W>): T;
-    make(arg0: Func<W, W>): T;
-    make(arg0: Func<W, W>): T;
-    make(arg0: Func<W, W>): T;
     pace(arg0: Func<Session, java.time.Duration>): T;
     pace(arg0: Func<Session, java.time.Duration>, arg1: Func<Session, java.time.Duration>): T;
     pace(arg0: Func<Session, java.time.Duration>, arg1: Func<Session, java.time.Duration>, arg2: string): T;
@@ -1809,7 +1778,6 @@ declare namespace io.gatling.javaapi.core.condition {
   interface DoIf<T, W> {
     doIf(arg0: Func<io.gatling.javaapi.core.Session, boolean | null>): DoIf$Then<T>;
     doIf(arg0: string): DoIf$Then<T>;
-    make(arg0: Func<W, W>): T;
   } // end DoIf
 } // end namespace io.gatling.javaapi.core.condition
 declare namespace io.gatling.javaapi.core.condition {
@@ -1826,7 +1794,6 @@ declare namespace io.gatling.javaapi.core.condition {
     doIfEquals(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, any /*java.lang.Object*/>): DoIfEquals$Then<T>;
     doIfEquals(arg0: string, arg1: any /*java.lang.Object*/): DoIfEquals$Then<T>;
     doIfEquals(arg0: string, arg1: string): DoIfEquals$Then<T>;
-    make(arg0: Func<W, W>): T;
   } // end DoIfEquals
 } // end namespace io.gatling.javaapi.core.condition
 declare namespace io.gatling.javaapi.core.condition {
@@ -1849,51 +1816,43 @@ declare namespace io.gatling.javaapi.core.condition {
     ): DoIfEqualsOrElse$Then<T>;
     doIfEqualsOrElse(arg0: string, arg1: any /*java.lang.Object*/): DoIfEqualsOrElse$Then<T>;
     doIfEqualsOrElse(arg0: string, arg1: string): DoIfEqualsOrElse$Then<T>;
-    make(arg0: Func<W, W>): T;
   } // end DoIfEqualsOrElse
 } // end namespace io.gatling.javaapi.core.condition
 declare namespace io.gatling.javaapi.core.condition {
   interface DoIfOrElse<T, W> {
     doIfOrElse(arg0: Func<io.gatling.javaapi.core.Session, boolean | null>): DoIfOrElse$Then<T>;
     doIfOrElse(arg0: string): DoIfOrElse$Then<T>;
-    make(arg0: Func<W, W>): T;
   } // end DoIfOrElse
 } // end namespace io.gatling.javaapi.core.condition
 declare namespace io.gatling.javaapi.core.condition {
   interface DoSwitch<T, W> {
     doSwitch(arg0: Func<io.gatling.javaapi.core.Session, any /*java.lang.Object*/>): DoSwitch$On<T>;
     doSwitch(arg0: string): DoSwitch$On<T>;
-    make(arg0: Func<W, W>): T;
   } // end DoSwitch
 } // end namespace io.gatling.javaapi.core.condition
 declare namespace io.gatling.javaapi.core.condition {
   interface DoSwitchOrElse<T, W> {
     doSwitchOrElse(arg0: Func<io.gatling.javaapi.core.Session, any /*java.lang.Object*/>): DoSwitchOrElse$On<T>;
     doSwitchOrElse(arg0: string): DoSwitchOrElse$On<T>;
-    make(arg0: Func<W, W>): T;
   } // end DoSwitchOrElse
 } // end namespace io.gatling.javaapi.core.condition
 declare namespace io.gatling.javaapi.core.condition {
   interface RandomSwitch<T, W> {
-    make(arg0: Func<W, W>): T;
     randomSwitch(): RandomSwitch$On<T>;
   } // end RandomSwitch
 } // end namespace io.gatling.javaapi.core.condition
 declare namespace io.gatling.javaapi.core.condition {
   interface RandomSwitchOrElse<T, W> {
-    make(arg0: Func<W, W>): T;
     randomSwitchOrElse(): RandomSwitchOrElse$On<T>;
   } // end RandomSwitchOrElse
 } // end namespace io.gatling.javaapi.core.condition
 declare namespace io.gatling.javaapi.core.condition {
   interface RoundRobinSwitch<T, W> {
-    make(arg0: Func<W, W>): T;
     roundRobinSwitch(): RoundRobinSwitch$On<T>;
   } // end RoundRobinSwitch
 } // end namespace io.gatling.javaapi.core.condition
 declare namespace io.gatling.javaapi.core.condition {
   interface UniformRandomSwitch<T, W> {
-    make(arg0: Func<W, W>): T;
     uniformRandomSwitch(): UniformRandomSwitch$On<T>;
   } // end UniformRandomSwitch
 } // end namespace io.gatling.javaapi.core.condition
@@ -1918,7 +1877,6 @@ declare namespace io.gatling.javaapi.core.error {
     exitHereIf(arg0: Func<io.gatling.javaapi.core.Session, boolean | null>): T;
     exitHereIf(arg0: string): T;
     exitHereIfFailed(): T;
-    make(arg0: Func<W, W>): T;
     stopInjector(arg0: Func<io.gatling.javaapi.core.Session, string>): T;
     stopInjector(arg0: string): T;
     stopInjectorIf(
@@ -1941,7 +1899,6 @@ declare namespace io.gatling.javaapi.core.exec {
     exec(arg0: Executable, ...arg1: Executable[]): T;
     exec(arg0: Func<io.gatling.javaapi.core.Session, io.gatling.javaapi.core.Session>): T;
     exec(arg0: java.util.List<io.gatling.javaapi.core.ChainBuilder>): T;
-    make(arg0: Func<W, W>): T;
   } // end Execs
 } // end namespace io.gatling.javaapi.core.exec
 declare namespace io.gatling.javaapi.core.exec {
@@ -1972,7 +1929,6 @@ declare namespace io.gatling.javaapi.core.feed {
     ): T;
     feed(arg0: java.util.Iterator<java.util.Map<string, any /*java.lang.Object*/>>, arg1: int): T;
     feed(arg0: java.util.Iterator<java.util.Map<string, any /*java.lang.Object*/>>, arg1: string): T;
-    make(arg0: Func<W, W>): T;
   } // end Feeds
 } // end namespace io.gatling.javaapi.core.feed
 declare namespace io.gatling.javaapi.core.group {
@@ -1986,7 +1942,6 @@ declare namespace io.gatling.javaapi.core.group {
   interface Groups<T, W> {
     group(arg0: Func<io.gatling.javaapi.core.Session, string>): Groups$On<T>;
     group(arg0: string): Groups$On<T>;
-    make(arg0: Func<W, W>): T;
   } // end Groups
 } // end namespace io.gatling.javaapi.core.group
 declare namespace io.gatling.javaapi.core.loop {
@@ -2055,7 +2010,6 @@ declare namespace io.gatling.javaapi.core.loop {
     asLongAs(arg0: string, arg1: boolean): AsLongAs$On<T>;
     asLongAs(arg0: string, arg1: string): AsLongAs$On<T>;
     asLongAs(arg0: string, arg1: string, arg2: boolean): AsLongAs$On<T>;
-    make(arg0: Func<W, W>): T;
   } // end AsLongAs
 } // end namespace io.gatling.javaapi.core.loop
 declare namespace io.gatling.javaapi.core.loop {
@@ -2146,7 +2100,6 @@ declare namespace io.gatling.javaapi.core.loop {
     asLongAsDuring(arg0: string, arg1: string, arg2: boolean): AsLongAsDuring$On<T>;
     asLongAsDuring(arg0: string, arg1: string, arg2: string): AsLongAsDuring$On<T>;
     asLongAsDuring(arg0: string, arg1: string, arg2: string, arg3: boolean): AsLongAsDuring$On<T>;
-    make(arg0: Func<W, W>): T;
   } // end AsLongAsDuring
 } // end namespace io.gatling.javaapi.core.loop
 declare namespace io.gatling.javaapi.core.loop {
@@ -2155,7 +2108,6 @@ declare namespace io.gatling.javaapi.core.loop {
     doWhile(arg0: Func<io.gatling.javaapi.core.Session, boolean | null>, arg1: string): DoWhile$On<T>;
     doWhile(arg0: string): DoWhile$On<T>;
     doWhile(arg0: string, arg1: string): DoWhile$On<T>;
-    make(arg0: Func<W, W>): T;
   } // end DoWhile
 } // end namespace io.gatling.javaapi.core.loop
 declare namespace io.gatling.javaapi.core.loop {
@@ -2246,7 +2198,6 @@ declare namespace io.gatling.javaapi.core.loop {
     doWhileDuring(arg0: string, arg1: string, arg2: boolean): DoWhileDuring$On<T>;
     doWhileDuring(arg0: string, arg1: string, arg2: string): DoWhileDuring$On<T>;
     doWhileDuring(arg0: string, arg1: string, arg2: string, arg3: boolean): DoWhileDuring$On<T>;
-    make(arg0: Func<W, W>): T;
   } // end DoWhileDuring
 } // end namespace io.gatling.javaapi.core.loop
 declare namespace io.gatling.javaapi.core.loop {
@@ -2267,7 +2218,6 @@ declare namespace io.gatling.javaapi.core.loop {
     during(arg0: string, arg1: boolean): During$On<T>;
     during(arg0: string, arg1: string): During$On<T>;
     during(arg0: string, arg1: string, arg2: boolean): During$On<T>;
-    make(arg0: Func<W, W>): T;
   } // end During
 } // end namespace io.gatling.javaapi.core.loop
 declare namespace io.gatling.javaapi.core.loop {
@@ -2285,19 +2235,16 @@ declare namespace io.gatling.javaapi.core.loop {
     foreach(arg0: java.util.List<any /*java.lang.Object*/>, arg1: string, arg2: string): ForEach$On<T>;
     foreach(arg0: string, arg1: string): ForEach$On<T>;
     foreach(arg0: string, arg1: string, arg2: string): ForEach$On<T>;
-    make(arg0: Func<W, W>): T;
   } // end ForEach
 } // end namespace io.gatling.javaapi.core.loop
 declare namespace io.gatling.javaapi.core.loop {
   interface Forever<T, W> {
     forever(): Forever$On<T>;
     forever(arg0: string): Forever$On<T>;
-    make(arg0: Func<W, W>): T;
   } // end Forever
 } // end namespace io.gatling.javaapi.core.loop
 declare namespace io.gatling.javaapi.core.loop {
   interface Repeat<T, W> {
-    make(arg0: Func<W, W>): T;
     repeat(arg0: Func<io.gatling.javaapi.core.Session, int | null>): Repeat$On<T>;
     repeat(arg0: Func<io.gatling.javaapi.core.Session, int | null>, arg1: string): Repeat$On<T>;
     repeat(arg0: int): Repeat$On<T>;
@@ -2308,7 +2255,6 @@ declare namespace io.gatling.javaapi.core.loop {
 } // end namespace io.gatling.javaapi.core.loop
 declare namespace io.gatling.javaapi.core.pause {
   interface Paces<T, W> {
-    make(arg0: Func<W, W>): T;
     pace(arg0: Func<io.gatling.javaapi.core.Session, java.time.Duration>): T;
     pace(
       arg0: Func<io.gatling.javaapi.core.Session, java.time.Duration>,
@@ -2335,7 +2281,6 @@ declare namespace io.gatling.javaapi.core.pause {
 } // end namespace io.gatling.javaapi.core.pause
 declare namespace io.gatling.javaapi.core.pause {
   interface Pauses<T, W> {
-    make(arg0: Func<W, W>): T;
     pause(arg0: Func<io.gatling.javaapi.core.Session, java.time.Duration>): T;
     pause(
       arg0: Func<io.gatling.javaapi.core.Session, java.time.Duration>,
@@ -2363,7 +2308,6 @@ declare namespace io.gatling.javaapi.core.pause {
 } // end namespace io.gatling.javaapi.core.pause
 declare namespace io.gatling.javaapi.core.pause {
   interface RendezVous<T, W> {
-    make(arg0: Func<W, W>): T;
     rendezVous(arg0: int): T;
   } // end RendezVous
 } // end namespace io.gatling.javaapi.core.pause
@@ -2888,12 +2832,6 @@ declare namespace io.gatling.javaapi.http {
     header<T>(arg0: any /*java.lang.CharSequence*/, arg1: string): T;
     headers<T>(arg0: java.util.Map<any /*java.lang.CharSequence*/, string>): T;
     ignoreProtocolHeaders<T>(): T;
-    make(
-      arg0: Func<
-        any /*io.gatling.http.request.builder.sse.SseConnectRequestBuilder*/,
-        any /*io.gatling.http.request.builder.sse.SseConnectRequestBuilder*/
-      >
-    ): SseConnectActionBuilder;
     multivaluedQueryParam<T>(
       arg0: Func<io.gatling.javaapi.core.Session, string>,
       arg1: Func<io.gatling.javaapi.core.Session, java.util.List<any /*java.lang.Object*/>>
@@ -2974,12 +2912,6 @@ declare namespace io.gatling.javaapi.http {
     await(arg0: long): any /*io.gatling.javaapi.http.SseAwaitActionBuilder$On*/;
     await(arg0: string): any /*io.gatling.javaapi.http.SseAwaitActionBuilder$On*/;
     equals(arg0: any /*java.lang.Object*/): boolean;
-    make(
-      arg0: Func<
-        any /*io.gatling.http.action.sse.SseSetCheckBuilder*/,
-        any /*io.gatling.http.action.sse.SseSetCheckBuilder*/
-      >
-    ): SseSetCheckActionBuilder;
     toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
     toString(): string;
   } // end SseSetCheckActionBuilder
@@ -3020,12 +2952,6 @@ declare namespace io.gatling.javaapi.http {
     await(arg0: long): any /*io.gatling.javaapi.http.WsAwaitActionBuilder$On*/;
     await(arg0: string): any /*io.gatling.javaapi.http.WsAwaitActionBuilder$On*/;
     equals(arg0: any /*java.lang.Object*/): boolean;
-    make(
-      arg0: Func<
-        any /*io.gatling.http.action.ws.WsSendBinaryFrameBuilder*/,
-        any /*io.gatling.http.action.ws.WsSendBinaryFrameBuilder*/
-      >
-    ): WsSendBinaryActionBuilder;
     toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
     toString(): string;
   } // end WsSendBinaryActionBuilder
@@ -3040,12 +2966,6 @@ declare namespace io.gatling.javaapi.http {
     await(arg0: long): any /*io.gatling.javaapi.http.WsAwaitActionBuilder$On*/;
     await(arg0: string): any /*io.gatling.javaapi.http.WsAwaitActionBuilder$On*/;
     equals(arg0: any /*java.lang.Object*/): boolean;
-    make(
-      arg0: Func<
-        any /*io.gatling.http.action.ws.WsSendTextFrameBuilder*/,
-        any /*io.gatling.http.action.ws.WsSendTextFrameBuilder*/
-      >
-    ): WsSendTextActionBuilder;
     toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
     toString(): string;
   } // end WsSendTextActionBuilder
@@ -3059,7 +2979,6 @@ declare namespace io.gatling.javaapi.http {
     await(arg0: java.time.Duration): any /*io.gatling.javaapi.http.SseAwaitActionBuilder$On*/;
     await(arg0: long): any /*io.gatling.javaapi.http.SseAwaitActionBuilder$On*/;
     await(arg0: string): any /*io.gatling.javaapi.http.SseAwaitActionBuilder$On*/;
-    make(arg0: Func<W, W>): T;
     toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
   } // end SseAwaitActionBuilder
 } // end namespace io.gatling.javaapi.http
@@ -3072,7 +2991,6 @@ declare namespace io.gatling.javaapi.http {
     await(arg0: java.time.Duration): any /*io.gatling.javaapi.http.WsAwaitActionBuilder$On*/;
     await(arg0: long): any /*io.gatling.javaapi.http.WsAwaitActionBuilder$On*/;
     await(arg0: string): any /*io.gatling.javaapi.http.WsAwaitActionBuilder$On*/;
-    make(arg0: Func<W, W>): T;
     toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
   } // end WsAwaitActionBuilder
 } // end namespace io.gatling.javaapi.http

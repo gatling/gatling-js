@@ -1,9 +1,6 @@
 {
   "compilerOptions": {
     "baseUrl": "./",
-    "paths": {
-      "@src/*": ["src/*"]
-    },
     "rootDir": "src",
     "outDir": "target",
     "lib": ["es2021", "dom"],

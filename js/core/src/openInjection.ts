@@ -1,8 +1,8 @@
 import "@gatling.io/jvm-types";
 import { CoreDsl as JvmCoreDsl } from "@gatling.io/jvm-types";
 
-import { Wrapper } from "../common";
-import { TimeUnit, toJvmDuration } from "../utils/duration";
+import { Wrapper } from "./common";
+import { Duration, toJvmDuration } from "./utils/duration";
 
 import JvmOpenInjectionStep = io.gatling.javaapi.core.OpenInjectionStep;
 import JvmOpenInjectionStepRamp = io.gatling.javaapi.core.OpenInjectionStep$Ramp;
@@ -30,32 +30,29 @@ const wrapConstantRateOpenInjectionStep = (
 });
 
 export interface OpenInjectionStepRamp extends Wrapper<JvmOpenInjectionStepRamp> {
-  during(duration: number, timeUnit?: TimeUnit): OpenInjectionStep;
+  during(duration: Duration): OpenInjectionStep;
 }
 const wrapOpenInjectionStepRamp = (_underlying: JvmOpenInjectionStepRamp): OpenInjectionStepRamp => ({
   _underlying,
-  during: (duration: number, timeUnit?: TimeUnit) =>
-    wrapOpenInjectionStep(_underlying.during(toJvmDuration(duration, timeUnit)))
+  during: (duration: Duration) => wrapOpenInjectionStep(_underlying.during(toJvmDuration(duration)))
 });
 
 export interface OpenInjectionStepStressPeak extends Wrapper<JvmOpenInjectionStepStressPeak> {
-  during(duration: number, timeUnit?: TimeUnit): OpenInjectionStep;
+  during(duration: Duration): OpenInjectionStep;
 }
 const wrapOpenInjectionStepStressPeak = (_underlying: JvmOpenInjectionStepStressPeak): OpenInjectionStepStressPeak => ({
   _underlying,
-  during: (duration: number, timeUnit?: TimeUnit) =>
-    wrapOpenInjectionStep(_underlying.during(toJvmDuration(duration, timeUnit)))
+  during: (duration: Duration) => wrapOpenInjectionStep(_underlying.during(toJvmDuration(duration)))
 });
 
 export interface OpenInjectionStepConstantRate extends Wrapper<JvmOpenInjectionStepConstantRate> {
-  during(duration: number, timeUnit?: TimeUnit): ConstantRateOpenInjectionStep;
+  during(duration: Duration): ConstantRateOpenInjectionStep;
 }
 const wrapOpenInjectionStepConstantRate = (
   _underlying: JvmOpenInjectionStepConstantRate
 ): OpenInjectionStepConstantRate => ({
   _underlying,
-  during: (duration: number, timeUnit?: TimeUnit) =>
-    wrapConstantRateOpenInjectionStep(_underlying.during(toJvmDuration(duration, timeUnit)))
+  during: (duration: Duration) => wrapConstantRateOpenInjectionStep(_underlying.during(toJvmDuration(duration)))
 });
 
 export interface OpenInjectionStepRampRate extends Wrapper<JvmOpenInjectionStepRampRate> {
@@ -67,14 +64,13 @@ const wrapOpenInjectionStepRampRate = (_underlying: JvmOpenInjectionStepRampRate
 });
 
 export interface OpenInjectionStepRampRateDuring extends Wrapper<JvmOpenInjectionStepRampRateDuring> {
-  during(duration: number, timeUnit?: TimeUnit): RampRateOpenInjectionStep;
+  during(duration: Duration): RampRateOpenInjectionStep;
 }
 const wrapOpenInjectionStepRampRateDuring = (
   _underlying: JvmOpenInjectionStepRampRateDuring
 ): OpenInjectionStepRampRateDuring => ({
   _underlying,
-  during: (duration: number, timeUnit?: TimeUnit) =>
-    wrapRampRateOpenInjectionStep(_underlying.during(toJvmDuration(duration, timeUnit)))
+  during: (duration: Duration) => wrapRampRateOpenInjectionStep(_underlying.during(toJvmDuration(duration)))
 });
 
 export interface RampRateOpenInjectionStep extends OpenInjectionStep {
@@ -96,27 +92,27 @@ const wrapOpenInjectionStepStairs = (_underlying: JvmOpenInjectionStepStairs): O
 });
 
 export interface OpenInjectionStepStairsTimes extends Wrapper<JvmOpenInjectionStepStairsTimes> {
-  eachLevelLasting(duration: number, timeUnit?: TimeUnit): OpenInjectionStepStairsComposite;
+  eachLevelLasting(duration: Duration): OpenInjectionStepStairsComposite;
 }
 const wrapOpenInjectionStepStairsTimes = (
   _underlying: JvmOpenInjectionStepStairsTimes
 ): OpenInjectionStepStairsTimes => ({
   _underlying,
-  eachLevelLasting: (duration: number, timeUnit?: TimeUnit) =>
-    wrapOpenInjectionStepStairsComposite(_underlying.eachLevelLasting(toJvmDuration(duration, timeUnit)))
+  eachLevelLasting: (duration: Duration) =>
+    wrapOpenInjectionStepStairsComposite(_underlying.eachLevelLasting(toJvmDuration(duration)))
 });
 
 export interface OpenInjectionStepStairsComposite extends OpenInjectionStep {
   startingFrom(startingRate: number): OpenInjectionStepStairsComposite;
-  separatedByRampsLasting(duration: number, timeUnit?: TimeUnit): OpenInjectionStepStairsComposite;
+  separatedByRampsLasting(duration: Duration): OpenInjectionStepStairsComposite;
 }
 const wrapOpenInjectionStepStairsComposite = (
   _underlying: JvmOpenInjectionStepStairsComposite
 ): OpenInjectionStepStairsComposite => ({
   _underlying,
   startingFrom: (startingRate: number) => wrapOpenInjectionStepStairsComposite(_underlying.startingFrom(startingRate)),
-  separatedByRampsLasting: (duration: number, timeUnit?: TimeUnit) =>
-    wrapOpenInjectionStepStairsComposite(_underlying.separatedByRampsLasting(toJvmDuration(duration, timeUnit)))
+  separatedByRampsLasting: (duration: Duration) =>
+    wrapOpenInjectionStepStairsComposite(_underlying.separatedByRampsLasting(toJvmDuration(duration)))
 });
 
 export const rampUsers = (users: number): OpenInjectionStepRamp =>
@@ -128,7 +124,7 @@ export const constantUsersPerSec = (rate: number): OpenInjectionStepConstantRate
   wrapOpenInjectionStepConstantRate(JvmCoreDsl.constantUsersPerSec(rate));
 export const rampUsersPerSec = (rate: number): OpenInjectionStepRampRate =>
   wrapOpenInjectionStepRampRate(JvmCoreDsl.rampUsersPerSec(rate));
-export const nothingFor = (duration: number, timeUnit?: TimeUnit): OpenInjectionStep =>
-  wrapOpenInjectionStep(JvmCoreDsl.nothingFor(toJvmDuration(duration, timeUnit)));
+export const nothingFor = (duration: Duration): OpenInjectionStep =>
+  wrapOpenInjectionStep(JvmCoreDsl.nothingFor(toJvmDuration(duration)));
 export const incrementUsersPerSec = (rateIncrement: number): OpenInjectionStepStairs =>
   wrapOpenInjectionStepStairs(JvmCoreDsl.incrementUsersPerSec(rateIncrement));

@@ -1,0 +1,182 @@
+import "@gatling.io/jvm-types";
+import JvmDuring = io.gatling.javaapi.core.loop.During;
+
+import { Duration, isDuration, toJvmDuration } from "../utils/duration";
+import { SessionToDuration, underlyingSessionToDuration } from "../session";
+import { wrapCallback } from "../gatlingJvm/callbacks";
+
+import { On, wrapOn } from "./on";
+
+export interface DuringFunction<T extends During<T>> {
+  /**
+   * Define a loop that will iterate for a given duration. The condition is evaluated at the end of
+   * the loop.
+   *
+   * @param duration - the maximum duration, in seconds or with an explicit time unit
+   * @returns a DSL component for defining the loop content
+   */
+  (duration: Duration): On<T>;
+
+  /**
+   * Define a loop that will iterate for a given duration. The condition is evaluated at the end of
+   * the loop.
+   *
+   * @param duration - the maximum duration, in seconds or with an explicit time unit
+   * @param exitASAP - if the loop must be interrupted if the max duration is reached inside the loop
+   * @returns a DSL component for defining the loop content
+   */
+  (duration: Duration, exitASAP: boolean): On<T>;
+
+  /**
+   * Define a loop that will iterate for a given duration. The condition is evaluated at the end of
+   * the loop.
+   *
+   * @param duration - the maximum duration, in seconds or with an explicit time unit
+   * @param counterName - the name of the loop counter, as stored in the Session
+   * @returns a DSL component for defining the loop content
+   */
+  (duration: Duration, counterName: string): On<T>;
+
+  /**
+   * Define a loop that will iterate for a given duration. The condition is evaluated at the end of
+   * the loop.
+   *
+   * @param duration - the maximum duration, in seconds or with an explicit time unit
+   * @param counterName - the name of the loop counter, as stored in the Session
+   * @param exitASAP - if the loop must be interrupted if the max duration is reached inside the loop
+   * @returns a DSL component for defining the loop content
+   */
+  (duration: Duration, counterName: string, exitASAP: boolean): On<T>;
+
+  /**
+   * Define a loop that will iterate for a given duration. The condition is evaluated at the end of
+   * the loop.
+   *
+   * @param duration - the maximum duration as a Gatling Expression Language string. This expression must resolve to
+   * either a number, then the unit will be seconds, or an object with an explicit time unit.
+   * @returns a DSL component for defining the loop content
+   */
+  (duration: string): On<T>;
+
+  /**
+   * Define a loop that will iterate for a given duration. The condition is evaluated at the end of
+   * the loop.
+   *
+   * @param duration - the maximum duration as a Gatling Expression Language string. This expression must resolve to
+   * either a number, then the unit will be seconds, or an object with an explicit time unit.
+   * @param exitASAP - if the loop must be interrupted if the max duration is reached inside the loop
+   * @returns a DSL component for defining the loop content
+   */
+  (duration: string, exitASAP: boolean): On<T>;
+
+  /**
+   * Define a loop that will iterate for a given duration. The condition is evaluated at the end of
+   * the loop.
+   *
+   * @param duration - the maximum duration as a Gatling Expression Language string. This expression must resolve to
+   * either a number, then the unit will be seconds, or an object with an explicit time unit.
+   * @param counterName - the name of the loop counter, as stored in the Session
+   * @returns a DSL component for defining the loop content
+   */
+  (duration: string, counterName: string): On<T>;
+
+  /**
+   * Define a loop that will iterate for a given duration. The condition is evaluated at the end of
+   * the loop.
+   *
+   * @param duration - the maximum duration as a Gatling Expression Language string. This expression must resolve to
+   * either a number, then the unit will be seconds, or an object with an explicit time unit.
+   * @param counterName - the name of the loop counter, as stored in the Session
+   * @param exitASAP - if the loop must be interrupted if the max duration is reached inside the loop
+   * @returns a DSL component for defining the loop content
+   */
+  (duration: string, counterName: string, exitASAP: boolean): On<T>;
+
+  /**
+   * Define a loop that will iterate for a given duration. The condition is evaluated at the end of
+   * the loop.
+   *
+   * @param duration - the maximum duration as a function
+   * @returns a DSL component for defining the loop content
+   */
+  (duration: SessionToDuration): On<T>;
+
+  /**
+   * Define a loop that will iterate for a given duration. The condition is evaluated at the end of
+   * the loop.
+   *
+   * @param duration - the maximum duration as a function
+   * @param exitASAP - if the loop must be interrupted if the max duration is reached inside the loop
+   * @returns a DSL component for defining the loop content
+   */
+  (duration: SessionToDuration, exitASAP: boolean): On<T>;
+
+  /**
+   * Define a loop that will iterate for a given duration. The condition is evaluated at the end of
+   * the loop.
+   *
+   * @param duration - the maximum duration as a function
+   * @param counterName - the name of the loop counter, as stored in the Session
+   * @returns a DSL component for defining the loop content
+   */
+  (duration: SessionToDuration, counterName: string): On<T>;
+
+  /**
+   * Define a loop that will iterate for a given duration. The condition is evaluated at the end of
+   * the loop.
+   *
+   * @param duration - the maximum duration as a function
+   * @param counterName - the name of the loop counter, as stored in the Session
+   * @param exitASAP - if the loop must be interrupted if the max duration is reached inside the loop
+   * @returns a DSL component for defining the loop content
+   */
+  (duration: SessionToDuration, counterName: string, exitASAP: boolean): On<T>;
+}
+
+export interface During<T extends During<T>> {
+  during: DuringFunction<T>;
+}
+
+export const duringImpl =
+  <J2, J1 extends JvmDuring<J2, any>, T extends During<T>>(jvmDuring: J1, wrap: (wrapped: J2) => T) =>
+  (duration: Duration | SessionToDuration | string, arg1?: boolean | string, arg2?: boolean): On<T> => {
+    if (arg2 !== undefined && typeof arg1 === "string") {
+      // during(duration, counterName, exitASAP)
+      if (isDuration(duration)) {
+        wrapOn(jvmDuring.during(toJvmDuration(duration), arg1, arg2), wrap);
+      } else if (typeof duration === "function") {
+        wrapOn(jvmDuring.during(wrapCallback(underlyingSessionToDuration(duration)), arg1, arg2), wrap);
+      } else {
+        wrapOn(jvmDuring.during(duration, arg1, arg2), wrap);
+      }
+    } else if (typeof arg1 === "string") {
+      // during(duration, counterName)
+      if (isDuration(duration)) {
+        wrapOn(jvmDuring.during(toJvmDuration(duration), arg1), wrap);
+      } else if (typeof duration === "function") {
+        wrapOn(jvmDuring.during(wrapCallback(underlyingSessionToDuration(duration)), arg1), wrap);
+      } else {
+        wrapOn(jvmDuring.during(duration, arg1), wrap);
+      }
+    } else if (typeof arg1 === "boolean") {
+      // during(duration, exitASAP)
+      if (isDuration(duration)) {
+        wrapOn(jvmDuring.during(toJvmDuration(duration), arg1), wrap);
+      } else if (typeof duration === "function") {
+        wrapOn(jvmDuring.during(wrapCallback(underlyingSessionToDuration(duration)), arg1), wrap);
+      } else {
+        wrapOn(jvmDuring.during(duration, arg1), wrap);
+      }
+    } else if (arg1 === undefined) {
+      // during(duration)
+      if (isDuration(duration)) {
+        wrapOn(jvmDuring.during(toJvmDuration(duration)), wrap);
+      } else if (typeof duration === "function") {
+        wrapOn(jvmDuring.during(wrapCallback(underlyingSessionToDuration(duration))), wrap);
+      } else {
+        wrapOn(jvmDuring.during(duration), wrap);
+      }
+    }
+
+    throw Error(`during() called with invalid arguments ${duration}, ${arg1}, ${arg2}`);
+  };

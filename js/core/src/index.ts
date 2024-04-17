@@ -1,8 +1,16 @@
 import * as jvm from "./gatlingJvm/app";
-import { ProtocolBuilder, PopulationBuilder } from "./core";
 
-// no export *
-export * from "./core";
+import { PopulationBuilder } from "./population";
+import { ProtocolBuilder } from "./protocol";
+
+// FIXME no export *
+export * from "./closedInjection";
+export * from "./openInjection";
+export * from "./population";
+export * from "./protocol";
+export * from "./scenario";
+export * from "./session";
+export * from "./structure";
 
 export interface SetUp {
   protocols(...protocols: ProtocolBuilder[]): SetUp;
