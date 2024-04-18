@@ -15,6 +15,18 @@ export * from "./protocol";
 export * from "./scenario";
 export * from "./session";
 export * from "./structure";
+export {
+  FeederBuilder,
+  FileBasedFeederBuilder,
+  BatchableFeederBuilder,
+  csv,
+  ssv,
+  tsv,
+  separatedValues,
+  jsonFile,
+  jsonUrl,
+  arrayFeeder
+} from "./feederBuilder";
 
 export interface SetUp {
   protocols(...protocols: ProtocolBuilder[]): SetUp;

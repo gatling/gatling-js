@@ -14,4 +14,4 @@ export const wrapCallback = <T, R>(f: Callback<T, R>): Callback<T, R> => {
 
 export const wrapBiCallback = <T, U, R>(f: BiCallback<T, U, R>): BiCallback<T, U, R> => {
   return CallbackWrapper.wrapBiFunction(f);
-}
+};

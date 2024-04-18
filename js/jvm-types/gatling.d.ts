@@ -1728,6 +1728,37 @@ declare namespace io.gatling.javaapi.core {
   } // end CheckBuilder
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
+  interface FeederBuilder$Batchable<T> /* extends FeederBuilder$FileBased<T>*/ {
+    asScala(): any /*scala.Function0*/;
+    batch(): FeederBuilder$Batchable<T>;
+    batch(arg0: int): FeederBuilder$Batchable<T>;
+    circular(): FeederBuilder$Batchable<T>;
+    eager(): FeederBuilder$Batchable<T>;
+    queue(): FeederBuilder$Batchable<T>;
+    random(): FeederBuilder$Batchable<T>;
+    readRecords(): java.util.List<java.util.Map<string, any /*java.lang.Object*/>>;
+    recordsCount(): int;
+    shard(): FeederBuilder$Batchable<T>;
+    shuffle(): FeederBuilder$Batchable<T>;
+    transform(arg0: BiFunction<string, T, any /*java.lang.Object*/>): FeederBuilder<any /*java.lang.Object*/>;
+    unzip(): FeederBuilder$Batchable<T>;
+  } // end FeederBuilder$Batchable
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
+  interface FeederBuilder$FileBased<T> /* extends FeederBuilder<T>*/ {
+    asScala(): any /*scala.Function0*/;
+    circular(): FeederBuilder$FileBased<T>;
+    queue(): FeederBuilder$FileBased<T>;
+    random(): FeederBuilder$FileBased<T>;
+    readRecords(): java.util.List<java.util.Map<string, any /*java.lang.Object*/>>;
+    recordsCount(): int;
+    shard(): FeederBuilder$FileBased<T>;
+    shuffle(): FeederBuilder$FileBased<T>;
+    transform(arg0: BiFunction<string, T, any /*java.lang.Object*/>): FeederBuilder<any /*java.lang.Object*/>;
+    unzip(): FeederBuilder$FileBased<T>;
+  } // end FeederBuilder$FileBased
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
   interface FeederBuilder<T> {
     asScala(): any /*scala.Function0*/;
     circular(): FeederBuilder<T>;

@@ -8,6 +8,7 @@ export interface RunOptions {
   jvmClasspath: string;
   entryPointName: string;
   bundleFilePath: string;
+  resourcesDirPath: string;
 }
 
 export const run = async (options: RunOptions): Promise<void> => {
@@ -26,7 +27,7 @@ export const run = async (options: RunOptions): Promise<void> => {
     "-XX:MaxTrivialSize=12",
     "-Xmx1G",
     "-classpath",
-    `${bundleDir}:${options.jvmClasspath}`,
+    `${bundleDir}:${options.resourcesDirPath}:${options.jvmClasspath}`,
     `-Dgatling.js.bundle.resourcePath=${bundleFileName}`,
     `-Dgatling.js.entryPointName=${options.entryPointName}`,
     "io.gatling.app.Gatling",

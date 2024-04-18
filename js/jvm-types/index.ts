@@ -579,19 +579,19 @@ interface CoreDslStatic {
   constantConcurrentUsers(arg0: int): io.gatling.javaapi.core.ClosedInjectionStep$Constant;
   rampConcurrentUsers(arg0: int): io.gatling.javaapi.core.ClosedInjectionStep$Ramp;
   incrementConcurrentUsers(arg0: int): io.gatling.javaapi.core.ClosedInjectionStep$Stairs;
-  csv(arg0: string): any /*io.gatling.javaapi.core.FeederBuilder$Batchable*/;
-  csv(arg0: string, arg1: any /*char*/): any /*io.gatling.javaapi.core.FeederBuilder$Batchable*/;
-  separatedValues(arg0: string, arg1: any /*char*/): any /*io.gatling.javaapi.core.FeederBuilder$Batchable*/;
+  csv(arg0: string): io.gatling.javaapi.core.FeederBuilder$Batchable<string>;
+  csv(arg0: string, arg1: any /*char*/): io.gatling.javaapi.core.FeederBuilder$Batchable<string>;
+  separatedValues(arg0: string, arg1: any /*char*/): io.gatling.javaapi.core.FeederBuilder$Batchable<string>;
   separatedValues(
     arg0: string,
     arg1: any /*char*/,
     arg2: any /*char*/
-  ): any /*io.gatling.javaapi.core.FeederBuilder$Batchable*/;
-  ssv(arg0: string): any /*io.gatling.javaapi.core.FeederBuilder$Batchable*/;
-  ssv(arg0: string, arg1: any /*char*/): any /*io.gatling.javaapi.core.FeederBuilder$Batchable*/;
-  tsv(arg0: string): any /*io.gatling.javaapi.core.FeederBuilder$Batchable*/;
-  tsv(arg0: string, arg1: any /*char*/): any /*io.gatling.javaapi.core.FeederBuilder$Batchable*/;
-  jsonFile(arg0: string): any /*io.gatling.javaapi.core.FeederBuilder$FileBased*/;
+  ): io.gatling.javaapi.core.FeederBuilder$Batchable<string>;
+  ssv(arg0: string): io.gatling.javaapi.core.FeederBuilder$Batchable<string>;
+  ssv(arg0: string, arg1: any /*char*/): io.gatling.javaapi.core.FeederBuilder$Batchable<string>;
+  tsv(arg0: string): io.gatling.javaapi.core.FeederBuilder$Batchable<string>;
+  tsv(arg0: string, arg1: any /*char*/): io.gatling.javaapi.core.FeederBuilder$Batchable<string>;
+  jsonFile(arg0: string): io.gatling.javaapi.core.FeederBuilder$FileBased<any /*java.lang.Object*/>;
   arrayFeeder(
     arg0: [java.util.Map<string, any /*java.lang.Object*/>]
   ): io.gatling.javaapi.core.FeederBuilder<any /*java.lang.Object*/>;
@@ -1286,6 +1286,22 @@ interface ExecutableStatic {
 
 export const Executable: ExecutableStatic = Java.type("io.gatling.javaapi.core.exec.Executable");
 
+interface FeederBuilder$BatchableStatic {
+  readonly class: any;
+}
+
+export const FeederBuilder$Batchable: FeederBuilder$BatchableStatic = Java.type(
+  "io.gatling.javaapi.core.FeederBuilder$Batchable"
+);
+
+interface FeederBuilder$FileBasedStatic {
+  readonly class: any;
+}
+
+export const FeederBuilder$FileBased: FeederBuilder$FileBasedStatic = Java.type(
+  "io.gatling.javaapi.core.FeederBuilder$FileBased"
+);
+
 interface FeederBuilderStatic {
   readonly class: any;
 }
@@ -1382,7 +1398,7 @@ interface HttpDslStatic {
   header(
     arg0: Func<io.gatling.javaapi.core.Session, any /*java.lang.CharSequence*/>
   ): any /*io.gatling.javaapi.core.CheckBuilder$MultipleFind*/;
-  sitemap(arg0: string): any /*io.gatling.javaapi.core.FeederBuilder$FileBased*/;
+  sitemap(arg0: string): io.gatling.javaapi.core.FeederBuilder$FileBased<string>;
   Cookie(arg0: string, arg1: string): io.gatling.javaapi.http.AddCookie;
   Cookie(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, string>): io.gatling.javaapi.http.AddCookie;
   Cookie(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): io.gatling.javaapi.http.AddCookie;
@@ -1472,6 +1488,142 @@ interface HttpDslStatic {
 }
 
 export const HttpDsl: HttpDslStatic = Java.type("io.gatling.javaapi.http.HttpDsl");
+
+interface HttpHeadersStatic {
+  readonly class: any;
+  equalsIgnoreCase(arg0: any /*java.lang.CharSequence*/, arg1: any /*java.lang.CharSequence*/): boolean;
+  is100ContinueExpected(arg0: any /*io.netty.handler.codec.http.HttpMessage*/): boolean;
+  isContentLengthSet(arg0: any /*io.netty.handler.codec.http.HttpMessage*/): boolean;
+  isKeepAlive(arg0: any /*io.netty.handler.codec.http.HttpMessage*/): boolean;
+  isTransferEncodingChunked(arg0: any /*io.netty.handler.codec.http.HttpMessage*/): boolean;
+  getIntHeader(arg0: any /*io.netty.handler.codec.http.HttpMessage*/, arg1: any /*java.lang.CharSequence*/): int;
+  getIntHeader(
+    arg0: any /*io.netty.handler.codec.http.HttpMessage*/,
+    arg1: any /*java.lang.CharSequence*/,
+    arg2: int
+  ): int;
+  getIntHeader(arg0: any /*io.netty.handler.codec.http.HttpMessage*/, arg1: string): int;
+  getIntHeader(arg0: any /*io.netty.handler.codec.http.HttpMessage*/, arg1: string, arg2: int): int;
+  newEntity(arg0: string): any /*java.lang.CharSequence*/;
+  getHeader(arg0: any /*io.netty.handler.codec.http.HttpMessage*/, arg1: any /*java.lang.CharSequence*/): string;
+  getHeader(
+    arg0: any /*io.netty.handler.codec.http.HttpMessage*/,
+    arg1: any /*java.lang.CharSequence*/,
+    arg2: string
+  ): string;
+  getHeader(arg0: any /*io.netty.handler.codec.http.HttpMessage*/, arg1: string): string;
+  getHeader(arg0: any /*io.netty.handler.codec.http.HttpMessage*/, arg1: string, arg2: string): string;
+  getHost(arg0: any /*io.netty.handler.codec.http.HttpMessage*/): string;
+  getHost(arg0: any /*io.netty.handler.codec.http.HttpMessage*/, arg1: string): string;
+  getDate(arg0: any /*io.netty.handler.codec.http.HttpMessage*/): any /*java.util.Date*/;
+  getDate(arg0: any /*io.netty.handler.codec.http.HttpMessage*/, arg1: any /*java.util.Date*/): any /*java.util.Date*/;
+  getDateHeader(
+    arg0: any /*io.netty.handler.codec.http.HttpMessage*/,
+    arg1: any /*java.lang.CharSequence*/
+  ): any /*java.util.Date*/;
+  getDateHeader(
+    arg0: any /*io.netty.handler.codec.http.HttpMessage*/,
+    arg1: any /*java.lang.CharSequence*/,
+    arg2: any /*java.util.Date*/
+  ): any /*java.util.Date*/;
+  getDateHeader(arg0: any /*io.netty.handler.codec.http.HttpMessage*/, arg1: string): any /*java.util.Date*/;
+  getDateHeader(
+    arg0: any /*io.netty.handler.codec.http.HttpMessage*/,
+    arg1: string,
+    arg2: any /*java.util.Date*/
+  ): any /*java.util.Date*/;
+  getContentLength(arg0: any /*io.netty.handler.codec.http.HttpMessage*/): long;
+  getContentLength(arg0: any /*io.netty.handler.codec.http.HttpMessage*/, arg1: long): long;
+  addDateHeader(
+    arg0: any /*io.netty.handler.codec.http.HttpMessage*/,
+    arg1: any /*java.lang.CharSequence*/,
+    arg2: any /*java.util.Date*/
+  ): void;
+  addDateHeader(
+    arg0: any /*io.netty.handler.codec.http.HttpMessage*/,
+    arg1: string,
+    arg2: any /*java.util.Date*/
+  ): void;
+  addHeader(
+    arg0: any /*io.netty.handler.codec.http.HttpMessage*/,
+    arg1: any /*java.lang.CharSequence*/,
+    arg2: any /*java.lang.Object*/
+  ): void;
+  addHeader(arg0: any /*io.netty.handler.codec.http.HttpMessage*/, arg1: string, arg2: any /*java.lang.Object*/): void;
+  addIntHeader(
+    arg0: any /*io.netty.handler.codec.http.HttpMessage*/,
+    arg1: any /*java.lang.CharSequence*/,
+    arg2: int
+  ): void;
+  addIntHeader(arg0: any /*io.netty.handler.codec.http.HttpMessage*/, arg1: string, arg2: int): void;
+  clearHeaders(arg0: any /*io.netty.handler.codec.http.HttpMessage*/): void;
+  encodeAscii(arg0: any /*java.lang.CharSequence*/, arg1: any /*io.netty.buffer.ByteBuf*/): void;
+  removeHeader(arg0: any /*io.netty.handler.codec.http.HttpMessage*/, arg1: any /*java.lang.CharSequence*/): void;
+  removeHeader(arg0: any /*io.netty.handler.codec.http.HttpMessage*/, arg1: string): void;
+  removeTransferEncodingChunked(arg0: any /*io.netty.handler.codec.http.HttpMessage*/): void;
+  set100ContinueExpected(arg0: any /*io.netty.handler.codec.http.HttpMessage*/): void;
+  set100ContinueExpected(arg0: any /*io.netty.handler.codec.http.HttpMessage*/, arg1: boolean): void;
+  setContentLength(arg0: any /*io.netty.handler.codec.http.HttpMessage*/, arg1: long): void;
+  setDate(arg0: any /*io.netty.handler.codec.http.HttpMessage*/, arg1: any /*java.util.Date*/): void;
+  setDateHeader(
+    arg0: any /*io.netty.handler.codec.http.HttpMessage*/,
+    arg1: any /*java.lang.CharSequence*/,
+    arg2: java.lang.Iterable<any /*java.util.Date*/>
+  ): void;
+  setDateHeader(
+    arg0: any /*io.netty.handler.codec.http.HttpMessage*/,
+    arg1: any /*java.lang.CharSequence*/,
+    arg2: any /*java.util.Date*/
+  ): void;
+  setDateHeader(
+    arg0: any /*io.netty.handler.codec.http.HttpMessage*/,
+    arg1: string,
+    arg2: java.lang.Iterable<any /*java.util.Date*/>
+  ): void;
+  setDateHeader(
+    arg0: any /*io.netty.handler.codec.http.HttpMessage*/,
+    arg1: string,
+    arg2: any /*java.util.Date*/
+  ): void;
+  setHeader(
+    arg0: any /*io.netty.handler.codec.http.HttpMessage*/,
+    arg1: any /*java.lang.CharSequence*/,
+    arg2: java.lang.Iterable<any /*java.lang.Object*/>
+  ): void;
+  setHeader(
+    arg0: any /*io.netty.handler.codec.http.HttpMessage*/,
+    arg1: any /*java.lang.CharSequence*/,
+    arg2: any /*java.lang.Object*/
+  ): void;
+  setHeader(
+    arg0: any /*io.netty.handler.codec.http.HttpMessage*/,
+    arg1: string,
+    arg2: java.lang.Iterable<any /*java.lang.Object*/>
+  ): void;
+  setHeader(arg0: any /*io.netty.handler.codec.http.HttpMessage*/, arg1: string, arg2: any /*java.lang.Object*/): void;
+  setHost(arg0: any /*io.netty.handler.codec.http.HttpMessage*/, arg1: any /*java.lang.CharSequence*/): void;
+  setHost(arg0: any /*io.netty.handler.codec.http.HttpMessage*/, arg1: string): void;
+  setIntHeader(
+    arg0: any /*io.netty.handler.codec.http.HttpMessage*/,
+    arg1: any /*java.lang.CharSequence*/,
+    arg2: int
+  ): void;
+  setIntHeader(
+    arg0: any /*io.netty.handler.codec.http.HttpMessage*/,
+    arg1: any /*java.lang.CharSequence*/,
+    arg2: java.lang.Iterable<int | null>
+  ): void;
+  setIntHeader(arg0: any /*io.netty.handler.codec.http.HttpMessage*/, arg1: string, arg2: int): void;
+  setIntHeader(
+    arg0: any /*io.netty.handler.codec.http.HttpMessage*/,
+    arg1: string,
+    arg2: java.lang.Iterable<int | null>
+  ): void;
+  setKeepAlive(arg0: any /*io.netty.handler.codec.http.HttpMessage*/, arg1: boolean): void;
+  setTransferEncodingChunked(arg0: any /*io.netty.handler.codec.http.HttpMessage*/): void;
+}
+
+export const HttpHeaders: HttpHeadersStatic = Java.type("io.netty.handler.codec.http.HttpHeaders");
 
 interface HttpProtocolBuilderStatic {
   readonly class: any;
@@ -1722,6 +1874,67 @@ interface RequestActionBuilderStatic {
 export const RequestActionBuilder: RequestActionBuilderStatic = Java.type(
   "io.gatling.javaapi.http.RequestActionBuilder"
 );
+
+interface RequestBodyStatic {
+  readonly class: any;
+}
+
+export const RequestBody: RequestBodyStatic = Java.type("io.gatling.http.client.body.RequestBody");
+
+interface RequestStatic {
+  readonly class: any;
+  new (
+    arg0: string,
+    arg1: any /*io.netty.handler.codec.http.HttpMethod*/,
+    arg2: any /*io.gatling.http.client.uri.Uri*/,
+    arg3: io.netty.handler.codec.http.HttpHeaders,
+    arg4: java.util.List<any /*io.netty.handler.codec.http.cookie.Cookie*/>,
+    arg5: io.gatling.http.client.body.RequestBody,
+    arg6: long,
+    arg7: string,
+    arg8: boolean,
+    arg9: any /*java.net.InetAddress*/,
+    arg10: any /*java.net.InetAddress*/,
+    arg11: any /*io.gatling.http.client.realm.Realm*/,
+    arg12: any /*io.gatling.http.client.proxy.ProxyServer*/,
+    arg13: Func<io.gatling.http.client.Request, io.gatling.http.client.Request>,
+    arg14: any /*io.gatling.http.client.resolver.InetAddressNameResolver*/,
+    arg15: boolean,
+    arg16: any /*io.gatling.http.client.Http2PriorKnowledge*/,
+    arg17: string
+  ): io.gatling.http.client.Request;
+}
+
+export const Request: RequestStatic = Java.type("io.gatling.http.client.Request");
+
+interface ResponseStatic {
+  readonly class: any;
+  new (
+    request: io.gatling.http.client.Request,
+    startTimestamp: long,
+    endTimestamp: long,
+    status: any /*io.netty.handler.codec.http.HttpResponseStatus*/,
+    headers: io.netty.handler.codec.http.HttpHeaders,
+    body: any /*io.gatling.http.response.ResponseBody*/,
+    checksums: any /*scala.collection.immutable.Map*/,
+    isHttp2: boolean
+  ): io.gatling.http.response.Response;
+  apply(
+    request: io.gatling.http.client.Request,
+    startTimestamp: long,
+    endTimestamp: long,
+    status: any /*io.netty.handler.codec.http.HttpResponseStatus*/,
+    headers: io.netty.handler.codec.http.HttpHeaders,
+    body: any /*io.gatling.http.response.ResponseBody*/,
+    checksums: any /*scala.collection.immutable.Map*/,
+    isHttp2: boolean
+  ): io.gatling.http.response.Response;
+  curried(): any /*scala.Function1*/;
+  tupled(): any /*scala.Function1*/;
+  unapply(x$0: io.gatling.http.response.Response): any /*scala.Option*/;
+}
+
+export const Response: ResponseStatic = Java.type("io.gatling.http.response.Response");
 
 interface RoundRobinSwitch$OnStatic {
   readonly class: any;

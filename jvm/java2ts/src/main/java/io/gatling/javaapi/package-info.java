@@ -41,6 +41,8 @@
         @Type(value = io.gatling.javaapi.core.ClosedInjectionStep.StairsWithTime.class, export = true),
         @Type(value = io.gatling.javaapi.core.ClosedInjectionStep.Composite.class, export = true),
         @Type(value = io.gatling.javaapi.core.FeederBuilder.class, export = true),
+        @Type(value = io.gatling.javaapi.core.FeederBuilder.FileBased.class, export = true),
+        @Type(value = io.gatling.javaapi.core.FeederBuilder.Batchable.class, export = true),
         @Type(value = io.gatling.javaapi.core.Filter.class, export = true),
         @Type(value = io.gatling.javaapi.core.OpenInjectionStep.class, export = true),
         @Type(value = io.gatling.javaapi.core.OpenInjectionStep.Ramp.class, export = true),

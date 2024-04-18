@@ -13,7 +13,6 @@ const wrapBody = (_underlying: JvmBody): Body => ({
 });
 
 export interface IStringBody {
-
   /**
    * Create a body from a String.
    *

@@ -9,7 +9,7 @@ import { JvmStructureBuilderLike } from "./jvmStructureBuilder";
 
 import { ExecFunction, Execs, execImpl, Executable } from "./execs";
 import { GroupFunction, Groups, groupImpl } from "./groups";
-// feeds // TODO
+import { FeedFunction, Feeds, feedImpl } from "./feeds";
 import { PauseFunction, Pauses, pauseImpl } from "./pauses";
 import { Paces, paceImpl } from "./paces";
 import { RendezVous, rendezVousImpl } from "./rendezVous";
@@ -34,7 +34,7 @@ import { Errors, errorsImpl } from "./errors";
 export interface StructureBuilder<T extends StructureBuilder<T>>
   extends Execs<T>,
     Groups<T>,
-    // Feeds<T>, // TODO
+    Feeds<T>,
     Pauses<T>,
     Paces<T>,
     RendezVous<T>,
@@ -64,7 +64,7 @@ export const structureBuilderImpl = <J2, J1 extends JvmStructureBuilderLike<J2, 
 ): StructureBuilder<T> => ({
   exec: execImpl(jvm, wrap),
   group: groupImpl(jvm, wrap),
-  // feed: ..., // TODO
+  feed: feedImpl(jvm, wrap),
   pause: pauseImpl(jvm, wrap),
   pace: paceImpl(jvm, wrap),
   rendezVous: rendezVousImpl(jvm, wrap),
@@ -101,7 +101,7 @@ export { ActionBuilder } from "./execs";
 export { onCase, percent } from "./choices";
 export const exec: ExecFunction<ChainBuilder> = execImpl(JvmCoreDsl, wrapChainBuilder);
 export const group: GroupFunction<ChainBuilder> = groupImpl(JvmCoreDsl, wrapChainBuilder);
-// feed: ..., // TODO
+export const feed: FeedFunction<ChainBuilder> = feedImpl(JvmCoreDsl, wrapChainBuilder);
 export const pause: PauseFunction<ChainBuilder> = pauseImpl(JvmCoreDsl, wrapChainBuilder);
 export const pace = paceImpl(JvmCoreDsl, wrapChainBuilder);
 export const rendezVous = rendezVousImpl(JvmCoreDsl, wrapChainBuilder);

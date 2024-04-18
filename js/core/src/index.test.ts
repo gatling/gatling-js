@@ -1,5 +1,21 @@
-import { Simulation, Session, StringBody } from "./index";
-import { atOnceUsers, constantUsersPerSec, exec, scenario, onCase, percent } from "./index";
+import {
+  Simulation,
+  Session,
+  StringBody,
+  atOnceUsers,
+  constantUsersPerSec,
+  exec,
+  scenario,
+  onCase,
+  percent,
+  csv,
+  ssv,
+  tsv,
+  separatedValues,
+  jsonFile,
+  jsonUrl,
+  arrayFeeder
+} from "./index";
 
 const runSimulationMock = (_: Simulation): void => {};
 
@@ -43,16 +59,16 @@ const scn = scenario("scenario")
   .group((session) => "group")
   .on(chain1, chain2)
   // feeds
-  //.feed(csv("foo"))
-  //.feed(csv("foo", '"'))
-  //.feed(ssv("foo"))
-  //.feed(ssv("foo", '"'))
-  //.feed(tsv("foo"))
-  //.feed(tsv("foo", '"'))
-  //.feed(separatedValues("foo", '|'))
-  //.feed(separatedValues("foo", '|', '"'))
-  //.feed(jsonFile("foo"))
-  //.feed(jsonUrl("foo"))
+  .feed(csv("foo"))
+  .feed(csv("foo", '"'))
+  .feed(ssv("foo"))
+  .feed(ssv("foo", '"'))
+  .feed(tsv("foo"))
+  .feed(tsv("foo", '"'))
+  .feed(separatedValues("foo", "|"))
+  .feed(separatedValues("foo", "|", '"'))
+  .feed(jsonFile("foo"))
+  .feed(jsonUrl("foo"))
   //.feed(
   //  Stream.iterate(0, i -> i + 1)
   //    .limit(10)
@@ -74,8 +90,7 @@ const scn = scenario("scenario")
   //          return map;
   //        })
   //      .iterator())
-  //.feed(arrayFeeder(new Map[] {new HashMap<>(), new HashMap<>()}).circular())
-  //.feed(listFeeder(Arrays.asList(new HashMap<>())).circular())
+  .feed(arrayFeeder([{ foo: "foo1" }, { foo: "foo2" }]))
   // pauses
   .pause(1)
   .pause({ amount: 100, unit: "milliseconds" })

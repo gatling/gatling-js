@@ -38,6 +38,8 @@ const bundleFileOption = new Option("--bundleFile <value>", "The simulation targ
   "target/bundle.js"
 );
 
+const resourcesDirOption = new Option("--resourcesDir <value>", "The resources directory path").default("resources");
+
 const typescriptOption = new Option("--typescript", "Use the typescript compiler to compile your code").default(false);
 
 const graalvmHomeMandatoryOption = new Option("--graalvmHome <value>", "Path to the GraalVM home").makeOptionMandatory(
@@ -81,12 +83,14 @@ program
   .addOption(jvmClasspathMandatoryOption)
   .addOption(entryPointNameOption)
   .addOption(bundleFileOption)
+  .addOption(resourcesDirOption)
   .action(async (options) => {
     const graalvmHomePath: string = options.graalvmHome;
     const jvmClasspath: string = options.jvmClasspath;
     const entryPointName: string = options.entryPointName;
     const bundleFilePath: string = options.bundleFile;
-    await run({ graalvmHomePath, jvmClasspath, entryPointName, bundleFilePath });
+    const resourcesDirPath: string = options.resourcesDir;
+    await run({ graalvmHomePath, jvmClasspath, entryPointName, bundleFilePath, resourcesDirPath });
   });
 
 program
@@ -98,12 +102,14 @@ program
   .addOption(entryPointNameOption)
   .addOption(typescriptOption)
   .addOption(bundleFileOption)
+  .addOption(resourcesDirOption)
   .addOption(gatlingHomeDir)
   .action(async (options) => {
     const gatlingHomeDir: string = gatlingHomeDirWithDefaults(options);
     const entryPointFile: string = entryPointFileWithDefaults(options);
     const entryPointName: string = options.entryPointName;
     const bundleFilePath: string = options.bundleFile;
+    const resourcesDirPath: string = options.resourcesDir;
     const typescript: boolean = options.typescript;
 
     const { graalvmHomePath, coursierPath, jvmClasspath } = await installAll({ gatlingHomeDir });
@@ -113,7 +119,7 @@ program
 
     await bundle({ entryPointFile, bundleFilePath, typescript });
 
-    await run({ graalvmHomePath, jvmClasspath, entryPointName, bundleFilePath });
+    await run({ graalvmHomePath, jvmClasspath, entryPointName, bundleFilePath, resourcesDirPath });
   });
 
 program.parse(process.argv);
