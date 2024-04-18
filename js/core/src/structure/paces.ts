@@ -114,8 +114,8 @@ export interface Paces<T extends Paces<T>> {
 }
 
 export const paceImpl =
-  <J2, J1 extends JvmPaces<J2, any>, T extends Paces<T>>(jvmGroups: J1, wrap: (wrapped: J2) => T) =>
-  (arg0: Duration | SessionTo<Duration> | string, arg1?: Duration | SessionTo<Duration> | string, arg2?: string): T => {
+  <J2, J1 extends JvmPaces<J2, any>, T extends Paces<T>>(jvmGroups: J1, wrap: (wrapped: J2) => T): PaceFunction<T> =>
+  (arg0: Duration | SessionTo<Duration> | string, arg1?: Duration | SessionTo<Duration> | string, arg2?: string) => {
     if (arg2 !== undefined) {
       // pace(min, max, counterName)
       if (typeof arg0 === "string" && typeof arg1 === "string") {

@@ -27,6 +27,9 @@ export interface RandomSwitch<T extends RandomSwitch<T>> {
 }
 
 export const randomSwitchImpl =
-  <J2, J1 extends JvmRandomSwitch<J2, any>, T extends RandomSwitch<T>>(jvmRandomSwitch: J1, wrap: (wrapped: J2) => T) =>
-  (): On<T> =>
+  <J2, J1 extends JvmRandomSwitch<J2, any>, T extends RandomSwitch<T>>(
+    jvmRandomSwitch: J1,
+    wrap: (wrapped: J2) => T
+  ): RandomSwitchFunction<T> =>
+  () =>
     wrapOn(jvmRandomSwitch.randomSwitch(), wrap);

@@ -247,21 +247,21 @@ export const asLongAsDuringImpl =
   <J2, J1 extends JvmAsLongAsDuring<J2, any>, T extends AsLongAsDuring<T>>(
     jvmAsLongAsDuring: J1,
     wrap: (wrapped: J2) => T
-  ) =>
+  ): AsLongAsDuringFunction<T> =>
   (
     condition: SessionTo<boolean> | string,
     duration: Duration | SessionTo<Duration> | string,
     arg2?: string | boolean,
     arg3?: boolean
-  ): On<T> => {
+  ) => {
     if (arg3 !== undefined && typeof arg2 === "string") {
       // asLongAsDuring(condition, duration, counterName, exitASAP)
       if (typeof condition === "function") {
         const wrappedCondition = wrapCallback(underlyingSessionTo(condition));
         if (isDuration(duration)) {
-          wrapOn(jvmAsLongAsDuring.asLongAsDuring(wrappedCondition, toJvmDuration(duration), arg2, arg3), wrap);
+          return wrapOn(jvmAsLongAsDuring.asLongAsDuring(wrappedCondition, toJvmDuration(duration), arg2, arg3), wrap);
         } else if (typeof duration === "function") {
-          wrapOn(
+          return wrapOn(
             jvmAsLongAsDuring.asLongAsDuring(
               wrappedCondition,
               wrapCallback(underlyingSessionToDuration(duration)),
@@ -273,9 +273,9 @@ export const asLongAsDuringImpl =
         }
       } else {
         if (isDuration(duration)) {
-          wrapOn(jvmAsLongAsDuring.asLongAsDuring(condition, toJvmDuration(duration), arg2, arg3), wrap);
+          return wrapOn(jvmAsLongAsDuring.asLongAsDuring(condition, toJvmDuration(duration), arg2, arg3), wrap);
         } else if (typeof duration === "function") {
-          wrapOn(
+          return wrapOn(
             jvmAsLongAsDuring.asLongAsDuring(
               condition,
               wrapCallback(underlyingSessionToDuration(duration)),
@@ -291,9 +291,9 @@ export const asLongAsDuringImpl =
       if (typeof condition === "function") {
         const wrappedCondition = wrapCallback(underlyingSessionTo(condition));
         if (isDuration(duration)) {
-          wrapOn(jvmAsLongAsDuring.asLongAsDuring(wrappedCondition, toJvmDuration(duration), arg2), wrap);
+          return wrapOn(jvmAsLongAsDuring.asLongAsDuring(wrappedCondition, toJvmDuration(duration), arg2), wrap);
         } else if (typeof duration === "function") {
-          wrapOn(
+          return wrapOn(
             jvmAsLongAsDuring.asLongAsDuring(
               wrappedCondition,
               wrapCallback(underlyingSessionToDuration(duration)),
@@ -304,9 +304,9 @@ export const asLongAsDuringImpl =
         }
       } else {
         if (isDuration(duration)) {
-          wrapOn(jvmAsLongAsDuring.asLongAsDuring(condition, toJvmDuration(duration), arg2), wrap);
+          return wrapOn(jvmAsLongAsDuring.asLongAsDuring(condition, toJvmDuration(duration), arg2), wrap);
         } else if (typeof duration === "function") {
-          wrapOn(
+          return wrapOn(
             jvmAsLongAsDuring.asLongAsDuring(condition, wrapCallback(underlyingSessionToDuration(duration)), arg2),
             wrap
           );
@@ -317,9 +317,9 @@ export const asLongAsDuringImpl =
       if (typeof condition === "function") {
         const wrappedCondition = wrapCallback(underlyingSessionTo(condition));
         if (isDuration(duration)) {
-          wrapOn(jvmAsLongAsDuring.asLongAsDuring(wrappedCondition, toJvmDuration(duration), arg2), wrap);
+          return wrapOn(jvmAsLongAsDuring.asLongAsDuring(wrappedCondition, toJvmDuration(duration), arg2), wrap);
         } else if (typeof duration === "function") {
-          wrapOn(
+          return wrapOn(
             jvmAsLongAsDuring.asLongAsDuring(
               wrappedCondition,
               wrapCallback(underlyingSessionToDuration(duration)),
@@ -330,9 +330,9 @@ export const asLongAsDuringImpl =
         }
       } else {
         if (isDuration(duration)) {
-          wrapOn(jvmAsLongAsDuring.asLongAsDuring(condition, toJvmDuration(duration), arg2), wrap);
+          return wrapOn(jvmAsLongAsDuring.asLongAsDuring(condition, toJvmDuration(duration), arg2), wrap);
         } else if (typeof duration === "function") {
-          wrapOn(
+          return wrapOn(
             jvmAsLongAsDuring.asLongAsDuring(condition, wrapCallback(underlyingSessionToDuration(duration)), arg2),
             wrap
           );
@@ -343,18 +343,18 @@ export const asLongAsDuringImpl =
       if (typeof condition === "function") {
         const wrappedCondition = wrapCallback(underlyingSessionTo(condition));
         if (isDuration(duration)) {
-          wrapOn(jvmAsLongAsDuring.asLongAsDuring(wrappedCondition, toJvmDuration(duration)), wrap);
+          return wrapOn(jvmAsLongAsDuring.asLongAsDuring(wrappedCondition, toJvmDuration(duration)), wrap);
         } else if (typeof duration === "function") {
-          wrapOn(
+          return wrapOn(
             jvmAsLongAsDuring.asLongAsDuring(wrappedCondition, wrapCallback(underlyingSessionToDuration(duration))),
             wrap
           );
         }
       } else {
         if (isDuration(duration)) {
-          wrapOn(jvmAsLongAsDuring.asLongAsDuring(condition, toJvmDuration(duration)), wrap);
+          return wrapOn(jvmAsLongAsDuring.asLongAsDuring(condition, toJvmDuration(duration)), wrap);
         } else if (typeof duration === "function") {
-          wrapOn(
+          return wrapOn(
             jvmAsLongAsDuring.asLongAsDuring(condition, wrapCallback(underlyingSessionToDuration(duration))),
             wrap
           );

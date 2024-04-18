@@ -54,8 +54,8 @@ export const doSwitchOrElseImpl =
   <J2, J1 extends JvmDoSwitchOrElse<J2, any>, T extends DoSwitchOrElse<T>>(
     jvmDoSwitchOrElse: J1,
     wrap: (wrapped: J2) => T
-  ) =>
-  (actual: string | SessionTo<unknown>): On<T> =>
+  ): DoSwitchOrElseFunction<T> =>
+  (actual: string | SessionTo<unknown>) =>
     wrapOn(
       typeof actual === "function"
         ? jvmDoSwitchOrElse.doSwitchOrElse(wrapCallback(underlyingSessionTo(actual)))

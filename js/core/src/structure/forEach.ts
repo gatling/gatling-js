@@ -48,7 +48,7 @@ export const foreachImpl =
     jvmForEach: J1,
     wrap: (wrapped: J2) => T
   ): ForEachFunction<T> =>
-  (seq: unknown[] | string | SessionTo<Array<unknown>>, attributeName: string, counterName?: string): On<T> => {
+  (seq: unknown[] | string | SessionTo<Array<unknown>>, attributeName: string, counterName?: string) => {
     if (typeof seq === "function") {
       if (counterName !== undefined) {
         return wrapOn(jvmForEach.foreach(wrapCallback(underlyingSessionTo(seq)), attributeName, counterName), wrap);

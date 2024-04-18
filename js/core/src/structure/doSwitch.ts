@@ -38,8 +38,11 @@ export interface DoSwitch<T extends DoSwitch<T>> {
 }
 
 export const doSwitchImpl =
-  <J2, J1 extends JvmDoSwitch<J2, any>, T extends DoSwitch<T>>(jvmDoSwitch: J1, wrap: (wrapped: J2) => T) =>
-  (actual: string | SessionTo<unknown>): On<T> =>
+  <J2, J1 extends JvmDoSwitch<J2, any>, T extends DoSwitch<T>>(
+    jvmDoSwitch: J1,
+    wrap: (wrapped: J2) => T
+  ): DoSwitchFunction<T> =>
+  (actual: string | SessionTo<unknown>) =>
     wrapOn(
       typeof actual === "function"
         ? jvmDoSwitch.doSwitch(wrapCallback(underlyingSessionTo(actual)))

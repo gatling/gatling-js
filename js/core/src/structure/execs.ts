@@ -55,8 +55,8 @@ export interface Execs<T extends Execs<T>> {
 }
 
 export const execImpl =
-  <J2, J1 extends JvmExecs<J2, any>, T extends Execs<T>>(jvmExecs: J1, wrap: (wrapped: J2) => T) =>
-  (arg0: Executable<any> | SessionTransform, ...arg1: Array<Executable<any>>): T =>
+  <J2, J1 extends JvmExecs<J2, any>, T extends Execs<T>>(jvmExecs: J1, wrap: (wrapped: J2) => T): ExecFunction<T> =>
+  (arg0: Executable<any> | SessionTransform, ...arg1: Array<Executable<any>>) =>
     wrap(
       typeof arg0 === "function"
         ? jvmExecs.exec(wrapCallback(underlyingSessionTransform(arg0))) // arg0: SessionTransform

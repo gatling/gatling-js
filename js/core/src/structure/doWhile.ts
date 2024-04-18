@@ -33,8 +33,11 @@ export interface DoWhile<T extends DoWhile<T>> {
 }
 
 export const doWhileImpl =
-  <J2, J1 extends JvmDoWhile<J2, any>, T extends DoWhile<T>>(jvmDoWhile: J1, wrap: (wrapped: J2) => T) =>
-  (condition: SessionTo<boolean> | string, counterName?: string): On<T> => {
+  <J2, J1 extends JvmDoWhile<J2, any>, T extends DoWhile<T>>(
+    jvmDoWhile: J1,
+    wrap: (wrapped: J2) => T
+  ): DoWhileFunction<T> =>
+  (condition: SessionTo<boolean> | string, counterName?: string) => {
     if (counterName !== undefined) {
       // doWhile(condition, counterName)
       if (typeof condition === "function") {

@@ -30,6 +30,6 @@ export const uniformRandomSwitchImpl =
   <J2, J1 extends JvmUniformRandomSwitch<J2, any>, T extends UniformRandomSwitch<T>>(
     jvmUniformRandomSwitch: J1,
     wrap: (wrapped: J2) => T
-  ) =>
-  (): On<T> =>
+  ): UniformRandomSwitchFunction<T> =>
+  () =>
     wrapOn(jvmUniformRandomSwitch.uniformRandomSwitch(), wrap);

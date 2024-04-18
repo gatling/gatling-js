@@ -85,35 +85,38 @@ export interface AsLongAs<T extends AsLongAs<T>> {
 }
 
 export const asLongAsImpl =
-  <J2, J1 extends JvmAsLongAs<J2, any>, T extends AsLongAs<T>>(jvmAsLongAs: J1, wrap: (wrapped: J2) => T) =>
-  (condition: SessionTo<boolean> | string, arg1?: boolean | string, arg2?: boolean): On<T> => {
+  <J2, J1 extends JvmAsLongAs<J2, any>, T extends AsLongAs<T>>(
+    jvmAsLongAs: J1,
+    wrap: (wrapped: J2) => T
+  ): AsLongAsFunction<T> =>
+  (condition: SessionTo<boolean> | string, arg1?: boolean | string, arg2?: boolean) => {
     if (arg2 !== undefined && typeof arg1 === "string") {
       // asLongAs(condition, counterName, exitASAP)
       if (typeof condition === "function") {
-        wrapOn(jvmAsLongAs.asLongAs(wrapCallback(underlyingSessionTo(condition)), arg1, arg2), wrap);
+        return wrapOn(jvmAsLongAs.asLongAs(wrapCallback(underlyingSessionTo(condition)), arg1, arg2), wrap);
       } else {
-        wrapOn(jvmAsLongAs.asLongAs(condition, arg1, arg2), wrap);
+        return wrapOn(jvmAsLongAs.asLongAs(condition, arg1, arg2), wrap);
       }
     } else if (typeof arg1 === "string") {
       // asLongAs(condition, counterName)
       if (typeof condition === "function") {
-        wrapOn(jvmAsLongAs.asLongAs(wrapCallback(underlyingSessionTo(condition)), arg1), wrap);
+        return wrapOn(jvmAsLongAs.asLongAs(wrapCallback(underlyingSessionTo(condition)), arg1), wrap);
       } else {
-        wrapOn(jvmAsLongAs.asLongAs(condition, arg1), wrap);
+        return wrapOn(jvmAsLongAs.asLongAs(condition, arg1), wrap);
       }
     } else if (typeof arg1 === "boolean") {
       // asLongAs(condition, exitASAP)
       if (typeof condition === "function") {
-        wrapOn(jvmAsLongAs.asLongAs(wrapCallback(underlyingSessionTo(condition)), arg1), wrap);
+        return wrapOn(jvmAsLongAs.asLongAs(wrapCallback(underlyingSessionTo(condition)), arg1), wrap);
       } else {
-        wrapOn(jvmAsLongAs.asLongAs(condition, arg1), wrap);
+        return wrapOn(jvmAsLongAs.asLongAs(condition, arg1), wrap);
       }
     } else if (arg1 === undefined) {
       // asLongAs(condition)
       if (typeof condition === "function") {
-        wrapOn(jvmAsLongAs.asLongAs(wrapCallback(underlyingSessionTo(condition))), wrap);
+        return wrapOn(jvmAsLongAs.asLongAs(wrapCallback(underlyingSessionTo(condition))), wrap);
       } else {
-        wrapOn(jvmAsLongAs.asLongAs(condition), wrap);
+        return wrapOn(jvmAsLongAs.asLongAs(condition), wrap);
       }
     }
 

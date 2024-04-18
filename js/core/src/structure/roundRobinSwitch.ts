@@ -30,6 +30,6 @@ export const roundRobinSwitchImpl =
   <J2, J1 extends JvmRoundRobinSwitch<J2, any>, T extends RoundRobinSwitch<T>>(
     jvmRoundRobinSwitch: J1,
     wrap: (wrapped: J2) => T
-  ) =>
-  (): On<T> =>
+  ): RoundRobinSwitchFunction<T> =>
+  () =>
     wrapOn(jvmRoundRobinSwitch.roundRobinSwitch(), wrap);

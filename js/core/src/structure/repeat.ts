@@ -40,8 +40,11 @@ export interface Repeat<T extends Repeat<T>> {
 }
 
 export const repeatImpl =
-  <J2, J1 extends JvmRepeat<J2, any>, T extends Repeat<T>>(jvmRepeat: J1, wrap: (wrapped: J2) => T) =>
-  (times: number | string | SessionTo<number>, counterName?: string): On<T> => {
+  <J2, J1 extends JvmRepeat<J2, any>, T extends Repeat<T>>(
+    jvmRepeat: J1,
+    wrap: (wrapped: J2) => T
+  ): RepeatFunction<T> =>
+  (times: number | string | SessionTo<number>, counterName?: string) => {
     if (counterName !== undefined) {
       // repeat(times, counterName
       if (typeof times === "number") {

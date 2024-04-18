@@ -137,12 +137,12 @@ export interface Pauses<T extends Pauses<T>> {
 }
 
 export const pauseImpl =
-  <J2, J1 extends JvmPauses<J2, any>, T extends Pauses<T>>(jvmGroups: J1, wrap: (wrapped: J2) => T) =>
+  <J2, J1 extends JvmPauses<J2, any>, T extends Pauses<T>>(jvmGroups: J1, wrap: (wrapped: J2) => T): PauseFunction<T> =>
   (
     arg0: Duration | SessionTo<Duration> | string,
     arg1?: Duration | SessionTo<Duration> | string | PauseType,
     arg2?: PauseType
-  ): T => {
+  ) => {
     const toJvmPauseType = (pauseType: PauseType): JvmPauseType => {
       if (pauseType === "Disabled") {
         // FIXME find better solution for generating static field definitions in java2typescript (without conflicting

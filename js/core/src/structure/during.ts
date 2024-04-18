@@ -138,43 +138,46 @@ export interface During<T extends During<T>> {
 }
 
 export const duringImpl =
-  <J2, J1 extends JvmDuring<J2, any>, T extends During<T>>(jvmDuring: J1, wrap: (wrapped: J2) => T) =>
-  (duration: Duration | SessionTo<Duration> | string, arg1?: boolean | string, arg2?: boolean): On<T> => {
+  <J2, J1 extends JvmDuring<J2, any>, T extends During<T>>(
+    jvmDuring: J1,
+    wrap: (wrapped: J2) => T
+  ): DuringFunction<T> =>
+  (duration: Duration | SessionTo<Duration> | string, arg1?: boolean | string, arg2?: boolean) => {
     if (arg2 !== undefined && typeof arg1 === "string") {
       // during(duration, counterName, exitASAP)
       if (isDuration(duration)) {
-        wrapOn(jvmDuring.during(toJvmDuration(duration), arg1, arg2), wrap);
+        return wrapOn(jvmDuring.during(toJvmDuration(duration), arg1, arg2), wrap);
       } else if (typeof duration === "function") {
-        wrapOn(jvmDuring.during(wrapCallback(underlyingSessionToDuration(duration)), arg1, arg2), wrap);
+        return wrapOn(jvmDuring.during(wrapCallback(underlyingSessionToDuration(duration)), arg1, arg2), wrap);
       } else {
-        wrapOn(jvmDuring.during(duration, arg1, arg2), wrap);
+        return wrapOn(jvmDuring.during(duration, arg1, arg2), wrap);
       }
     } else if (typeof arg1 === "string") {
       // during(duration, counterName)
       if (isDuration(duration)) {
-        wrapOn(jvmDuring.during(toJvmDuration(duration), arg1), wrap);
+        return wrapOn(jvmDuring.during(toJvmDuration(duration), arg1), wrap);
       } else if (typeof duration === "function") {
-        wrapOn(jvmDuring.during(wrapCallback(underlyingSessionToDuration(duration)), arg1), wrap);
+        return wrapOn(jvmDuring.during(wrapCallback(underlyingSessionToDuration(duration)), arg1), wrap);
       } else {
-        wrapOn(jvmDuring.during(duration, arg1), wrap);
+        return wrapOn(jvmDuring.during(duration, arg1), wrap);
       }
     } else if (typeof arg1 === "boolean") {
       // during(duration, exitASAP)
       if (isDuration(duration)) {
-        wrapOn(jvmDuring.during(toJvmDuration(duration), arg1), wrap);
+        return wrapOn(jvmDuring.during(toJvmDuration(duration), arg1), wrap);
       } else if (typeof duration === "function") {
-        wrapOn(jvmDuring.during(wrapCallback(underlyingSessionToDuration(duration)), arg1), wrap);
+        return wrapOn(jvmDuring.during(wrapCallback(underlyingSessionToDuration(duration)), arg1), wrap);
       } else {
-        wrapOn(jvmDuring.during(duration, arg1), wrap);
+        return wrapOn(jvmDuring.during(duration, arg1), wrap);
       }
     } else if (arg1 === undefined) {
       // during(duration)
       if (isDuration(duration)) {
-        wrapOn(jvmDuring.during(toJvmDuration(duration)), wrap);
+        return wrapOn(jvmDuring.during(toJvmDuration(duration)), wrap);
       } else if (typeof duration === "function") {
-        wrapOn(jvmDuring.during(wrapCallback(underlyingSessionToDuration(duration))), wrap);
+        return wrapOn(jvmDuring.during(wrapCallback(underlyingSessionToDuration(duration))), wrap);
       } else {
-        wrapOn(jvmDuring.during(duration), wrap);
+        return wrapOn(jvmDuring.during(duration), wrap);
       }
     }
 

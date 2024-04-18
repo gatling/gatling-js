@@ -46,8 +46,8 @@ export interface DoIf<T extends DoIf<T>> {
 }
 
 export const doIfImpl =
-  <J2, J1 extends JvmDoIf<J2, any>, T extends DoIf<T>>(jvmDoIf: J1, wrap: (wrapped: J2) => T) =>
-  (condition: string | SessionTo<boolean>): Then<T> =>
+  <J2, J1 extends JvmDoIf<J2, any>, T extends DoIf<T>>(jvmDoIf: J1, wrap: (wrapped: J2) => T): DoIfFunction<T> =>
+  (condition: string | SessionTo<boolean>) =>
     wrapThen(
       typeof condition === "function"
         ? jvmDoIf.doIf(wrapCallback(underlyingSessionTo(condition)))
@@ -116,8 +116,11 @@ export interface DoIfEquals<T extends DoIfEquals<T>> {
 }
 
 export const doIfEqualsImpl =
-  <J2, J1 extends JvmDoIfEquals<J2, any>, T extends DoIfEquals<T>>(jvmDoIfEquals: J1, wrap: (wrapped: J2) => T) =>
-  (actual: string | SessionTo<unknown>, expected: string | SessionTo<unknown> | unknown): Then<T> => {
+  <J2, J1 extends JvmDoIfEquals<J2, any>, T extends DoIfEquals<T>>(
+    jvmDoIfEquals: J1,
+    wrap: (wrapped: J2) => T
+  ): DoIfEqualsFunction<T> =>
+  (actual: string | SessionTo<unknown>, expected: string | SessionTo<unknown> | unknown) => {
     if (typeof actual === "function") {
       const wrappedActual = wrapCallback(underlyingSessionTo(actual));
       if (typeof expected === "function") {

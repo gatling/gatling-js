@@ -16,6 +16,9 @@ export interface RendezVous<T extends RendezVous<T>> {
 }
 
 export const rendezVousImpl =
-  <J2, J1 extends JvmRendezVous<J2, any>, T extends RendezVous<T>>(jvmRendezVous: J1, wrap: (wrapped: J2) => T) =>
-  (users: number): T =>
+  <J2, J1 extends JvmRendezVous<J2, any>, T extends RendezVous<T>>(
+    jvmRendezVous: J1,
+    wrap: (wrapped: J2) => T
+  ): RendezVousFunction<T> =>
+  (users: number) =>
     wrap(jvmRendezVous.rendezVous(users));

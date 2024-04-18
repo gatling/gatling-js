@@ -41,6 +41,6 @@ export const randomSwitchOrElseImpl =
   <J2, J1 extends JvmRandomSwitchOrElse<J2, any>, T extends RandomSwitchOrElse<T>>(
     jvmRandomSwitch: J1,
     wrap: (wrapped: J2) => T
-  ) =>
-  (): On<T> =>
+  ): RandomSwitchOrElseFunction<T> =>
+  () =>
     wrapOn(jvmRandomSwitch.randomSwitchOrElse(), wrap);
