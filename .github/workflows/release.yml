@@ -79,7 +79,7 @@ jobs:
           AWS_CODEARTIFACT_DOMAIN: ${{ secrets.AWS_CODEARTIFACT_DOMAIN }}
           AWS_CODEARTIFACT_OWNER: ${{ secrets.AWS_CODEARTIFACT_OWNER }}
           AWS_CODEARTIFACT_REGION: ${{ secrets.AWS_CODEARTIFACT_REGION }}
-          NODE_AUTH_TOKEN: ${{ steps.repository.outputs.token }}
+          AWS_CODEARTIFACT_AUTH_TOKEN: ${{ steps.repository.outputs.token }}
         working-directory: ./js
         run: |
           npm ci
