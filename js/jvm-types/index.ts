@@ -68,6 +68,34 @@ interface ChainBuilderStatic {
 
 export const ChainBuilder: ChainBuilderStatic = Java.type("io.gatling.javaapi.core.ChainBuilder");
 
+interface CheckBuilder$FinalStatic {
+  readonly class: any;
+}
+
+export const CheckBuilder$Final: CheckBuilder$FinalStatic = Java.type("io.gatling.javaapi.core.CheckBuilder$Final");
+
+interface CheckBuilder$FindStatic {
+  readonly class: any;
+}
+
+export const CheckBuilder$Find: CheckBuilder$FindStatic = Java.type("io.gatling.javaapi.core.CheckBuilder$Find");
+
+interface CheckBuilder$MultipleFindStatic {
+  readonly class: any;
+}
+
+export const CheckBuilder$MultipleFind: CheckBuilder$MultipleFindStatic = Java.type(
+  "io.gatling.javaapi.core.CheckBuilder$MultipleFind"
+);
+
+interface CheckBuilder$ValidateStatic {
+  readonly class: any;
+}
+
+export const CheckBuilder$Validate: CheckBuilder$ValidateStatic = Java.type(
+  "io.gatling.javaapi.core.CheckBuilder$Validate"
+);
+
 interface CheckBuilderStatic {
   readonly class: any;
 }
@@ -536,13 +564,13 @@ interface CoreDslStatic {
     arg0: Func<io.gatling.javaapi.core.Session, string>,
     arg1: string
   ): any /*io.gatling.javaapi.core.CheckBuilder$CssOfTypeMultipleFind*/;
-  bodyBytes(): any /*io.gatling.javaapi.core.CheckBuilder$Find*/;
-  bodyStream(): any /*io.gatling.javaapi.core.CheckBuilder$Find*/;
-  bodyLength(): any /*io.gatling.javaapi.core.CheckBuilder$Find*/;
-  responseTimeInMillis(): any /*io.gatling.javaapi.core.CheckBuilder$Find*/;
-  bodyString(): any /*io.gatling.javaapi.core.CheckBuilder$Find*/;
-  md5(): any /*io.gatling.javaapi.core.CheckBuilder$Find*/;
-  sha1(): any /*io.gatling.javaapi.core.CheckBuilder$Find*/;
+  bodyBytes(): io.gatling.javaapi.core.CheckBuilder$Find<bytearray>;
+  bodyStream(): io.gatling.javaapi.core.CheckBuilder$Find<any /*java.io.InputStream*/>;
+  bodyLength(): io.gatling.javaapi.core.CheckBuilder$Find<int | null>;
+  responseTimeInMillis(): io.gatling.javaapi.core.CheckBuilder$Find<int | null>;
+  bodyString(): io.gatling.javaapi.core.CheckBuilder$Find<string>;
+  md5(): io.gatling.javaapi.core.CheckBuilder$Find<string>;
+  sha1(): io.gatling.javaapi.core.CheckBuilder$Find<string>;
   jmesPath(arg0: string): any /*io.gatling.javaapi.core.CheckBuilder$JsonOfTypeFind*/;
   jmesPath(
     arg0: Func<io.gatling.javaapi.core.Session, string>
@@ -559,21 +587,25 @@ interface CoreDslStatic {
   jsonpJsonPath(
     arg0: Func<io.gatling.javaapi.core.Session, string>
   ): any /*io.gatling.javaapi.core.CheckBuilder$JsonOfTypeMultipleFind*/;
-  substring(arg0: string): any /*io.gatling.javaapi.core.CheckBuilder$MultipleFind*/;
+  substring(arg0: string): io.gatling.javaapi.core.CheckBuilder$MultipleFind<int | null>;
   substring(
     arg0: Func<io.gatling.javaapi.core.Session, string>
-  ): any /*io.gatling.javaapi.core.CheckBuilder$MultipleFind*/;
-  css(arg0: string): any /*io.gatling.javaapi.core.CheckBuilder$MultipleFind*/;
-  css(arg0: Func<io.gatling.javaapi.core.Session, string>): any /*io.gatling.javaapi.core.CheckBuilder$MultipleFind*/;
-  xpath(arg0: string): any /*io.gatling.javaapi.core.CheckBuilder$MultipleFind*/;
-  xpath(arg0: string, arg1: java.util.Map<string, string>): any /*io.gatling.javaapi.core.CheckBuilder$MultipleFind*/;
-  xpath(arg0: Func<io.gatling.javaapi.core.Session, string>): any /*io.gatling.javaapi.core.CheckBuilder$MultipleFind*/;
+  ): io.gatling.javaapi.core.CheckBuilder$MultipleFind<int | null>;
+  css(arg0: string): io.gatling.javaapi.core.CheckBuilder$MultipleFind<string>;
+  css(arg0: Func<io.gatling.javaapi.core.Session, string>): io.gatling.javaapi.core.CheckBuilder$MultipleFind<string>;
+  xpath(arg0: string): io.gatling.javaapi.core.CheckBuilder$MultipleFind<string>;
+  xpath(arg0: string, arg1: java.util.Map<string, string>): io.gatling.javaapi.core.CheckBuilder$MultipleFind<string>;
+  xpath(arg0: Func<io.gatling.javaapi.core.Session, string>): io.gatling.javaapi.core.CheckBuilder$MultipleFind<string>;
   xpath(
     arg0: Func<io.gatling.javaapi.core.Session, string>,
     arg1: java.util.Map<string, string>
-  ): any /*io.gatling.javaapi.core.CheckBuilder$MultipleFind*/;
-  form(arg0: string): any /*io.gatling.javaapi.core.CheckBuilder$MultipleFind*/;
-  form(arg0: Func<io.gatling.javaapi.core.Session, string>): any /*io.gatling.javaapi.core.CheckBuilder$MultipleFind*/;
+  ): io.gatling.javaapi.core.CheckBuilder$MultipleFind<string>;
+  form(
+    arg0: string
+  ): io.gatling.javaapi.core.CheckBuilder$MultipleFind<java.util.Map<string, any /*java.lang.Object*/>>;
+  form(
+    arg0: Func<io.gatling.javaapi.core.Session, string>
+  ): io.gatling.javaapi.core.CheckBuilder$MultipleFind<java.util.Map<string, any /*java.lang.Object*/>>;
   onCase(arg0: any /*java.lang.Object*/): io.gatling.javaapi.core.WithKey$Then;
   percent(arg0: double): io.gatling.javaapi.core.WithWeight$Then;
   constantConcurrentUsers(arg0: int): io.gatling.javaapi.core.ClosedInjectionStep$Constant;
@@ -1391,13 +1423,13 @@ interface HttpDslStatic {
     arg0: Func<io.gatling.javaapi.core.Session, any /*java.lang.CharSequence*/>,
     arg1: Func<io.gatling.javaapi.core.Session, string>
   ): any /*io.gatling.javaapi.core.CheckBuilder$CaptureGroupCheckBuilder*/;
-  status(): any /*io.gatling.javaapi.core.CheckBuilder$Find*/;
-  currentLocation(): any /*io.gatling.javaapi.core.CheckBuilder$Find*/;
-  header(arg0: any /*java.lang.CharSequence*/): any /*io.gatling.javaapi.core.CheckBuilder$MultipleFind*/;
-  header(arg0: string): any /*io.gatling.javaapi.core.CheckBuilder$MultipleFind*/;
+  status(): io.gatling.javaapi.core.CheckBuilder$Find<int | null>;
+  currentLocation(): io.gatling.javaapi.core.CheckBuilder$Find<string>;
+  header(arg0: any /*java.lang.CharSequence*/): io.gatling.javaapi.core.CheckBuilder$MultipleFind<string>;
+  header(arg0: string): io.gatling.javaapi.core.CheckBuilder$MultipleFind<string>;
   header(
     arg0: Func<io.gatling.javaapi.core.Session, any /*java.lang.CharSequence*/>
-  ): any /*io.gatling.javaapi.core.CheckBuilder$MultipleFind*/;
+  ): io.gatling.javaapi.core.CheckBuilder$MultipleFind<string>;
   sitemap(arg0: string): io.gatling.javaapi.core.FeederBuilder$FileBased<string>;
   Cookie(arg0: string, arg1: string): io.gatling.javaapi.http.AddCookie;
   Cookie(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, string>): io.gatling.javaapi.http.AddCookie;

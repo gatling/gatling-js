@@ -27,6 +27,23 @@ export {
   jsonUrl,
   arrayFeeder
 } from "./feederBuilder";
+export {
+  CheckBuilder,
+  CheckBuilderFinal,
+  CheckBuilderValidate,
+  CheckBuilderFind,
+  CheckBuilderMultipleFind,
+  bodyString,
+  bodyLength,
+  substring,
+  xpath,
+  css,
+  form,
+  // TODO jsonPath, jmesPath, jsonpJsonPath, jsonpJmesPath, regex
+  md5,
+  sha1,
+  responseTimeInMillis
+} from "./checks";
 
 export interface SetUp {
   protocols(...protocols: ProtocolBuilder[]): SetUp;

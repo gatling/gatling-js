@@ -33,3 +33,8 @@ export const underlyingSessionToDuration =
   (f: SessionTo<Duration>): ((jvmSession: JvmSession) => java.time.Duration) =>
   (jvmSession: JvmSession) =>
     toJvmDuration(f(wrapSession(jvmSession)));
+
+export const underlyingXWithSessionTo =
+  <X, X2>(f: (x: X, session: Session) => X2): ((x: X, jvmSession: JvmSession) => X2) =>
+  (x: X, jvmSession: JvmSession) =>
+    f(x, wrapSession(jvmSession));

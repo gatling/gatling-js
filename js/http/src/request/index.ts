@@ -1,4 +1,4 @@
-import {ActionBuilder, Body, Expression, Session, wrapBiCallback} from "@gatling.io/core";
+import { ActionBuilder, Body, CheckBuilder, Expression, Session } from "@gatling.io/core";
 import { underlyingSessionTo, wrapCallback } from "@gatling.io/core";
 
 import { underlyingResponseTransform } from "../index";
@@ -63,7 +63,7 @@ const requestWithBodyActionBuilderImpl = <T>(
 });
 
 export interface RequestActionBuilder<T> {
-  // check
+  check(...checks: CheckBuilder[]): T;
   // checkIf
   // ignoreProtocolChecks
   silent(): T;
@@ -78,6 +78,7 @@ const requestActionBuilderImpl = <T>(
   jvmBuilder: JvmHttpRequestActionBuilder,
   wrap: (_underlying: JvmHttpRequestActionBuilder) => T
 ): RequestActionBuilder<T> => ({
+  check: (...checks) => wrap(jvmBuilder.check(checks.map((c) => c._underlying))),
   silent: (): T => wrap(jvmBuilder.silent()),
   //transformResponse: (f: (response: Response, session: Session) => Response): T =>
   //  wrap(jvmBuilder.transformResponse(wrapBiCallback(underlyingResponseTransform(f))))

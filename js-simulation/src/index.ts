@@ -12,7 +12,8 @@ import {
   arrayFeeder,
   atOnceUsers,
   nothingFor,
-  doWhile
+  doWhile,
+  css
 } from "@gatling.io/core";
 import { http } from "@gatling.io/http";
 
@@ -33,26 +34,25 @@ const mySimulation = runSimulation((setUp) => {
     .feed(createFeeder)
     .exec(
       group("Browse").on(
-        exec((session) => session.set("page", 1)),
+        exec(session => session.set("page", 1)),
         doWhile((session: Session) => session.get<number>("page") < 3).on(
           http("Browse page #{page}").get("/computers?p=#{page}"),
-          exec((session) => session.set("page", session.get<number>("page") + 1)),
+          exec(session => session.set("page", session.get<number>("page") + 1)),
           pause({ amount: 500, unit: "milliseconds" })
         )
       ),
       group("Search").on(
         http("Search").get("/computers?f=#{searchCriterion}")
-        // TODO: checks not implemented yet
-        // .check(
-        //   css("a:contains('#{searchComputerName}')", "href").saveAs("computerUrl")
-        // )
-        // http("Select").get("#{computerUrl}")
+        .check(
+          css("a:contains('#{searchComputerName}')", "href").saveAs("computerUrl")
+        ),
+        http("Select").get("#{computerUrl}")
       ),
       group("Create").on(
         http("Get form").get("/computers/new"),
         pause(1),
         // TODO: formParam not implemented yet, we just write to the console instead
-        exec((session) => {
+        exec(session => {
           const name = session.get<string>("name");
           const introduced = session.get<string>("introduced");
           const discontinued = session.get<string>("discontinued");

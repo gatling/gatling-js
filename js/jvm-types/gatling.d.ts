@@ -1738,6 +1738,163 @@ declare namespace io.gatling.javaapi.core {
   } // end CheckBuilder
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
+  interface CheckBuilder$Final /* extends CheckBuilder*/ {
+    asScala(): any /*io.gatling.core.check.CheckBuilder*/;
+    name(arg0: string): CheckBuilder$Final;
+    saveAs(arg0: string): CheckBuilder$Final;
+    type(): any /*io.gatling.javaapi.core.CheckBuilder$CheckType*/;
+  } // end CheckBuilder$Final
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
+  interface CheckBuilder$Find<JavaX> /* extends CheckBuilder$Validate<JavaX>*/ {
+    asScala(): any /*io.gatling.core.check.CheckBuilder*/;
+    exists(): CheckBuilder$Final;
+    find(): CheckBuilder$Validate<JavaX>;
+    gt<X>(arg0: Func<Session, X>): CheckBuilder$Final;
+    gt<X>(arg0: X): CheckBuilder$Final;
+    gtEL(arg0: string): CheckBuilder$Final;
+    gte<X>(arg0: Func<Session, X>): CheckBuilder$Final;
+    gte<X>(arg0: X): CheckBuilder$Final;
+    gteEL(arg0: string): CheckBuilder$Final;
+    in<X>(...arg0: X[]): CheckBuilder$Final;
+    in<X>(arg0: Func<Session, java.util.List<X>>): CheckBuilder$Final;
+    in<X>(arg0: java.util.List<X>): CheckBuilder$Final;
+    inEL(arg0: string): CheckBuilder$Final;
+    is<X>(arg0: Func<Session, X>): CheckBuilder$Final;
+    is<X>(arg0: X): CheckBuilder$Final;
+    isEL(arg0: string): CheckBuilder$Final;
+    isNull(): CheckBuilder$Final;
+    lt<X>(arg0: Func<Session, X>): CheckBuilder$Final;
+    lt<X>(arg0: X): CheckBuilder$Final;
+    ltEL(arg0: string): CheckBuilder$Final;
+    lte<X>(arg0: Func<Session, X>): CheckBuilder$Final;
+    lte<X>(arg0: X): CheckBuilder$Final;
+    lteEL(arg0: string): CheckBuilder$Final;
+    name(arg0: string): CheckBuilder$Final;
+    not<X>(arg0: Func<Session, X>): CheckBuilder$Final;
+    not<X>(arg0: X): CheckBuilder$Final;
+    notEL(arg0: string): CheckBuilder$Final;
+    notExists(): CheckBuilder$Final;
+    notNull(): CheckBuilder$Final;
+    optional(): CheckBuilder$Final;
+    saveAs(arg0: string): CheckBuilder$Final;
+    shouldBe<X>(arg0: Func<Session, X>): CheckBuilder$Final;
+    shouldBe<X>(arg0: X): CheckBuilder$Final;
+    transform<X, X2>(arg0: Func<X, X2>): CheckBuilder$Validate<X2>;
+    transformWithSession<X, X2>(arg0: BiFunction<X, Session, X2>): CheckBuilder$Validate<X2>;
+    type(): any /*io.gatling.javaapi.core.CheckBuilder$CheckType*/;
+    validate<X>(arg0: string, arg1: BiFunction<X, Session, X>): CheckBuilder$Final;
+    withDefault<X>(arg0: Func<Session, X>): CheckBuilder$Validate<X>;
+    withDefault<X>(arg0: X): CheckBuilder$Validate<X>;
+    withDefaultEl<X>(arg0: string): CheckBuilder$Validate<X>;
+    within<X>(...arg0: X[]): CheckBuilder$Final;
+    within<X>(arg0: Func<Session, java.util.List<X>>): CheckBuilder$Final;
+    within<X>(arg0: java.util.List<X>): CheckBuilder$Final;
+    withinEL(arg0: string): CheckBuilder$Final;
+  } // end CheckBuilder$Find
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
+  interface CheckBuilder$MultipleFind<JavaX> /* extends CheckBuilder$Find<JavaX>*/ {
+    asScala(): any /*io.gatling.core.check.CheckBuilder*/;
+    count(): CheckBuilder$Validate<int | null>;
+    exists(): CheckBuilder$Final;
+    find(): CheckBuilder$Validate<JavaX>;
+    find(arg0: int): CheckBuilder$Validate<JavaX>;
+    findAll(): CheckBuilder$Validate<java.util.List<JavaX>>;
+    findRandom(): CheckBuilder$Validate<JavaX>;
+    findRandom(arg0: int): CheckBuilder$Validate<java.util.List<JavaX>>;
+    findRandom(arg0: int, arg1: boolean): CheckBuilder$Validate<java.util.List<JavaX>>;
+    gt<X>(arg0: Func<Session, X>): CheckBuilder$Final;
+    gt<X>(arg0: X): CheckBuilder$Final;
+    gtEL(arg0: string): CheckBuilder$Final;
+    gte<X>(arg0: Func<Session, X>): CheckBuilder$Final;
+    gte<X>(arg0: X): CheckBuilder$Final;
+    gteEL(arg0: string): CheckBuilder$Final;
+    in<X>(...arg0: X[]): CheckBuilder$Final;
+    in<X>(arg0: Func<Session, java.util.List<X>>): CheckBuilder$Final;
+    in<X>(arg0: java.util.List<X>): CheckBuilder$Final;
+    inEL(arg0: string): CheckBuilder$Final;
+    is<X>(arg0: Func<Session, X>): CheckBuilder$Final;
+    is<X>(arg0: X): CheckBuilder$Final;
+    isEL(arg0: string): CheckBuilder$Final;
+    isNull(): CheckBuilder$Final;
+    lt<X>(arg0: Func<Session, X>): CheckBuilder$Final;
+    lt<X>(arg0: X): CheckBuilder$Final;
+    ltEL(arg0: string): CheckBuilder$Final;
+    lte<X>(arg0: Func<Session, X>): CheckBuilder$Final;
+    lte<X>(arg0: X): CheckBuilder$Final;
+    lteEL(arg0: string): CheckBuilder$Final;
+    name(arg0: string): CheckBuilder$Final;
+    not<X>(arg0: Func<Session, X>): CheckBuilder$Final;
+    not<X>(arg0: X): CheckBuilder$Final;
+    notEL(arg0: string): CheckBuilder$Final;
+    notExists(): CheckBuilder$Final;
+    notNull(): CheckBuilder$Final;
+    optional(): CheckBuilder$Final;
+    saveAs(arg0: string): CheckBuilder$Final;
+    shouldBe<X>(arg0: Func<Session, X>): CheckBuilder$Final;
+    shouldBe<X>(arg0: X): CheckBuilder$Final;
+    transform<X, X2>(arg0: Func<X, X2>): CheckBuilder$Validate<X2>;
+    transformWithSession<X, X2>(arg0: BiFunction<X, Session, X2>): CheckBuilder$Validate<X2>;
+    type(): any /*io.gatling.javaapi.core.CheckBuilder$CheckType*/;
+    validate<X>(arg0: string, arg1: BiFunction<X, Session, X>): CheckBuilder$Final;
+    withDefault<X>(arg0: Func<Session, X>): CheckBuilder$Validate<X>;
+    withDefault<X>(arg0: X): CheckBuilder$Validate<X>;
+    withDefaultEl<X>(arg0: string): CheckBuilder$Validate<X>;
+    within<X>(...arg0: X[]): CheckBuilder$Final;
+    within<X>(arg0: Func<Session, java.util.List<X>>): CheckBuilder$Final;
+    within<X>(arg0: java.util.List<X>): CheckBuilder$Final;
+    withinEL(arg0: string): CheckBuilder$Final;
+  } // end CheckBuilder$MultipleFind
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
+  interface CheckBuilder$Validate<X> /* extends CheckBuilder$Final*/ {
+    asScala(): any /*io.gatling.core.check.CheckBuilder*/;
+    exists(): CheckBuilder$Final;
+    gt(arg0: Func<Session, X>): CheckBuilder$Final;
+    gt(arg0: X): CheckBuilder$Final;
+    gtEL(arg0: string): CheckBuilder$Final;
+    gte(arg0: Func<Session, X>): CheckBuilder$Final;
+    gte(arg0: X): CheckBuilder$Final;
+    gteEL(arg0: string): CheckBuilder$Final;
+    in(...arg0: X[]): CheckBuilder$Final;
+    in(arg0: Func<Session, java.util.List<X>>): CheckBuilder$Final;
+    in(arg0: java.util.List<X>): CheckBuilder$Final;
+    inEL(arg0: string): CheckBuilder$Final;
+    is(arg0: Func<Session, X>): CheckBuilder$Final;
+    is(arg0: X): CheckBuilder$Final;
+    isEL(arg0: string): CheckBuilder$Final;
+    isNull(): CheckBuilder$Final;
+    lt(arg0: Func<Session, X>): CheckBuilder$Final;
+    lt(arg0: X): CheckBuilder$Final;
+    ltEL(arg0: string): CheckBuilder$Final;
+    lte(arg0: Func<Session, X>): CheckBuilder$Final;
+    lte(arg0: X): CheckBuilder$Final;
+    lteEL(arg0: string): CheckBuilder$Final;
+    name(arg0: string): CheckBuilder$Final;
+    not(arg0: Func<Session, X>): CheckBuilder$Final;
+    not(arg0: X): CheckBuilder$Final;
+    notEL(arg0: string): CheckBuilder$Final;
+    notExists(): CheckBuilder$Final;
+    notNull(): CheckBuilder$Final;
+    optional(): CheckBuilder$Final;
+    saveAs(arg0: string): CheckBuilder$Final;
+    shouldBe(arg0: Func<Session, X>): CheckBuilder$Final;
+    shouldBe(arg0: X): CheckBuilder$Final;
+    transform<X2>(arg0: Func<X, X2>): CheckBuilder$Validate<X2>;
+    transformWithSession<X2>(arg0: BiFunction<X, Session, X2>): CheckBuilder$Validate<X2>;
+    type(): any /*io.gatling.javaapi.core.CheckBuilder$CheckType*/;
+    validate(arg0: string, arg1: BiFunction<X, Session, X>): CheckBuilder$Final;
+    withDefault(arg0: Func<Session, X>): CheckBuilder$Validate<X>;
+    withDefault(arg0: X): CheckBuilder$Validate<X>;
+    withDefaultEl(arg0: string): CheckBuilder$Validate<X>;
+    within(...arg0: X[]): CheckBuilder$Final;
+    within(arg0: Func<Session, java.util.List<X>>): CheckBuilder$Final;
+    within(arg0: java.util.List<X>): CheckBuilder$Final;
+    withinEL(arg0: string): CheckBuilder$Final;
+  } // end CheckBuilder$Validate
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
   interface FeederBuilder$Batchable<T> /* extends FeederBuilder$FileBased<T>*/ {
     asScala(): any /*scala.Function0*/;
     batch(): FeederBuilder$Batchable<T>;
