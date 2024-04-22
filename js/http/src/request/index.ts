@@ -78,7 +78,7 @@ const requestActionBuilderImpl = <T>(
   jvmBuilder: JvmHttpRequestActionBuilder,
   wrap: (_underlying: JvmHttpRequestActionBuilder) => T
 ): RequestActionBuilder<T> => ({
-  check: (...checks) => wrap(jvmBuilder.check(checks.map((c) => c._underlying))),
+  check: (...checks: CheckBuilder[]): T => wrap(jvmBuilder.check(checks.map((c: CheckBuilder) => c._underlying))),
   silent: (): T => wrap(jvmBuilder.silent()),
   //transformResponse: (f: (response: Response, session: Session) => Response): T =>
   //  wrap(jvmBuilder.transformResponse(wrapBiCallback(underlyingResponseTransform(f))))

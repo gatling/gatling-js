@@ -7,26 +7,6 @@ import { ProtocolBuilder } from "./protocol";
 export * from "./gatlingJvm/callbacks";
 
 export * from "./body";
-export * from "./common";
-export * from "./closedInjection";
-export * from "./openInjection";
-export * from "./population";
-export * from "./protocol";
-export * from "./scenario";
-export * from "./session";
-export * from "./structure";
-export {
-  FeederBuilder,
-  FileBasedFeederBuilder,
-  BatchableFeederBuilder,
-  csv,
-  ssv,
-  tsv,
-  separatedValues,
-  jsonFile,
-  jsonUrl,
-  arrayFeeder
-} from "./feederBuilder";
 export {
   CheckBuilder,
   CheckBuilderFinal,
@@ -42,8 +22,30 @@ export {
   // TODO jsonPath, jmesPath, jsonpJsonPath, jsonpJmesPath, regex
   md5,
   sha1,
-  responseTimeInMillis
+  responseTimeInMillis,
+  wrapCheckBuilderFind,
+  wrapCheckBuilderMultipleFind
 } from "./checks";
+export * from "./closedInjection";
+export * from "./common";
+export {
+  FeederBuilder,
+  FileBasedFeederBuilder,
+  BatchableFeederBuilder,
+  csv,
+  ssv,
+  tsv,
+  separatedValues,
+  jsonFile,
+  jsonUrl,
+  arrayFeeder
+} from "./feederBuilder";
+export * from "./openInjection";
+export * from "./population";
+export * from "./protocol";
+export * from "./scenario";
+export * from "./session";
+export * from "./structure";
 
 export interface SetUp {
   protocols(...protocols: ProtocolBuilder[]): SetUp;

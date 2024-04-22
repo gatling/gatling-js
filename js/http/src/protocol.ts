@@ -1,4 +1,5 @@
 import {
+  CheckBuilder,
   Expression,
   ProtocolBuilder,
   Session,
@@ -568,8 +569,13 @@ export interface HttpProtocolBuilder extends ProtocolBuilder {
    */
   //transformResponse(f: (response: Response, session: Session) => Response): HttpProtocolBuilder;
 
-  // TODO
-  //check(...arg0: io.gatling.javaapi.core.CheckBuilder[]): HttpProtocolBuilder;
+  /**
+   * Apply some checks
+   *
+   * @param checks - the checks
+   * @returns a new HttpRequestActionBuilder instance
+   */
+  check(...checks: CheckBuilder[]): HttpProtocolBuilder;
 
   // TODO
   //check(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): HttpProtocolBuilder;
@@ -897,6 +903,9 @@ export const wrapHttpProtocolBuilder = (_underlying: JvmHttpProtocolBuilder): Ht
 
   //transformResponse: (f: (response: Response, session: Session) => Response): HttpProtocolBuilder =>
   //  wrapHttpProtocolBuilder(_underlying.transformResponse(wrapBiCallback(underlyingResponseTransform(f)))),
+
+  check: (...checks: CheckBuilder[]): HttpProtocolBuilder =>
+    wrapHttpProtocolBuilder(_underlying.check(checks.map((c: CheckBuilder) => c._underlying))),
 
   inferHtmlResources: (): HttpProtocolBuilder => wrapHttpProtocolBuilder(_underlying.inferHtmlResources()),
 
