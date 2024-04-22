@@ -12,7 +12,7 @@ const wrapBody = (_underlying: JvmBody): Body => ({
   _underlying
 });
 
-export interface IStringBody {
+export interface StringBodyFunction {
   /**
    * Create a body from a String.
    *
@@ -34,7 +34,7 @@ export interface IStringBody {
   (f: (session: Session) => string): Body;
 }
 
-export const StringBody: IStringBody = (string: Expression<string>): Body =>
+export const StringBody: StringBodyFunction = (string: Expression<string>): Body =>
   typeof string === "function"
     ? wrapBody(JvmCoreDsl.StringBody(wrapCallback(underlyingSessionTo(string))))
     : wrapBody(JvmCoreDsl.StringBody(string));
