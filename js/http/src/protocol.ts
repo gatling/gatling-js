@@ -7,9 +7,10 @@ import {
   wrapCallback
 } from "@gatling.io/core";
 
-import { underlyingRequestTransform } from "./index";
+import { underlyingRequestTransform, underlyingResponseTransform } from "./index";
 import { Proxy } from "./proxy";
 import { Request } from "./request";
+import { Response } from "./response";
 
 import JvmHttpProtocolBuilder = io.gatling.javaapi.http.HttpProtocolBuilder;
 
@@ -439,16 +440,7 @@ export interface HttpProtocolBuilder extends ProtocolBuilder {
    * @param calculator - the signing function
    * @returns a new HttpProtocolBuilder instance
    */
-  sign(calculator: (request: Request, session: Session) => Request): HttpProtocolBuilder;
-
-  /**
-   * Provide a function to sign the requests before writing them on the wire. This version provides
-   * access to the session.
-   *
-   * @param calculator - the signing function
-   * @returns a new HttpProtocolBuilder instance
-   */
-  //sign(calculator: (request: Request) => Request): HttpProtocolBuilder;
+  //sign(calculator: (request: Request, session: Session) => Request): HttpProtocolBuilder;
 
   /**
    * Instruct sign the requests with an OAuth1 Authorization header before writing them on the wire
@@ -566,14 +558,15 @@ export interface HttpProtocolBuilder extends ProtocolBuilder {
   //  arg0: any /*io.gatling.javaapi.http.HttpProtocolBuilder$RedirectNamingStrategy*/
   //): HttpProtocolBuilder;
 
-  // TODO
-  //transformResponse(
-  //  arg0: BiFunction<
-  //    any /*io.gatling.http.response.Response*/,
-  //    io.gatling.javaapi.core.Session,
-  //    any /*io.gatling.http.response.Response*/
-  //  >
-  //): HttpProtocolBuilder;
+  /**
+   * Define a transformation function to be applied on the {@link Response}s before checks are
+   * applied. Typically used for decoding responses, eg with <a
+   * href="https://developers.google.com/protocol-buffers">Protobuf</a>.
+   *
+   * @param f - the strategy
+   * @returns a new HttpProtocolBuilder instance
+   */
+  //transformResponse(f: (response: Response, session: Session) => Response): HttpProtocolBuilder;
 
   // TODO
   //check(...arg0: io.gatling.javaapi.core.CheckBuilder[]): HttpProtocolBuilder;
@@ -849,8 +842,8 @@ export const wrapHttpProtocolBuilder = (_underlying: JvmHttpProtocolBuilder): Ht
   silentResources: (): HttpProtocolBuilder => wrapHttpProtocolBuilder(_underlying.silentResources()),
   silentUri: (pattern: string): HttpProtocolBuilder => wrapHttpProtocolBuilder(_underlying.silentUri(pattern)),
   disableUrlEncoding: (): HttpProtocolBuilder => wrapHttpProtocolBuilder(_underlying.disableUrlEncoding()),
-  sign: (calculator: (request: Request, session: Session) => Request): HttpProtocolBuilder =>
-    wrapHttpProtocolBuilder(_underlying.sign(wrapBiCallback(underlyingRequestTransform(calculator)))),
+  //sign: (calculator: (request: Request, session: Session) => Request): HttpProtocolBuilder =>
+  //  wrapHttpProtocolBuilder(_underlying.sign(wrapBiCallback(underlyingRequestTransform(calculator)))),
   signWithOAuth1: (
     consumerKey: Expression<string>,
     clientSharedSecret: Expression<string>,
@@ -901,6 +894,9 @@ export const wrapHttpProtocolBuilder = (_underlying: JvmHttpProtocolBuilder): Ht
   disableFollowRedirect: (): HttpProtocolBuilder => wrapHttpProtocolBuilder(_underlying.disableFollowRedirect()),
   maxRedirects: (max: number): HttpProtocolBuilder => wrapHttpProtocolBuilder(_underlying.maxRedirects(max)),
   strict302Handling: (): HttpProtocolBuilder => wrapHttpProtocolBuilder(_underlying.strict302Handling()),
+
+  //transformResponse: (f: (response: Response, session: Session) => Response): HttpProtocolBuilder =>
+  //  wrapHttpProtocolBuilder(_underlying.transformResponse(wrapBiCallback(underlyingResponseTransform(f)))),
 
   inferHtmlResources: (): HttpProtocolBuilder => wrapHttpProtocolBuilder(_underlying.inferHtmlResources()),
 

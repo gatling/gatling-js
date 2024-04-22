@@ -93,7 +93,7 @@ declare namespace io.gatling.http.client.body {
 } // end namespace io.gatling.http.client.body
 declare namespace io.gatling.http.response {
   class Response /* extends java.lang.Object implements HttpResult, scala.Product, java.io.Serializable*/ {
-    body(): any /*io.gatling.http.response.ResponseBody*/;
+    body(): ResponseBody;
     canEqual(x$1: any /*java.lang.Object*/): boolean;
     checksum(algorithm: any /*io.gatling.core.check.ChecksumAlgorithm*/): any /*scala.Option*/;
     checksums(): any /*scala.collection.immutable.Map*/;
@@ -102,9 +102,9 @@ declare namespace io.gatling.http.response {
       request: io.gatling.http.client.Request,
       startTimestamp: long,
       endTimestamp: long,
-      status: any /*io.netty.handler.codec.http.HttpResponseStatus*/,
+      status: io.netty.handler.codec.http.HttpResponseStatus,
       headers: io.netty.handler.codec.http.HttpHeaders,
-      body: any /*io.gatling.http.response.ResponseBody*/,
+      body: ResponseBody,
       checksums: any /*scala.collection.immutable.Map*/,
       isHttp2: boolean
     ): Response;
@@ -124,9 +124,19 @@ declare namespace io.gatling.http.response {
     productPrefix(): string;
     request(): io.gatling.http.client.Request;
     startTimestamp(): long;
-    status(): any /*io.netty.handler.codec.http.HttpResponseStatus*/;
+    status(): io.netty.handler.codec.http.HttpResponseStatus;
     toString(): string;
   } // end Response
+} // end namespace io.gatling.http.response
+declare namespace io.gatling.http.response {
+  interface ResponseBody {
+    bytes(): bytearray;
+    chars(): chararray;
+    charset(): any /*java.nio.charset.Charset*/;
+    length(): int;
+    stream(): any /*java.io.InputStream*/;
+    string(): string;
+  } // end ResponseBody
 } // end namespace io.gatling.http.response
 declare namespace io.gatling.javaapi.core {
   class Assertion /* extends java.lang.Object*/ {
@@ -3134,6 +3144,17 @@ declare namespace io.netty.handler.codec.http {
     valueCharSequenceIterator(arg0: any /*java.lang.CharSequence*/): java.util.Iterator<any /*java.lang.CharSequence*/>;
     valueStringIterator(arg0: any /*java.lang.CharSequence*/): java.util.Iterator<string>;
   } // end HttpHeaders
+} // end namespace io.netty.handler.codec.http
+declare namespace io.netty.handler.codec.http {
+  class HttpResponseStatus /* extends java.lang.Object implements java.lang.Comparable<any>*/ {
+    code(): int;
+    codeAsText(): any /*io.netty.util.AsciiString*/;
+    codeClass(): any /*io.netty.handler.codec.http.HttpStatusClass*/;
+    compareTo(arg0: HttpResponseStatus): int;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    reasonPhrase(): string;
+    toString(): string;
+  } // end HttpResponseStatus
 } // end namespace io.netty.handler.codec.http
 declare namespace java.lang {
   class String /* extends Object implements java.io.Serializable, Comparable<any>, CharSequence, java.lang.constant.Constable, java.lang.constant.ConstantDesc*/ {

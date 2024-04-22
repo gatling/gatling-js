@@ -71,8 +71,8 @@ const httpProtocol = http
   .silentResources()
   .silentUri("regex")
   .disableUrlEncoding()
-  .sign((request) => request)
-  .sign((request, _: Session) => request)
+  //.sign((request) => request)
+  //.sign((request, _: Session) => request)
   .signWithOAuth1("consumerKey", "clientSharedSecret", "token", "tokenSecret")
   .signWithOAuth1("consumerKey", "clientSharedSecret", "token", "tokenSecret", true)
   .signWithOAuth1(

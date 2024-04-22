@@ -1,10 +1,12 @@
-import { ActionBuilder, Body, Expression, Session } from "@gatling.io/core";
+import {ActionBuilder, Body, Expression, Session, wrapBiCallback} from "@gatling.io/core";
 import { underlyingSessionTo, wrapCallback } from "@gatling.io/core";
+
+import { underlyingResponseTransform } from "../index";
+import { Response } from "../response";
 
 import JvmHttpRequestActionBuilder = io.gatling.javaapi.http.HttpRequestActionBuilder;
 
 export * from "./body";
-export * from "./headers";
 export * from "./request";
 
 export interface RequestWithParamsActionBuilder<T> {
@@ -67,7 +69,7 @@ export interface RequestActionBuilder<T> {
   silent(): T;
   // notSilent
   // disableFollowRedirect
-  // transformResponse
+  //transformResponse(f: (response: Response, session: Session) => Response): T;
   // resources
   // requestTimeout
 }
@@ -76,7 +78,9 @@ const requestActionBuilderImpl = <T>(
   jvmBuilder: JvmHttpRequestActionBuilder,
   wrap: (_underlying: JvmHttpRequestActionBuilder) => T
 ): RequestActionBuilder<T> => ({
-  silent: (): T => wrap(jvmBuilder.silent())
+  silent: (): T => wrap(jvmBuilder.silent()),
+  //transformResponse: (f: (response: Response, session: Session) => Response): T =>
+  //  wrap(jvmBuilder.transformResponse(wrapBiCallback(underlyingResponseTransform(f))))
 });
 
 export interface HttpRequestActionBuilder
@@ -84,7 +88,7 @@ export interface HttpRequestActionBuilder
     RequestWithBodyActionBuilder<HttpRequestActionBuilder>,
     RequestActionBuilder<HttpRequestActionBuilder>,
     ActionBuilder {
-  // Assembling all original sub types
+  // Assembling all original subtypes
 }
 
 export const wrapHttpRequestActionBuilder = (_underlying: JvmHttpRequestActionBuilder): HttpRequestActionBuilder => ({

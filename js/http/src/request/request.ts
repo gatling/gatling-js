@@ -1,7 +1,7 @@
 import { Wrapper } from "@gatling.io/core";
 
+import { HttpHeaders, wrapHttpHeaders } from "../headers";
 import { RequestBody, wrapRequestBody } from "./body";
-import { HttpHeaders, wrapHttpHeaders } from "./headers";
 
 import JvmRequest = io.gatling.http.client.Request;
 

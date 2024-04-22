@@ -127,9 +127,11 @@
         @Type(value = io.gatling.javaapi.core.pause.RendezVous.class, export = true),
         // ********** http **********
         @Type(value = io.netty.handler.codec.http.HttpHeaders.class, export = true),
+        @Type(value = io.netty.handler.codec.http.HttpResponseStatus.class, export = true),
         @Type(value = io.gatling.http.client.Request.class, export = true),
         @Type(value = io.gatling.http.client.body.RequestBody.class, export = true),
         @Type(value = io.gatling.http.response.Response.class, export = true),
+        @Type(value = io.gatling.http.response.ResponseBody.class, export = true),
         @Type(value = io.gatling.javaapi.http.AddCookie.class, export = true),
         @Type(value = io.gatling.javaapi.http.BodyPart.class, export = true),
         @Type(value = io.gatling.javaapi.http.GetCookie.class, export = true),

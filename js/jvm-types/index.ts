@@ -1643,6 +1643,18 @@ export const HttpRequestActionBuilder: HttpRequestActionBuilderStatic = Java.typ
   "io.gatling.javaapi.http.HttpRequestActionBuilder"
 );
 
+interface HttpResponseStatusStatic {
+  readonly class: any;
+  new (arg0: int, arg1: string): io.netty.handler.codec.http.HttpResponseStatus;
+  parseLine(arg0: any /*io.netty.util.AsciiString*/): io.netty.handler.codec.http.HttpResponseStatus;
+  parseLine(arg0: any /*java.lang.CharSequence*/): io.netty.handler.codec.http.HttpResponseStatus;
+  parseLine(arg0: string): io.netty.handler.codec.http.HttpResponseStatus;
+  valueOf(arg0: int): io.netty.handler.codec.http.HttpResponseStatus;
+  valueOf(arg0: int, arg1: string): io.netty.handler.codec.http.HttpResponseStatus;
+}
+
+export const HttpResponseStatus: HttpResponseStatusStatic = Java.type("io.netty.handler.codec.http.HttpResponseStatus");
+
 interface HttpStatic {
   readonly class: any;
 }
@@ -1907,15 +1919,26 @@ interface RequestStatic {
 
 export const Request: RequestStatic = Java.type("io.gatling.http.client.Request");
 
+interface ResponseBodyStatic {
+  readonly class: any;
+  apply(
+    bodyLength: int,
+    chunks: any /*scala.collection.immutable.List*/,
+    charset: any /*java.nio.charset.Charset*/
+  ): io.gatling.http.response.ResponseBody;
+}
+
+export const ResponseBody: ResponseBodyStatic = Java.type("io.gatling.http.response.ResponseBody");
+
 interface ResponseStatic {
   readonly class: any;
   new (
     request: io.gatling.http.client.Request,
     startTimestamp: long,
     endTimestamp: long,
-    status: any /*io.netty.handler.codec.http.HttpResponseStatus*/,
+    status: io.netty.handler.codec.http.HttpResponseStatus,
     headers: io.netty.handler.codec.http.HttpHeaders,
-    body: any /*io.gatling.http.response.ResponseBody*/,
+    body: io.gatling.http.response.ResponseBody,
     checksums: any /*scala.collection.immutable.Map*/,
     isHttp2: boolean
   ): io.gatling.http.response.Response;
@@ -1923,9 +1946,9 @@ interface ResponseStatic {
     request: io.gatling.http.client.Request,
     startTimestamp: long,
     endTimestamp: long,
-    status: any /*io.netty.handler.codec.http.HttpResponseStatus*/,
+    status: io.netty.handler.codec.http.HttpResponseStatus,
     headers: io.netty.handler.codec.http.HttpHeaders,
-    body: any /*io.gatling.http.response.ResponseBody*/,
+    body: io.gatling.http.response.ResponseBody,
     checksums: any /*scala.collection.immutable.Map*/,
     isHttp2: boolean
   ): io.gatling.http.response.Response;
