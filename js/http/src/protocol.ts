@@ -8,7 +8,6 @@ import {
 } from "@gatling.io/core";
 
 import { underlyingRequestTransform } from "./index";
-import { asJavaMap } from "./map";
 import { Proxy } from "./proxy";
 import { Request } from "./request";
 
@@ -754,7 +753,7 @@ export const wrapHttpProtocolBuilder = (_underlying: JvmHttpProtocolBuilder): Ht
         : _underlying.header(name, value)
     ),
   headers: (headers: Record<string, string>): HttpProtocolBuilder =>
-    wrapHttpProtocolBuilder(_underlying.headers(asJavaMap(headers))),
+    wrapHttpProtocolBuilder(_underlying.headers(headers as any)),
   acceptHeader: (value: Expression<string>): HttpProtocolBuilder =>
     wrapHttpProtocolBuilder(
       typeof value === "function"
@@ -895,7 +894,7 @@ export const wrapHttpProtocolBuilder = (_underlying: JvmHttpProtocolBuilder): Ht
     ),
   enableHttp2: (): HttpProtocolBuilder => wrapHttpProtocolBuilder(_underlying.enableHttp2()),
   http2PriorKnowledge: (remotes: Record<string, boolean>): HttpProtocolBuilder =>
-    wrapHttpProtocolBuilder(_underlying.http2PriorKnowledge(asJavaMap(remotes))),
+    wrapHttpProtocolBuilder(_underlying.http2PriorKnowledge(remotes as any)),
 
   // Response part
 
