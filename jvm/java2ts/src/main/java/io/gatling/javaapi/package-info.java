@@ -28,6 +28,7 @@
         @Type(value = io.gatling.javaapi.core.Body.class, export = true),
         @Type(value = io.gatling.javaapi.core.ChainBuilder.class, export = true),
         @Type(value = io.gatling.javaapi.core.CheckBuilder.class, export = true),
+        @Type(value = io.gatling.javaapi.core.CheckBuilder.CaptureGroupCheckBuilder.class, export = true),
         @Type(value = io.gatling.javaapi.core.CheckBuilder.Final.class, export = true),
         @Type(value = io.gatling.javaapi.core.CheckBuilder.Find.class, export = true),
         @Type(value = io.gatling.javaapi.core.CheckBuilder.MultipleFind.class, export = true),

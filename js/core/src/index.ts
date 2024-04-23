@@ -9,10 +9,11 @@ export * from "./gatlingJvm/callbacks";
 export * from "./body";
 export {
   CheckBuilder,
+  CheckBuilderCaptureGroup,
   CheckBuilderFinal,
-  CheckBuilderValidate,
   CheckBuilderFind,
   CheckBuilderMultipleFind,
+  CheckBuilderValidate,
   bodyString,
   bodyLength,
   substring,
@@ -21,8 +22,10 @@ export {
   form,
   // TODO jsonPath, jmesPath, jsonpJsonPath, jsonpJmesPath, regex
   md5,
-  sha1,
+  regex,
   responseTimeInMillis,
+  sha1,
+  wrapCheckBuilderCaptureGroup,
   wrapCheckBuilderFind,
   wrapCheckBuilderMultipleFind
 } from "./checks";

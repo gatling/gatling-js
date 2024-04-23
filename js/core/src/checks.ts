@@ -1,5 +1,6 @@
 import { CoreDsl as JvmCoreDsl } from "@gatling.io/jvm-types";
 import JvmCheckBuilder = io.gatling.javaapi.core.CheckBuilder;
+import JvmCheckBuilderCaptureGroup = io.gatling.javaapi.core.CheckBuilder$CaptureGroupCheckBuilder;
 import JvmCheckBuilderFinal = io.gatling.javaapi.core.CheckBuilder$Final;
 import JvmCheckBuilderFind = io.gatling.javaapi.core.CheckBuilder$Find;
 import JvmCheckBuilderMultipleFind = io.gatling.javaapi.core.CheckBuilder$MultipleFind;
@@ -7,7 +8,7 @@ import JvmCheckBuilderValidate = io.gatling.javaapi.core.CheckBuilder$Validate;
 
 import { wrapCallback, wrapBiCallback } from "./gatlingJvm/callbacks";
 import { Wrapper } from "./common";
-import { Session, SessionTo, underlyingSessionTo, underlyingXWithSessionTo } from "./session";
+import { Expression, Session, SessionTo, underlyingSessionTo, underlyingXWithSessionTo } from "./session";
 
 export interface CheckBuilder extends Wrapper<JvmCheckBuilder> {}
 
@@ -464,6 +465,25 @@ export const wrapCheckBuilderMultipleFind = <X>(_underlying: JvmCheckBuilderMult
 });
 
 /**
+ * A special {@link MultipleFind<String>} that can define regex capture groups
+ */
+export interface CheckBuilderCaptureGroup extends CheckBuilderMultipleFind<string> {
+  /**
+   * Define that the check extracts an expected number of values from capture groups
+   *
+   * @param count - the number of capture groups in the regular expression pattern
+   * @returns a new MultipleFind
+   */
+  captureGroups(count: number): CheckBuilderMultipleFind<string[]>;
+}
+
+export const wrapCheckBuilderCaptureGroup = (_underlying: JvmCheckBuilderCaptureGroup): CheckBuilderCaptureGroup => ({
+  ...wrapCheckBuilderMultipleFind<string>(_underlying),
+  captureGroups: (count: number): CheckBuilderMultipleFind<string[]> =>
+    wrapCheckBuilderMultipleFind(_underlying.captureGroups(count))
+});
+
+/**
  * Bootstrap a new bodyString check that extracts the full response message body as a String.
  * Encoding is either the one provided in the message (eg Content-Type charset attribute in HTTP),
  * or the one defined in gatling.conf.
@@ -474,7 +494,7 @@ export const wrapCheckBuilderMultipleFind = <X>(_underlying: JvmCheckBuilderMult
  *
  * @returns the next DSL step
  */
-export const bodyString = (): CheckBuilderFind<String> => wrapCheckBuilderFind(JvmCoreDsl.bodyString());
+export const bodyString = (): CheckBuilderFind<string> => wrapCheckBuilderFind(JvmCoreDsl.bodyString());
 
 // TODO bodyBytes - we should probably use Int8Array like for HTTP Request/Response
 // /**
@@ -756,7 +776,46 @@ export const form: FormFunction = (selector: string | SessionTo<string>) =>
       : JvmCoreDsl.form(selector)) as JvmCheckBuilderMultipleFind<any> // TODO change type of java.util.Map in java2typescript
   );
 
-// TODO jsonPath, jmesPath, jsonpJsonPath, jsonpJmesPath, regex
+// TODO jsonPath, jmesPath, jsonpJsonPath, jsonpJmesPath
+
+export interface RegexFunction {
+  /**
+   * Bootstrap a new regex check that extracts capture groups with a <a
+   * href="https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html">Java Regular
+   * Expression</a> from response's body String. Encoding is either the one provided in the message
+   * (eg Content-Type charset attribute in HTTP), or the one defined in gatling.conf.
+   *
+   * <p>Note: On contrary to the Scala DSL, the compiler can't check the availability of this check
+   * type for your protocol. If the protocol you're using doesn't support it, you'll get a runtime
+   * {@link IllegalArgumentException}
+   *
+   * @param pattern the searched pattern, expressed as a Gatling Expression Language String
+   * @return the next DSL step
+   */
+  (pattern: string): CheckBuilderCaptureGroup;
+
+  /**
+   * Bootstrap a new regex check that extracts capture groups with a <a
+   * href="https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html">Java Regular
+   * Expression</a> from response's body String. Encoding is either the one provided in the message
+   * (eg Content-Type charset attribute in HTTP), or the one defined in gatling.conf.
+   *
+   * <p>Note: On contrary to the Scala DSL, the compiler can't check the availability of this check
+   * type for your protocol. If the protocol you're using doesn't support it, you'll get a runtime
+   * {@link IllegalArgumentException}
+   *
+   * @param pattern the searched pattern, expressed as a function
+   * @return the next DSL step
+   */
+  (pattern: (session: Session) => string): CheckBuilderCaptureGroup;
+}
+
+export const regex: RegexFunction = (pattern: Expression<string>): CheckBuilderCaptureGroup =>
+  wrapCheckBuilderCaptureGroup(
+    typeof pattern === "function"
+      ? JvmCoreDsl.regex(wrapCallback(underlyingSessionTo(pattern)))
+      : JvmCoreDsl.regex(pattern)
+  );
 
 /**
  * Bootstrap a new md5 check that extracts the <a href="https://en.wikipedia.org/wiki/MD5">MD5</a>

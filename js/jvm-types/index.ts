@@ -68,6 +68,14 @@ interface ChainBuilderStatic {
 
 export const ChainBuilder: ChainBuilderStatic = Java.type("io.gatling.javaapi.core.ChainBuilder");
 
+interface CheckBuilder$CaptureGroupCheckBuilderStatic {
+  readonly class: any;
+}
+
+export const CheckBuilder$CaptureGroupCheckBuilder: CheckBuilder$CaptureGroupCheckBuilderStatic = Java.type(
+  "io.gatling.javaapi.core.CheckBuilder$CaptureGroupCheckBuilder"
+);
+
 interface CheckBuilder$FinalStatic {
   readonly class: any;
 }
@@ -555,10 +563,10 @@ interface CoreDslStatic {
     arg0: Func<io.gatling.javaapi.core.Session, string>,
     arg1: Func<io.gatling.javaapi.core.Session, boolean | null>
   ): io.gatling.javaapi.core.ChainBuilder;
-  regex(arg0: string): any /*io.gatling.javaapi.core.CheckBuilder$CaptureGroupCheckBuilder*/;
+  regex(arg0: string): io.gatling.javaapi.core.CheckBuilder$CaptureGroupCheckBuilder;
   regex(
     arg0: Func<io.gatling.javaapi.core.Session, string>
-  ): any /*io.gatling.javaapi.core.CheckBuilder$CaptureGroupCheckBuilder*/;
+  ): io.gatling.javaapi.core.CheckBuilder$CaptureGroupCheckBuilder;
   css(arg0: string, arg1: string): any /*io.gatling.javaapi.core.CheckBuilder$CssOfTypeMultipleFind*/;
   css(
     arg0: Func<io.gatling.javaapi.core.Session, string>,
@@ -1401,28 +1409,28 @@ interface HttpDslStatic {
   flushHttpCache(): io.gatling.javaapi.core.ActionBuilder;
   flushSessionCookies(): io.gatling.javaapi.core.ActionBuilder;
   getCookieValue(arg0: io.gatling.javaapi.http.GetCookie): io.gatling.javaapi.core.ActionBuilder;
-  currentLocationRegex(arg0: string): any /*io.gatling.javaapi.core.CheckBuilder$CaptureGroupCheckBuilder*/;
+  currentLocationRegex(arg0: string): io.gatling.javaapi.core.CheckBuilder$CaptureGroupCheckBuilder;
   headerRegex(
     arg0: any /*java.lang.CharSequence*/,
     arg1: string
-  ): any /*io.gatling.javaapi.core.CheckBuilder$CaptureGroupCheckBuilder*/;
+  ): io.gatling.javaapi.core.CheckBuilder$CaptureGroupCheckBuilder;
   headerRegex(
     arg0: any /*java.lang.CharSequence*/,
     arg1: Func<io.gatling.javaapi.core.Session, string>
-  ): any /*io.gatling.javaapi.core.CheckBuilder$CaptureGroupCheckBuilder*/;
-  headerRegex(arg0: string, arg1: string): any /*io.gatling.javaapi.core.CheckBuilder$CaptureGroupCheckBuilder*/;
+  ): io.gatling.javaapi.core.CheckBuilder$CaptureGroupCheckBuilder;
+  headerRegex(arg0: string, arg1: string): io.gatling.javaapi.core.CheckBuilder$CaptureGroupCheckBuilder;
   headerRegex(
     arg0: string,
     arg1: Func<io.gatling.javaapi.core.Session, string>
-  ): any /*io.gatling.javaapi.core.CheckBuilder$CaptureGroupCheckBuilder*/;
+  ): io.gatling.javaapi.core.CheckBuilder$CaptureGroupCheckBuilder;
   headerRegex(
     arg0: Func<io.gatling.javaapi.core.Session, any /*java.lang.CharSequence*/>,
     arg1: string
-  ): any /*io.gatling.javaapi.core.CheckBuilder$CaptureGroupCheckBuilder*/;
+  ): io.gatling.javaapi.core.CheckBuilder$CaptureGroupCheckBuilder;
   headerRegex(
     arg0: Func<io.gatling.javaapi.core.Session, any /*java.lang.CharSequence*/>,
     arg1: Func<io.gatling.javaapi.core.Session, string>
-  ): any /*io.gatling.javaapi.core.CheckBuilder$CaptureGroupCheckBuilder*/;
+  ): io.gatling.javaapi.core.CheckBuilder$CaptureGroupCheckBuilder;
   status(): io.gatling.javaapi.core.CheckBuilder$Find<int | null>;
   currentLocation(): io.gatling.javaapi.core.CheckBuilder$Find<string>;
   header(arg0: any /*java.lang.CharSequence*/): io.gatling.javaapi.core.CheckBuilder$MultipleFind<string>;

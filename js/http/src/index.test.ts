@@ -1,7 +1,27 @@
-import { Simulation, Session } from "@gatling.io/core";
+import { Session, Simulation } from "@gatling.io/core";
 import { atOnceUsers, scenario } from "@gatling.io/core";
+import {
+  bodyLength,
+  bodyString,
+  css,
+  form,
+  md5,
+  regex,
+  responseTimeInMillis,
+  sha1,
+  substring,
+  xpath,
+  StringBody
+} from "@gatling.io/core";
 
 import { http, Proxy } from "./index";
+import {
+  currentLocation,
+  currentLocationRegex,
+  header,
+  headerRegex,
+  status
+} from "./index";
 
 const runSimulationMock = (_: Simulation): void => {};
 
@@ -125,15 +145,15 @@ const httpProtocol = http
     bodyString().transform((str: string) => str.length).lt(100000),
     //bodyString().is(StringBody("foo")),
     //  bodyStream(),
-    //  regex("pattern").findAll(),
-    //  regex("pattern").captureGroups(2).is(Arrays.asList("foo", "bar")),
-    //  regex("pattern").findRandom(),
-    //  regex("pattern").findRandom(2),
-    //  regex("pattern").findRandom(2, true),
-    //  regex("pattern").saveAs("key"),
-    //  regex(session -> "pattern").saveAs("key"),
-    //  substring("foo").is(1),
-    //  substring(session -> "foo").is(1),
+    regex("pattern").findAll(),
+    regex("pattern").captureGroups(2).is(["foo", "bar"]),
+    regex("pattern").findRandom(),
+    regex("pattern").findRandom(2),
+    regex("pattern").findRandom(2, true),
+    regex("pattern").saveAs("key"),
+    regex((_: Session) => "pattern").saveAs("key"),
+    substring("foo").is(1),
+    substring((_: Session) => "foo").is(1),
     xpath("//foo"),
     xpath("//foo", {}),
     xpath((_: Session) => "//foo"),
@@ -189,17 +209,14 @@ const httpProtocol = http
     responseTimeInMillis().find().is(100),
     status().is(200),
     currentLocation().is("url"),
-    //currentLocationRegex("pattern"),
-    //currentLocationRegex(session -> "pattern"),
-    //header("name"),
-    //  header(HttpHeaderNames.CONTENT_TYPE),
-    //  header(session -> HttpHeaderNames.CONTENT_TYPE),
-    //  headerRegex("name", "pattern"),
-    //  headerRegex(HttpHeaderNames.CONTENT_TYPE, "pattern"),
-    //  headerRegex(session -> HttpHeaderNames.CONTENT_TYPE, "pattern"),
-    //  headerRegex("name", session -> "pattern"),
-    //  headerRegex(HttpHeaderNames.CONTENT_TYPE, session -> "pattern"),
-    //  headerRegex(session -> HttpHeaderNames.CONTENT_TYPE, session -> "pattern")
+    currentLocationRegex("pattern"),
+    currentLocationRegex((_: Session) => "pattern"),
+    header("name"),
+    header((_: Session) => "name"),
+    headerRegex("name", "pattern"),
+    headerRegex((_: Session) => "name", "pattern"),
+    headerRegex("name", (_: Session) => "pattern"),
+    headerRegex((_: Session) => "name", (_: Session) => "pattern")
   )
 //.checkIf("#{bool}").then(jsonPath("$..foo"))
 //.checkIf("#{bool}").then(jsonPath("$..foo"), jsonPath("$..foo"))
