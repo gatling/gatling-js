@@ -88,6 +88,22 @@ interface CheckBuilder$FindStatic {
 
 export const CheckBuilder$Find: CheckBuilder$FindStatic = Java.type("io.gatling.javaapi.core.CheckBuilder$Find");
 
+interface CheckBuilder$JsonOfTypeFindStatic {
+  readonly class: any;
+}
+
+export const CheckBuilder$JsonOfTypeFind: CheckBuilder$JsonOfTypeFindStatic = Java.type(
+  "io.gatling.javaapi.core.CheckBuilder$JsonOfTypeFind"
+);
+
+interface CheckBuilder$JsonOfTypeMultipleFindStatic {
+  readonly class: any;
+}
+
+export const CheckBuilder$JsonOfTypeMultipleFind: CheckBuilder$JsonOfTypeMultipleFindStatic = Java.type(
+  "io.gatling.javaapi.core.CheckBuilder$JsonOfTypeMultipleFind"
+);
+
 interface CheckBuilder$MultipleFindStatic {
   readonly class: any;
 }
@@ -579,22 +595,20 @@ interface CoreDslStatic {
   bodyString(): io.gatling.javaapi.core.CheckBuilder$Find<string>;
   md5(): io.gatling.javaapi.core.CheckBuilder$Find<string>;
   sha1(): io.gatling.javaapi.core.CheckBuilder$Find<string>;
-  jmesPath(arg0: string): any /*io.gatling.javaapi.core.CheckBuilder$JsonOfTypeFind*/;
-  jmesPath(
-    arg0: Func<io.gatling.javaapi.core.Session, string>
-  ): any /*io.gatling.javaapi.core.CheckBuilder$JsonOfTypeFind*/;
-  jsonpJmesPath(arg0: string): any /*io.gatling.javaapi.core.CheckBuilder$JsonOfTypeFind*/;
+  jmesPath(arg0: string): io.gatling.javaapi.core.CheckBuilder$JsonOfTypeFind;
+  jmesPath(arg0: Func<io.gatling.javaapi.core.Session, string>): io.gatling.javaapi.core.CheckBuilder$JsonOfTypeFind;
+  jsonpJmesPath(arg0: string): io.gatling.javaapi.core.CheckBuilder$JsonOfTypeFind;
   jsonpJmesPath(
     arg0: Func<io.gatling.javaapi.core.Session, string>
-  ): any /*io.gatling.javaapi.core.CheckBuilder$JsonOfTypeFind*/;
-  jsonPath(arg0: string): any /*io.gatling.javaapi.core.CheckBuilder$JsonOfTypeMultipleFind*/;
+  ): io.gatling.javaapi.core.CheckBuilder$JsonOfTypeFind;
+  jsonPath(arg0: string): io.gatling.javaapi.core.CheckBuilder$JsonOfTypeMultipleFind;
   jsonPath(
     arg0: Func<io.gatling.javaapi.core.Session, string>
-  ): any /*io.gatling.javaapi.core.CheckBuilder$JsonOfTypeMultipleFind*/;
-  jsonpJsonPath(arg0: string): any /*io.gatling.javaapi.core.CheckBuilder$JsonOfTypeMultipleFind*/;
+  ): io.gatling.javaapi.core.CheckBuilder$JsonOfTypeMultipleFind;
+  jsonpJsonPath(arg0: string): io.gatling.javaapi.core.CheckBuilder$JsonOfTypeMultipleFind;
   jsonpJsonPath(
     arg0: Func<io.gatling.javaapi.core.Session, string>
-  ): any /*io.gatling.javaapi.core.CheckBuilder$JsonOfTypeMultipleFind*/;
+  ): io.gatling.javaapi.core.CheckBuilder$JsonOfTypeMultipleFind;
   substring(arg0: string): io.gatling.javaapi.core.CheckBuilder$MultipleFind<int | null>;
   substring(
     arg0: Func<io.gatling.javaapi.core.Session, string>

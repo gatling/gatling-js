@@ -4,6 +4,8 @@ import { wrapCallback } from "../gatlingJvm/callbacks";
 import { Expression, Session, SessionTo, underlyingSessionTo } from "../session";
 import { CheckBuilderCaptureGroup, wrapCheckBuilderCaptureGroup } from "./captureGroup";
 import { CheckBuilderFind, wrapCheckBuilderFind } from "./find";
+import { CheckBuilderJsonOfTypeFind, wrapCheckBuilderJsonOfTypeFind } from "./jsonOfTypeFind";
+import { CheckBuilderJsonOfTypeMultipleFind, wrapCheckBuilderJsonOfTypeMultipleFind } from "./jsonOfTypeMultipleFind";
 import { CheckBuilderMultipleFind, wrapCheckBuilderMultipleFind } from "./multipleFind";
 
 import JvmCheckBuilderFind = io.gatling.javaapi.core.CheckBuilder$Find;
@@ -13,6 +15,8 @@ export * from "./builder";
 export * from "./captureGroup";
 export * from "./final";
 export * from "./find";
+export * from "./jsonOfTypeFind";
+export * from "./jsonOfTypeMultipleFind";
 export * from "./multipleFind";
 export * from "./validate";
 
@@ -309,7 +313,151 @@ export const form: FormFunction = (selector: string | SessionTo<string>) =>
       : JvmCoreDsl.form(selector)) as JvmCheckBuilderMultipleFind<any> // TODO change type of java.util.Map in java2typescript
   );
 
-// TODO jsonPath, jmesPath, jsonpJsonPath, jsonpJmesPath
+export interface JsonPathFunction {
+  /**
+   * Bootstrap a new jsonPath check that extracts nodes with a <a
+   * href="https://goessner.net/articles/JsonPath/">JsonPath</a> path from response's body JSON
+   * tree.
+   *
+   * <p>Note: On contrary to the Scala DSL, the compiler can't check the availability of this check
+   * type for your protocol. If the protocol you're using doesn't support it, you'll get a runtime
+   * {@link IllegalArgumentException}
+   *
+   * @param path - the searched path, expressed as a Gatling Expression Language String
+   * @returns the next DSL step
+   */
+  (path: string): CheckBuilderJsonOfTypeMultipleFind;
+
+  /**
+   * Bootstrap a new jsonPath check that extracts nodes with a <a
+   * href="https://goessner.net/articles/JsonPath/">JsonPath</a> path from response's body JSON
+   * tree.
+   *
+   * <p>Note: On contrary to the Scala DSL, the compiler can't check the availability of this check
+   * type for your protocol. If the protocol you're using doesn't support it, you'll get a runtime
+   * {@link IllegalArgumentException}
+   *
+   * @param path - the searched path, expressed as a function
+   * @returns the next DSL step
+   */
+  (path: (session: Session) => string): CheckBuilderJsonOfTypeMultipleFind;
+}
+
+export const jsonPath: JsonPathFunction = (path: Expression<string>): CheckBuilderJsonOfTypeMultipleFind =>
+  wrapCheckBuilderJsonOfTypeMultipleFind(
+    typeof path === "function"
+      ? JvmCoreDsl.jsonPath(wrapCallback(underlyingSessionTo(path)))
+      : JvmCoreDsl.jsonPath(path)
+  );
+
+export interface JmesPathFunction {
+  /**
+   * Bootstrap a new jmesPath check that extracts nodes with a <a
+   * href="https://jmespath.org/">JMESPath</a> path from response's body JSON tree.
+   *
+   * <p>Note: On contrary to the Scala DSL, the compiler can't check the availability of this check
+   * type for your protocol. If the protocol you're using doesn't support it, you'll get a runtime
+   * {@link IllegalArgumentException}
+   *
+   * @param path - the searched path, expressed as a Gatling Expression Language String
+   * @returns the next DSL step
+   */
+  (path: string): CheckBuilderJsonOfTypeFind;
+
+  /**
+   * Bootstrap a new jmesPath check that extracts nodes with a <a
+   * href="https://jmespath.org/">JMESPath</a> path from response's body JSON tree.
+   *
+   * <p>Note: On contrary to the Scala DSL, the compiler can't check the availability of this check
+   * type for your protocol. If the protocol you're using doesn't support it, you'll get a runtime
+   * {@link IllegalArgumentException}
+   *
+   * @param path - the searched path, expressed as a function
+   * @returns the next DSL step
+   */
+  (path: (session: Session) => string): CheckBuilderJsonOfTypeFind;
+}
+
+export const jmesPath: JmesPathFunction = (path: Expression<string>): CheckBuilderJsonOfTypeFind =>
+  wrapCheckBuilderJsonOfTypeFind(
+    typeof path === "function"
+      ? JvmCoreDsl.jmesPath(wrapCallback(underlyingSessionTo(path)))
+      : JvmCoreDsl.jmesPath(path)
+  );
+
+export interface JsonpJsonPathFunction {
+  /**
+   * Bootstrap a new jsonpJsonPath check that extracts nodes with a <a
+   * href="https://goessner.net/articles/JsonPath/">JsonPath</a> path from response's body <a
+   * href="https://en.wikipedia.org/wiki/JSONP">JSONP</a> payload.
+   *
+   * <p>Note: On contrary to the Scala DSL, the compiler can't check the availability of this check
+   * type for your protocol. If the protocol you're using doesn't support it, you'll get a runtime
+   * {@link IllegalArgumentException}
+   *
+   * @param path - the searched path, expressed as a Gatling Expression Language String
+   * @returns the next DSL step
+   */
+  (path: string): CheckBuilderJsonOfTypeMultipleFind;
+
+  /**
+   * Bootstrap a new jsonpJsonPath check that extracts nodes with a <a
+   * href="https://goessner.net/articles/JsonPath/">JsonPath</a> path from response's body <a
+   * href="https://en.wikipedia.org/wiki/JSONP">JSONP</a> payload.
+   *
+   * <p>Note: On contrary to the Scala DSL, the compiler can't check the availability of this check
+   * type for your protocol. If the protocol you're using doesn't support it, you'll get a runtime
+   * {@link IllegalArgumentException}
+   *
+   * @param path - the searched path, expressed as a function
+   * @returns the next DSL step
+   */
+  (path: (session: Session) =>string): CheckBuilderJsonOfTypeMultipleFind;
+}
+
+export const jsonpJsonPath: JsonpJsonPathFunction = (path: Expression<string>): CheckBuilderJsonOfTypeMultipleFind =>
+  wrapCheckBuilderJsonOfTypeMultipleFind(
+    typeof path === "function"
+      ? JvmCoreDsl.jsonpJsonPath(wrapCallback(underlyingSessionTo(path)))
+      : JvmCoreDsl.jsonpJsonPath(path)
+  );
+
+export interface JsonpJmesPathFunction {
+  /**
+   * Bootstrap a new jsonpJmesPath check that extracts nodes with a <a
+   * href="https://jmespath.org/">JMESPath</a> path from response's body JSON <a
+   * href="https://en.wikipedia.org/wiki/JSONP">JSONP</a> payload.
+   *
+   * <p>Note: On contrary to the Scala DSL, the compiler can't check the availability of this check
+   * type for your protocol. If the protocol you're using doesn't support it, you'll get a runtime
+   * {@link IllegalArgumentException}
+   *
+   * @param path - the searched path, expressed as a Gatling Expression Language String
+   * @returns the next DSL step
+   */
+  (path: string): CheckBuilderJsonOfTypeFind;
+
+  /**
+   * Bootstrap a new jsonpJmesPath check that extracts nodes with a <a
+   * href="https://jmespath.org/">JMESPath</a> path from response's body JSON <a
+   * href="https://en.wikipedia.org/wiki/JSONP">JSONP</a> payload.
+   *
+   * <p>Note: On contrary to the Scala DSL, the compiler can't check the availability of this check
+   * type for your protocol. If the protocol you're using doesn't support it, you'll get a runtime
+   * {@link IllegalArgumentException}
+   *
+   * @param path - the searched path, expressed as a function
+   * @returns the next DSL step
+   */
+  (path: (session: Session) => string): CheckBuilderJsonOfTypeFind;
+}
+
+export const jsonpJmesPath: JsonpJmesPathFunction = (path: Expression<string>): CheckBuilderJsonOfTypeFind =>
+  wrapCheckBuilderJsonOfTypeFind(
+    typeof path === "function"
+      ? JvmCoreDsl.jsonpJmesPath(wrapCallback(underlyingSessionTo(path)))
+      : JvmCoreDsl.jsonpJmesPath(path)
+  );
 
 export interface RegexFunction {
   /**

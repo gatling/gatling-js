@@ -31,6 +31,8 @@
         @Type(value = io.gatling.javaapi.core.CheckBuilder.CaptureGroupCheckBuilder.class, export = true),
         @Type(value = io.gatling.javaapi.core.CheckBuilder.Final.class, export = true),
         @Type(value = io.gatling.javaapi.core.CheckBuilder.Find.class, export = true),
+        @Type(value = io.gatling.javaapi.core.CheckBuilder.JsonOfTypeFind.class, export = true),
+        @Type(value = io.gatling.javaapi.core.CheckBuilder.JsonOfTypeMultipleFind.class, export = true),
         @Type(value = io.gatling.javaapi.core.CheckBuilder.MultipleFind.class, export = true),
         @Type(value = io.gatling.javaapi.core.CheckBuilder.Validate.class, export = true),
         @Type(value = io.gatling.javaapi.core.Choice.class, export = true),
