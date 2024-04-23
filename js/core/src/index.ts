@@ -5,44 +5,11 @@ import { ProtocolBuilder } from "./protocol";
 
 // FIXME no export *
 export * from "./gatlingJvm/callbacks";
-
 export * from "./body";
-export {
-  CheckBuilder,
-  CheckBuilderCaptureGroup,
-  CheckBuilderFinal,
-  CheckBuilderFind,
-  CheckBuilderMultipleFind,
-  CheckBuilderValidate,
-  bodyString,
-  bodyLength,
-  substring,
-  xpath,
-  css,
-  form,
-  // TODO jsonPath, jmesPath, jsonpJsonPath, jsonpJmesPath, regex
-  md5,
-  regex,
-  responseTimeInMillis,
-  sha1,
-  wrapCheckBuilderCaptureGroup,
-  wrapCheckBuilderFind,
-  wrapCheckBuilderMultipleFind
-} from "./checks";
+export * from "./checks";
 export * from "./closedInjection";
 export * from "./common";
-export {
-  FeederBuilder,
-  FileBasedFeederBuilder,
-  BatchableFeederBuilder,
-  csv,
-  ssv,
-  tsv,
-  separatedValues,
-  jsonFile,
-  jsonUrl,
-  arrayFeeder
-} from "./feederBuilder";
+export * from "./feederBuilder";
 export * from "./openInjection";
 export * from "./population";
 export * from "./protocol";
