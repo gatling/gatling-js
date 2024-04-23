@@ -222,9 +222,9 @@ const httpProtocol = http
     headerRegex("name", (_: Session) => "pattern"),
     headerRegex((_: Session) => "name", (_: Session) => "pattern")
   )
-//.checkIf("#{bool}").then(jsonPath("$..foo"))
-//.checkIf("#{bool}").then(jsonPath("$..foo"), jsonPath("$..foo"))
-//.checkIf((response, session) -> true).then(jsonPath("$..foo"));
+  .checkIf("#{bool}").then(jsonPath("$..foo"))
+  .checkIf("#{bool}").then(jsonPath("$..foo"), jsonPath("$..foo"))
+  //.checkIf((response, session) -> true).then(jsonPath("$..foo"));
 
 const scn = scenario("scenario")
   .exec(
@@ -330,9 +330,9 @@ const scn = scenario("scenario")
   .exec(
     http("name").get("url")
       .check(status().is(200))
-    //.checkIf("#{bool}").then(jsonPath("$..foo"))
-    //.checkIf("#{bool}").then(jsonPath("$..foo"), jsonPath("$..foo"))
-    //.checkIf((response, session) -> true).then(jsonPath("$..foo"))
+      .checkIf("#{bool}").then(jsonPath("$..foo"))
+      .checkIf("#{bool}").then(jsonPath("$..foo"), jsonPath("$..foo"))
+      //.checkIf((response, session) -> true).then(jsonPath("$..foo"))
   );
 // processRequestBody
 //.exec(

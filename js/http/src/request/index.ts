@@ -1,5 +1,15 @@
-import { ActionBuilder, Body, CheckBuilder, Expression, Session } from "@gatling.io/core";
-import { underlyingSessionTo, wrapCallback } from "@gatling.io/core";
+import {
+  ActionBuilder,
+  Body,
+  CheckBuilder,
+  Condition,
+  Expression,
+  Session,
+  SessionTo,
+  underlyingSessionTo,
+  wrapCallback,
+  wrapCondition
+} from "@gatling.io/core";
 
 import { underlyingResponseTransform } from "../index";
 import { Response } from "../response";
@@ -64,7 +74,9 @@ const requestWithBodyActionBuilderImpl = <T>(
 
 export interface RequestActionBuilder<T> {
   check(...checks: CheckBuilder[]): T;
-  // checkIf
+  checkIf(condition: string): Condition<T>;
+  checkIf(condition: (session: Session) => boolean): Condition<T>;
+  // checkIf response
   // ignoreProtocolChecks
   silent(): T;
   // notSilent
@@ -79,6 +91,13 @@ const requestActionBuilderImpl = <T>(
   wrap: (_underlying: JvmHttpRequestActionBuilder) => T
 ): RequestActionBuilder<T> => ({
   check: (...checks: CheckBuilder[]): T => wrap(jvmBuilder.check(checks.map((c: CheckBuilder) => c._underlying))),
+  checkIf: (condition: string | SessionTo<boolean>): Condition<T> =>
+    wrapCondition(
+      typeof condition === "string"
+        ? jvmBuilder.checkIf(condition)
+        : jvmBuilder.checkIf(wrapCallback(underlyingSessionTo(condition))),
+      wrap
+    ),
   silent: (): T => wrap(jvmBuilder.silent()),
   //transformResponse: (f: (response: Response, session: Session) => Response): T =>
   //  wrap(jvmBuilder.transformResponse(wrapBiCallback(underlyingResponseTransform(f))))

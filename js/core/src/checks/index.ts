@@ -13,6 +13,7 @@ import JvmCheckBuilderMultipleFind = io.gatling.javaapi.core.CheckBuilder$Multip
 
 export * from "./builder";
 export * from "./captureGroup";
+export * from "./condition";
 export * from "./final";
 export * from "./find";
 export * from "./jsonOfTypeFind";

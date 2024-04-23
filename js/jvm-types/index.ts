@@ -1679,6 +1679,28 @@ interface HttpHeadersStatic {
 
 export const HttpHeaders: HttpHeadersStatic = Java.type("io.netty.handler.codec.http.HttpHeaders");
 
+interface HttpProtocolBuilder$TypedConditionStatic {
+  readonly class: any;
+  new (
+    arg0: any /*io.gatling.javaapi.http.internal.ScalaHttpProtocolBuilderConditions$Typed*/
+  ): io.gatling.javaapi.http.HttpProtocolBuilder$TypedCondition;
+}
+
+export const HttpProtocolBuilder$TypedCondition: HttpProtocolBuilder$TypedConditionStatic = Java.type(
+  "io.gatling.javaapi.http.HttpProtocolBuilder$TypedCondition"
+);
+
+interface HttpProtocolBuilder$UntypedConditionStatic {
+  readonly class: any;
+  new (
+    arg0: any /*io.gatling.javaapi.http.internal.ScalaHttpProtocolBuilderConditions$Untyped*/
+  ): io.gatling.javaapi.http.HttpProtocolBuilder$UntypedCondition;
+}
+
+export const HttpProtocolBuilder$UntypedCondition: HttpProtocolBuilder$UntypedConditionStatic = Java.type(
+  "io.gatling.javaapi.http.HttpProtocolBuilder$UntypedCondition"
+);
+
 interface HttpProtocolBuilderStatic {
   readonly class: any;
   new (arg0: any /*io.gatling.http.protocol.HttpProtocolBuilder*/): io.gatling.javaapi.http.HttpProtocolBuilder;

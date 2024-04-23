@@ -1,11 +1,15 @@
 import {
   CheckBuilder,
+  CheckBuilderMultipleFind,
+  Condition,
   Expression,
   ProtocolBuilder,
-  Session,
+  Session, SessionTo,
   underlyingSessionTo,
   wrapBiCallback,
-  wrapCallback
+  wrapCallback,
+  wrapCheckBuilder,
+  wrapCondition
 } from "@gatling.io/core";
 
 import { underlyingRequestTransform, underlyingResponseTransform } from "./index";
@@ -14,6 +18,9 @@ import { Request } from "./request";
 import { Response } from "./response";
 
 import JvmHttpProtocolBuilder = io.gatling.javaapi.http.HttpProtocolBuilder;
+import JvmHttpPrococolBuilderTypedCondition = io.gatling.javaapi.http.HttpProtocolBuilder$TypedCondition;
+import JvmHttpPrococolBuilderUntypedCondition = io.gatling.javaapi.http.HttpProtocolBuilder$UntypedCondition;
+
 
 /**
  * DSL for building HTTP protocol configurations
@@ -578,20 +585,25 @@ export interface HttpProtocolBuilder extends ProtocolBuilder {
   check(...checks: CheckBuilder[]): HttpProtocolBuilder;
 
   // TODO
-  //check(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): HttpProtocolBuilder;
-
-  // TODO
   //checkIf(
   //  arg0: BiFunction<any /*io.gatling.http.response.Response*/, io.gatling.javaapi.core.Session, boolean | null>
   //): any /*io.gatling.javaapi.http.HttpProtocolBuilder$TypedCondition*/;
 
-  // TODO
-  //checkIf(
-  //  arg0: Func<io.gatling.javaapi.core.Session, boolean | null>
-  //): any /*io.gatling.javaapi.http.HttpProtocolBuilder$UntypedCondition*/;
+  /**
+   * Define some common checks to be applied on all the requests when a condition holds true.
+   *
+   * @param condition - a condition, expressed as a Gatling Expression Language String
+   * @returns the next DSL step
+   */
+  checkIf(condition: string): Condition<HttpProtocolBuilder>;
 
-  // TODO
-  //checkIf(arg0: string): any /*io.gatling.javaapi.http.HttpProtocolBuilder$UntypedCondition*/;
+  /**
+   * Define some common checks to be applied on all the requests when a condition holds true.
+   *
+   * @param condition - a condition, expressed as a function
+   * @returns the next DSL step
+   */
+  checkIf(condition: (session: Session) => boolean): Condition<HttpProtocolBuilder>;
 
   /**
    * Automatically infer resources from HTML payloads
@@ -906,6 +918,13 @@ export const wrapHttpProtocolBuilder = (_underlying: JvmHttpProtocolBuilder): Ht
 
   check: (...checks: CheckBuilder[]): HttpProtocolBuilder =>
     wrapHttpProtocolBuilder(_underlying.check(checks.map((c: CheckBuilder) => c._underlying))),
+  checkIf: (condition: string | SessionTo<boolean>): Condition<HttpProtocolBuilder> =>
+    wrapCondition(
+      typeof condition === "string"
+        ? _underlying.checkIf(condition)
+        : _underlying.checkIf(wrapCallback(underlyingSessionTo(condition))),
+      wrapHttpProtocolBuilder
+    ),
 
   inferHtmlResources: (): HttpProtocolBuilder => wrapHttpProtocolBuilder(_underlying.inferHtmlResources()),
 

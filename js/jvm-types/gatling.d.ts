@@ -2832,6 +2832,22 @@ declare namespace io.gatling.javaapi.http {
   } // end HttpDsl
 } // end namespace io.gatling.javaapi.http
 declare namespace io.gatling.javaapi.http {
+  class HttpProtocolBuilder$TypedCondition /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    then(...arg0: io.gatling.javaapi.core.CheckBuilder[]): HttpProtocolBuilder;
+    then(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): HttpProtocolBuilder;
+    toString(): string;
+  } // end HttpProtocolBuilder$TypedCondition
+} // end namespace io.gatling.javaapi.http
+declare namespace io.gatling.javaapi.http {
+  class HttpProtocolBuilder$UntypedCondition /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    then(...arg0: io.gatling.javaapi.core.CheckBuilder[]): HttpProtocolBuilder;
+    then(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): HttpProtocolBuilder;
+    toString(): string;
+  } // end HttpProtocolBuilder$UntypedCondition
+} // end namespace io.gatling.javaapi.http
+declare namespace io.gatling.javaapi.http {
   class HttpProtocolBuilder /* extends java.lang.Object implements io.gatling.javaapi.core.ProtocolBuilder*/ {
     acceptCharsetHeader(arg0: Func<io.gatling.javaapi.core.Session, string>): HttpProtocolBuilder;
     acceptCharsetHeader(arg0: string): HttpProtocolBuilder;
@@ -2859,11 +2875,9 @@ declare namespace io.gatling.javaapi.http {
     check(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): HttpProtocolBuilder;
     checkIf(
       arg0: BiFunction<io.gatling.http.response.Response, io.gatling.javaapi.core.Session, boolean | null>
-    ): any /*io.gatling.javaapi.http.HttpProtocolBuilder$TypedCondition*/;
-    checkIf(
-      arg0: Func<io.gatling.javaapi.core.Session, boolean | null>
-    ): any /*io.gatling.javaapi.http.HttpProtocolBuilder$UntypedCondition*/;
-    checkIf(arg0: string): any /*io.gatling.javaapi.http.HttpProtocolBuilder$UntypedCondition*/;
+    ): HttpProtocolBuilder$TypedCondition;
+    checkIf(arg0: Func<io.gatling.javaapi.core.Session, boolean | null>): HttpProtocolBuilder$UntypedCondition;
+    checkIf(arg0: string): HttpProtocolBuilder$UntypedCondition;
     connectionHeader(arg0: Func<io.gatling.javaapi.core.Session, string>): HttpProtocolBuilder;
     connectionHeader(arg0: string): HttpProtocolBuilder;
     contentTypeHeader(arg0: Func<io.gatling.javaapi.core.Session, string>): HttpProtocolBuilder;
