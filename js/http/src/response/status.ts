@@ -184,7 +184,10 @@ export class HttpResponseStatus {
   /**
    * 416 Requested Range Not Satisfiable
    */
-  public static readonly REQUESTED_RANGE_NOT_SATISFIABLE = new HttpResponseStatus(416, "Requested Range Not Satisfiable");
+  public static readonly REQUESTED_RANGE_NOT_SATISFIABLE = new HttpResponseStatus(
+    416,
+    "Requested Range Not Satisfiable"
+  );
 
   /**
    * 417 Expectation Failed
@@ -236,7 +239,10 @@ export class HttpResponseStatus {
   /**
    * 431 Request Header Fields Too Large (RFC6585)
    */
-  public static readonly REQUEST_HEADER_FIELDS_TOO_LARGE = new HttpResponseStatus(431, "Request Header Fields Too Large");
+  public static readonly REQUEST_HEADER_FIELDS_TOO_LARGE = new HttpResponseStatus(
+    431,
+    "Request Header Fields Too Large"
+  );
 
   /**
    * 500 Internal Server Error
@@ -286,14 +292,22 @@ export class HttpResponseStatus {
   /**
    * 511 Network Authentication Required (RFC6585)
    */
-  public static readonly NETWORK_AUTHENTICATION_REQUIRED = new HttpResponseStatus(511, "Network Authentication Required");
+  public static readonly NETWORK_AUTHENTICATION_REQUIRED = new HttpResponseStatus(
+    511,
+    "Network Authentication Required"
+  );
 
-  private constructor(public readonly code: number, public readonly reasonPhrase: string) {
+  private constructor(
+    public readonly code: number,
+    public readonly reasonPhrase: string
+  ) {
     // Do nothing.
   }
 }
 
-export const fromJvmHttpResponseStatus = (jvmStatus: io.netty.handler.codec.http.HttpResponseStatus): HttpResponseStatus => {
+export const fromJvmHttpResponseStatus = (
+  jvmStatus: io.netty.handler.codec.http.HttpResponseStatus
+): HttpResponseStatus => {
   switch (jvmStatus.code()) {
     case 100:
       return HttpResponseStatus.CONTINUE;
@@ -410,5 +424,7 @@ export const fromJvmHttpResponseStatus = (jvmStatus: io.netty.handler.codec.http
     case 511:
       return HttpResponseStatus.NETWORK_AUTHENTICATION_REQUIRED;
   }
-  throw Error("This shouldn't happen unless we lag behind the original implementation, call support if this ever happens.");
-}
+  throw Error(
+    "This shouldn't happen unless we lag behind the original implementation, call support if this ever happens."
+  );
+};

@@ -19,26 +19,18 @@ import {
 } from "@gatling.io/core";
 
 import { http, Proxy } from "./index";
-import {
-  currentLocation,
-  currentLocationRegex,
-  header,
-  headerRegex,
-  status
-} from "./index";
+import { currentLocation, currentLocationRegex, header, headerRegex, status } from "./index";
 
 const runSimulationMock = (_: Simulation): void => {};
 
 const httpProtocol = http
   .baseUrl("url")
   .baseUrls("url1", "urls2")
-  //.baseUrls(...["url"])
   .warmUp("url")
   .disableWarmUp()
   .shareConnections()
   .localAddress("127.0.0.1")
   .localAddresses("127.0.0.1", "127.0.0.2")
-  //.localAddresses(...["127.0.0.1"])
   .useAllLocalAddresses()
   .useAllLocalAddressesMatching("pattern")
   .maxConnectionsPerHost(1)
@@ -146,7 +138,9 @@ const httpProtocol = http
     //bodyBytes().saveAs("key"),
     //bodyBytes().find().is("foo".getBytes(UTF_8)),
     bodyLength().gt(1),
-    bodyString().transform((str: string) => str.length).lt(100000),
+    bodyString()
+      .transform((str: string) => str.length)
+      .lt(100000),
     //bodyString().is(StringBody("foo")),
     //  bodyStream(),
     regex("pattern").findAll(),
@@ -220,11 +214,16 @@ const httpProtocol = http
     headerRegex("name", "pattern"),
     headerRegex((_: Session) => "name", "pattern"),
     headerRegex("name", (_: Session) => "pattern"),
-    headerRegex((_: Session) => "name", (_: Session) => "pattern")
+    headerRegex(
+      (_: Session) => "name",
+      (_: Session) => "pattern"
+    )
   )
-  .checkIf("#{bool}").then(jsonPath("$..foo"))
-  .checkIf("#{bool}").then(jsonPath("$..foo"), jsonPath("$..foo"))
-  //.checkIf((response, session) -> true).then(jsonPath("$..foo"));
+  .checkIf("#{bool}")
+  .then(jsonPath("$..foo"))
+  .checkIf("#{bool}")
+  .then(jsonPath("$..foo"), jsonPath("$..foo"));
+//.checkIf((response, session) -> true).then(jsonPath("$..foo"));
 
 const scn = scenario("scenario")
   .exec(
@@ -328,11 +327,14 @@ const scn = scenario("scenario")
   //.exec(http("name").httpRequest("JSON", session -> "url"))
   // check
   .exec(
-    http("name").get("url")
+    http("name")
+      .get("url")
       .check(status().is(200))
-      .checkIf("#{bool}").then(jsonPath("$..foo"))
-      .checkIf("#{bool}").then(jsonPath("$..foo"), jsonPath("$..foo"))
-      //.checkIf((response, session) -> true).then(jsonPath("$..foo"))
+      .checkIf("#{bool}")
+      .then(jsonPath("$..foo"))
+      .checkIf("#{bool}")
+      .then(jsonPath("$..foo"), jsonPath("$..foo"))
+    //.checkIf((response, session) -> true).then(jsonPath("$..foo"))
   );
 // processRequestBody
 //.exec(

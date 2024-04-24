@@ -63,7 +63,9 @@ export interface CheckBuilderMultipleFind<X> extends CheckBuilderValidate<X> {
   count(): CheckBuilderValidate<number>;
 }
 
-export const wrapCheckBuilderMultipleFind = <X>(_underlying: JvmCheckBuilderMultipleFind<X>): CheckBuilderMultipleFind<X> => ({
+export const wrapCheckBuilderMultipleFind = <X>(
+  _underlying: JvmCheckBuilderMultipleFind<X>
+): CheckBuilderMultipleFind<X> => ({
   ...wrapCheckBuilderValidate<X>(_underlying),
   find: (occurrence?: number) =>
     wrapCheckBuilderValidate(occurrence !== undefined ? _underlying.find(occurrence) : _underlying.find()),

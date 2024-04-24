@@ -1,4 +1,4 @@
-import {HttpDsl, HttpDsl as JvmHttpDsl} from "@gatling.io/jvm-types";
+import { HttpDsl, HttpDsl as JvmHttpDsl } from "@gatling.io/jvm-types";
 import {
   underlyingSessionTo,
   wrapCallback,
@@ -20,8 +20,7 @@ import JvmCheckBuilderFind = io.gatling.javaapi.core.CheckBuilder$Find;
  *
  * @returns the next step in the check DSL
  */
-export const currentLocation = (): CheckBuilderFind<string> =>
-  wrapCheckBuilderFind(JvmHttpDsl.currentLocation())
+export const currentLocation = (): CheckBuilderFind<string> => wrapCheckBuilderFind(JvmHttpDsl.currentLocation());
 
 export interface CurrentLocationRegexFunction {
   /**
@@ -74,9 +73,7 @@ export interface HeaderFunction {
 
 export const header: HeaderFunction = (name: Expression<string>) =>
   wrapCheckBuilderMultipleFind(
-    typeof name === "function"
-      ? JvmHttpDsl.header(wrapCallback(underlyingSessionTo(name)))
-      : JvmHttpDsl.header(name)
+    typeof name === "function" ? JvmHttpDsl.header(wrapCallback(underlyingSessionTo(name))) : JvmHttpDsl.header(name)
   );
 
 export interface HeaderRegexFunction {
@@ -128,16 +125,13 @@ export interface HeaderRegexFunction {
 export const headerRegex: HeaderRegexFunction = (name: Expression<string>, pattern: Expression<string>) =>
   wrapCheckBuilderCaptureGroup(
     typeof name === "function"
-      ? (
-        typeof pattern === "function"
-          ? HttpDsl.headerRegex(wrapCallback(underlyingSessionTo(name)), wrapCallback(underlyingSessionTo(pattern)))
-          : HttpDsl.headerRegex(wrapCallback(underlyingSessionTo(name)), pattern)
-      ) : (
-        typeof pattern === "function"
-          ? HttpDsl.headerRegex(name, wrapCallback(underlyingSessionTo(pattern)))
-          // FIXME forced to use the charsequence version
-          : HttpDsl.headerRegex(name, pattern)
-      )
+      ? typeof pattern === "function"
+        ? HttpDsl.headerRegex(wrapCallback(underlyingSessionTo(name)), wrapCallback(underlyingSessionTo(pattern)))
+        : HttpDsl.headerRegex(wrapCallback(underlyingSessionTo(name)), pattern)
+      : typeof pattern === "function"
+        ? HttpDsl.headerRegex(name, wrapCallback(underlyingSessionTo(pattern)))
+        : // FIXME forced to use the charsequence version
+          HttpDsl.headerRegex(name, pattern)
   );
 
 /**

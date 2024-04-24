@@ -98,7 +98,7 @@ const requestActionBuilderImpl = <T>(
         : jvmBuilder.checkIf(wrapCallback(underlyingSessionTo(condition))),
       wrap
     ),
-  silent: (): T => wrap(jvmBuilder.silent()),
+  silent: (): T => wrap(jvmBuilder.silent())
   //transformResponse: (f: (response: Response, session: Session) => Response): T =>
   //  wrap(jvmBuilder.transformResponse(wrapBiCallback(underlyingResponseTransform(f))))
 });

@@ -16,14 +16,14 @@ export interface Response extends Wrapper<JvmResponse> {
   //checksums(): any /*scala.collection.immutable.Map*/;
   //cookies(): any /*scala.collection.immutable.List*/;
   //copy(
-    //request: Request,
-    //startTimestamp: number,
-    //endTimestamp: number,
-    ////status: any /*io.netty.handler.codec.http.HttpResponseStatus*/,
-    ////headers: HttpHeaders,
-    ////body: any /*io.gatling.http.response.ResponseBody*/,
-    ////checksums: any /*scala.collection.immutable.Map*/,
-    //isHttp2: boolean
+  //request: Request,
+  //startTimestamp: number,
+  //endTimestamp: number,
+  ////status: any /*io.netty.handler.codec.http.HttpResponseStatus*/,
+  ////headers: HttpHeaders,
+  ////body: any /*io.gatling.http.response.ResponseBody*/,
+  ////checksums: any /*scala.collection.immutable.Map*/,
+  //isHttp2: boolean
   //): Response;
   //endTimestamp(): long;
   //header(name: string): any;

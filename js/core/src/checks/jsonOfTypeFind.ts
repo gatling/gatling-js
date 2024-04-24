@@ -64,14 +64,18 @@ export interface CheckBuilderJsonOfTypeFind extends CheckBuilderFind<string> {
   ofObject(): CheckBuilderFind<unknown>;
 }
 
-export const wrapCheckBuilderJsonOfTypeFind = (_underlying: JvmCheckBuilderJsonOfTypeFind): CheckBuilderJsonOfTypeFind => ({
+export const wrapCheckBuilderJsonOfTypeFind = (
+  _underlying: JvmCheckBuilderJsonOfTypeFind
+): CheckBuilderJsonOfTypeFind => ({
   ...wrapCheckBuilderFind<string>(_underlying),
   ofString: (): CheckBuilderFind<string> => wrapCheckBuilderFind(_underlying.ofString()),
-  ofBoolean: (): CheckBuilderFind<boolean> => wrapCheckBuilderFind(_underlying.ofBoolean() as JvmCheckBuilderFind<boolean>),
+  ofBoolean: (): CheckBuilderFind<boolean> =>
+    wrapCheckBuilderFind(_underlying.ofBoolean() as JvmCheckBuilderFind<boolean>),
   ofInt: (): CheckBuilderFind<number> => wrapCheckBuilderFind(_underlying.ofInt() as JvmCheckBuilderFind<number>),
   ofLong: (): CheckBuilderFind<number> => wrapCheckBuilderFind(_underlying.ofLong() as JvmCheckBuilderFind<number>),
   ofDouble: (): CheckBuilderFind<number> => wrapCheckBuilderFind(_underlying.ofDouble() as JvmCheckBuilderFind<number>),
   ofList: (): CheckBuilderFind<unknown[]> => wrapCheckBuilderFind(_underlying.ofList()),
-  ofMap: (): CheckBuilderFind<Record<string, unknown>> => wrapCheckBuilderFind(_underlying.ofMap() as JvmCheckBuilderFind<any>),
+  ofMap: (): CheckBuilderFind<Record<string, unknown>> =>
+    wrapCheckBuilderFind(_underlying.ofMap() as JvmCheckBuilderFind<any>),
   ofObject: (): CheckBuilderFind<unknown> => wrapCheckBuilderFind(_underlying.ofObject())
 });

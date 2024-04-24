@@ -413,7 +413,7 @@ export interface JsonpJsonPathFunction {
    * @param path - the searched path, expressed as a function
    * @returns the next DSL step
    */
-  (path: (session: Session) =>string): CheckBuilderJsonOfTypeMultipleFind;
+  (path: (session: Session) => string): CheckBuilderJsonOfTypeMultipleFind;
 }
 
 export const jsonpJsonPath: JsonpJsonPathFunction = (path: Expression<string>): CheckBuilderJsonOfTypeMultipleFind =>

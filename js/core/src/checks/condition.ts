@@ -1,6 +1,6 @@
 import { CheckBuilder } from "../checks";
-import {Executable} from "../structure/execs";
-import {On} from "../structure/on";
+import { Executable } from "../structure/execs";
+import { On } from "../structure/on";
 
 import JvmCheckBuilder = io.gatling.javaapi.core.CheckBuilder;
 
@@ -22,6 +22,5 @@ export interface Condition<T> {
 }
 
 export const wrapCondition = <J, T>(jvmCondition: JvmCondition<J>, wrap: (underlying: J) => T): Condition<T> => ({
-  then: (...thenChecks: CheckBuilder[]): T =>
-    wrap(jvmCondition.then(thenChecks.map((c) => c._underlying)))
+  then: (...thenChecks: CheckBuilder[]): T => wrap(jvmCondition.then(thenChecks.map((c) => c._underlying)))
 });
