@@ -18,8 +18,8 @@ export interface StringBodyFunction {
    *
    * <p>Can also be used as a Function<Session, String> to define the expected value in a check.
    *
-   * @param string the body expressed as a gatling Expression Language String
-   * @return a body
+   * @param string - the body expressed as a gatling Expression Language String
+   * @returns a body
    */
   (string: string): Body;
 
@@ -28,8 +28,8 @@ export interface StringBodyFunction {
    *
    * <p>Can also be used as a Function<Session, String> to define the expected value in a check.
    *
-   * @param f the body expressed as a function
-   * @return a body
+   * @param f - the body expressed as a function
+   * @returns a body
    */
   (f: (session: Session) => string): Body;
 }
