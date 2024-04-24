@@ -9,7 +9,7 @@ export * from "./body";
 export * from "./checks";
 export * from "./closedInjection";
 export * from "./common";
-export * from "./feederBuilder";
+export * from "./feeders";
 export * from "./openInjection";
 export * from "./population";
 export * from "./protocol";

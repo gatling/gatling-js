@@ -1,7 +1,7 @@
 import "@gatling.io/jvm-types";
 import JvmFeeds = io.gatling.javaapi.core.feed.Feeds;
 
-import { FeederBuilder } from "../feederBuilder";
+import { FeederBuilder } from "../feeders";
 import { SessionTo, underlyingSessionTo } from "../session";
 import { wrapCallback } from "../gatlingJvm/callbacks";
 
