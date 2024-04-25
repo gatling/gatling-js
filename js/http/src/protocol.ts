@@ -870,7 +870,7 @@ export const wrapHttpProtocolBuilder = (_underlying: JvmHttpProtocolBuilder): Ht
     useAuthorizationHeader?: boolean
   ): HttpProtocolBuilder =>
     wrapHttpProtocolBuilder(
-      typeof consumerKey == "function" &&
+      typeof consumerKey === "function" &&
         typeof clientSharedSecret === "function" &&
         typeof token === "function" &&
         typeof tokenSecret === "function"

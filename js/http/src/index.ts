@@ -236,9 +236,7 @@ export interface HttpApply {
 const httpApply = (name: Expression<string>): Http => {
   // Handle overloading
   const jvmHttp =
-    typeof name === "string"
-      ? JvmHttpDsl.http(name)
-      : JvmHttpDsl.http(wrapCallback(underlyingSessionTo(name)));
+    typeof name === "string" ? JvmHttpDsl.http(name) : JvmHttpDsl.http(wrapCallback(underlyingSessionTo(name)));
   return wrapHttp(jvmHttp);
 };
 

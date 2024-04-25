@@ -5,6 +5,7 @@ import { ProtocolBuilder } from "./protocol";
 
 // FIXME no export *
 export * from "./gatlingJvm/callbacks";
+export * from "./utils/duration";
 export * from "./body";
 export * from "./checks";
 export * from "./closedInjection";
