@@ -329,7 +329,7 @@ export interface RequestActionBuilder<T> {
   notSilent(): T;
   disableFollowRedirect(): T;
   //transformResponse(f: (response: Response, session: Session) => Response): T;
-  // resources
+  resources(...res: HttpRequestActionBuilder[]): T;
   requestTimeout(timeout: Duration): T;
 }
 
@@ -351,6 +351,8 @@ const requestActionBuilderImpl = <T>(
   disableFollowRedirect: (): T => wrap(jvmBuilder.disableFollowRedirect()),
   //transformResponse: (f: (response: Response, session: Session) => Response): T =>
   //  wrap(jvmBuilder.transformResponse(wrapBiCallback(underlyingResponseTransform(f))))
+  resources: (...res: HttpRequestActionBuilder[]): T =>
+    wrap(jvmBuilder.resources(res.map(r => r._underlying as JvmHttpRequestActionBuilder))),
   requestTimeout: (duration: Duration): T => wrap(jvmBuilder.requestTimeout(toJvmDuration(duration)))
 });
 
