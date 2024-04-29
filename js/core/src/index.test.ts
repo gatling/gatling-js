@@ -14,7 +14,17 @@ import {
   separatedValues,
   jsonFile,
   jsonUrl,
-  arrayFeeder
+  arrayFeeder,
+  pause,
+  repeat,
+  group,
+  rampUsers,
+  stressPeakUsers,
+  rampUsersPerSec,
+  nothingFor,
+  incrementUsersPerSec,
+  constantConcurrentUsers,
+  rampConcurrentUsers, incrementConcurrentUsers
 } from "./index";
 
 const runSimulationMock = (_: Simulation): void => {};
@@ -23,12 +33,12 @@ const runSimulationMock = (_: Simulation): void => {};
 const chain1 = exec((session: Session) => session);
 const chain2 = exec(chain1, chain1).exec(chain1);
 // pauses
-//const pause1 = pause(1);
+const pause1 = pause(1);
 // loops
-//const loop1 = repeat(1).on(chain1);
+const loop1 = repeat(1).on(chain1);
 // groups
-//const group1 = group("group").on(chain1);
-//const group2 = group(session -> "group").on(chain1);
+const group1 = group("group").on(chain1);
+const group2 = group((session) => "group").on(chain1);
 
 // bodies
 const stringBody1 = StringBody("static #{dynamic} static");
@@ -45,14 +55,13 @@ const stringBody2 = StringBody((_: Session) => "body");
 //const inputStreamBody = InputStreamBody(session -> new ByteArrayInputStream(new byte[] {1}));
 
 //const records = csv("foo").readRecords();
-//const recordsCount = csv("foo").recordsCount();
+const recordsCount = csv("foo").recordsCount();
 
 // scenario
 const scn = scenario("scenario")
   // execs
   .exec((session) => session)
-  //.exec(chain1, chain2)
-  //.exec(Arrays.asList(chain1))
+  .exec(chain1, chain2)
   // groups
   .group("group")
   .on(chain1, chain2)
@@ -416,60 +425,60 @@ const scn = scenario("scenario")
 //registerPebbleExtensions((io.pebbletemplates.pebble.extension.Extension) null);
 
 const injectOpen = scn.injectOpen(
-  //rampUsers(5).during(1),
-  //rampUsers(5).during(Duration.ofSeconds(1)),
-  //stressPeakUsers(5).during(1),
-  //stressPeakUsers(5).during(Duration.ofSeconds(1)),
+  rampUsers(5).during(1),
+  rampUsers(5).during({ amount: 1, unit: "seconds" }),
+  stressPeakUsers(5).during(1),
+  stressPeakUsers(5).during({ amount: 1, unit: "seconds" }),
   atOnceUsers(1000),
-  constantUsersPerSec(10).during(1)
-  //constantUsersPerSec(10).during(Duration.ofSeconds(1)),
-  //rampUsersPerSec(100).to(200).during(1),
-  //rampUsersPerSec(100).to(200).during(Duration.ofSeconds(1)),
-  //nothingFor(1),
-  //nothingFor(Duration.ofSeconds(1)),
-  //incrementUsersPerSec(1.0).times(5).eachLevelLasting(1),
-  //incrementUsersPerSec(1.0).times(5).eachLevelLasting(1).startingFrom(1.0),
-  //incrementUsersPerSec(1.0).times(5).eachLevelLasting(1).separatedByRampsLasting(1),
-  //incrementUsersPerSec(1.0)
-  //  .times(5)
-  //  .eachLevelLasting(1)
-  //  .startingFrom(1.0)
-  //  .separatedByRampsLasting(1),
-  //incrementUsersPerSec(1.0)
-  //  .times(5)
-  //  .eachLevelLasting(Duration.ofSeconds(1))
-  //  .startingFrom(1.0)
-  //  .separatedByRampsLasting(Duration.ofSeconds(1))
+  constantUsersPerSec(10).during(1),
+  constantUsersPerSec(10).during({ amount: 1, unit: "seconds" }),
+  rampUsersPerSec(100).to(200).during(1),
+  rampUsersPerSec(100).to(200).during({ amount: 1, unit: "seconds" }),
+  nothingFor(1),
+  nothingFor({ amount: 1, unit: "seconds" }),
+  incrementUsersPerSec(1.0).times(5).eachLevelLasting(1),
+  incrementUsersPerSec(1.0).times(5).eachLevelLasting(1).startingFrom(1.0),
+  incrementUsersPerSec(1.0).times(5).eachLevelLasting(1).separatedByRampsLasting(1),
+  incrementUsersPerSec(1.0)
+    .times(5)
+    .eachLevelLasting(1)
+    .startingFrom(1.0)
+    .separatedByRampsLasting(1),
+  incrementUsersPerSec(1.0)
+    .times(5)
+    .eachLevelLasting({ amount: 1, unit: "seconds" })
+    .startingFrom(1.0)
+    .separatedByRampsLasting({ amount: 1, unit: "seconds" })
 );
 
-//const injectClosed = scn.injectClosed(
-//constantConcurrentUsers(100).during(1),
-//constantConcurrentUsers(100).during(Duration.ofSeconds(1)),
-//rampConcurrentUsers(1).to(5).during(1),
-//rampConcurrentUsers(1).to(5).during(Duration.ofSeconds(1)),
-//incrementConcurrentUsers(1).times(5).eachLevelLasting(1),
-//incrementConcurrentUsers(1).times(5).eachLevelLasting(1),
-//incrementConcurrentUsers(1).times(5).eachLevelLasting(1).startingFrom(1),
-//incrementConcurrentUsers(1)
-//  .times(5)
-//  .eachLevelLasting(1)
-//  .separatedByRampsLasting(1),
-//incrementConcurrentUsers(1)
-//  .times(5)
-//  .eachLevelLasting(1)
-//  .startingFrom(1)
-//  .separatedByRampsLasting(1),
-//incrementConcurrentUsers(1)
-//  .times(5)
-//  .eachLevelLasting(Duration.ofSeconds(1))
-//  .startingFrom(1)
-//  .separatedByRampsLasting(Duration.ofSeconds(1))
-//);
+const injectClosed = scn.injectClosed(
+  constantConcurrentUsers(100).during(1),
+  constantConcurrentUsers(100).during({ amount: 1, unit: "seconds" }),
+  rampConcurrentUsers(1).to(5).during(1),
+  rampConcurrentUsers(1).to(5).during({ amount: 1, unit: "seconds" }),
+  incrementConcurrentUsers(1).times(5).eachLevelLasting(1),
+  incrementConcurrentUsers(1).times(5).eachLevelLasting(1),
+  incrementConcurrentUsers(1).times(5).eachLevelLasting(1).startingFrom(1),
+  incrementConcurrentUsers(1)
+    .times(5)
+    .eachLevelLasting(1)
+    .separatedByRampsLasting(1),
+  incrementConcurrentUsers(1)
+    .times(5)
+    .eachLevelLasting(1)
+    .startingFrom(1)
+    .separatedByRampsLasting(1),
+  incrementConcurrentUsers(1)
+    .times(5)
+    .eachLevelLasting({ amount: 1, unit: "seconds" })
+    .startingFrom(1)
+    .separatedByRampsLasting({ amount: 1, unit: "seconds" })
+);
 
 runSimulationMock((setUp) => {
   setUp(
-    injectOpen
-    //injectClosed.andThen(scn.injectOpen(atOnceUsers(1))
+    injectOpen,
+    injectClosed.andThen([scn.injectOpen(atOnceUsers(1))])
   );
   //.assertions(
   //  global().allRequests().count().is(5L),
