@@ -16,6 +16,8 @@
 
 package io.gatling.javaapi.http;
 
+import static io.gatling.javaapi.core.internal.Expressions.*;
+
 import edu.umd.cs.findbugs.annotations.NonNull;
 import io.gatling.commons.validation.Validation;
 import io.gatling.core.action.builder.SessionHookBuilder;
@@ -26,11 +28,8 @@ import io.gatling.javaapi.core.Session;
 import io.gatling.javaapi.http.internal.HttpCheckBuilder;
 import io.gatling.javaapi.http.internal.HttpCheckBuilders;
 import io.gatling.javaapi.http.internal.HttpCheckType;
-import scala.Function1;
-
 import java.util.function.Function;
-
-import static io.gatling.javaapi.core.internal.Expressions.*;
+import scala.Function1;
 
 /** The entrypoint of the Gatling HTTP DSL */
 public final class HttpDsl {

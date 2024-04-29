@@ -31,6 +31,8 @@ export const run = async (options: RunOptions): Promise<void> => {
     `-Dgatling.js.bundle.resourcePath=${bundleFileName}`,
     `-Dgatling.js.entryPointName=${options.entryPointName}`,
     "io.gatling.app.Gatling",
+    "--results-folder",
+    "results",
     "--simulation",
     "io.gatling.js.JsSimulation"
   ];

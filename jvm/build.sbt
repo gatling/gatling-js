@@ -8,7 +8,7 @@ ThisBuild / crossPaths := false
 val graalvmJdkVersion = "21.0.2"
 val graalvmJsVersion = "23.1.2"
 val coursierVersion = "2.1.9"
-val gatlingVersion = "3.10.4"
+val gatlingVersion = "3.11.2"
 
 lazy val root = (project in file("."))
   .aggregate(adapter, java2ts)
@@ -70,8 +70,8 @@ lazy val java2ts = (project in file("java2ts"))
   .settings(
     name := "gatling-java2ts",
     libraryDependencies ++= Seq(
-      "io.gatling" % "gatling-core-java" % "3.10.4",
-      "io.gatling" % "gatling-http-java" % "3.10.4",
+      "io.gatling" % "gatling-core-java" % gatlingVersion,
+      "io.gatling" % "gatling-http-java" % gatlingVersion,
     ),
     publish := false
   )

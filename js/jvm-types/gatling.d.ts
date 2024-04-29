@@ -75,7 +75,6 @@ declare namespace io.gatling.http.client {
     getRequestTimeout(): long;
     getSignatureCalculator(): Func<Request, Request>;
     getUri(): any /*io.gatling.http.client.uri.Uri*/;
-    getVirtualHost(): string;
     getWsSubprotocol(): string;
     isAutoOrigin(): boolean;
     isHttp2Enabled(): boolean;
@@ -2957,6 +2956,7 @@ declare namespace io.gatling.javaapi.http {
     signWithOAuth1(arg0: string, arg1: string, arg2: string, arg3: string, arg4: boolean): HttpProtocolBuilder;
     silentResources(): HttpProtocolBuilder;
     silentUri(arg0: string): HttpProtocolBuilder;
+    sseUnmatchedInboundMessageBufferSize(arg0: int): HttpProtocolBuilder;
     strict302Handling(): HttpProtocolBuilder;
     toString(): string;
     transformResponse(
@@ -2972,8 +2972,6 @@ declare namespace io.gatling.javaapi.http {
     useAllLocalAddressesMatching(...arg0: string[]): HttpProtocolBuilder;
     userAgentHeader(arg0: Func<io.gatling.javaapi.core.Session, string>): HttpProtocolBuilder;
     userAgentHeader(arg0: string): HttpProtocolBuilder;
-    virtualHost(arg0: Func<io.gatling.javaapi.core.Session, string>): HttpProtocolBuilder;
-    virtualHost(arg0: string): HttpProtocolBuilder;
     warmUp(arg0: string): HttpProtocolBuilder;
     wsAutoReplySocketIo4(): HttpProtocolBuilder;
     wsAutoReplyTextFrame(arg0: Func<string, string>): HttpProtocolBuilder;
@@ -2982,13 +2980,14 @@ declare namespace io.gatling.javaapi.http {
     wsBaseUrls(arg0: java.util.List<string>): HttpProtocolBuilder;
     wsMaxReconnects(arg0: int): HttpProtocolBuilder;
     wsReconnect(): HttpProtocolBuilder;
+    wsUnmatchedInboundMessageBufferSize(arg0: int): HttpProtocolBuilder;
   } // end HttpProtocolBuilder
 } // end namespace io.gatling.javaapi.http
 declare namespace io.gatling.javaapi.http {
-  class HttpRequestActionBuilder /* extends RequestActionBuilder<any, any>*/ {
-    asFormUrlEncoded(): HttpRequestActionBuilder;
+  class HttpRequestActionBuilder /* extends RequestWithBodyActionBuilder<any, any>*/ {
+    asFormUrlEncoded<T>(): T;
     asJson<T>(): T;
-    asMultipartForm(): HttpRequestActionBuilder;
+    asMultipartForm<T>(): T;
     asScala(): any /*io.gatling.core.action.builder.ActionBuilder*/;
     asXml<T>(): T;
     basicAuth<T>(
@@ -2998,10 +2997,10 @@ declare namespace io.gatling.javaapi.http {
     basicAuth<T>(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): T;
     basicAuth<T>(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, string>): T;
     basicAuth<T>(arg0: string, arg1: string): T;
-    body(arg0: io.gatling.javaapi.core.Body): HttpRequestActionBuilder;
-    bodyPart(arg0: BodyPart): HttpRequestActionBuilder;
-    bodyParts(...arg0: BodyPart[]): HttpRequestActionBuilder;
-    bodyParts(arg0: java.util.List<BodyPart>): HttpRequestActionBuilder;
+    body<T>(arg0: io.gatling.javaapi.core.Body): T;
+    bodyPart<T>(arg0: BodyPart): T;
+    bodyParts<T>(...arg0: BodyPart[]): T;
+    bodyParts<T>(arg0: java.util.List<BodyPart>): T;
     check(...arg0: io.gatling.javaapi.core.CheckBuilder[]): HttpRequestActionBuilder;
     check(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): HttpRequestActionBuilder;
     checkIf(
@@ -3021,59 +3020,47 @@ declare namespace io.gatling.javaapi.http {
     disableFollowRedirect(): HttpRequestActionBuilder;
     disableUrlEncoding<T>(): T;
     equals(arg0: any /*java.lang.Object*/): boolean;
-    form(
-      arg0: Func<io.gatling.javaapi.core.Session, java.util.Map<string, any /*java.lang.Object*/>>
-    ): HttpRequestActionBuilder;
-    form(arg0: string): HttpRequestActionBuilder;
-    formParam(
+    form<T>(arg0: Func<io.gatling.javaapi.core.Session, java.util.Map<string, any /*java.lang.Object*/>>): T;
+    form<T>(arg0: string): T;
+    formParam<T>(
       arg0: Func<io.gatling.javaapi.core.Session, string>,
       arg1: Func<io.gatling.javaapi.core.Session, any /*java.lang.Object*/>
-    ): HttpRequestActionBuilder;
-    formParam(
-      arg0: Func<io.gatling.javaapi.core.Session, string>,
-      arg1: any /*java.lang.Object*/
-    ): HttpRequestActionBuilder;
-    formParam(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): HttpRequestActionBuilder;
-    formParam(
-      arg0: string,
-      arg1: Func<io.gatling.javaapi.core.Session, any /*java.lang.Object*/>
-    ): HttpRequestActionBuilder;
-    formParam(arg0: string, arg1: any /*java.lang.Object*/): HttpRequestActionBuilder;
-    formParam(arg0: string, arg1: string): HttpRequestActionBuilder;
-    formParamMap(
-      arg0: Func<io.gatling.javaapi.core.Session, java.util.Map<string, any /*java.lang.Object*/>>
-    ): HttpRequestActionBuilder;
-    formParamMap(arg0: java.util.Map<string, any /*java.lang.Object*/>): HttpRequestActionBuilder;
-    formParamSeq(
-      arg0: Func<io.gatling.javaapi.core.Session, java.util.List<any /*java.util.Map$Entry*/>>
-    ): HttpRequestActionBuilder;
-    formParamSeq(arg0: java.util.List<any /*java.util.Map$Entry*/>): HttpRequestActionBuilder;
-    formUpload(
+    ): T;
+    formParam<T>(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: any /*java.lang.Object*/): T;
+    formParam<T>(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): T;
+    formParam<T>(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, any /*java.lang.Object*/>): T;
+    formParam<T>(arg0: string, arg1: any /*java.lang.Object*/): T;
+    formParam<T>(arg0: string, arg1: string): T;
+    formParamMap<T>(arg0: Func<io.gatling.javaapi.core.Session, java.util.Map<string, any /*java.lang.Object*/>>): T;
+    formParamMap<T>(arg0: java.util.Map<string, any /*java.lang.Object*/>): T;
+    formParamSeq<T>(arg0: Func<io.gatling.javaapi.core.Session, java.util.List<any /*java.util.Map$Entry*/>>): T;
+    formParamSeq<T>(arg0: java.util.List<any /*java.util.Map$Entry*/>): T;
+    formUpload<T>(
       arg0: Func<io.gatling.javaapi.core.Session, string>,
       arg1: Func<io.gatling.javaapi.core.Session, string>
-    ): HttpRequestActionBuilder;
-    formUpload(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): HttpRequestActionBuilder;
-    formUpload(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, string>): HttpRequestActionBuilder;
-    formUpload(arg0: string, arg1: string): HttpRequestActionBuilder;
+    ): T;
+    formUpload<T>(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): T;
+    formUpload<T>(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, string>): T;
+    formUpload<T>(arg0: string, arg1: string): T;
     header<T>(arg0: any /*java.lang.CharSequence*/, arg1: Func<io.gatling.javaapi.core.Session, string>): T;
     header<T>(arg0: any /*java.lang.CharSequence*/, arg1: string): T;
     headers<T>(arg0: java.util.Map<any /*java.lang.CharSequence*/, string>): T;
     ignoreProtocolChecks(): HttpRequestActionBuilder;
     ignoreProtocolHeaders<T>(): T;
-    multivaluedFormParam(
+    multivaluedFormParam<T>(
       arg0: Func<io.gatling.javaapi.core.Session, string>,
       arg1: Func<io.gatling.javaapi.core.Session, java.util.List<any /*java.lang.Object*/>>
-    ): HttpRequestActionBuilder;
-    multivaluedFormParam(
+    ): T;
+    multivaluedFormParam<T>(
       arg0: Func<io.gatling.javaapi.core.Session, string>,
       arg1: java.util.List<any /*java.lang.Object*/>
-    ): HttpRequestActionBuilder;
-    multivaluedFormParam(
+    ): T;
+    multivaluedFormParam<T>(
       arg0: string,
       arg1: Func<io.gatling.javaapi.core.Session, java.util.List<any /*java.lang.Object*/>>
-    ): HttpRequestActionBuilder;
-    multivaluedFormParam(arg0: string, arg1: java.util.List<any /*java.lang.Object*/>): HttpRequestActionBuilder;
-    multivaluedFormParam(arg0: string, arg1: string): HttpRequestActionBuilder;
+    ): T;
+    multivaluedFormParam<T>(arg0: string, arg1: java.util.List<any /*java.lang.Object*/>): T;
+    multivaluedFormParam<T>(arg0: string, arg1: string): T;
     multivaluedQueryParam<T>(
       arg0: Func<io.gatling.javaapi.core.Session, string>,
       arg1: Func<io.gatling.javaapi.core.Session, java.util.List<any /*java.lang.Object*/>>
@@ -3090,9 +3077,7 @@ declare namespace io.gatling.javaapi.http {
     multivaluedQueryParam<T>(arg0: string, arg1: java.util.List<any /*java.lang.Object*/>): T;
     multivaluedQueryParam<T>(arg0: string, arg1: string): T;
     notSilent(): HttpRequestActionBuilder;
-    processRequestBody(
-      arg0: Func<io.gatling.javaapi.core.Body, io.gatling.javaapi.core.Body>
-    ): HttpRequestActionBuilder;
+    processRequestBody<T>(arg0: Func<io.gatling.javaapi.core.Body, io.gatling.javaapi.core.Body>): T;
     proxy<T>(arg0: Proxy): T;
     queryParam<T>(
       arg0: Func<io.gatling.javaapi.core.Session, string>,
@@ -3134,8 +3119,6 @@ declare namespace io.gatling.javaapi.http {
         io.gatling.http.response.Response
       >
     ): HttpRequestActionBuilder;
-    virtualHost<T>(arg0: Func<io.gatling.javaapi.core.Session, string>): T;
-    virtualHost<T>(arg0: string): T;
   } // end HttpRequestActionBuilder
 } // end namespace io.gatling.javaapi.http
 declare namespace io.gatling.javaapi.http {
@@ -3155,91 +3138,19 @@ declare namespace io.gatling.javaapi.http {
     equals(arg0: any /*java.lang.Object*/): boolean;
     http(): Proxy;
     https(): Proxy;
-    httpsPort(arg0: int): Proxy;
     socks4(): Proxy;
     socks5(): Proxy;
     toString(): string;
   } // end Proxy
 } // end namespace io.gatling.javaapi.http
 declare namespace io.gatling.javaapi.http {
-  class RequestActionBuilder<T, W> /* extends java.lang.Object implements io.gatling.javaapi.core.ActionBuilder*/ {
-    asJson(): T;
-    asScala(): any /*io.gatling.core.action.builder.ActionBuilder*/;
-    asXml(): T;
-    basicAuth(
-      arg0: Func<io.gatling.javaapi.core.Session, string>,
-      arg1: Func<io.gatling.javaapi.core.Session, string>
-    ): T;
-    basicAuth(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): T;
-    basicAuth(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, string>): T;
-    basicAuth(arg0: string, arg1: string): T;
-    digestAuth(
-      arg0: Func<io.gatling.javaapi.core.Session, string>,
-      arg1: Func<io.gatling.javaapi.core.Session, string>
-    ): T;
-    digestAuth(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): T;
-    digestAuth(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, string>): T;
-    digestAuth(arg0: string, arg1: string): T;
-    disableUrlEncoding(): T;
-    equals(arg0: any /*java.lang.Object*/): boolean;
-    header(arg0: any /*java.lang.CharSequence*/, arg1: Func<io.gatling.javaapi.core.Session, string>): T;
-    header(arg0: any /*java.lang.CharSequence*/, arg1: string): T;
-    headers(arg0: java.util.Map<any /*java.lang.CharSequence*/, string>): T;
-    ignoreProtocolHeaders(): T;
-    multivaluedQueryParam(
-      arg0: Func<io.gatling.javaapi.core.Session, string>,
-      arg1: Func<io.gatling.javaapi.core.Session, java.util.List<any /*java.lang.Object*/>>
-    ): T;
-    multivaluedQueryParam(
-      arg0: Func<io.gatling.javaapi.core.Session, string>,
-      arg1: java.util.List<any /*java.lang.Object*/>
-    ): T;
-    multivaluedQueryParam(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): T;
-    multivaluedQueryParam(
-      arg0: string,
-      arg1: Func<io.gatling.javaapi.core.Session, java.util.List<any /*java.lang.Object*/>>
-    ): T;
-    multivaluedQueryParam(arg0: string, arg1: java.util.List<any /*java.lang.Object*/>): T;
-    multivaluedQueryParam(arg0: string, arg1: string): T;
-    proxy(arg0: Proxy): T;
-    queryParam(
-      arg0: Func<io.gatling.javaapi.core.Session, string>,
-      arg1: Func<io.gatling.javaapi.core.Session, any /*java.lang.Object*/>
-    ): T;
-    queryParam(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: any /*java.lang.Object*/): T;
-    queryParam(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): T;
-    queryParam(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, any /*java.lang.Object*/>): T;
-    queryParam(arg0: string, arg1: any /*java.lang.Object*/): T;
-    queryParam(arg0: string, arg1: string): T;
-    queryParamMap(arg0: Func<io.gatling.javaapi.core.Session, java.util.Map<string, any /*java.lang.Object*/>>): T;
-    queryParamMap(arg0: java.util.Map<string, any /*java.lang.Object*/>): T;
-    queryParamMap(arg0: string): T;
-    queryParamSeq(arg0: Func<io.gatling.javaapi.core.Session, java.util.List<any /*java.util.Map$Entry*/>>): T;
-    queryParamSeq(arg0: java.util.List<any /*java.util.Map$Entry*/>): T;
-    queryParamSeq(arg0: string): T;
-    sign(
-      arg0: BiFunction<io.gatling.http.client.Request, io.gatling.javaapi.core.Session, io.gatling.http.client.Request>
-    ): T;
-    sign(arg0: Func<io.gatling.http.client.Request, io.gatling.http.client.Request>): T;
-    signWithOAuth1(
-      arg0: Func<io.gatling.javaapi.core.Session, string>,
-      arg1: Func<io.gatling.javaapi.core.Session, string>,
-      arg2: Func<io.gatling.javaapi.core.Session, string>,
-      arg3: Func<io.gatling.javaapi.core.Session, string>
-    ): T;
-    signWithOAuth1(arg0: string, arg1: string, arg2: string, arg3: string): T;
-    toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
-    toString(): string;
-    virtualHost(arg0: Func<io.gatling.javaapi.core.Session, string>): T;
-    virtualHost(arg0: string): T;
-  } // end RequestActionBuilder
-} // end namespace io.gatling.javaapi.http
-declare namespace io.gatling.javaapi.http {
   class Sse /* extends java.lang.Object*/ {
     close(): io.gatling.javaapi.core.ActionBuilder;
-    connect(arg0: Func<io.gatling.javaapi.core.Session, string>): SseConnectActionBuilder;
-    connect(arg0: string): SseConnectActionBuilder;
     equals(arg0: any /*java.lang.Object*/): boolean;
+    get(arg0: Func<io.gatling.javaapi.core.Session, string>): SseConnectActionBuilder;
+    get(arg0: string): SseConnectActionBuilder;
+    post(arg0: Func<io.gatling.javaapi.core.Session, string>): SseConnectActionBuilder;
+    post(arg0: string): SseConnectActionBuilder;
     setCheck(): SseSetCheckActionBuilder;
     sseName(arg0: Func<io.gatling.javaapi.core.Session, string>): Sse;
     sseName(arg0: string): Sse;
@@ -3247,8 +3158,10 @@ declare namespace io.gatling.javaapi.http {
   } // end Sse
 } // end namespace io.gatling.javaapi.http
 declare namespace io.gatling.javaapi.http {
-  class SseConnectActionBuilder /* extends RequestActionBuilder<any, any> implements SseAwaitActionBuilder<any, any>*/ {
+  class SseConnectActionBuilder /* extends RequestWithBodyActionBuilder<any, any> implements SseAwaitActionBuilder<any, any>*/ {
+    asFormUrlEncoded<T>(): T;
     asJson<T>(): T;
+    asMultipartForm<T>(): T;
     asScala(): any /*io.gatling.core.action.builder.ActionBuilder*/;
     asXml<T>(): T;
     await(
@@ -3264,6 +3177,10 @@ declare namespace io.gatling.javaapi.http {
     basicAuth<T>(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): T;
     basicAuth<T>(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, string>): T;
     basicAuth<T>(arg0: string, arg1: string): T;
+    body<T>(arg0: io.gatling.javaapi.core.Body): T;
+    bodyPart<T>(arg0: BodyPart): T;
+    bodyParts<T>(...arg0: BodyPart[]): T;
+    bodyParts<T>(arg0: java.util.List<BodyPart>): T;
     digestAuth<T>(
       arg0: Func<io.gatling.javaapi.core.Session, string>,
       arg1: Func<io.gatling.javaapi.core.Session, string>
@@ -3273,10 +3190,46 @@ declare namespace io.gatling.javaapi.http {
     digestAuth<T>(arg0: string, arg1: string): T;
     disableUrlEncoding<T>(): T;
     equals(arg0: any /*java.lang.Object*/): boolean;
+    form<T>(arg0: Func<io.gatling.javaapi.core.Session, java.util.Map<string, any /*java.lang.Object*/>>): T;
+    form<T>(arg0: string): T;
+    formParam<T>(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: Func<io.gatling.javaapi.core.Session, any /*java.lang.Object*/>
+    ): T;
+    formParam<T>(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: any /*java.lang.Object*/): T;
+    formParam<T>(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): T;
+    formParam<T>(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, any /*java.lang.Object*/>): T;
+    formParam<T>(arg0: string, arg1: any /*java.lang.Object*/): T;
+    formParam<T>(arg0: string, arg1: string): T;
+    formParamMap<T>(arg0: Func<io.gatling.javaapi.core.Session, java.util.Map<string, any /*java.lang.Object*/>>): T;
+    formParamMap<T>(arg0: java.util.Map<string, any /*java.lang.Object*/>): T;
+    formParamSeq<T>(arg0: Func<io.gatling.javaapi.core.Session, java.util.List<any /*java.util.Map$Entry*/>>): T;
+    formParamSeq<T>(arg0: java.util.List<any /*java.util.Map$Entry*/>): T;
+    formUpload<T>(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: Func<io.gatling.javaapi.core.Session, string>
+    ): T;
+    formUpload<T>(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): T;
+    formUpload<T>(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, string>): T;
+    formUpload<T>(arg0: string, arg1: string): T;
     header<T>(arg0: any /*java.lang.CharSequence*/, arg1: Func<io.gatling.javaapi.core.Session, string>): T;
     header<T>(arg0: any /*java.lang.CharSequence*/, arg1: string): T;
     headers<T>(arg0: java.util.Map<any /*java.lang.CharSequence*/, string>): T;
     ignoreProtocolHeaders<T>(): T;
+    multivaluedFormParam<T>(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: Func<io.gatling.javaapi.core.Session, java.util.List<any /*java.lang.Object*/>>
+    ): T;
+    multivaluedFormParam<T>(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: java.util.List<any /*java.lang.Object*/>
+    ): T;
+    multivaluedFormParam<T>(
+      arg0: string,
+      arg1: Func<io.gatling.javaapi.core.Session, java.util.List<any /*java.lang.Object*/>>
+    ): T;
+    multivaluedFormParam<T>(arg0: string, arg1: java.util.List<any /*java.lang.Object*/>): T;
+    multivaluedFormParam<T>(arg0: string, arg1: string): T;
     multivaluedQueryParam<T>(
       arg0: Func<io.gatling.javaapi.core.Session, string>,
       arg1: Func<io.gatling.javaapi.core.Session, java.util.List<any /*java.lang.Object*/>>
@@ -3292,6 +3245,7 @@ declare namespace io.gatling.javaapi.http {
     ): T;
     multivaluedQueryParam<T>(arg0: string, arg1: java.util.List<any /*java.lang.Object*/>): T;
     multivaluedQueryParam<T>(arg0: string, arg1: string): T;
+    processRequestBody<T>(arg0: Func<io.gatling.javaapi.core.Body, io.gatling.javaapi.core.Body>): T;
     proxy<T>(arg0: Proxy): T;
     queryParam<T>(
       arg0: Func<io.gatling.javaapi.core.Session, string>,
@@ -3321,8 +3275,6 @@ declare namespace io.gatling.javaapi.http {
     signWithOAuth1<T>(arg0: string, arg1: string, arg2: string, arg3: string): T;
     toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
     toString(): string;
-    virtualHost<T>(arg0: Func<io.gatling.javaapi.core.Session, string>): T;
-    virtualHost<T>(arg0: string): T;
   } // end SseConnectActionBuilder
 } // end namespace io.gatling.javaapi.http
 declare namespace io.gatling.javaapi.http {

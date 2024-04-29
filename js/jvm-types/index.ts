@@ -141,16 +141,6 @@ export const Choice$WithWeight: Choice$WithWeightStatic = Java.type("io.gatling.
 
 interface ChoiceStatic {
   readonly class: any;
-  withKey(
-    arg0: any /*java.lang.Object*/,
-    arg1: io.gatling.javaapi.core.exec.Executable,
-    ...arg2: io.gatling.javaapi.core.exec.Executable[]
-  ): io.gatling.javaapi.core.Choice$WithKey;
-  withWeight(
-    arg0: double,
-    arg1: io.gatling.javaapi.core.exec.Executable,
-    ...arg2: io.gatling.javaapi.core.exec.Executable[]
-  ): io.gatling.javaapi.core.Choice$WithWeight;
 }
 
 export const Choice: ChoiceStatic = Java.type("io.gatling.javaapi.core.Choice");
@@ -1955,14 +1945,6 @@ interface RepeatStatic {
 
 export const Repeat: RepeatStatic = Java.type("io.gatling.javaapi.core.loop.Repeat");
 
-interface RequestActionBuilderStatic {
-  readonly class: any;
-}
-
-export const RequestActionBuilder: RequestActionBuilderStatic = Java.type(
-  "io.gatling.javaapi.http.RequestActionBuilder"
-);
-
 interface RequestBodyStatic {
   readonly class: any;
 }
@@ -1979,17 +1961,16 @@ interface RequestStatic {
     arg4: java.util.List<any /*io.netty.handler.codec.http.cookie.Cookie*/>,
     arg5: io.gatling.http.client.body.RequestBody,
     arg6: long,
-    arg7: string,
-    arg8: boolean,
+    arg7: boolean,
+    arg8: any /*java.net.InetAddress*/,
     arg9: any /*java.net.InetAddress*/,
-    arg10: any /*java.net.InetAddress*/,
-    arg11: any /*io.gatling.http.client.realm.Realm*/,
-    arg12: any /*io.gatling.http.client.proxy.ProxyServer*/,
-    arg13: Func<io.gatling.http.client.Request, io.gatling.http.client.Request>,
-    arg14: any /*io.gatling.http.client.resolver.InetAddressNameResolver*/,
-    arg15: boolean,
-    arg16: any /*io.gatling.http.client.Http2PriorKnowledge*/,
-    arg17: string
+    arg10: any /*io.gatling.http.client.realm.Realm*/,
+    arg11: any /*io.gatling.http.client.proxy.ProxyServer*/,
+    arg12: Func<io.gatling.http.client.Request, io.gatling.http.client.Request>,
+    arg13: any /*io.gatling.http.client.resolver.InetAddressNameResolver*/,
+    arg14: boolean,
+    arg15: any /*io.gatling.http.client.Http2PriorKnowledge*/,
+    arg16: string
   ): io.gatling.http.client.Request;
 }
 
