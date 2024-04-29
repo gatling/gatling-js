@@ -20,6 +20,15 @@ import {
 
 import { http, Proxy } from "./index";
 import { currentLocation, currentLocationRegex, header, headerRegex, status } from "./index";
+import {
+  addCookie,
+  Cookie,
+  CookieKey,
+  flushCookieJar,
+  flushHttpCache,
+  flushSessionCookies,
+  getCookieValue
+} from "./cookies";
 
 const runSimulationMock = (_: Simulation): void => {};
 
@@ -335,7 +344,7 @@ const scn = scenario("scenario")
       .checkIf("#{bool}")
       .then(jsonPath("$..foo"), jsonPath("$..foo"))
     //.checkIf((response, session) -> true).then(jsonPath("$..foo"))
-  );
+  )
 // processRequestBody
 //.exec(
 //  http("Request")
@@ -358,16 +367,16 @@ const scn = scenario("scenario")
 //.exec(poll().pollerName("poll").every(10).exec(http("poll").get("/foo")))
 //.exec(poll().pollerName("poll").stop())
 //.exec(poll().stop())
-// addCookie
-//.exec(addCookie(Cookie("foo", "bar").withDomain("foo.com")))
-// getCookieValue
-//.exec(getCookieValue(CookieKey("foo").withDomain("foo.com").saveAs("newName")))
-// flushSessionCookies
-//.exec(flushSessionCookies())
-// flushCookieJar
-//.exec(flushCookieJar())
-// flushHttpCache
-//.exec(flushHttpCache())
+  // addCookie
+  .exec(addCookie(Cookie("foo", "bar").withDomain("foo.com")))
+  // getCookieValue
+  .exec(getCookieValue(CookieKey("foo").withDomain("foo.com").saveAs("newName")))
+  // flushSessionCookies
+  .exec(flushSessionCookies())
+  // flushCookieJar
+  .exec(flushCookieJar())
+  // flushHttpCache
+  .exec(flushHttpCache());
 // feeder
 //.feed(sitemap("file"));
 

@@ -7,6 +7,7 @@ import { HttpRequestActionBuilder, Request, wrapHttpRequestActionBuilder, wrapRe
 import { Response, wrapResponse } from "./response";
 
 export * from "./checks";
+export * from "./cookies";
 export * from "./headers";
 export * from "./method";
 export * from "./protocol";

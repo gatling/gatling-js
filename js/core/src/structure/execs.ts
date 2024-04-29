@@ -11,6 +11,10 @@ export interface Executable<T extends JvmExecutable> extends Wrapper<T> {}
 
 export interface ActionBuilder extends Executable<JvmActionBuilder> {}
 
+export const wrapActionBuilder = (_underlying: JvmActionBuilder): ActionBuilder => ({
+  _underlying
+});
+
 // interface JvmExecs {
 //   exec<T>(arg0: JvmExecutable, ...arg1: JvmExecutable[]): T;
 //   exec<T>(arg0: JvmChainBuilder[]): T;

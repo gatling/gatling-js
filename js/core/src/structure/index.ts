@@ -97,7 +97,7 @@ const wrapChainBuilder = (_underlying: JvmChainBuilder): ChainBuilder => ({
 });
 
 // CoreDsl elements
-export { ActionBuilder } from "./execs";
+export { ActionBuilder, wrapActionBuilder } from "./execs";
 export { onCase, percent } from "./choices";
 export const exec: ExecFunction<ChainBuilder> = execImpl(JvmCoreDsl, wrapChainBuilder);
 export const group: GroupFunction<ChainBuilder> = groupImpl(JvmCoreDsl, wrapChainBuilder);
