@@ -478,7 +478,7 @@ const injectClosed = scn.injectClosed(
 runSimulationMock((setUp) => {
   setUp(
     injectOpen,
-    injectClosed.andThen([scn.injectOpen(atOnceUsers(1))])
+    injectClosed.andThen(scn.injectOpen(atOnceUsers(1)))
   );
   //.assertions(
   //  global().allRequests().count().is(5L),
