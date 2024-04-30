@@ -35,9 +35,6 @@ export interface RequestWithParamsActionBuilder<T> {
   multivaluedQueryParam(name: (session: Session) => string, values: string): T;
   multivaluedQueryParam(name: (session: Session) => string, values: any[]): T;
   multivaluedQueryParam(name: (session: Session) => string, values: (session: Session) => any[]): T;
-  queryParamSeq(seq: string): T;
-  queryParamSeq(seq: Array<Record<string, any>>): T;
-  queryParamSeq(seq: (session: Session) => Array<Record<string, any>>): T;
   queryParamMap(map: string): T;
   queryParamMap(map: Record<string, any>): T;
   queryParamMap(map: (session: Session) => Record<string, any>): T;
@@ -116,15 +113,6 @@ const requestWithParamsActionBuilderImpl = <T>(
       } else {
         return wrap(jvmBuilder.multivaluedQueryParam(name, values));
       }
-    }
-  },
-  queryParamSeq: (seq: string | Expression<Array<Record<string, any>>>): T => {
-    if (Array.isArray(seq)) {
-      return wrap(jvmBuilder.queryParamSeq(seq));
-    } else if (typeof seq === "function") {
-      return wrap(jvmBuilder.queryParamSeq(wrapCallback(underlyingSessionTo(seq))));
-    } else {
-      return wrap(jvmBuilder.queryParamSeq(seq));
     }
   },
   queryParamMap: (map: string | Expression<Record<string, any>>): T => {
@@ -217,8 +205,6 @@ export interface RequestWithBodyActionBuilder<T> {
   // FIXME multivaluedFormParam(name: (session: Session) => string, value: string): T;
   multivaluedFormParam(name: (session: Session) => string, value: any[]): T;
   multivaluedFormParam(name: (session: Session) => string, value: (session: Session) => any[]): T;
-  formParamSeq(seq: Array<Record<string, any>>): T;
-  formParamSeq(seq: (session: Session) => Array<Record<string, any>>): T;
   formParamMap(map: Record<string, any>): T;
   formParamMap(map: (session: Session) => Record<string, any>): T;
   form(form: string): T;
@@ -287,12 +273,6 @@ const requestWithBodyActionBuilderImpl = <T>(
       }
     }
   },
-  formParamSeq: (seq: Expression<Array<Record<string, any>>>): T =>
-    wrap(
-      typeof seq === "function"
-        ? jvmBuilder.formParamSeq(wrapCallback(underlyingSessionTo(seq)))
-        : jvmBuilder.formParamSeq(seq)
-    ),
   formParamMap: (map: Expression<Record<string, any>>): T =>
     wrap(
       typeof map === "function"
