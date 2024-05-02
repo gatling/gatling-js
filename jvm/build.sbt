@@ -2,11 +2,11 @@ import scala.collection.Seq
 
 import net.moznion.sbt.spotless.config.{ GoogleJavaFormatConfig, JavaConfig, SpotlessConfig }
 
-ThisBuild / scalaVersion := "2.13.13"
+ThisBuild / scalaVersion := "2.13.14"
 ThisBuild / crossPaths := false
 
-val graalvmJdkVersion = "21.0.2"
-val graalvmJsVersion = "23.1.2"
+val graalvmJdkVersion = "22.0.1"
+val graalvmJsVersion = "24.0.1"
 val coursierVersion = "2.1.9"
 val gatlingVersion = "3.11.2"
 
@@ -40,7 +40,7 @@ lazy val adapter = (project in file("adapter"))
     ),
     libraryDependencies ++= Seq(
       "io.gatling.highcharts" % "gatling-charts-highcharts" % gatlingVersion,
-      "org.graalvm.polyglot" % "js-community" % "23.1.2",
+      "org.graalvm.polyglot" % "js-community" % graalvmJsVersion,
     ),
     Compile / sourceGenerators += Def.task {
       // Bit of a hack, generate a file directly into the CLI project to share version numbers
