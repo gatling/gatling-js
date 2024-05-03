@@ -80,13 +80,6 @@ interface AssertionStatic {
 
 export const Assertion: AssertionStatic = Java.type("io.gatling.javaapi.core.Assertion");
 
-interface Body$DefaultStatic {
-  readonly class: any;
-  new (arg0: any /*io.gatling.core.body.Body*/): io.gatling.javaapi.core.Body$Default;
-}
-
-export const Body$Default: Body$DefaultStatic = Java.type("io.gatling.javaapi.core.Body$Default");
-
 interface Body$WithBytesStatic {
   readonly class: any;
   new (arg0: any /*io.gatling.core.body.BodyWithBytesExpression*/): io.gatling.javaapi.core.Body$WithBytes;
@@ -694,10 +687,10 @@ interface CoreDslStatic {
   listFeeder(
     arg0: java.util.List<java.util.Map<string, any /*java.lang.Object*/>>
   ): io.gatling.javaapi.core.FeederBuilder<any /*java.lang.Object*/>;
-  AllowList(...arg0: string[]): any /*io.gatling.javaapi.core.Filter$AllowList*/;
-  AllowList(arg0: java.util.List<string>): any /*io.gatling.javaapi.core.Filter$AllowList*/;
-  DenyList(...arg0: string[]): any /*io.gatling.javaapi.core.Filter$DenyList*/;
-  DenyList(arg0: java.util.List<string>): any /*io.gatling.javaapi.core.Filter$DenyList*/;
+  AllowList(...arg0: string[]): io.gatling.javaapi.core.Filter$AllowList;
+  AllowList(arg0: java.util.List<string>): io.gatling.javaapi.core.Filter$AllowList;
+  DenyList(...arg0: string[]): io.gatling.javaapi.core.Filter$DenyList;
+  DenyList(arg0: java.util.List<string>): io.gatling.javaapi.core.Filter$DenyList;
   atOnceUsers(arg0: int): io.gatling.javaapi.core.OpenInjectionStep;
   nothingFor(arg0: java.time.Duration): io.gatling.javaapi.core.OpenInjectionStep;
   nothingFor(arg0: long): io.gatling.javaapi.core.OpenInjectionStep;
@@ -1408,6 +1401,20 @@ interface FeedsStatic {
 }
 
 export const Feeds: FeedsStatic = Java.type("io.gatling.javaapi.core.feed.Feeds");
+
+interface Filter$AllowListStatic {
+  readonly class: any;
+  new (arg0: java.util.List<string>): io.gatling.javaapi.core.Filter$AllowList;
+}
+
+export const Filter$AllowList: Filter$AllowListStatic = Java.type("io.gatling.javaapi.core.Filter$AllowList");
+
+interface Filter$DenyListStatic {
+  readonly class: any;
+  new (arg0: java.util.List<string>): io.gatling.javaapi.core.Filter$DenyList;
+}
+
+export const Filter$DenyList: Filter$DenyListStatic = Java.type("io.gatling.javaapi.core.Filter$DenyList");
 
 interface FilterStatic {
   readonly class: any;

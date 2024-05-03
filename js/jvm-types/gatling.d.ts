@@ -201,13 +201,6 @@ declare namespace io.gatling.javaapi.core {
   } // end Assertion
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
-  class Body$Default /* extends Body*/ {
-    asScala(): any /*io.gatling.core.body.Body*/;
-    equals(arg0: any /*java.lang.Object*/): boolean;
-    toString(): string;
-  } // end Body$Default
-} // end namespace io.gatling.javaapi.core
-declare namespace io.gatling.javaapi.core {
   class Body$WithBytes /* extends Body implements java.util.function.Function<any, any>*/ {
     andThen<R, T, V>(arg0: Func<R, V>): Func<T, V>;
     apply(arg0: Session): bytearray;
@@ -743,6 +736,20 @@ declare namespace io.gatling.javaapi.core {
     equals(arg0: any /*java.lang.Object*/): boolean;
     toString(): string;
   } // end CoreDsl
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
+  class Filter$AllowList /* extends Filter<any>*/ {
+    asScala<W>(): W;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toString(): string;
+  } // end Filter$AllowList
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
+  class Filter$DenyList /* extends Filter<any>*/ {
+    asScala<W>(): W;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toString(): string;
+  } // end Filter$DenyList
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
   class Filter<W> /* extends java.lang.Object*/ {
@@ -3023,12 +3030,12 @@ declare namespace io.gatling.javaapi.http {
     hostNameAliases(arg0: java.util.Map<string, java.util.List<string>>): HttpProtocolBuilder;
     http2PriorKnowledge(arg0: java.util.Map<string, boolean | null>): HttpProtocolBuilder;
     inferHtmlResources(): HttpProtocolBuilder;
-    inferHtmlResources(arg0: any /*io.gatling.javaapi.core.Filter$AllowList*/): HttpProtocolBuilder;
+    inferHtmlResources(arg0: io.gatling.javaapi.core.Filter$AllowList): HttpProtocolBuilder;
     inferHtmlResources(
-      arg0: any /*io.gatling.javaapi.core.Filter$AllowList*/,
-      arg1: any /*io.gatling.javaapi.core.Filter$DenyList*/
+      arg0: io.gatling.javaapi.core.Filter$AllowList,
+      arg1: io.gatling.javaapi.core.Filter$DenyList
     ): HttpProtocolBuilder;
-    inferHtmlResources(arg0: any /*io.gatling.javaapi.core.Filter$DenyList*/): HttpProtocolBuilder;
+    inferHtmlResources(arg0: io.gatling.javaapi.core.Filter$DenyList): HttpProtocolBuilder;
     localAddress(arg0: string): HttpProtocolBuilder;
     localAddresses(...arg0: string[]): HttpProtocolBuilder;
     localAddresses(arg0: java.util.List<string>): HttpProtocolBuilder;

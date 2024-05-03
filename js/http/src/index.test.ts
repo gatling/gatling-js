@@ -19,7 +19,9 @@ import {
   scenario,
   sha1,
   substring,
-  xpath
+  xpath,
+  AllowList,
+  DenyList
 } from "@gatling.io/core";
 
 import { Proxy, http } from "./index";
@@ -127,9 +129,9 @@ const httpProtocol = http
   //    originalRequestName + " Redirect " + redirectCount)
   //.transformResponse((response, session) -> response)
   .inferHtmlResources()
-  //.inferHtmlResources(AllowList("allow"))
-  //.inferHtmlResources(DenyList("deny"))
-  //.inferHtmlResources(AllowList("allow"), DenyList("deny"))
+  .inferHtmlResources(AllowList("allow"))
+  .inferHtmlResources(DenyList("deny"))
+  .inferHtmlResources(AllowList("allow"), DenyList("deny"))
   .nameInferredHtmlResourcesAfterUrlTail()
   .nameInferredHtmlResourcesAfterAbsoluteUrl()
   .nameInferredHtmlResourcesAfterRelativeUrl()

@@ -57,6 +57,8 @@
         @Type(value = io.gatling.javaapi.core.FeederBuilder.FileBased.class, export = true),
         @Type(value = io.gatling.javaapi.core.FeederBuilder.Batchable.class, export = true),
         @Type(value = io.gatling.javaapi.core.Filter.class, export = true),
+        @Type(value = io.gatling.javaapi.core.Filter.AllowList.class, export = true),
+        @Type(value = io.gatling.javaapi.core.Filter.DenyList.class, export = true),
         @Type(value = io.gatling.javaapi.core.OpenInjectionStep.class, export = true),
         @Type(value = io.gatling.javaapi.core.OpenInjectionStep.Ramp.class, export = true),
         @Type(value = io.gatling.javaapi.core.OpenInjectionStep.StressPeak.class, export = true),

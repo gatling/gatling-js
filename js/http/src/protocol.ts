@@ -10,7 +10,9 @@ import {
   wrapBiCallback,
   wrapCallback,
   wrapCheckBuilder,
-  wrapCondition
+  wrapCondition,
+  AllowListFilter,
+  DenyListFilter,
 } from "@gatling.io/core";
 
 import { underlyingRequestTransform, underlyingResponseTransform } from "./index";
@@ -612,17 +614,30 @@ export interface HttpProtocolBuilder extends ProtocolBuilder {
    */
   inferHtmlResources(): HttpProtocolBuilder;
 
-  // TODO
-  //inferHtmlResources(arg0: any /*io.gatling.javaapi.core.Filter$AllowList*/): HttpProtocolBuilder;
+  /**
+   * Automatically infer resources from HTML payloads
+   *
+   * @param allow - the allow list to filter the resources
+   * @returns a new HttpProtocolBuilder instance
+   */
+  inferHtmlResources(allow: AllowListFilter): HttpProtocolBuilder;
 
-  // TODO
-  //inferHtmlResources(
-  //  arg0: any /*io.gatling.javaapi.core.Filter$AllowList*/,
-  //  arg1: any /*io.gatling.javaapi.core.Filter$DenyList*/
-  //): HttpProtocolBuilder;
+  /**
+   * Automatically infer resources from HTML payloads
+   *
+   * @param allow - the allow list to filter the resources
+   * @param deny - the deny list to filter out the resources
+   * @returns a new HttpProtocolBuilder instance
+   */
+  inferHtmlResources(allow: AllowListFilter, deny: DenyListFilter): HttpProtocolBuilder;
 
-  // TODO
-  //inferHtmlResources(arg0: any /*io.gatling.javaapi.core.Filter$DenyList*/): HttpProtocolBuilder;
+  /**
+   * Automatically infer resources from HTML payloads
+   *
+   * @param deny - the deny list to filter out the resources
+   * @returns a new HttpProtocolBuilder instance
+   */
+  inferHtmlResources(deny: DenyListFilter): HttpProtocolBuilder;
 
   /**
    * Name the inferred resources' requests based on the tail of the url
@@ -926,7 +941,14 @@ export const wrapHttpProtocolBuilder = (_underlying: JvmHttpProtocolBuilder): Ht
       wrapHttpProtocolBuilder
     ),
 
-  inferHtmlResources: (): HttpProtocolBuilder => wrapHttpProtocolBuilder(_underlying.inferHtmlResources()),
+  inferHtmlResources: (arg0?: AllowListFilter | DenyListFilter, arg1?: DenyListFilter): HttpProtocolBuilder =>
+    wrapHttpProtocolBuilder(
+      arg0 !== undefined
+        ? arg1 !== undefined
+          ? _underlying.inferHtmlResources(arg0._underlying, arg1._underlying)
+          : _underlying.inferHtmlResources(arg0._underlying)
+        : _underlying.inferHtmlResources()
+    ),
 
   nameInferredHtmlResourcesAfterUrlTail: (): HttpProtocolBuilder =>
     wrapHttpProtocolBuilder(_underlying.nameInferredHtmlResourcesAfterUrlTail()),
