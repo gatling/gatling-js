@@ -25,6 +25,10 @@
         @Type(value = io.gatling.javaapi.core.CoreDsl.class, export = true),
         @Type(value = io.gatling.javaapi.core.ActionBuilder.class, export = true),
         @Type(value = io.gatling.javaapi.core.Assertion.class, export = true),
+        @Type(value = io.gatling.javaapi.core.Assertion.WithPath.class, export = true),
+        @Type(value = io.gatling.javaapi.core.Assertion.WithPathAndTimeMetric.class, export = true),
+        @Type(value = io.gatling.javaapi.core.Assertion.WithPathAndCountMetric.class, export = true),
+        @Type(value = io.gatling.javaapi.core.Assertion.WithPathAndTarget.class, export = true),
         @Type(value = io.gatling.javaapi.core.Body.class, export = true),
         @Type(value = io.gatling.javaapi.core.ChainBuilder.class, export = true),
         @Type(value = io.gatling.javaapi.core.CheckBuilder.class, export = true),
@@ -73,6 +77,7 @@
         @Type(value = io.gatling.javaapi.core.ScenarioBuilder.class, export = true),
         @Type(value = io.gatling.javaapi.core.Session.class, export = true),
         @Type(value = io.gatling.javaapi.core.Simulation.class, export = true),
+        @Type(value = io.gatling.javaapi.core.Simulation.SetUp.class, export = true),
         @Type(value = io.gatling.javaapi.core.StructureBuilder.class, export = true),
         @Type(value = io.gatling.javaapi.core.ThrottleStep.class, export = true),
         // core.condition

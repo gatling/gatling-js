@@ -138,6 +138,62 @@ declare namespace io.gatling.http.response {
   } // end ResponseBody
 } // end namespace io.gatling.http.response
 declare namespace io.gatling.javaapi.core {
+  class Assertion$WithPath /* extends java.lang.Object*/ {
+    allRequests(): Assertion$WithPathAndCountMetric;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    failedRequests(): Assertion$WithPathAndCountMetric;
+    requestsPerSec(): Assertion$WithPathAndTarget<double | null>;
+    responseTime(): Assertion$WithPathAndTimeMetric;
+    successfulRequests(): Assertion$WithPathAndCountMetric;
+    toString(): string;
+  } // end Assertion$WithPath
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
+  class Assertion$WithPathAndCountMetric /* extends java.lang.Object*/ {
+    count(): Assertion$WithPathAndTarget<long | null>;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    percent(): Assertion$WithPathAndTarget<double | null>;
+    toString(): string;
+  } // end Assertion$WithPathAndCountMetric
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
+  class Assertion$WithPathAndTarget<T> /* extends java.lang.Object*/ {
+    around(arg0: T, arg1: T): Assertion;
+    around(arg0: T, arg1: T, arg2: boolean): Assertion;
+    between(arg0: T, arg1: T): Assertion;
+    between(arg0: T, arg1: T, arg2: boolean): Assertion;
+    deviatesAround(arg0: T, arg1: double): Assertion;
+    deviatesAround(arg0: T, arg1: double, arg2: boolean): Assertion;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    gt(arg0: T): Assertion;
+    gte(arg0: T): Assertion;
+    in(...arg0: T[]): Assertion;
+    in(arg0: java.util.Set<T>): Assertion;
+    is(arg0: T): Assertion;
+    lt(arg0: T): Assertion;
+    lte(arg0: T): Assertion;
+    shouldBe(arg0: T): Assertion;
+    toString(): string;
+    within(...arg0: T[]): Assertion;
+    within(arg0: java.util.Set<T>): Assertion;
+  } // end Assertion$WithPathAndTarget
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
+  class Assertion$WithPathAndTimeMetric /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    max(): Assertion$WithPathAndTarget<int | null>;
+    mean(): Assertion$WithPathAndTarget<int | null>;
+    min(): Assertion$WithPathAndTarget<int | null>;
+    percentile(arg0: double): Assertion$WithPathAndTarget<int | null>;
+    percentile1(): Assertion$WithPathAndTarget<int | null>;
+    percentile2(): Assertion$WithPathAndTarget<int | null>;
+    percentile3(): Assertion$WithPathAndTarget<int | null>;
+    percentile4(): Assertion$WithPathAndTarget<int | null>;
+    stdDev(): Assertion$WithPathAndTarget<int | null>;
+    toString(): string;
+  } // end Assertion$WithPathAndTimeMetric
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
   class Assertion /* extends java.lang.Object*/ {
     asScala(): any /*io.gatling.commons.stats.assertion.Assertion*/;
     equals(arg0: any /*java.lang.Object*/): boolean;
@@ -1251,6 +1307,29 @@ declare namespace io.gatling.javaapi.core {
   } // end Session
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
+  class Simulation$SetUp /* extends java.lang.Object*/ {
+    assertions(...arg0: Assertion[]): Simulation$SetUp;
+    assertions(arg0: java.util.List<Assertion>): Simulation$SetUp;
+    constantPauses(): Simulation$SetUp;
+    customPauses(arg0: Func<Session, long | null>): Simulation$SetUp;
+    disablePauses(): Simulation$SetUp;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    exponentialPauses(): Simulation$SetUp;
+    maxDuration(arg0: java.time.Duration): Simulation$SetUp;
+    maxDuration(arg0: long): Simulation$SetUp;
+    normalPausesWithPercentageDuration(arg0: double): Simulation$SetUp;
+    normalPausesWithStdDevDuration(arg0: java.time.Duration): Simulation$SetUp;
+    pauses(arg0: PauseType): Simulation$SetUp;
+    protocols(...arg0: ProtocolBuilder[]): Simulation$SetUp;
+    protocols(arg0: java.util.List<ProtocolBuilder>): Simulation$SetUp;
+    throttle(...arg0: ThrottleStep[]): Simulation$SetUp;
+    throttle(arg0: java.util.List<ThrottleStep>): Simulation$SetUp;
+    toString(): string;
+    uniformPauses(arg0: double): Simulation$SetUp;
+    uniformPauses(arg0: java.time.Duration): Simulation$SetUp;
+  } // end Simulation$SetUp
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
   class Simulation /* extends java.lang.Object*/ {
     after(): void;
     before(): void;
@@ -1258,8 +1337,8 @@ declare namespace io.gatling.javaapi.core {
     params(
       arg0: any /*io.gatling.core.config.GatlingConfiguration*/
     ): any /*io.gatling.core.scenario.SimulationParams*/;
-    setUp(...arg0: PopulationBuilder[]): any /*io.gatling.javaapi.core.Simulation$SetUp*/;
-    setUp(arg0: java.util.List<PopulationBuilder>): any /*io.gatling.javaapi.core.Simulation$SetUp*/;
+    setUp(...arg0: PopulationBuilder[]): Simulation$SetUp;
+    setUp(arg0: java.util.List<PopulationBuilder>): Simulation$SetUp;
     toString(): string;
   } // end Simulation
 } // end namespace io.gatling.javaapi.core

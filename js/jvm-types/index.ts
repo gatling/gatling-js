@@ -44,6 +44,36 @@ interface AsLongAsStatic {
 
 export const AsLongAs: AsLongAsStatic = Java.type("io.gatling.javaapi.core.loop.AsLongAs");
 
+interface Assertion$WithPathAndCountMetricStatic {
+  readonly class: any;
+}
+
+export const Assertion$WithPathAndCountMetric: Assertion$WithPathAndCountMetricStatic = Java.type(
+  "io.gatling.javaapi.core.Assertion$WithPathAndCountMetric"
+);
+
+interface Assertion$WithPathAndTargetStatic {
+  readonly class: any;
+}
+
+export const Assertion$WithPathAndTarget: Assertion$WithPathAndTargetStatic = Java.type(
+  "io.gatling.javaapi.core.Assertion$WithPathAndTarget"
+);
+
+interface Assertion$WithPathAndTimeMetricStatic {
+  readonly class: any;
+}
+
+export const Assertion$WithPathAndTimeMetric: Assertion$WithPathAndTimeMetricStatic = Java.type(
+  "io.gatling.javaapi.core.Assertion$WithPathAndTimeMetric"
+);
+
+interface Assertion$WithPathStatic {
+  readonly class: any;
+}
+
+export const Assertion$WithPath: Assertion$WithPathStatic = Java.type("io.gatling.javaapi.core.Assertion$WithPath");
+
 interface AssertionStatic {
   readonly class: any;
 }
@@ -427,9 +457,9 @@ export const ConstantRate$ConstantRateOpenInjectionStep: ConstantRate$ConstantRa
 
 interface CoreDslStatic {
   readonly class: any;
-  details(...arg0: string[]): any /*io.gatling.javaapi.core.Assertion$WithPath*/;
-  forAll(): any /*io.gatling.javaapi.core.Assertion$WithPath*/;
-  global(): any /*io.gatling.javaapi.core.Assertion$WithPath*/;
+  details(...arg0: string[]): io.gatling.javaapi.core.Assertion$WithPath;
+  forAll(): io.gatling.javaapi.core.Assertion$WithPath;
+  global(): io.gatling.javaapi.core.Assertion$WithPath;
   InputStreamBody(
     arg0: Func<io.gatling.javaapi.core.Session, any /*java.io.InputStream*/>
   ): io.gatling.javaapi.core.Body;
@@ -2042,6 +2072,12 @@ interface SessionStatic {
 }
 
 export const Session: SessionStatic = Java.type("io.gatling.javaapi.core.Session");
+
+interface Simulation$SetUpStatic {
+  readonly class: any;
+}
+
+export const Simulation$SetUp: Simulation$SetUpStatic = Java.type("io.gatling.javaapi.core.Simulation$SetUp");
 
 interface SimulationStatic {
   readonly class: any;

@@ -1,10 +1,5 @@
-import PopulationBuilder = io.gatling.javaapi.core.PopulationBuilder;
-import ProtocolBuilder = io.gatling.javaapi.core.ProtocolBuilder;
+import JvmPopulationBuilder = io.gatling.javaapi.core.PopulationBuilder;
+import JvmSetUp = io.gatling.javaapi.core.Simulation$SetUp;
 
-export interface SetUp {
-  protocols(...protocols: ProtocolBuilder[]): SetUp;
-  protocols(protocols: ProtocolBuilder[]): SetUp;
-}
-
-export type SetUpFunction = (populationBuilders: PopulationBuilder[]) => SetUp;
+export type SetUpFunction = (populationBuilders: JvmPopulationBuilder[]) => JvmSetUp;
 export type Simulation = (setUp: SetUpFunction) => void;

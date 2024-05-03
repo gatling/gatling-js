@@ -24,7 +24,11 @@ import {
   nothingFor,
   incrementUsersPerSec,
   constantConcurrentUsers,
-  rampConcurrentUsers, incrementConcurrentUsers
+  rampConcurrentUsers,
+  incrementConcurrentUsers,
+  global,
+  forAll,
+  details
 } from "./index";
 
 const runSimulationMock = (_: Simulation): void => {};
@@ -439,11 +443,7 @@ const injectOpen = scn.injectOpen(
   incrementUsersPerSec(1.0).times(5).eachLevelLasting(1),
   incrementUsersPerSec(1.0).times(5).eachLevelLasting(1).startingFrom(1.0),
   incrementUsersPerSec(1.0).times(5).eachLevelLasting(1).separatedByRampsLasting(1),
-  incrementUsersPerSec(1.0)
-    .times(5)
-    .eachLevelLasting(1)
-    .startingFrom(1.0)
-    .separatedByRampsLasting(1),
+  incrementUsersPerSec(1.0).times(5).eachLevelLasting(1).startingFrom(1.0).separatedByRampsLasting(1),
   incrementUsersPerSec(1.0)
     .times(5)
     .eachLevelLasting({ amount: 1, unit: "seconds" })
@@ -459,15 +459,8 @@ const injectClosed = scn.injectClosed(
   incrementConcurrentUsers(1).times(5).eachLevelLasting(1),
   incrementConcurrentUsers(1).times(5).eachLevelLasting(1),
   incrementConcurrentUsers(1).times(5).eachLevelLasting(1).startingFrom(1),
-  incrementConcurrentUsers(1)
-    .times(5)
-    .eachLevelLasting(1)
-    .separatedByRampsLasting(1),
-  incrementConcurrentUsers(1)
-    .times(5)
-    .eachLevelLasting(1)
-    .startingFrom(1)
-    .separatedByRampsLasting(1),
+  incrementConcurrentUsers(1).times(5).eachLevelLasting(1).separatedByRampsLasting(1),
+  incrementConcurrentUsers(1).times(5).eachLevelLasting(1).startingFrom(1).separatedByRampsLasting(1),
   incrementConcurrentUsers(1)
     .times(5)
     .eachLevelLasting({ amount: 1, unit: "seconds" })
@@ -476,16 +469,12 @@ const injectClosed = scn.injectClosed(
 );
 
 runSimulationMock((setUp) => {
-  setUp(
-    injectOpen,
-    injectClosed.andThen(scn.injectOpen(atOnceUsers(1)))
+  setUp(injectOpen, injectClosed.andThen(scn.injectOpen(atOnceUsers(1)))).assertions(
+    global().allRequests().count().is(5),
+    global().allRequests().percent().is(5.5),
+    forAll().allRequests().count().is(5),
+    details("group", "request").allRequests().count().is(5)
   );
-  //.assertions(
-  //  global().allRequests().count().is(5L),
-  //  global().allRequests().percent().is(5.5),
-  //  forAll().allRequests().count().is(5L),
-  //  details("group", "request").allRequests().count().is(5L)
-  //)
   //.maxDuration(1)
   //.maxDuration(Duration.ofSeconds(1))
   //.throttle(
@@ -502,5 +491,5 @@ runSimulationMock((setUp) => {
   //.uniformPauses(1)
   //.uniformPauses(Duration.ofSeconds(1))
   //.normalPausesWithStdDevDuration(Duration.ofMillis(50))
-  //.normalPausesWithPercentageDuration(30);
+  //.normalPausesWithPercentageDuration(30)
 });

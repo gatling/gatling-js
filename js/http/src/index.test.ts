@@ -232,39 +232,55 @@ const httpProtocol = http
   .then(jsonPath("$..foo"))
   .checkIf("#{bool}")
   .then(jsonPath("$..foo"), jsonPath("$..foo"));
-  //.checkIf((response, session) -> true).then(jsonPath("$..foo"));
+//.checkIf((response, session) -> true).then(jsonPath("$..foo"));
 
 const scn = scenario("scenario")
   .exec(
-    http("name").get("url")
+    http("name")
+      .get("url")
       .queryParam("key", "value")
       .queryParam((_: Session) => "key", "value")
       .queryParam("key", (_: Session) => "value")
-      .queryParam((_: Session) => "key", (_: Session) => "value")
+      .queryParam(
+        (_: Session) => "key",
+        (_: Session) => "value"
+      )
       .queryParam("key", 1)
       .queryParam((_: Session) => "key", 1)
       .queryParam("key", (_: Session) => 1)
-      .queryParam((_: Session) => "key", (_: Session) => 1)
+      .queryParam(
+        (_: Session) => "key",
+        (_: Session) => 1
+      )
       .multivaluedQueryParam("key", [1])
       .multivaluedQueryParam((_: Session) => "key", [1])
       .multivaluedQueryParam("key", (_: Session) => [1])
-      .multivaluedQueryParam((_: Session) => "key", (_: Session) => [1])
-      .queryParamMap({ "key": "value" })
-      .queryParamMap((_: Session) => ({ "key": "value" }))
+      .multivaluedQueryParam(
+        (_: Session) => "key",
+        (_: Session) => [1]
+      )
+      .queryParamMap({ key: "value" })
+      .queryParamMap((_: Session) => ({ key: "value" }))
       .header("key", "value")
       .header("key", (_: Session) => "value")
-      .headers({ "key": "value" })
+      .headers({ key: "value" })
       .ignoreProtocolHeaders()
       .asJson()
       .asXml()
       .basicAuth("username", "password")
       .basicAuth("username", (_: Session) => "password")
       .basicAuth((_: Session) => "username", "password")
-      .basicAuth((_: Session) => "username", (_: Session) => "password")
+      .basicAuth(
+        (_: Session) => "username",
+        (_: Session) => "password"
+      )
       .digestAuth("username", "password")
       .digestAuth("username", (_: Session) => "password")
       .digestAuth((_: Session) => "username", "password")
-      .digestAuth((_: Session) => "username", (_: Session) => "password")
+      .digestAuth(
+        (_: Session) => "username",
+        (_: Session) => "password"
+      )
       .disableUrlEncoding()
       //.sign(request -> request)
       //.sign((request, session) -> request)
@@ -273,7 +289,8 @@ const scn = scenario("scenario")
         (_: Session) => "consumerKey",
         (_: Session) => "clientSharedSecret",
         (_: Session) => "token",
-        (_: Session) => "tokenSecret")
+        (_: Session) => "tokenSecret"
+      )
       .ignoreProtocolChecks()
       .silent()
       .notSilent()
@@ -286,23 +303,35 @@ const scn = scenario("scenario")
       .formParam("key", "value")
       .formParam((_: Session) => "key", "value")
       .formParam("key", (_: Session) => "value")
-      .formParam((_: Session) => "key", (_: Session) => "value")
+      .formParam(
+        (_: Session) => "key",
+        (_: Session) => "value"
+      )
       .formParam("key", 1)
       .formParam((_: Session) => "key", 1)
       .formParam("key", (_: Session) => 1)
-      .formParam((_: Session) => "key", (_: Session) => 1)
+      .formParam(
+        (_: Session) => "key",
+        (_: Session) => 1
+      )
       .multivaluedFormParam("key", [1])
       .multivaluedFormParam((_: Session) => "key", [1])
       .multivaluedFormParam("key", (_: Session) => [1])
-      .multivaluedFormParam((_: Session) => "key", (_: Session) => [1])
-      .formParamMap({ "key": "value" })
-      .formParamMap((_: Session) => ({ "key": "value" }))
+      .multivaluedFormParam(
+        (_: Session) => "key",
+        (_: Session) => [1]
+      )
+      .formParamMap({ key: "value" })
+      .formParamMap((_: Session) => ({ key: "value" }))
       .form("#{key}")
-      .form((_: Session) => ({ "key": "value" }))
+      .form((_: Session) => ({ key: "value" }))
       .formUpload("name", "filePath")
       .formUpload((_: Session) => "name", "filePath")
       .formUpload("name", (_: Session) => "filePath")
-      .formUpload((_: Session) => "name", (_: Session) => "filePath")
+      .formUpload(
+        (_: Session) => "name",
+        (_: Session) => "filePath"
+      )
       //.bodyPart(RawFileBodyPart("name", "path"))
       //.bodyPart(ElFileBodyPart("name", "path"))
       //.bodyPart(ElFileBodyPart("name", "path").contentType("foo"))
@@ -370,8 +399,8 @@ const scn = scenario("scenario")
   .exec(flushCookieJar())
   // flushHttpCache
   .exec(flushHttpCache());
-  // feeder
-  //.feed(sitemap("file"));
+// feeder
+//.feed(sitemap("file"));
 
 runSimulationMock((setUp) => {
   setUp(

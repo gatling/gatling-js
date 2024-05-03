@@ -1,11 +1,14 @@
-import * as jvm from "./gatlingJvm/app";
+import JvmSetUp = io.gatling.javaapi.core.Simulation$SetUp;
 
+import * as jvm from "./gatlingJvm/app";
+import { Assertion } from "./assertions";
 import { PopulationBuilder } from "./population";
 import { ProtocolBuilder } from "./protocol";
 
 // FIXME no export *
 export * from "./gatlingJvm/callbacks";
 export * from "./utils/duration";
+export * from "./assertions";
 export * from "./body";
 export * from "./checks";
 export * from "./closedInjection";
@@ -20,11 +23,12 @@ export * from "./structure";
 
 export interface SetUp {
   protocols(...protocols: ProtocolBuilder[]): SetUp;
+  assertions(...assertions: Assertion[]): SetUp;
 }
 
-const wrapSetUp = (jvmSetUp: jvm.SetUp): SetUp => ({
-  protocols: (...protocols: ProtocolBuilder[]): SetUp =>
-    wrapSetUp(jvmSetUp.protocols(protocols.map((p) => p._underlying)))
+const wrapSetUp = (jvmSetUp: JvmSetUp): SetUp => ({
+  protocols: (...protocols) => wrapSetUp(jvmSetUp.protocols(protocols.map((p) => p._underlying))),
+  assertions: (...assertions) => wrapSetUp(jvmSetUp.assertions(assertions.map((p) => p._underlying)))
 });
 
 export type SetUpFunction = (...populationBuilders: PopulationBuilder[]) => SetUp;

@@ -13,7 +13,8 @@ import {
   atOnceUsers,
   nothingFor,
   doWhile,
-  css
+  css,
+  global
 } from "@gatling.io/core";
 import { http } from "@gatling.io/http";
 
@@ -77,7 +78,10 @@ const mySimulation = runSimulation((setUp) => {
       nothingFor({ amount: 5, unit: "seconds" }),
       constantUsersPerSec(2).during(30)
     )
-  ).protocols(baseHttpProtocol);
+  ).protocols(baseHttpProtocol)
+    .assertions(
+      global().responseTime().percentile(95.0).lte(500)
+    );
 });
 
 export default mySimulation;
