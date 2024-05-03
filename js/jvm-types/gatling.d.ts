@@ -14,8 +14,8 @@ type double = number;
 type byte = number;
 type char = string;
 
-type chararray = [char];
-type bytearray = [byte];
+type chararray = char[];
+type bytearray = byte[];
 
 declare namespace java.lang {
   interface Class<T> {}
@@ -199,6 +199,33 @@ declare namespace io.gatling.javaapi.core {
     equals(arg0: any /*java.lang.Object*/): boolean;
     toString(): string;
   } // end Assertion
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
+  class Body$Default /* extends Body*/ {
+    asScala(): any /*io.gatling.core.body.Body*/;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toString(): string;
+  } // end Body$Default
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
+  class Body$WithBytes /* extends Body implements java.util.function.Function<any, any>*/ {
+    andThen<R, T, V>(arg0: Func<R, V>): Func<T, V>;
+    apply(arg0: Session): bytearray;
+    asScala(): any /*io.gatling.core.body.Body*/;
+    compose<R, T, V>(arg0: Func<V, T>): Func<V, R>;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toString(): string;
+  } // end Body$WithBytes
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
+  class Body$WithString /* extends Body implements java.util.function.Function<any, any>*/ {
+    andThen<R, T, V>(arg0: Func<R, V>): Func<T, V>;
+    apply(arg0: Session): string;
+    asScala(): any /*io.gatling.core.body.Body*/;
+    compose<R, T, V>(arg0: Func<V, T>): Func<V, R>;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toString(): string;
+  } // end Body$WithString
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
   class Body /* extends java.lang.Object*/ {

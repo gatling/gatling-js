@@ -1,37 +1,42 @@
 import {
-  Simulation,
+  ByteArrayBody,
+  ElFileBody,
+  PebbleFileBody,
+  PebbleStringBody,
+  RawFileBody,
   Session,
+  Simulation,
   StringBody,
+  arrayFeeder,
   atOnceUsers,
+  constantConcurrentUsers,
   constantUsersPerSec,
-  exec,
-  scenario,
-  onCase,
-  percent,
   csv,
-  ssv,
-  tsv,
-  separatedValues,
+  details,
+  exec,
+  forAll,
+  global,
+  group,
+  holdFor,
+  incrementConcurrentUsers,
+  incrementUsersPerSec,
   jsonFile,
   jsonUrl,
-  arrayFeeder,
-  pause,
-  repeat,
-  group,
-  rampUsers,
-  stressPeakUsers,
-  rampUsersPerSec,
+  jumpToRps,
   nothingFor,
-  incrementUsersPerSec,
-  constantConcurrentUsers,
+  onCase,
+  pause,
+  percent,
   rampConcurrentUsers,
-  incrementConcurrentUsers,
-  global,
-  forAll,
-  details,
+  rampUsers,
+  rampUsersPerSec,
   reachRps,
-  holdFor,
-  jumpToRps
+  repeat,
+  scenario,
+  separatedValues,
+  ssv,
+  stressPeakUsers,
+  tsv
 } from "./index";
 
 const runSimulationMock = (_: Simulation): void => {};
@@ -49,17 +54,16 @@ const group2 = group((session) => "group").on(chain1);
 
 // bodies
 const stringBody1 = StringBody("static #{dynamic} static");
-const stringBody2 = StringBody((_: Session) => "body");
-//const rawFileBody1 = RawFileBody("path");
-//const rawFileBody2 = RawFileBody(session -> "path");
-//const elFileBody1 = ElFileBody("path");
-//const elFileBody2 = ElFileBody(session -> "path");
-//const pebbleStringBody = PebbleStringBody("template string");
-//const pebbleFileBody1 = PebbleFileBody("path");
-//const pebbleFileBody2 = PebbleFileBody(session -> "path");
-//const byteArrayBody1 = ByteArrayBody(new byte[] {1});
-//const byteArrayBody2 = ByteArrayBody(session -> new byte[] {1});
-//const inputStreamBody = InputStreamBody(session -> new ByteArrayInputStream(new byte[] {1}));
+const stringBody2 = StringBody((session) => "body");
+const rawFileBody1 = RawFileBody("path");
+const rawFileBody2 = RawFileBody((session) => "path");
+const elFileBody1 = ElFileBody("path");
+const elFileBody2 = ElFileBody((session) => "path");
+const pebbleStringBody = PebbleStringBody("template string");
+const pebbleFileBody1 = PebbleFileBody("path");
+const pebbleFileBody2 = PebbleFileBody((session) => "path");
+const byteArrayBody1 = ByteArrayBody([1]);
+const byteArrayBody2 = ByteArrayBody((session) => [1]);
 
 //const records = csv("foo").readRecords();
 const recordsCount = csv("foo").recordsCount();

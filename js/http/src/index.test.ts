@@ -1,6 +1,10 @@
-import { Session, Simulation } from "@gatling.io/core";
-import { atOnceUsers, scenario } from "@gatling.io/core";
 import {
+  RawFileBody,
+  Session,
+  Simulation,
+  StringBody,
+  atOnceUsers,
+  bodyBytes,
   bodyLength,
   bodyString,
   css,
@@ -12,18 +16,18 @@ import {
   md5,
   regex,
   responseTimeInMillis,
+  scenario,
   sha1,
   substring,
-  xpath,
-  StringBody
+  xpath
 } from "@gatling.io/core";
 
-import { http, Proxy } from "./index";
+import { Proxy, http } from "./index";
 import { currentLocation, currentLocationRegex, header, headerRegex, status } from "./index";
 import {
-  addCookie,
   Cookie,
   CookieKey,
+  addCookie,
   flushCookieJar,
   flushHttpCache,
   flushSessionCookies,
@@ -141,17 +145,16 @@ const httpProtocol = http
   .asyncNameResolution("dnsServer1", "dnsServer2")
   .perUserNameResolution()
   .check(
-    //bodyBytes(),
-    //bodyBytes().is("foo".getBytes(UTF_8)),
-    //bodyBytes().is(RawFileBody("foo")),
-    //bodyBytes().saveAs("key"),
-    //bodyBytes().find().is("foo".getBytes(UTF_8)),
+    bodyBytes(),
+    bodyBytes().is([102, 111, 111]),
+    bodyBytes().is(RawFileBody("foo")),
+    bodyBytes().saveAs("key"),
+    bodyBytes().find().is([102, 111, 111]),
     bodyLength().gt(1),
     bodyString()
       .transform((str: string) => str.length)
       .lt(100000),
-    //bodyString().is(StringBody("foo")),
-    //bodyStream(),
+    bodyString().is(StringBody("foo")),
     regex("pattern").findAll(),
     regex("pattern").captureGroups(2).is(["foo", "bar"]),
     regex("pattern").findRandom(),

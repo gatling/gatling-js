@@ -1,12 +1,39 @@
+import JvmSession = io.gatling.javaapi.core.Session;
+
+type ByteArray = number[];
+type ByteArrayCallback = (arg: JvmSession) => ByteArray;
+type ListOfByteArrayCallback = (arg: JvmSession) => java.util.List<ByteArray>;
+
 type Callback<T, R> = (arg: T) => R;
 type BiCallback<T, U, R> = (arg0: T, arg1: U) => R;
 
 interface CallbackWrapper {
+  // Primitives, arrays & collections
+  wrapByteArray(v: ByteArray): ByteArray;
+  wrapByteArrayFunction(f: ByteArrayCallback): ByteArrayCallback;
+  wrapListOfByteArrayFunction(f: ListOfByteArrayCallback): ListOfByteArrayCallback;
+  // Generic functions
   wrapFunction<T, R>(f: Callback<T, R>): Callback<T, R>;
   wrapBiFunction<T, U, R>(f: BiCallback<T, U, R>): BiCallback<T, U, R>;
 }
 
 const CallbackWrapper = Java.type<CallbackWrapper>("io.gatling.js.callbacks.CallbackWrapper");
+
+// Primitives, arrays & collections
+
+export const wrapByteArray = (v: ByteArray) => {
+  return CallbackWrapper.wrapByteArray(v);
+};
+
+export const wrapByteArrayCallback = (f: ByteArrayCallback) => {
+  return CallbackWrapper.wrapByteArrayFunction(f);
+};
+
+export const wrapListOfByteArrayFunction = (f: ListOfByteArrayCallback) => {
+  return CallbackWrapper.wrapListOfByteArrayFunction(f);
+};
+
+// Generic functions
 
 export const wrapCallback = <T, R>(f: Callback<T, R>): Callback<T, R> => {
   return CallbackWrapper.wrapFunction(f);

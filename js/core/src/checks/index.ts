@@ -1,8 +1,14 @@
 import { CoreDsl as JvmCoreDsl } from "@gatling.io/jvm-types";
 
-import { wrapCallback } from "../gatlingJvm/callbacks";
+import {
+  wrapByteArray,
+  wrapByteArrayCallback,
+  wrapCallback,
+  wrapListOfByteArrayFunction
+} from "../gatlingJvm/callbacks";
 import { Expression, Session, SessionTo, underlyingSessionTo } from "../session";
 import { CheckBuilderCaptureGroup, wrapCheckBuilderCaptureGroup } from "./captureGroup";
+import { wrapCheckBuilderFinal } from "./final";
 import { CheckBuilderFind, wrapCheckBuilderFind } from "./find";
 import { CheckBuilderJsonOfTypeFind, wrapCheckBuilderJsonOfTypeFind } from "./jsonOfTypeFind";
 import { CheckBuilderJsonOfTypeMultipleFind, wrapCheckBuilderJsonOfTypeMultipleFind } from "./jsonOfTypeMultipleFind";
@@ -34,17 +40,36 @@ export * from "./validate";
  */
 export const bodyString = (): CheckBuilderFind<string> => wrapCheckBuilderFind(JvmCoreDsl.bodyString());
 
-// TODO bodyBytes - we should probably use Int8Array like for HTTP Request/Response
-// /**
-//  * Bootstrap a new bodyBytes check that extracts the full response message body as a byte array.
-//  *
-//  * <p>Note: On contrary to the Scala DSL, the compiler can't check the availability of this check
-//  * type for your protocol. If the protocol you're using doesn't support it, you'll get a runtime
-//  * error.
-//  *
-//  * @returns the next DSL step
-//  */
-// export const bodyBytes = (): CheckBuilderFind<Int8Array> => wrapCheckBuilderFind(JvmCoreDsl.bodyBytes())
+/**
+ * Bootstrap a new bodyBytes check that extracts the full response message body as a byte array.
+ *
+ * <p>Note: On contrary to the Scala DSL, the compiler can't check the availability of this check
+ * type for your protocol. If the protocol you're using doesn't support it, you'll get a runtime
+ * error.
+ *
+ * @returns the next DSL step
+ */
+export const bodyBytes = (): CheckBuilderFind<number[]> => ({
+  ...wrapCheckBuilderFind(JvmCoreDsl.bodyBytes()),
+  is: (expected: number[] | SessionTo<number[]>) =>
+    wrapCheckBuilderFinal(
+      typeof expected === "function"
+        ? JvmCoreDsl.bodyBytes().is(wrapByteArrayCallback(underlyingSessionTo(expected)))
+        : JvmCoreDsl.bodyBytes().is(wrapByteArray(expected))
+    ),
+  not: (expected: number[] | SessionTo<number[]>) =>
+    wrapCheckBuilderFinal(
+      typeof expected === "function"
+        ? JvmCoreDsl.bodyBytes().not(wrapByteArrayCallback(underlyingSessionTo(expected)))
+        : JvmCoreDsl.bodyBytes().not(wrapByteArray(expected))
+    ),
+  in: (expected: number[] | SessionTo<number[][]>, ...rest: number[][]) =>
+    wrapCheckBuilderFinal(
+      typeof expected === "function"
+        ? JvmCoreDsl.bodyBytes().in(wrapListOfByteArrayFunction(underlyingSessionTo(expected)))
+        : JvmCoreDsl.bodyBytes().in(...[wrapByteArray(expected), ...rest.map(wrapByteArray)])
+    )
+});
 
 /**
  * Bootstrap a new bodyLength check that extracts the full response message body's binary length.

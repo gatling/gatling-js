@@ -131,9 +131,9 @@ export interface CheckBuilderValidate<X> extends CheckBuilderFinal {
    * Validate the extracted value belongs to an expected set
    *
    * @param expected - the set of possible values
-   * @returns a new CheckBuilderFinal
+   * @returns a new Final
    */
-  in(expected: X[]): CheckBuilderFinal;
+  in(...expected: X[]): CheckBuilderFinal;
 
   /**
    * Validate the extracted value belongs to an expected set, passed as a Gatling Expression
@@ -304,11 +304,11 @@ export const wrapCheckBuilderValidate = <X>(_underlying: JvmCheckBuilderValidate
     ),
   notEL: (expected: string) => wrapCheckBuilderFinal(_underlying.notEL(expected)),
   notNull: (): CheckBuilderFinal => wrapCheckBuilderFinal(_underlying.notNull()),
-  in: (expected: X[] | SessionTo<X[]>) =>
+  in: (expected: X | SessionTo<X[]>, ...rest: X[]) =>
     wrapCheckBuilderFinal(
       typeof expected === "function"
-        ? _underlying.in(wrapCallback(underlyingSessionTo(expected)))
-        : _underlying.in(expected)
+        ? _underlying.in(wrapCallback(underlyingSessionTo(expected as SessionTo<X[]>)))
+        : _underlying.in([expected, ...rest])
     ),
   inEL: (expected: string) => wrapCheckBuilderFinal(_underlying.inEL(expected)),
   exists: () => wrapCheckBuilderFinal(_underlying.exists()),

@@ -80,6 +80,27 @@ interface AssertionStatic {
 
 export const Assertion: AssertionStatic = Java.type("io.gatling.javaapi.core.Assertion");
 
+interface Body$DefaultStatic {
+  readonly class: any;
+  new (arg0: any /*io.gatling.core.body.Body*/): io.gatling.javaapi.core.Body$Default;
+}
+
+export const Body$Default: Body$DefaultStatic = Java.type("io.gatling.javaapi.core.Body$Default");
+
+interface Body$WithBytesStatic {
+  readonly class: any;
+  new (arg0: any /*io.gatling.core.body.BodyWithBytesExpression*/): io.gatling.javaapi.core.Body$WithBytes;
+}
+
+export const Body$WithBytes: Body$WithBytesStatic = Java.type("io.gatling.javaapi.core.Body$WithBytes");
+
+interface Body$WithStringStatic {
+  readonly class: any;
+  new (arg0: any /*io.gatling.core.body.BodyWithStringExpression*/): io.gatling.javaapi.core.Body$WithString;
+}
+
+export const Body$WithString: Body$WithStringStatic = Java.type("io.gatling.javaapi.core.Body$WithString");
+
 interface BodyPartStatic {
   readonly class: any;
 }
@@ -463,18 +484,18 @@ interface CoreDslStatic {
   InputStreamBody(
     arg0: Func<io.gatling.javaapi.core.Session, any /*java.io.InputStream*/>
   ): io.gatling.javaapi.core.Body;
-  ByteArrayBody(arg0: bytearray): any /*io.gatling.javaapi.core.Body$WithBytes*/;
-  ByteArrayBody(arg0: string): any /*io.gatling.javaapi.core.Body$WithBytes*/;
-  ByteArrayBody(arg0: Func<io.gatling.javaapi.core.Session, bytearray>): any /*io.gatling.javaapi.core.Body$WithBytes*/;
-  RawFileBody(arg0: string): any /*io.gatling.javaapi.core.Body$WithBytes*/;
-  RawFileBody(arg0: Func<io.gatling.javaapi.core.Session, string>): any /*io.gatling.javaapi.core.Body$WithBytes*/;
-  ElFileBody(arg0: string): any /*io.gatling.javaapi.core.Body$WithString*/;
-  ElFileBody(arg0: Func<io.gatling.javaapi.core.Session, string>): any /*io.gatling.javaapi.core.Body$WithString*/;
-  PebbleFileBody(arg0: string): any /*io.gatling.javaapi.core.Body$WithString*/;
-  PebbleFileBody(arg0: Func<io.gatling.javaapi.core.Session, string>): any /*io.gatling.javaapi.core.Body$WithString*/;
-  PebbleStringBody(arg0: string): any /*io.gatling.javaapi.core.Body$WithString*/;
-  StringBody(arg0: string): any /*io.gatling.javaapi.core.Body$WithString*/;
-  StringBody(arg0: Func<io.gatling.javaapi.core.Session, string>): any /*io.gatling.javaapi.core.Body$WithString*/;
+  ByteArrayBody(arg0: bytearray): io.gatling.javaapi.core.Body$WithBytes;
+  ByteArrayBody(arg0: string): io.gatling.javaapi.core.Body$WithBytes;
+  ByteArrayBody(arg0: Func<io.gatling.javaapi.core.Session, bytearray>): io.gatling.javaapi.core.Body$WithBytes;
+  RawFileBody(arg0: string): io.gatling.javaapi.core.Body$WithBytes;
+  RawFileBody(arg0: Func<io.gatling.javaapi.core.Session, string>): io.gatling.javaapi.core.Body$WithBytes;
+  ElFileBody(arg0: string): io.gatling.javaapi.core.Body$WithString;
+  ElFileBody(arg0: Func<io.gatling.javaapi.core.Session, string>): io.gatling.javaapi.core.Body$WithString;
+  PebbleFileBody(arg0: string): io.gatling.javaapi.core.Body$WithString;
+  PebbleFileBody(arg0: Func<io.gatling.javaapi.core.Session, string>): io.gatling.javaapi.core.Body$WithString;
+  PebbleStringBody(arg0: string): io.gatling.javaapi.core.Body$WithString;
+  StringBody(arg0: string): io.gatling.javaapi.core.Body$WithString;
+  StringBody(arg0: Func<io.gatling.javaapi.core.Session, string>): io.gatling.javaapi.core.Body$WithString;
   exec(
     arg0: io.gatling.javaapi.core.exec.Executable,
     ...arg1: io.gatling.javaapi.core.exec.Executable[]

@@ -30,6 +30,8 @@
         @Type(value = io.gatling.javaapi.core.Assertion.WithPathAndCountMetric.class, export = true),
         @Type(value = io.gatling.javaapi.core.Assertion.WithPathAndTarget.class, export = true),
         @Type(value = io.gatling.javaapi.core.Body.class, export = true),
+        @Type(value = io.gatling.javaapi.core.Body.WithBytes.class, export = true),
+        @Type(value = io.gatling.javaapi.core.Body.WithString.class, export = true),
         @Type(value = io.gatling.javaapi.core.ChainBuilder.class, export = true),
         @Type(value = io.gatling.javaapi.core.CheckBuilder.class, export = true),
         @Type(value = io.gatling.javaapi.core.CheckBuilder.CaptureGroupCheckBuilder.class, export = true),
