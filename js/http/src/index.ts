@@ -6,6 +6,7 @@ import { HttpProtocolBuilder, wrapHttpProtocolBuilder } from "./protocol";
 import { HttpRequestActionBuilder, Request, wrapHttpRequestActionBuilder, wrapRequest } from "./request";
 import { Response, wrapResponse } from "./response";
 
+export * from "./bodyPart";
 export * from "./checks";
 export * from "./cookies";
 export * from "./headers";

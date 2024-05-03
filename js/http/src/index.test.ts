@@ -1,4 +1,6 @@
 import {
+  AllowList,
+  DenyList,
   RawFileBody,
   Session,
   Simulation,
@@ -19,21 +21,28 @@ import {
   scenario,
   sha1,
   substring,
-  xpath,
-  AllowList,
-  DenyList
+  xpath
 } from "@gatling.io/core";
 
-import { Proxy, http, currentLocation, currentLocationRegex, header, headerRegex, status, poll } from "./index";
 import {
   Cookie,
   CookieKey,
+  ElFileBodyPart,
+  Proxy,
+  RawFileBodyPart,
   addCookie,
+  currentLocation,
+  currentLocationRegex,
   flushCookieJar,
   flushHttpCache,
   flushSessionCookies,
-  getCookieValue
-} from "./cookies";
+  getCookieValue,
+  header,
+  headerRegex,
+  http,
+  poll,
+  status
+} from "./index";
 
 const runSimulationMock = (_: Simulation): void => {};
 
@@ -336,12 +345,12 @@ const scn = scenario("scenario")
         (_: Session) => "name",
         (_: Session) => "filePath"
       )
-      //.bodyPart(RawFileBodyPart("name", "path"))
-      //.bodyPart(ElFileBodyPart("name", "path"))
-      //.bodyPart(ElFileBodyPart("name", "path").contentType("foo"))
+      .bodyPart(RawFileBodyPart("name", "path"))
+      .bodyPart(ElFileBodyPart("name", "path"))
+      .bodyPart(ElFileBodyPart("name", "path").contentType("foo"))
       //.bodyPart(PebbleFileBodyPart("name", "path"))
       //.bodyPart(PebbleStringBodyPart("name", "somePebbleString"))
-      //.bodyParts(RawFileBodyPart("name1", "path1"), RawFileBodyPart("name2", "path2"))
+      .bodyParts(RawFileBodyPart("name1", "path1"), RawFileBodyPart("name2", "path2"))
       .requestTimeout(1)
       .requestTimeout({ amount: 1, unit: "seconds" })
   )

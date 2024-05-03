@@ -10,12 +10,11 @@ import {
   toJvmDuration,
   underlyingSessionTo,
   wrapCallback,
-  wrapCheckBuilder,
   wrapCondition
 } from "@gatling.io/core";
 
-import { Proxy, underlyingResponseTransform } from "../index";
-import { Response } from "../response";
+import { BodyPart } from "../bodyPart";
+import { Proxy } from "../proxy";
 
 import JvmHttpRequestActionBuilder = io.gatling.javaapi.http.HttpRequestActionBuilder;
 
@@ -52,7 +51,7 @@ export interface RequestWithParamsActionBuilder<T> {
   digestAuth(username: (session: Session) => string, password: (session: Session) => string): T;
   disableUrlEncoding(): T;
   proxy(proxy: Proxy): T;
-  // sign
+  // TODO sign
   signWithOAuth1(consumerKey: string, clientSharedSecret: string, token: string, tokenSecret: string): T;
   signWithOAuth1(
     consumerKey: (session: Session) => string,
@@ -188,9 +187,9 @@ const requestWithParamsActionBuilderImpl = <T>(
 
 export interface RequestWithBodyActionBuilder<T> {
   body(body: Body): T;
-  // processRequestBody
-  // bodyPart
-  // bodyParts
+  // TODO processRequestBody
+  bodyPart(part: BodyPart): T;
+  bodyParts(...parts: BodyPart[]): T;
   asMultipartForm(): T;
   asFormUrlEncoded(): T;
   formParam(name: string, value: string): T;
@@ -222,6 +221,8 @@ const requestWithBodyActionBuilderImpl = <T>(
   wrap: (_underlying: JvmHttpRequestActionBuilder) => T
 ): RequestWithBodyActionBuilder<T> => ({
   body: (body: Body): T => wrap(jvmBuilder.body(body._underlying)),
+  bodyPart: (part: BodyPart): T => wrap(jvmBuilder.bodyPart(part._underlying)),
+  bodyParts: (...parts: BodyPart[]): T => wrap(jvmBuilder.bodyParts(parts.map((part) => part._underlying))),
   asMultipartForm: (): T => wrap(jvmBuilder.asMultipartForm()),
   asFormUrlEncoded: (): T => wrap(jvmBuilder.asFormUrlEncoded()),
   formParam: (name: Expression<string>, value: string | Expression<any>): T => {
@@ -303,12 +304,12 @@ export interface RequestActionBuilder<T> {
   check(...checks: CheckBuilder[]): T;
   checkIf(condition: string): Condition<T>;
   checkIf(condition: (session: Session) => boolean): Condition<T>;
-  // checkIf response
+  // TODO checkIf response
   ignoreProtocolChecks(): T;
   silent(): T;
   notSilent(): T;
   disableFollowRedirect(): T;
-  //transformResponse(f: (response: Response, session: Session) => Response): T;
+  // TODO transformResponse(f: (response: Response, session: Session) => Response): T;
   resources(...res: HttpRequestActionBuilder[]): T;
   requestTimeout(timeout: Duration): T;
 }
@@ -329,7 +330,7 @@ const requestActionBuilderImpl = <T>(
   silent: (): T => wrap(jvmBuilder.silent()),
   notSilent: (): T => wrap(jvmBuilder.notSilent()),
   disableFollowRedirect: (): T => wrap(jvmBuilder.disableFollowRedirect()),
-  //transformResponse: (f: (response: Response, session: Session) => Response): T =>
+  // TODO transformResponse: (f: (response: Response, session: Session) => Response): T =>
   //  wrap(jvmBuilder.transformResponse(wrapBiCallback(underlyingResponseTransform(f))))
   resources: (...res: HttpRequestActionBuilder[]): T =>
     wrap(jvmBuilder.resources(res.map((r) => r._underlying as JvmHttpRequestActionBuilder))),
