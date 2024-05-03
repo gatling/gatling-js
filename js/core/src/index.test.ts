@@ -36,7 +36,8 @@ import {
   separatedValues,
   ssv,
   stressPeakUsers,
-  tsv
+  tsv,
+  ProtocolBuilder
 } from "./index";
 
 const runSimulationMock = (_: Simulation): void => {};
@@ -475,8 +476,25 @@ const injectClosed = scn.injectClosed(
     .separatedByRampsLasting({ amount: 1, unit: "seconds" })
 );
 
+const protocol: ProtocolBuilder = null;
+
 runSimulationMock((setUp) => {
-  setUp(injectOpen, injectClosed.andThen(scn.injectOpen(atOnceUsers(1))))
+  setUp(
+    injectOpen,
+    injectClosed
+      .protocols(protocol)
+      .andThen(scn.injectOpen(atOnceUsers(1)))
+      .throttle(reachRps(100).in(1))
+      .disablePauses()
+      .constantPauses()
+      .exponentialPauses()
+      .customPauses((session) => 1)
+      .uniformPauses(1)
+      .uniformPauses({ amount: 1, unit: "seconds" })
+      .pauses("Constant")
+      .noShard()
+  )
+    .protocols(protocol)
     .assertions(
       global().allRequests().count().is(5),
       global().allRequests().percent().is(5.5),
@@ -499,5 +517,6 @@ runSimulationMock((setUp) => {
     .uniformPauses(1)
     .uniformPauses({ amount: 1, unit: "seconds" })
     .normalPausesWithStdDevDuration({ amount: 50, unit: "milliseconds" })
-    .normalPausesWithPercentageDuration(30);
+    .normalPausesWithPercentageDuration(30)
+    .pauses("Constant");
 });
