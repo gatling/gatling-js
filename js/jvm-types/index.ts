@@ -1906,6 +1906,13 @@ interface PausesStatic {
 
 export const Pauses: PausesStatic = Java.type("io.gatling.javaapi.core.pause.Pauses");
 
+interface Polling$EveryStatic {
+  readonly class: any;
+  new (arg0: any /*io.gatling.http.request.builder.polling.PollingEveryStep*/): io.gatling.javaapi.http.Polling$Every;
+}
+
+export const Polling$Every: Polling$EveryStatic = Java.type("io.gatling.javaapi.http.Polling$Every");
+
 interface PollingStatic {
   readonly class: any;
 }

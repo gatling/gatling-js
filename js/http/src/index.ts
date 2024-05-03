@@ -10,6 +10,7 @@ export * from "./checks";
 export * from "./cookies";
 export * from "./headers";
 export * from "./method";
+export * from "./polling";
 export * from "./protocol";
 export * from "./proxy";
 export * from "./request";

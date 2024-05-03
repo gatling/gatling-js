@@ -24,8 +24,7 @@ import {
   DenyList
 } from "@gatling.io/core";
 
-import { Proxy, http } from "./index";
-import { currentLocation, currentLocationRegex, header, headerRegex, status } from "./index";
+import { Proxy, http, currentLocation, currentLocationRegex, header, headerRegex, status, poll } from "./index";
 import {
   Cookie,
   CookieKey,
@@ -390,10 +389,10 @@ const scn = scenario("scenario")
   .exec(http("Request").head("/").proxy(Proxy("172.31.76.106", 8080).socks4()))
   .exec(http("Request").head("/").proxy(Proxy("172.31.76.106", 8080).socks5()))
   // polling
-  //.exec(poll().every(10).exec(http("poll").get("/foo")))
-  //.exec(poll().pollerName("poll").every(10).exec(http("poll").get("/foo")))
-  //.exec(poll().pollerName("poll").stop())
-  //.exec(poll().stop())
+  .exec(poll().every(10).exec(http("poll").get("/foo")))
+  .exec(poll().pollerName("poll").every(10).exec(http("poll").get("/foo")))
+  .exec(poll().pollerName("poll").stop())
+  .exec(poll().stop())
   // addCookie
   .exec(addCookie(Cookie("foo", "bar").withDomain("foo.com")))
   // getCookieValue

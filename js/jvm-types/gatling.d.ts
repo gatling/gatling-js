@@ -3245,10 +3245,17 @@ declare namespace io.gatling.javaapi.http {
   } // end HttpRequestActionBuilder
 } // end namespace io.gatling.javaapi.http
 declare namespace io.gatling.javaapi.http {
+  class Polling$Every /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    exec(arg0: HttpRequestActionBuilder): io.gatling.javaapi.core.ActionBuilder;
+    toString(): string;
+  } // end Polling$Every
+} // end namespace io.gatling.javaapi.http
+declare namespace io.gatling.javaapi.http {
   class Polling /* extends java.lang.Object*/ {
     equals(arg0: any /*java.lang.Object*/): boolean;
-    every(arg0: java.time.Duration): any /*io.gatling.javaapi.http.Polling$Every*/;
-    every(arg0: long): any /*io.gatling.javaapi.http.Polling$Every*/;
+    every(arg0: java.time.Duration): Polling$Every;
+    every(arg0: long): Polling$Every;
     pollerName(arg0: string): Polling;
     stop(): io.gatling.javaapi.core.ActionBuilder;
     toString(): string;

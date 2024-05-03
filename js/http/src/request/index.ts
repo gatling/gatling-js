@@ -342,6 +342,7 @@ export interface HttpRequestActionBuilder
     RequestActionBuilder<HttpRequestActionBuilder>,
     ActionBuilder {
   // Assembling all original subtypes
+  _underlying: JvmHttpRequestActionBuilder;
 }
 
 export const wrapHttpRequestActionBuilder = (_underlying: JvmHttpRequestActionBuilder): HttpRequestActionBuilder => ({

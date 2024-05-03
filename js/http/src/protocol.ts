@@ -12,7 +12,7 @@ import {
   wrapCheckBuilder,
   wrapCondition,
   AllowListFilter,
-  DenyListFilter,
+  DenyListFilter
 } from "@gatling.io/core";
 
 import { underlyingRequestTransform, underlyingResponseTransform } from "./index";

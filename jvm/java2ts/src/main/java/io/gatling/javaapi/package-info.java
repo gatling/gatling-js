@@ -159,6 +159,7 @@
         @Type(value = io.gatling.javaapi.http.HttpProtocolBuilder.UntypedCondition.class, export = true),
         @Type(value = io.gatling.javaapi.http.HttpRequestActionBuilder.class, export = true),
         @Type(value = io.gatling.javaapi.http.Polling.class, export = true),
+        @Type(value = io.gatling.javaapi.http.Polling.Every.class, export = true),
         @Type(value = io.gatling.javaapi.http.Proxy.class, export = true),
         @Type(value = io.gatling.javaapi.http.Sse.class, export = true),
         @Type(value = io.gatling.javaapi.http.SseAwaitActionBuilder.class, export = true),
