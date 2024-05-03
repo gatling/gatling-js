@@ -80,6 +80,7 @@
         @Type(value = io.gatling.javaapi.core.Simulation.SetUp.class, export = true),
         @Type(value = io.gatling.javaapi.core.StructureBuilder.class, export = true),
         @Type(value = io.gatling.javaapi.core.ThrottleStep.class, export = true),
+        @Type(value = io.gatling.javaapi.core.ThrottleStep.ReachIntermediate.class, export = true),
         // core.condition
         @Type(value = io.gatling.javaapi.core.condition.DoIf.class, export = true),
         @Type(value = io.gatling.javaapi.core.condition.DoIf.Then.class, export = true),

@@ -28,7 +28,10 @@ import {
   incrementConcurrentUsers,
   global,
   forAll,
-  details
+  details,
+  reachRps,
+  holdFor,
+  jumpToRps
 } from "./index";
 
 const runSimulationMock = (_: Simulation): void => {};
@@ -469,27 +472,28 @@ const injectClosed = scn.injectClosed(
 );
 
 runSimulationMock((setUp) => {
-  setUp(injectOpen, injectClosed.andThen(scn.injectOpen(atOnceUsers(1)))).assertions(
-    global().allRequests().count().is(5),
-    global().allRequests().percent().is(5.5),
-    forAll().allRequests().count().is(5),
-    details("group", "request").allRequests().count().is(5)
-  );
-  //.maxDuration(1)
-  //.maxDuration(Duration.ofSeconds(1))
-  //.throttle(
-  //  reachRps(100).in(1),
-  //  reachRps(100).in(Duration.ofSeconds(1)),
-  //  jumpToRps(100),
-  //  holdFor(1),
-  //  holdFor(Duration.ofSeconds(1))
-  //)
-  //.disablePauses()
-  //.constantPauses()
-  //.exponentialPauses()
-  //.customPauses(session -> 1L)
-  //.uniformPauses(1)
-  //.uniformPauses(Duration.ofSeconds(1))
-  //.normalPausesWithStdDevDuration(Duration.ofMillis(50))
-  //.normalPausesWithPercentageDuration(30)
+  setUp(injectOpen, injectClosed.andThen(scn.injectOpen(atOnceUsers(1))))
+    .assertions(
+      global().allRequests().count().is(5),
+      global().allRequests().percent().is(5.5),
+      forAll().allRequests().count().is(5),
+      details("group", "request").allRequests().count().is(5)
+    )
+    .maxDuration(1)
+    .maxDuration({ amount: 1, unit: "seconds" })
+    .throttle(
+      reachRps(100).in(1),
+      reachRps(100).in({ amount: 1, unit: "seconds" }),
+      jumpToRps(100),
+      holdFor(1),
+      holdFor({ amount: 1, unit: "seconds" })
+    )
+    .disablePauses()
+    .constantPauses()
+    .exponentialPauses()
+    .customPauses((session) => 1)
+    .uniformPauses(1)
+    .uniformPauses({ amount: 1, unit: "seconds" })
+    .normalPausesWithStdDevDuration({ amount: 50, unit: "milliseconds" })
+    .normalPausesWithPercentageDuration(30);
 });

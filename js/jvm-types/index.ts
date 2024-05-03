@@ -694,7 +694,7 @@ interface CoreDslStatic {
   holdFor(arg0: java.time.Duration): io.gatling.javaapi.core.ThrottleStep;
   holdFor(arg0: long): io.gatling.javaapi.core.ThrottleStep;
   jumpToRps(arg0: int): io.gatling.javaapi.core.ThrottleStep;
-  reachRps(arg0: int): any /*io.gatling.javaapi.core.ThrottleStep$ReachIntermediate*/;
+  reachRps(arg0: int): io.gatling.javaapi.core.ThrottleStep$ReachIntermediate;
   doIf(arg0: string): io.gatling.javaapi.core.condition.DoIf$Then<io.gatling.javaapi.core.ChainBuilder>;
   doIf(
     arg0: Func<io.gatling.javaapi.core.Session, boolean | null>
@@ -2201,6 +2201,14 @@ interface TemporalUnitStatic {
 }
 
 export const TemporalUnit: TemporalUnitStatic = Java.type("java.time.temporal.TemporalUnit");
+
+interface ThrottleStep$ReachIntermediateStatic {
+  readonly class: any;
+}
+
+export const ThrottleStep$ReachIntermediate: ThrottleStep$ReachIntermediateStatic = Java.type(
+  "io.gatling.javaapi.core.ThrottleStep$ReachIntermediate"
+);
 
 interface ThrottleStepStatic {
   readonly class: any;

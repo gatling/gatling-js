@@ -19,6 +19,29 @@ export type PauseType =
 const isPauseType = (x: unknown): x is PauseType =>
   x === "Disabled" || x === "Constant" || x === "Exponential" || typeof (x as any).type === "string";
 
+export const toJvmPauseType = (pauseType: PauseType): JvmPauseType => {
+  if (pauseType === "Disabled") {
+    // FIXME find better solution for generating static field definitions in java2typescript (without conflicting
+    //  with methods of the same name, e.g. 'JvmHttpDsl.http' vs. 'JvmHttpDsl.http(String)')
+    return (JvmCoreDsl as any).disabledPauses;
+  } else if (pauseType === "Constant") {
+    return (JvmCoreDsl as any).constantPauses;
+  } else if (pauseType === "Exponential") {
+    return (JvmCoreDsl as any).exponentialPauses;
+  } else if (pauseType.type === "NormalWithPercentageDuration") {
+    return JvmCoreDsl.normalPausesWithPercentageDuration(pauseType.stdDev);
+  } else if (pauseType.type === "NormalWithStdDevDuration") {
+    return JvmCoreDsl.normalPausesWithStdDevDuration(toJvmDuration(pauseType.stdDev));
+  } else if (pauseType.type === "Custom") {
+    return JvmCoreDsl.customPauses(wrapCallback(underlyingSessionTo(pauseType.f)));
+  } else if (pauseType.type === "UniformPercentage") {
+    return JvmCoreDsl.uniformPausesPlusOrMinusPercentage(pauseType.plusOrMinus);
+  } else if (pauseType.type === "UniformDuration") {
+    return JvmCoreDsl.uniformPausesPlusOrMinusDuration(toJvmDuration(pauseType.plusOrMinus));
+  }
+  throw Error(`Unhandled pause type ${pauseType}`);
+};
+
 export interface PauseFunction<T extends Pauses<T>> {
   /**
    * Attach a pause
@@ -143,29 +166,6 @@ export const pauseImpl =
     arg1?: Duration | SessionTo<Duration> | string | PauseType,
     arg2?: PauseType
   ) => {
-    const toJvmPauseType = (pauseType: PauseType): JvmPauseType => {
-      if (pauseType === "Disabled") {
-        // FIXME find better solution for generating static field definitions in java2typescript (without conflicting
-        //  with methods of the same name, e.g. 'JvmHttpDsl.http' vs. 'JvmHttpDsl.http(String)')
-        return (JvmCoreDsl as any).disabledPauses;
-      } else if (pauseType === "Constant") {
-        return (JvmCoreDsl as any).constantPauses;
-      } else if (pauseType === "Exponential") {
-        return (JvmCoreDsl as any).exponentialPauses;
-      } else if (pauseType.type === "NormalWithPercentageDuration") {
-        return JvmCoreDsl.normalPausesWithPercentageDuration(pauseType.stdDev);
-      } else if (pauseType.type === "NormalWithStdDevDuration") {
-        return JvmCoreDsl.normalPausesWithStdDevDuration(toJvmDuration(pauseType.stdDev));
-      } else if (pauseType.type === "Custom") {
-        return JvmCoreDsl.customPauses(wrapCallback(underlyingSessionTo(pauseType.f)));
-      } else if (pauseType.type === "UniformPercentage") {
-        return JvmCoreDsl.uniformPausesPlusOrMinusPercentage(pauseType.plusOrMinus);
-      } else if (pauseType.type === "UniformDuration") {
-        return JvmCoreDsl.uniformPausesPlusOrMinusDuration(toJvmDuration(pauseType.plusOrMinus));
-      }
-      throw Error(`Unhandled pause type ${pauseType}`);
-    };
-
     if (arg2 !== undefined) {
       // pause(min, max, pauseType)
       if (typeof arg0 === "string" && typeof arg1 === "string") {

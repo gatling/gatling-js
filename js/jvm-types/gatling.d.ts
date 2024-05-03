@@ -1777,6 +1777,16 @@ declare namespace io.gatling.javaapi.core {
   } // end StructureBuilder
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
+  class ThrottleStep$ReachIntermediate /* extends java.lang.Object*/ {
+    during(arg0: java.time.Duration): ThrottleStep;
+    during(arg0: long): ThrottleStep;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    in(arg0: java.time.Duration): ThrottleStep;
+    in(arg0: long): ThrottleStep;
+    toString(): string;
+  } // end ThrottleStep$ReachIntermediate
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
   class ThrottleStep /* extends java.lang.Object*/ {
     asScala(): any /*io.gatling.core.controller.throttle.ThrottleStep*/;
     equals(arg0: any /*java.lang.Object*/): boolean;
