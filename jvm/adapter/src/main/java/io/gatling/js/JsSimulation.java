@@ -22,11 +22,11 @@ public class JsSimulation extends Simulation {
 
   public JsSimulation() {
     var entryPointName =
-        Optional.ofNullable(System.getProperty("gatling.js.entryPointName"))
+        Optional.ofNullable(System.getProperty("gatling.js.entrypointName"))
             .orElseThrow(
                 () ->
                     new NoSuchElementException(
-                        "System property gatling.js.entryPointName must be defined"));
+                        "System property gatling.js.entrypointName must be defined"));
     var bundleUrl =
         Optional.ofNullable(System.getProperty("gatling.js.bundle.filePath"))
             .map(this::filePathToUrl)

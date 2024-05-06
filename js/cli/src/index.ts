@@ -13,69 +13,69 @@ const program = new Command()
   .version("0.0.1")
   .description("The Gatling Javascript run & packaging tool");
 
-const gatlingHomeDir = new Option(
-  "--gatlingHomeDir <value>",
-  'The temporary directory used to download and install Gatling components (default: "~/.gatling")'
+const gatlingHomeOption = new Option(
+  "--gatling-home <value>",
+  'The folder used to download and install Gatling components (default: "~/.gatling")'
 );
 
-const gatlingHomeDirWithDefaults = (options: { gatlingHomeDir?: string }): string =>
-  options.gatlingHomeDir || `${os.homedir()}/.gatling`;
+const gatlingHomeDirWithDefaults = (options: { gatlingHome?: string }): string =>
+  options.gatlingHome || `${os.homedir()}/.gatling`;
 
-const entryPointFileOption = new Option(
-  "--entryPointFile <value>",
+const entrypointFileOption = new Option(
+  "--entrypoint-file <value>",
   'The simulation entry point source file path (default: "src/index.js", or "src/index.ts" when using the "--typescript" option)'
 );
 
-const entryPointNameOption = new Option("--entryPointName <value>", "The simulation entry point function name").default(
+const entrypointNameOption = new Option("--entrypoint-name <value>", "The simulation entry point function name").default(
   "default",
   '"default", compatible with using "export default"'
 );
 
-const entryPointFileWithDefaults = (options: { entryPointFile?: string; typescript: boolean }): string =>
-  options.entryPointFile || (options.typescript ? "src/index.ts" : "src/index.js");
+const entrypointFileWithDefaults = (options: { entrypointFile?: string; typescript: boolean }): string =>
+  options.entrypointFile || (options.typescript ? "src/index.ts" : "src/index.js");
 
-const bundleFileOption = new Option("--bundleFile <value>", "The simulation target bundle file path").default(
+const bundleFileOption = new Option("--bundle-file <value>", "The simulation target bundle file path").default(
   "target/bundle.js"
 );
 
-const resourcesDirOption = new Option("--resourcesDir <value>", "The resources directory path").default("resources");
+const resourcesFolderOption = new Option("--resources-folder <value>", "The resources folder path").default("resources");
 
-const resultsDirOption = new Option("--resultsDir <value>", "The results directory path").default("results");
+const resultsFolderOption = new Option("--results-folder <value>", "The results folder path").default("results");
 
 const typescriptOption = new Option("--typescript", "Use the typescript compiler to compile your code").default(false);
 
-const graalvmHomeMandatoryOption = new Option("--graalvmHome <value>", "Path to the GraalVM home").makeOptionMandatory(
+const graalvmHomeMandatoryOption = new Option("--graalvm-home <value>", "Path to the GraalVM home").makeOptionMandatory(
   true
 );
 
 const jvmClasspathMandatoryOption = new Option(
-  "--jvmClasspath <value>",
+  "--jvm-classpath <value>",
   "The classpath containing all Gatling JVM components"
 ).makeOptionMandatory(true);
 
 program
   .command("install")
   .description("Install all required components and dependencies for Gatling")
-  .addOption(gatlingHomeDir)
+  .addOption(gatlingHomeOption)
   .action(async (options) => {
-    const gatlingHomeDir: string = gatlingHomeDirWithDefaults(options);
-    const { graalvmHomePath, coursierPath, jvmClasspath } = await installAll({ gatlingHomeDir });
-    logger.info(`graalvmHomePath=${graalvmHomePath}`);
-    logger.info(`coursierPath=${coursierPath}`);
+    const gatlingHome: string = gatlingHomeDirWithDefaults(options);
+    const { graalvmHome, coursierBinary, jvmClasspath } = await installAll({ gatlingHome });
+    logger.info(`graalvmHome=${graalvmHome}`);
+    logger.info(`coursierBinary=${coursierBinary}`);
     logger.info(`jvmClasspath=${jvmClasspath}`);
   });
 
 program
   .command("build")
   .description("Build a Gatling simulation")
-  .addOption(entryPointFileOption)
+  .addOption(entrypointFileOption)
   .addOption(bundleFileOption)
   .addOption(typescriptOption)
   .action(async (options) => {
-    const entryPointFile: string = entryPointFileWithDefaults(options);
-    const bundleFilePath: string = options.bundleFile;
+    const entrypointFile: string = entrypointFileWithDefaults(options);
+    const bundleFile: string = options.bundleFile;
     const typescript: boolean = options.typescript;
-    await bundle({ entryPointFile, bundleFilePath, typescript });
+    await bundle({ entrypointFile, bundleFile, typescript });
   });
 
 program
@@ -83,18 +83,18 @@ program
   .description("Run a Gatling simulation")
   .addOption(graalvmHomeMandatoryOption)
   .addOption(jvmClasspathMandatoryOption)
-  .addOption(entryPointNameOption)
+  .addOption(entrypointNameOption)
   .addOption(bundleFileOption)
-  .addOption(resourcesDirOption)
-  .addOption(resultsDirOption)
+  .addOption(resourcesFolderOption)
+  .addOption(resultsFolderOption)
   .action(async (options) => {
-    const graalvmHomePath: string = options.graalvmHome;
+    const graalvmHome: string = options.graalvmHome;
     const jvmClasspath: string = options.jvmClasspath;
-    const entryPointName: string = options.entryPointName;
-    const bundleFilePath: string = options.bundleFile;
-    const resourcesDirPath: string = options.resourcesDir;
-    const resultsDirPath: string = options.resultsDir;
-    await run({ graalvmHomePath, jvmClasspath, entryPointName, bundleFilePath, resourcesDirPath, resultsDirPath });
+    const entrypointName: string = options.entrypointName;
+    const bundleFile: string = options.bundleFile;
+    const resourcesFolder: string = options.resourcesFolder;
+    const resultsFolder: string = options.resultsFolder;
+    await run({ graalvmHome, jvmClasspath, entrypointName, bundleFile, resourcesFolder, resultsFolder });
   });
 
 program
@@ -102,30 +102,30 @@ program
   .description(
     "Build and run a Gatling simulation, after installing all required components and dependencies for Gatling"
   )
-  .addOption(entryPointFileOption)
-  .addOption(entryPointNameOption)
+  .addOption(entrypointFileOption)
+  .addOption(entrypointNameOption)
   .addOption(typescriptOption)
   .addOption(bundleFileOption)
-  .addOption(resourcesDirOption)
-  .addOption(resultsDirOption)
-  .addOption(gatlingHomeDir)
+  .addOption(resourcesFolderOption)
+  .addOption(resultsFolderOption)
+  .addOption(gatlingHomeOption)
   .action(async (options) => {
-    const gatlingHomeDir: string = gatlingHomeDirWithDefaults(options);
-    const entryPointFile: string = entryPointFileWithDefaults(options);
-    const entryPointName: string = options.entryPointName;
-    const bundleFilePath: string = options.bundleFile;
-    const resourcesDirPath: string = options.resourcesDir;
-    const resultsDirPath: string = options.resultsDir;
+    const gatlingHome: string = gatlingHomeDirWithDefaults(options);
+    const entrypointFile: string = entrypointFileWithDefaults(options);
+    const entrypointName: string = options.entrypointName;
+    const bundleFile: string = options.bundleFile;
+    const resourcesFolder: string = options.resourcesFolder;
+    const resultsFolder: string = options.resultsFolder;
     const typescript: boolean = options.typescript;
 
-    const { graalvmHomePath, coursierPath, jvmClasspath } = await installAll({ gatlingHomeDir });
-    logger.debug(`graalvmHomePath=${graalvmHomePath}`);
-    logger.debug(`coursierPath=${coursierPath}`);
+    const { graalvmHome, coursierBinary, jvmClasspath } = await installAll({ gatlingHome });
+    logger.debug(`graalvmHome=${graalvmHome}`);
+    logger.debug(`coursierBinary=${coursierBinary}`);
     logger.debug(`jvmClasspath=${jvmClasspath}`);
 
-    await bundle({ entryPointFile, bundleFilePath, typescript });
+    await bundle({ entrypointFile, bundleFile, typescript });
 
-    await run({ graalvmHomePath, jvmClasspath, entryPointName, bundleFilePath, resourcesDirPath, resultsDirPath });
+    await run({ graalvmHome, jvmClasspath, entrypointName, bundleFile, resourcesFolder, resultsFolder });
   });
 
 program.parse(process.argv);

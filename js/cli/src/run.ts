@@ -4,23 +4,23 @@ import * as path from "path";
 import { logger } from "./log";
 
 export interface RunOptions {
-  graalvmHomePath: string;
+  graalvmHome: string;
   jvmClasspath: string;
-  entryPointName: string;
-  bundleFilePath: string;
-  resourcesDirPath: string;
-  resultsDirPath: string;
+  entrypointName: string;
+  bundleFile: string;
+  resourcesFolder: string;
+  resultsFolder: string;
 }
 
 export const run = async (options: RunOptions): Promise<void> => {
   logger.info(`Running a Gatling simulation with options:
- - entryPointName: ${options.entryPointName}
- - bundleFilePath: ${options.bundleFilePath}`);
+ - entrypointName: ${options.entrypointName}
+ - bundleFile: ${options.bundleFile}`);
 
-  const bundleDir = path.parse(options.bundleFilePath).dir;
-  const bundleFileName = path.parse(options.bundleFilePath).base;
+  const bundleFolder = path.parse(options.bundleFile).dir;
+  const bundleFileName = path.parse(options.bundleFile).base;
 
-  const command = `${options.graalvmHomePath}/bin/java`;
+  const command = `${options.graalvmHome}/bin/java`;
   const args = [
     "-server",
     "-XX:+HeapDumpOnOutOfMemoryError",
@@ -28,12 +28,12 @@ export const run = async (options: RunOptions): Promise<void> => {
     "-XX:MaxTrivialSize=12",
     "-Xmx1G",
     "-classpath",
-    `${bundleDir}:${options.resourcesDirPath}:${options.jvmClasspath}`,
+    `${bundleFolder}:${options.resourcesFolder}:${options.jvmClasspath}`,
     `-Dgatling.js.bundle.resourcePath=${bundleFileName}`,
-    `-Dgatling.js.entryPointName=${options.entryPointName}`,
+    `-Dgatling.js.entrypointName=${options.entrypointName}`,
     "io.gatling.app.Gatling",
     "--results-folder",
-    options.resultsDirPath,
+    options.resultsFolder,
     "--simulation",
     "io.gatling.js.JsSimulation"
   ];

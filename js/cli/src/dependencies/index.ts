@@ -11,28 +11,28 @@ import { versions } from "./versions";
 
 export const execAsync = promisify(exec);
 export interface DependenciesOptions {
-  gatlingHomeDir: string;
+  gatlingHome: string;
 }
 
 export interface ResolvedDependencies {
-  graalvmHomePath: string;
-  coursierPath: string;
+  graalvmHome: string;
+  coursierBinary: string;
   jvmClasspath: string;
 }
 
 export const installAll = async (options: DependenciesOptions): Promise<ResolvedDependencies> => {
-  const downloadDir = `${options.gatlingHomeDir}/tmp/download`;
+  const downloadDir = `${options.gatlingHome}/tmp/download`;
   await fs.mkdir(downloadDir, { recursive: true });
 
-  const graalvmHomePath = await installGraalVm(options.gatlingHomeDir, downloadDir);
+  const graalvmHomePath = await installGraalVm(options.gatlingHome, downloadDir);
 
-  const coursierPath = await installCoursier(options.gatlingHomeDir, downloadDir);
+  const coursierPath = await installCoursier(options.gatlingHome, downloadDir);
 
   const classpath = await resolveDependencies(coursierPath, graalvmHomePath);
 
   return {
-    graalvmHomePath,
-    coursierPath,
+    graalvmHome: graalvmHomePath,
+    coursierBinary: coursierPath,
     jvmClasspath: classpath.trim()
   };
 };
