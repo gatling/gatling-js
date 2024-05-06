@@ -40,6 +40,8 @@ const bundleFileOption = new Option("--bundleFile <value>", "The simulation targ
 
 const resourcesDirOption = new Option("--resourcesDir <value>", "The resources directory path").default("resources");
 
+const resultsDirOption = new Option("--resultsDir <value>", "The results directory path").default("results");
+
 const typescriptOption = new Option("--typescript", "Use the typescript compiler to compile your code").default(false);
 
 const graalvmHomeMandatoryOption = new Option("--graalvmHome <value>", "Path to the GraalVM home").makeOptionMandatory(
@@ -84,13 +86,15 @@ program
   .addOption(entryPointNameOption)
   .addOption(bundleFileOption)
   .addOption(resourcesDirOption)
+  .addOption(resultsDirOption)
   .action(async (options) => {
     const graalvmHomePath: string = options.graalvmHome;
     const jvmClasspath: string = options.jvmClasspath;
     const entryPointName: string = options.entryPointName;
     const bundleFilePath: string = options.bundleFile;
     const resourcesDirPath: string = options.resourcesDir;
-    await run({ graalvmHomePath, jvmClasspath, entryPointName, bundleFilePath, resourcesDirPath });
+    const resultsDirPath: string = options.resultsDir;
+    await run({ graalvmHomePath, jvmClasspath, entryPointName, bundleFilePath, resourcesDirPath, resultsDirPath });
   });
 
 program
@@ -103,6 +107,7 @@ program
   .addOption(typescriptOption)
   .addOption(bundleFileOption)
   .addOption(resourcesDirOption)
+  .addOption(resultsDirOption)
   .addOption(gatlingHomeDir)
   .action(async (options) => {
     const gatlingHomeDir: string = gatlingHomeDirWithDefaults(options);
@@ -110,6 +115,7 @@ program
     const entryPointName: string = options.entryPointName;
     const bundleFilePath: string = options.bundleFile;
     const resourcesDirPath: string = options.resourcesDir;
+    const resultsDirPath: string = options.resultsDir;
     const typescript: boolean = options.typescript;
 
     const { graalvmHomePath, coursierPath, jvmClasspath } = await installAll({ gatlingHomeDir });
@@ -119,7 +125,7 @@ program
 
     await bundle({ entryPointFile, bundleFilePath, typescript });
 
-    await run({ graalvmHomePath, jvmClasspath, entryPointName, bundleFilePath, resourcesDirPath });
+    await run({ graalvmHomePath, jvmClasspath, entryPointName, bundleFilePath, resourcesDirPath, resultsDirPath });
   });
 
 program.parse(process.argv);

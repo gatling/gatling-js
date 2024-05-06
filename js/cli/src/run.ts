@@ -9,6 +9,7 @@ export interface RunOptions {
   entryPointName: string;
   bundleFilePath: string;
   resourcesDirPath: string;
+  resultsDirPath: string;
 }
 
 export const run = async (options: RunOptions): Promise<void> => {
@@ -32,7 +33,7 @@ export const run = async (options: RunOptions): Promise<void> => {
     `-Dgatling.js.entryPointName=${options.entryPointName}`,
     "io.gatling.app.Gatling",
     "--results-folder",
-    "results",
+    options.resultsDirPath,
     "--simulation",
     "io.gatling.js.JsSimulation"
   ];
