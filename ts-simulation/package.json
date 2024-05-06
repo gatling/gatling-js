@@ -1,5 +1,5 @@
 {
-  "name": "gatling-js-demo",
+  "name": "gatling-ts-demo",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -11,13 +11,15 @@
   "devDependencies": {
     "@gatling.io/cli": "0.0.0",
     "prettier": "3.2.5",
-    "rimraf": "5.0.5"
+    "rimraf": "5.0.5",
+    "typescript": "5.4.2"
   },
   "scripts": {
     "clean": "rimraf target results tmp",
     "format": "prettier --write '**/*.ts'",
     "setup": "gatling-js-cli install",
-    "build": "gatling-js-cli build",
-    "start": "gatling-js-cli run"
+    "check": "tsc --noEmit",
+    "build": "tsc --noEmit && gatling-js-cli build --typescript",
+    "start": "gatling-js-cli run --typescript"
   }
 }
