@@ -779,7 +779,7 @@ export const wrapHttpProtocolBuilder = (_underlying: JvmHttpProtocolBuilder): Ht
         : _underlying.header(name, value)
     ),
   headers: (headers: Record<string, string>): HttpProtocolBuilder =>
-    wrapHttpProtocolBuilder(_underlying.headers(headers as any)),
+    wrapHttpProtocolBuilder(_underlying.headers(headers)),
   acceptHeader: (value: Expression<string>): HttpProtocolBuilder =>
     wrapHttpProtocolBuilder(
       typeof value === "function"
@@ -920,7 +920,7 @@ export const wrapHttpProtocolBuilder = (_underlying: JvmHttpProtocolBuilder): Ht
     ),
   enableHttp2: (): HttpProtocolBuilder => wrapHttpProtocolBuilder(_underlying.enableHttp2()),
   http2PriorKnowledge: (remotes: Record<string, boolean>): HttpProtocolBuilder =>
-    wrapHttpProtocolBuilder(_underlying.http2PriorKnowledge(remotes as any)),
+    wrapHttpProtocolBuilder(_underlying.http2PriorKnowledge(remotes)),
 
   // Response part
 

@@ -272,100 +272,6 @@ interface ClosedInjectionStepStatic {
 
 export const ClosedInjectionStep: ClosedInjectionStepStatic = Java.type("io.gatling.javaapi.core.ClosedInjectionStep");
 
-interface CollectionsStatic {
-  readonly class: any;
-  checkedCollection<E>(arg0: java.util.Collection<E>, arg1: java.lang.Class<E>): java.util.Collection<E>;
-  checkedList<E>(arg0: java.util.List<E>, arg1: java.lang.Class<E>): java.util.List<E>;
-  checkedNavigableSet<E>(
-    arg0: any /*java.util.NavigableSet*/,
-    arg1: java.lang.Class<E>
-  ): any /*java.util.NavigableSet*/;
-  emptyNavigableSet(): any /*java.util.NavigableSet*/;
-  checkedQueue<E>(arg0: any /*java.util.Queue*/, arg1: java.lang.Class<E>): any /*java.util.Queue*/;
-  newSequencedSetFromMap(arg0: any /*java.util.SequencedMap*/): any /*java.util.SequencedSet*/;
-  checkedSet<E>(arg0: java.util.Set<E>, arg1: java.lang.Class<E>): java.util.Set<E>;
-  newSetFromMap<E>(arg0: java.util.Map<E, boolean | null>): java.util.Set<E>;
-  checkedSortedSet<E>(arg0: any /*java.util.SortedSet*/, arg1: java.lang.Class<E>): any /*java.util.SortedSet*/;
-  emptySortedSet(): any /*java.util.SortedSet*/;
-  checkedMap<K, V>(arg0: java.util.Map<K, V>, arg1: java.lang.Class<K>, arg2: java.lang.Class<V>): java.util.Map<K, V>;
-  singletonMap<K, V>(arg0: K, arg1: V): java.util.Map<K, V>;
-  synchronizedMap<K, V>(arg0: java.util.Map<K, V>): java.util.Map<K, V>;
-  unmodifiableMap<K, V>(arg0: java.util.Map<K, V>): java.util.Map<K, V>;
-  checkedNavigableMap<K, V>(
-    arg0: any /*java.util.NavigableMap*/,
-    arg1: java.lang.Class<K>,
-    arg2: java.lang.Class<V>
-  ): any /*java.util.NavigableMap*/;
-  synchronizedNavigableMap(arg0: any /*java.util.NavigableMap*/): any /*java.util.NavigableMap*/;
-  unmodifiableNavigableMap(arg0: any /*java.util.NavigableMap*/): any /*java.util.NavigableMap*/;
-  unmodifiableSequencedMap(arg0: any /*java.util.SequencedMap*/): any /*java.util.SequencedMap*/;
-  checkedSortedMap<K, V>(
-    arg0: any /*java.util.SortedMap*/,
-    arg1: java.lang.Class<K>,
-    arg2: java.lang.Class<V>
-  ): any /*java.util.SortedMap*/;
-  synchronizedSortedMap(arg0: any /*java.util.SortedMap*/): any /*java.util.SortedMap*/;
-  unmodifiableSortedMap(arg0: any /*java.util.SortedMap*/): any /*java.util.SortedMap*/;
-  sort<T>(arg0: java.util.List<T>): void;
-  max<T>(arg0: java.util.Collection<T>): T;
-  min<T>(arg0: java.util.Collection<T>): T;
-  max<T>(arg0: java.util.Collection<T>, arg1: any /*java.util.Comparator*/): T;
-  min<T>(arg0: java.util.Collection<T>, arg1: any /*java.util.Comparator*/): T;
-  addAll<T>(arg0: java.util.Collection<T>, ...arg1: T[]): boolean;
-  replaceAll<T>(arg0: java.util.List<T>, arg1: T, arg2: T): boolean;
-  binarySearch<T>(arg0: java.util.List<T>, arg1: T, arg2: any /*java.util.Comparator*/): int;
-  binarySearch<T>(arg0: java.util.List<java.lang.Comparable<T>>, arg1: T): int;
-  list(arg0: any /*java.util.Enumeration*/): any /*java.util.ArrayList*/;
-  synchronizedCollection<T>(arg0: java.util.Collection<T>): java.util.Collection<T>;
-  unmodifiableCollection<T>(arg0: java.util.Collection<T>): java.util.Collection<T>;
-  reverseOrder(): any /*java.util.Comparator*/;
-  reverseOrder(arg0: any /*java.util.Comparator*/): any /*java.util.Comparator*/;
-  emptyEnumeration(): any /*java.util.Enumeration*/;
-  enumeration<T>(arg0: java.util.Collection<T>): any /*java.util.Enumeration*/;
-  emptyIterator<T>(): java.util.Iterator<T>;
-  nCopies<T>(arg0: int, arg1: T): java.util.List<T>;
-  singletonList<T>(arg0: T): java.util.List<T>;
-  synchronizedList<T>(arg0: java.util.List<T>): java.util.List<T>;
-  unmodifiableList<T>(arg0: java.util.List<T>): java.util.List<T>;
-  emptyListIterator(): any /*java.util.ListIterator*/;
-  synchronizedNavigableSet(arg0: any /*java.util.NavigableSet*/): any /*java.util.NavigableSet*/;
-  unmodifiableNavigableSet(arg0: any /*java.util.NavigableSet*/): any /*java.util.NavigableSet*/;
-  asLifoQueue(arg0: any /*java.util.Deque*/): any /*java.util.Queue*/;
-  unmodifiableSequencedCollection(arg0: any /*java.util.SequencedCollection*/): any /*java.util.SequencedCollection*/;
-  unmodifiableSequencedSet(arg0: any /*java.util.SequencedSet*/): any /*java.util.SequencedSet*/;
-  singleton<T>(arg0: T): java.util.Set<T>;
-  synchronizedSet<T>(arg0: java.util.Set<T>): java.util.Set<T>;
-  unmodifiableSet<T>(arg0: java.util.Set<T>): java.util.Set<T>;
-  synchronizedSortedSet(arg0: any /*java.util.SortedSet*/): any /*java.util.SortedSet*/;
-  unmodifiableSortedSet(arg0: any /*java.util.SortedSet*/): any /*java.util.SortedSet*/;
-  copy<T>(arg0: java.util.List<T>, arg1: java.util.List<T>): void;
-  fill<T>(arg0: java.util.List<T>, arg1: T): void;
-  sort<T>(arg0: java.util.List<T>, arg1: any /*java.util.Comparator*/): void;
-  disjoint(
-    arg0: java.util.Collection<any /*java.lang.Object*/>,
-    arg1: java.util.Collection<any /*java.lang.Object*/>
-  ): boolean;
-  emptyMap<K, V>(): java.util.Map<K, V>;
-  emptyNavigableMap(): any /*java.util.NavigableMap*/;
-  emptySortedMap(): any /*java.util.SortedMap*/;
-  emptyList<T>(): java.util.List<T>;
-  emptySet<T>(): java.util.Set<T>;
-  frequency(arg0: java.util.Collection<any /*java.lang.Object*/>, arg1: any /*java.lang.Object*/): int;
-  indexOfSubList(arg0: java.util.List<any /*java.lang.Object*/>, arg1: java.util.List<any /*java.lang.Object*/>): int;
-  lastIndexOfSubList(
-    arg0: java.util.List<any /*java.lang.Object*/>,
-    arg1: java.util.List<any /*java.lang.Object*/>
-  ): int;
-  reverse(arg0: java.util.List<any /*java.lang.Object*/>): void;
-  rotate(arg0: java.util.List<any /*java.lang.Object*/>, arg1: int): void;
-  shuffle(arg0: java.util.List<any /*java.lang.Object*/>): void;
-  shuffle(arg0: java.util.List<any /*java.lang.Object*/>, arg1: any /*java.util.Random*/): void;
-  shuffle(arg0: java.util.List<any /*java.lang.Object*/>, arg1: any /*java.util.random.RandomGenerator*/): void;
-  swap(arg0: java.util.List<any /*java.lang.Object*/>, arg1: int, arg2: int): void;
-}
-
-export const Collections: CollectionsStatic = Java.type("java.util.Collections");
-
 interface CollectorsStatic {
   readonly class: any;
   collectingAndThen<RR, R>(
@@ -681,7 +587,7 @@ interface CoreDslStatic {
   tsv(arg0: string, arg1: any /*char*/): io.gatling.javaapi.core.FeederBuilder$Batchable<string>;
   jsonFile(arg0: string): io.gatling.javaapi.core.FeederBuilder$FileBased<any /*java.lang.Object*/>;
   arrayFeeder(
-    arg0: [java.util.Map<string, any /*java.lang.Object*/>]
+    arg0: java.util.Map<string, any /*java.lang.Object*/>[]
   ): io.gatling.javaapi.core.FeederBuilder<any /*java.lang.Object*/>;
   jsonUrl(arg0: string): io.gatling.javaapi.core.FeederBuilder<any /*java.lang.Object*/>;
   listFeeder(

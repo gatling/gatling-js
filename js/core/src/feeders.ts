@@ -288,4 +288,4 @@ export const jsonUrl = (url: string): FeederBuilder<any> => wrapFeederBuilder(Jv
  * @returns a new feeder
  */
 export const arrayFeeder = (data: Array<Record<string, unknown>>): FeederBuilder<unknown> =>
-  wrapFeederBuilder(JvmCoreDsl.arrayFeeder(data as any));
+  wrapFeederBuilder(JvmCoreDsl.arrayFeeder(data));

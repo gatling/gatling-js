@@ -29,6 +29,8 @@ declare namespace java.util {
   interface RandomAccess {}
 
   type List<E> = E[];
+
+  type Map<K extends keyof any, V> = Record<K, V>;
 }
 
 declare namespace java.io {
@@ -3772,12 +3774,6 @@ declare namespace java.time.temporal {
   } // end TemporalUnit
 } // end namespace java.time.temporal
 declare namespace java.util {
-  class Collections /* extends java.lang.Object*/ {
-    equals(arg0: any /*java.lang.Object*/): boolean;
-    toString(): string;
-  } // end Collections
-} // end namespace java.util
-declare namespace java.util {
   class Optional<T> /* extends java.lang.Object*/ {
     equals(arg0: any /*java.lang.Object*/): boolean;
     filter(arg0: Predicate<T>): Optional<T>;
@@ -3817,8 +3813,8 @@ declare namespace java.util {
     spliterator(): any /*java.util.Spliterator*/;
     stream(): java.util.stream.Stream<E>;
     toArray(): [any /*java.lang.Object*/];
-    toArray<T>(arg0: [T]): [T];
-    toArray<T>(arg0: any /*java.util.function.IntFunction*/): [T];
+    toArray<T>(arg0: T[]): T[];
+    toArray<T>(arg0: any /*java.util.function.IntFunction*/): T[];
   } // end Collection
 } // end namespace java.util
 declare namespace java.util {
@@ -3828,48 +3824,6 @@ declare namespace java.util {
     next(): E;
     remove(): void;
   } // end Iterator
-} // end namespace java.util
-declare namespace java.util {
-  interface Map<K, V> {
-    // static copyOf<K,V>( arg0:Map<K, V> ):Map<K, V>;
-    // static entry<K,V>( arg0:K, arg1:V ):any /*java.util.Map$Entry*/;
-    // static of<K,V>(  ):Map<K, V>;
-    // static of<K,V>( arg0:K, arg1:V ):Map<K, V>;
-    // static of<K,V>( arg0:K, arg1:V, arg2:K, arg3:V ):Map<K, V>;
-    // static of<K,V>( arg0:K, arg1:V, arg2:K, arg3:V, arg4:K, arg5:V ):Map<K, V>;
-    // static of<K,V>( arg0:K, arg1:V, arg2:K, arg3:V, arg4:K, arg5:V, arg6:K, arg7:V ):Map<K, V>;
-    // static of<K,V>( arg0:K, arg1:V, arg2:K, arg3:V, arg4:K, arg5:V, arg6:K, arg7:V, arg8:K, arg9:V ):Map<K, V>;
-    // static of<K,V>( arg0:K, arg1:V, arg2:K, arg3:V, arg4:K, arg5:V, arg6:K, arg7:V, arg8:K, arg9:V, arg10:K, arg11:V ):Map<K, V>;
-    // static of<K,V>( arg0:K, arg1:V, arg2:K, arg3:V, arg4:K, arg5:V, arg6:K, arg7:V, arg8:K, arg9:V, arg10:K, arg11:V, arg12:K, arg13:V ):Map<K, V>;
-    // static of<K,V>( arg0:K, arg1:V, arg2:K, arg3:V, arg4:K, arg5:V, arg6:K, arg7:V, arg8:K, arg9:V, arg10:K, arg11:V, arg12:K, arg13:V, arg14:K, arg15:V ):Map<K, V>;
-    // static of<K,V>( arg0:K, arg1:V, arg2:K, arg3:V, arg4:K, arg5:V, arg6:K, arg7:V, arg8:K, arg9:V, arg10:K, arg11:V, arg12:K, arg13:V, arg14:K, arg15:V, arg16:K, arg17:V ):Map<K, V>;
-    // static of<K,V>( arg0:K, arg1:V, arg2:K, arg3:V, arg4:K, arg5:V, arg6:K, arg7:V, arg8:K, arg9:V, arg10:K, arg11:V, arg12:K, arg13:V, arg14:K, arg15:V, arg16:K, arg17:V, arg18:K, arg19:V ):Map<K, V>;
-    // static ofEntries<K,V>( ...arg0:any /*java.util.Map$Entry*/[] ):Map<K, V>;
-    clear(): void;
-    compute(arg0: K, arg1: BiFunction<K, V, V>): V;
-    computeIfAbsent(arg0: K, arg1: Func<K, V>): V;
-    computeIfPresent(arg0: K, arg1: BiFunction<K, V, V>): V;
-    containsKey(arg0: any /*java.lang.Object*/): boolean;
-    containsValue(arg0: any /*java.lang.Object*/): boolean;
-    entrySet(): Set<any /*java.util.Map$Entry*/>;
-    equals(arg0: any /*java.lang.Object*/): boolean;
-    forEach(arg0: BiConsumer<K, V>): void;
-    get(arg0: any /*java.lang.Object*/): V;
-    getOrDefault(arg0: any /*java.lang.Object*/, arg1: V): V;
-    isEmpty(): boolean;
-    keySet(): Set<K>;
-    merge(arg0: K, arg1: V, arg2: BiFunction<V, V, V>): V;
-    put(arg0: K, arg1: V): V;
-    putAll(arg0: Map<K, V>): void;
-    putIfAbsent(arg0: K, arg1: V): V;
-    remove(arg0: any /*java.lang.Object*/): V;
-    remove(arg0: any /*java.lang.Object*/, arg1: any /*java.lang.Object*/): boolean;
-    replace(arg0: K, arg1: V): V;
-    replace(arg0: K, arg1: V, arg2: V): boolean;
-    replaceAll(arg0: BiFunction<K, V, V>): void;
-    size(): int;
-    values(): Collection<V>;
-  } // end Map
 } // end namespace java.util
 declare namespace java.util {
   interface Set<E> /* extends Collection<E>*/ {
@@ -3904,8 +3858,8 @@ declare namespace java.util {
     spliterator(): any /*java.util.Spliterator*/;
     stream(): java.util.stream.Stream<E>;
     toArray(): [any /*java.lang.Object*/];
-    toArray<T>(arg0: [T]): [T];
-    toArray<T>(arg0: any /*java.util.function.IntFunction*/): [T];
+    toArray<T>(arg0: T[]): T[];
+    toArray<T>(arg0: any /*java.util.function.IntFunction*/): T[];
   } // end Set
 } // end namespace java.util
 declare namespace java.util.stream {
@@ -3962,7 +3916,7 @@ declare namespace java.util.stream {
     spliterator(): any /*java.util.Spliterator*/;
     takeWhile(arg0: Predicate<T>): Stream<T>;
     toArray(): [any /*java.lang.Object*/];
-    toArray<A>(arg0: any /*java.util.function.IntFunction*/): [A];
+    toArray<A>(arg0: any /*java.util.function.IntFunction*/): A[];
     toList(): java.util.List<T>;
     unordered<S>(): S;
   } // end Stream

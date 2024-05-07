@@ -98,7 +98,7 @@ const requestWithParamsActionBuilderImpl = <T>(
         return wrap(
           jvmBuilder.multivaluedQueryParam(
             wrapCallback(underlyingSessionTo(name)),
-            wrapCallback(underlyingSessionToJava(values) as any)
+            wrapCallback(underlyingSessionToJava(values)) as any
           )
         );
       } else if (typeof values === "string") {
@@ -108,7 +108,7 @@ const requestWithParamsActionBuilderImpl = <T>(
       }
     } else {
       if (typeof values === "function") {
-        return wrap(jvmBuilder.multivaluedQueryParam(name, wrapCallback(underlyingSessionToJava(values) as any)));
+        return wrap(jvmBuilder.multivaluedQueryParam(name, wrapCallback(underlyingSessionToJava(values)) as any));
       } else if (typeof values === "string") {
         return wrap(jvmBuilder.multivaluedQueryParam(name, values));
       } else {
@@ -118,9 +118,11 @@ const requestWithParamsActionBuilderImpl = <T>(
   },
   queryParamMap: (map: string | Expression<Record<string, any>>): T => {
     if (typeof map === "function") {
-      return wrap(jvmBuilder.queryParamMap(wrapCallback(underlyingSessionToJava(map as any) as any)));
+      return wrap(
+        jvmBuilder.queryParamMap(wrapCallback(underlyingSessionToJava(map as SessionTo<Record<string, any>>)))
+      );
     } else if (typeof map === "object") {
-      return wrap(jvmBuilder.queryParamMap(map as any));
+      return wrap(jvmBuilder.queryParamMap(map));
     } else {
       return wrap(jvmBuilder.queryParamMap(map));
     }
@@ -131,7 +133,7 @@ const requestWithParamsActionBuilderImpl = <T>(
         ? jvmBuilder.header(name, wrapCallback(underlyingSessionTo(value)))
         : jvmBuilder.header(name, value)
     ),
-  headers: (headers: Record<string, string>): T => wrap(jvmBuilder.headers(headers as any)),
+  headers: (headers: Record<string, string>): T => wrap(jvmBuilder.headers(headers)),
   ignoreProtocolHeaders: (): T => wrap(jvmBuilder.ignoreProtocolHeaders()),
   basicAuth: (username: Expression<string>, password: Expression<string>): T =>
     wrap(
@@ -258,7 +260,7 @@ const requestWithBodyActionBuilderImpl = <T>(
         return wrap(
           jvmBuilder.multivaluedFormParam(
             wrapCallback(underlyingSessionTo(name)),
-            wrapCallback(underlyingSessionToJava(values) as any)
+            wrapCallback(underlyingSessionToJava(values)) as any
           )
         );
       } else if (typeof values === "string") {
@@ -268,7 +270,7 @@ const requestWithBodyActionBuilderImpl = <T>(
       }
     } else {
       if (typeof values === "function") {
-        return wrap(jvmBuilder.multivaluedFormParam(name, wrapCallback(underlyingSessionToJava(values) as any)));
+        return wrap(jvmBuilder.multivaluedFormParam(name, wrapCallback(underlyingSessionToJava(values)) as any));
       } else if (typeof values === "string") {
         return wrap(jvmBuilder.multivaluedFormParam(name, values));
       } else {
@@ -279,13 +281,13 @@ const requestWithBodyActionBuilderImpl = <T>(
   formParamMap: (map: Expression<Record<string, any>>): T =>
     wrap(
       typeof map === "function"
-        ? jvmBuilder.formParamMap(wrapCallback(underlyingSessionToJava(map as any) as any))
-        : jvmBuilder.formParamMap(map as any)
+        ? jvmBuilder.formParamMap(wrapCallback(underlyingSessionToJava(map as SessionTo<Record<string, any>>)))
+        : jvmBuilder.formParamMap(map)
     ),
   form: (form: string | ((session: Session) => Record<string, any>)): T =>
     wrap(
       typeof form === "function"
-        ? jvmBuilder.form(wrapCallback(underlyingSessionToJava(form as any) as any))
+        ? jvmBuilder.form(wrapCallback(underlyingSessionToJava(form)) as any)
         : jvmBuilder.form(form)
     ),
   formUpload: (name: Expression<string>, filePath: Expression<string>): T =>

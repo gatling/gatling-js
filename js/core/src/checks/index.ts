@@ -195,13 +195,13 @@ export interface XpathFunction {
 export const xpath: XpathFunction = (path: string | SessionTo<string>, namespaces?: Record<string, string>) => {
   if (typeof path === "function") {
     if (namespaces !== undefined) {
-      return wrapCheckBuilderMultipleFind(JvmCoreDsl.xpath(wrapCallback(underlyingSessionTo(path)), namespaces as any)); // TODO change type of java.util.Map in java2typescript
+      return wrapCheckBuilderMultipleFind(JvmCoreDsl.xpath(wrapCallback(underlyingSessionTo(path)), namespaces)); // TODO change type of java.util.Map in java2typescript
     } else {
       return wrapCheckBuilderMultipleFind(JvmCoreDsl.xpath(wrapCallback(underlyingSessionTo(path))));
     }
   } else {
     if (namespaces !== undefined) {
-      return wrapCheckBuilderMultipleFind(JvmCoreDsl.xpath(path, namespaces as any)); // TODO change type of java.util.Map in java2typescript
+      return wrapCheckBuilderMultipleFind(JvmCoreDsl.xpath(path, namespaces)); // TODO change type of java.util.Map in java2typescript
     } else {
       return wrapCheckBuilderMultipleFind(JvmCoreDsl.xpath(path));
     }
