@@ -41,7 +41,8 @@ import {
   headerRegex,
   http,
   poll,
-  status
+  status,
+  sitemap
 } from "./index";
 
 const runSimulationMock = (_: Simulation): void => {};
@@ -412,9 +413,9 @@ const scn = scenario("scenario")
   // flushCookieJar
   .exec(flushCookieJar())
   // flushHttpCache
-  .exec(flushHttpCache());
-// feeder
-//.feed(sitemap("file"));
+  .exec(flushHttpCache())
+  // feeder
+  .feed(sitemap("file"));
 
 runSimulationMock((setUp) => {
   setUp(

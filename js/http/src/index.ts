@@ -9,6 +9,7 @@ import { Response, wrapResponse } from "./response";
 export * from "./bodyPart";
 export * from "./checks";
 export * from "./cookies";
+export * from "./feeders";
 export * from "./headers";
 export * from "./method";
 export * from "./polling";

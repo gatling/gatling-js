@@ -103,7 +103,9 @@ export interface FileBasedFeederBuilder<T> extends FeederBuilder<T> {
   unzip(): FileBasedFeederBuilder<T>;
 }
 
-const wrapFileBasedFeederBuilder = <T>(_underlying: JvmFeederBuilderFileBased<T>): FileBasedFeederBuilder<T> => ({
+export const wrapFileBasedFeederBuilder = <T>(
+  _underlying: JvmFeederBuilderFileBased<T>
+): FileBasedFeederBuilder<T> => ({
   _underlying,
   queue: () => wrapFileBasedFeederBuilder(_underlying.queue()),
   random: () => wrapFileBasedFeederBuilder(_underlying.random()),
