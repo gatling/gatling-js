@@ -727,8 +727,13 @@ export interface HttpProtocolBuilder extends ProtocolBuilder {
    */
   asyncNameResolution(...dnsServers: string[]): HttpProtocolBuilder;
 
-  // TODO
-  //hostNameAliases(arg0: java.util.Map<string, java.util.List<string>>): HttpProtocolBuilder;
+  /**
+   * Define some aliases to bypass DNS name resolution
+   *
+   * @param aliases the aliases
+   * @return a new HttpProtocolBuilder instance
+   */
+  hostNameAliases(aliases: Record<string, string[]>): HttpProtocolBuilder;
 
   /**
    * Force each virtual user to have its own DNS cache and perform its own DNS resolutions instead
@@ -963,5 +968,6 @@ export const wrapHttpProtocolBuilder = (_underlying: JvmHttpProtocolBuilder): Ht
 
   asyncNameResolution: (...dnsServers: string[]): HttpProtocolBuilder =>
     wrapHttpProtocolBuilder(_underlying.asyncNameResolution(...dnsServers)),
+  hostNameAliases: (aliases) => wrapHttpProtocolBuilder(_underlying.hostNameAliases(aliases)),
   perUserNameResolution: (): HttpProtocolBuilder => wrapHttpProtocolBuilder(_underlying.perUserNameResolution())
 });
