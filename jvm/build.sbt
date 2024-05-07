@@ -5,6 +5,14 @@ import net.moznion.sbt.spotless.config.{ GoogleJavaFormatConfig, JavaConfig, Spo
 ThisBuild / scalaVersion := "2.13.14"
 ThisBuild / crossPaths := false
 
+ThisBuild / sonatypeCredentialHost := "s01.oss.sonatype.org"
+Global / githubPath := "gatling/gatling-js"
+Global / gatlingDevelopers := Seq(
+  GatlingDeveloper("slandelle@gatling.io", "Stephane Landelle", isGatlingCorp = true),
+  GatlingDeveloper("gcorre@gatling.io", "Guillaume Corré", isGatlingCorp = true),
+  GatlingDeveloper("ggaly@gatling.io", "Guillaume Galy", isGatlingCorp = true)
+)
+
 val graalvmJdkVersion = "22.0.1"
 val graalvmJsVersion = "24.0.1"
 val coursierVersion = "2.1.9"
@@ -15,21 +23,10 @@ lazy val root = (project in file("."))
 
 lazy val adapter = (project in file("adapter"))
   .withId("gatling-jvm-to-js-adapter")
-  .enablePlugins(
-    // GatlingCorpPlugin, but without AutomateHeaderPlugin
-    GatlingAutomatedScalafixPlugin,
-    GatlingAutomatedScalafmtPlugin,
-    GatlingVersioningPlugin,
-    GatlingBasicInfoPlugin,
-    GatlingCompilerSettingsPlugin,
-    GatlingPublishPlugin,
-    GatlingReleasePlugin,
-    GatlingEnvPlugin,
-  )
+  .enablePlugins(GatlingOssPlugin)
   .settings(
     name := "gatling-jvm-to-js-adapter",
     gatlingCompilerRelease := 21,
-    releasePublishArtifactsAction := Keys.publish.value,
     Compile / javacOptions ++= Seq("-encoding", "utf8", "-Xdoclint:none"), // FIXME: see why -Xdoclint:none does not seem to work
     Test / javacOptions ++= Seq("-encoding", "utf8"),
     spotless := SpotlessConfig(
@@ -62,7 +59,9 @@ lazy val adapter = (project in file("adapter"))
       IO.write(path, content)
       // The file isn't actually part of _this_ project's sources, return empty Seq
       Seq()
-    }.taskValue
+    }.taskValue,
+    Compile / packageDoc / mappings := Seq.empty,
+    Compile / packageSrc / mappings := Seq.empty,
   )
 
 lazy val java2ts = (project in file("java2ts"))
@@ -73,6 +72,6 @@ lazy val java2ts = (project in file("java2ts"))
       "io.gatling" % "gatling-core-java" % gatlingVersion,
       "io.gatling" % "gatling-http-java" % gatlingVersion,
     ),
-    publish := false
+    publish / skip := true
   )
   .settings(Java2ts.java2tsSettings)
