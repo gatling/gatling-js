@@ -2,7 +2,7 @@ import { HttpDsl as JvmHttpDsl } from "@gatling.io/jvm-types";
 import JvmPolling = io.gatling.javaapi.http.Polling;
 import JvmPollingEvery = io.gatling.javaapi.http.Polling$Every;
 
-import { ActionBuilder, Duration, wrapActionBuilder, toJvmDuration, during } from "@gatling.io/core";
+import { ActionBuilder, Duration, wrapActionBuilder, toJvmDuration } from "@gatling.io/core";
 
 import { HttpRequestActionBuilder } from "./request";
 

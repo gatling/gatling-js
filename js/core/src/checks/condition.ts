@@ -1,6 +1,4 @@
 import { CheckBuilder } from "../checks";
-import { Executable } from "../structure/execs";
-import { On } from "../structure/on";
 
 import JvmCheckBuilder = io.gatling.javaapi.core.CheckBuilder;
 

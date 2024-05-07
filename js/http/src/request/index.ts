@@ -10,7 +10,6 @@ import {
   toJvmDuration,
   underlyingSessionTo,
   underlyingSessionToJava,
-  wrapByteArrayCallback,
   wrapCallback,
   wrapCondition
 } from "@gatling.io/core";

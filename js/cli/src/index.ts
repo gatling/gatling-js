@@ -26,10 +26,10 @@ const entrypointFileOption = new Option(
   'The simulation entry point source file path (default: "src/index.js", or "src/index.ts" when using the "--typescript" option)'
 );
 
-const entrypointNameOption = new Option("--entrypoint-name <value>", "The simulation entry point function name").default(
-  "default",
-  '"default", compatible with using "export default"'
-);
+const entrypointNameOption = new Option(
+  "--entrypoint-name <value>",
+  "The simulation entry point function name"
+).default("default", '"default", compatible with using "export default"');
 
 const entrypointFileWithDefaults = (options: { entrypointFile?: string; typescript: boolean }): string =>
   options.entrypointFile || (options.typescript ? "src/index.ts" : "src/index.js");
@@ -38,7 +38,9 @@ const bundleFileOption = new Option("--bundle-file <value>", "The simulation tar
   "target/bundle.js"
 );
 
-const resourcesFolderOption = new Option("--resources-folder <value>", "The resources folder path").default("resources");
+const resourcesFolderOption = new Option("--resources-folder <value>", "The resources folder path").default(
+  "resources"
+);
 
 const resultsFolderOption = new Option("--results-folder <value>", "The results folder path").default("results");
 

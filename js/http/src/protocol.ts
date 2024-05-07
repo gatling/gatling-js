@@ -1,28 +1,21 @@
 import {
   CheckBuilder,
-  CheckBuilderMultipleFind,
   Condition,
   Expression,
   ProtocolBuilder,
   Session,
   SessionTo,
   underlyingSessionTo,
-  wrapBiCallback,
   wrapCallback,
-  wrapCheckBuilder,
   wrapCondition,
   AllowListFilter,
   DenyListFilter
 } from "@gatling.io/core";
 
-import { underlyingRequestTransform, underlyingResponseTransform } from "./index";
 import { Proxy } from "./proxy";
-import { Request } from "./request";
 import { Response } from "./response";
 
 import JvmHttpProtocolBuilder = io.gatling.javaapi.http.HttpProtocolBuilder;
-import JvmHttpPrococolBuilderTypedCondition = io.gatling.javaapi.http.HttpProtocolBuilder$TypedCondition;
-import JvmHttpPrococolBuilderUntypedCondition = io.gatling.javaapi.http.HttpProtocolBuilder$UntypedCondition;
 
 /**
  * DSL for building HTTP protocol configurations

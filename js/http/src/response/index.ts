@@ -1,7 +1,6 @@
 import { Wrapper } from "@gatling.io/core";
 
 import { HttpHeaders, wrapHttpHeaders } from "../headers";
-import { Request, wrapRequest } from "../request";
 import { ResponseBody, wrapResponseBody } from "./body";
 import { fromJvmHttpResponseStatus, HttpResponseStatus } from "./status";
 

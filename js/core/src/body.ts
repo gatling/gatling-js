@@ -1,7 +1,7 @@
 import { CoreDsl as JvmCoreDsl } from "@gatling.io/jvm-types";
 
 import { Wrapper } from "./common";
-import { wrapByteArray, wrapByteArrayCallback, wrapCallback } from "./gatlingJvm/callbacks";
+import { wrapByteArrayCallback, wrapCallback } from "./gatlingJvm/callbacks";
 import { Expression, Session, underlyingSessionTo } from "./session";
 
 import JvmBody = io.gatling.javaapi.core.Body;

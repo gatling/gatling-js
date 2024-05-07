@@ -1,5 +1,3 @@
-import { HttpResponseStatus as JvmHttpResponseStatus } from "@gatling.io/jvm-types";
-
 export class HttpResponseStatus {
   /**
    * 100 Continue
