@@ -1,11 +1,6 @@
 import { CoreDsl as JvmCoreDsl } from "@gatling.io/jvm-types";
 
-import {
-  wrapByteArray,
-  wrapByteArrayCallback,
-  wrapCallback,
-  wrapListOfByteArrayFunction
-} from "../gatlingJvm/callbacks";
+import { wrapByteArray, wrapByteArrayCallback, wrapCallback } from "../gatlingJvm/callbacks";
 import { Expression, Session, SessionTo, underlyingSessionTo } from "../session";
 import { CheckBuilderCaptureGroup, wrapCheckBuilderCaptureGroup } from "./captureGroup";
 import { wrapCheckBuilderFinal } from "./final";
@@ -62,12 +57,6 @@ export const bodyBytes = (): CheckBuilderFind<number[]> => ({
       typeof expected === "function"
         ? JvmCoreDsl.bodyBytes().not(wrapByteArrayCallback(underlyingSessionTo(expected)))
         : JvmCoreDsl.bodyBytes().not(wrapByteArray(expected))
-    ),
-  in: (expected: number[] | SessionTo<number[][]>, ...rest: number[][]) =>
-    wrapCheckBuilderFinal(
-      typeof expected === "function"
-        ? JvmCoreDsl.bodyBytes().in(wrapListOfByteArrayFunction(underlyingSessionTo(expected)))
-        : JvmCoreDsl.bodyBytes().in(...[wrapByteArray(expected), ...rest.map(wrapByteArray)])
     )
 });
 

@@ -1,17 +1,14 @@
 import JvmSession = io.gatling.javaapi.core.Session;
 
-type ByteArray = number[];
-type ByteArrayCallback = (arg: JvmSession) => ByteArray;
-type ListOfByteArrayCallback = (arg: JvmSession) => java.util.List<ByteArray>;
+type JvmExpression<T> = (arg: JvmSession) => T;
 
 type Callback<T, R> = (arg: T) => R;
 type BiCallback<T, U, R> = (arg0: T, arg1: U) => R;
 
 interface CallbackWrapper {
-  // Primitives, arrays & collections
-  wrapByteArray(v: ByteArray): ByteArray;
-  wrapByteArrayFunction(f: ByteArrayCallback): ByteArrayCallback;
-  wrapListOfByteArrayFunction(f: ListOfByteArrayCallback): ListOfByteArrayCallback;
+  // Byte arrays
+  wrapByteArray(v: number[]): number[];
+  wrapByteArrayFunction(f: JvmExpression<number[]>): JvmExpression<number[]>;
   // Generic functions
   wrapFunction<T, R>(f: Callback<T, R>): Callback<T, R>;
   wrapBiFunction<T, U, R>(f: BiCallback<T, U, R>): BiCallback<T, U, R>;
@@ -19,26 +16,15 @@ interface CallbackWrapper {
 
 const CallbackWrapper = Java.type<CallbackWrapper>("io.gatling.js.callbacks.CallbackWrapper");
 
-// Primitives, arrays & collections
+// Byte arrays
 
-export const wrapByteArray = (v: ByteArray) => {
-  return CallbackWrapper.wrapByteArray(v);
-};
+export const wrapByteArray = (v: number[]) => CallbackWrapper.wrapByteArray(v);
 
-export const wrapByteArrayCallback = (f: ByteArrayCallback) => {
-  return CallbackWrapper.wrapByteArrayFunction(f);
-};
-
-export const wrapListOfByteArrayFunction = (f: ListOfByteArrayCallback) => {
-  return CallbackWrapper.wrapListOfByteArrayFunction(f);
-};
+export const wrapByteArrayCallback = (f: JvmExpression<number[]>) => CallbackWrapper.wrapByteArrayFunction(f);
 
 // Generic functions
 
-export const wrapCallback = <T, R>(f: Callback<T, R>): Callback<T, R> => {
-  return CallbackWrapper.wrapFunction(f);
-};
+export const wrapCallback = <T, R>(f: Callback<T, R>): Callback<T, R> => CallbackWrapper.wrapFunction(f);
 
-export const wrapBiCallback = <T, U, R>(f: BiCallback<T, U, R>): BiCallback<T, U, R> => {
-  return CallbackWrapper.wrapBiFunction(f);
-};
+export const wrapBiCallback = <T, U, R>(f: BiCallback<T, U, R>): BiCallback<T, U, R> =>
+  CallbackWrapper.wrapBiFunction(f);

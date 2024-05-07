@@ -1,18 +1,16 @@
 package io.gatling.js.callbacks;
 
 import io.gatling.javaapi.core.Session;
-import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import javax.annotation.Nonnull;
-import org.graalvm.polyglot.TypeLiteral;
 import org.graalvm.polyglot.Value;
 
 public final class CallbackWrapper {
 
   private static final Object lock = new Object();
 
-  // Primitives, arrays & collections
+  // Byte arrays
 
   public static byte[] wrapByteArray(Value v) {
     return v.as(byte[].class);
@@ -24,18 +22,6 @@ public final class CallbackWrapper {
       synchronized (lock) {
         Value v = f.apply(session);
         return v.as(byte[].class);
-      }
-    };
-  }
-
-  static final TypeLiteral<List<byte[]>> ListOfByteArray = new TypeLiteral<>() {};
-
-  public static Function<Session, List<byte[]>> wrapListOfByteArrayFunction(
-      @Nonnull Function<Session, Value> f) {
-    return session -> {
-      synchronized (lock) {
-        Value v = f.apply(session);
-        return v.as(ListOfByteArray);
       }
     };
   }

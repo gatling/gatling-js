@@ -1,12 +1,14 @@
-import "@gatling.io/jvm-types";
-
-import { Wrapper } from "./common";
+import { wrapByteArray } from "./gatlingJvm/callbacks";
+import { asJava } from "./gatlingJvm/collections";
 import { Duration, toJvmDuration } from "./utils/duration";
+import { Wrapper } from "./common";
+
 import JvmSession = io.gatling.javaapi.core.Session;
 
 export interface Session extends Wrapper<JvmSession> {
   get<T>(key: string): T;
   set(key: string, value: any): Session;
+  setByteArray(key: string, value: number[]): Session;
   setAll(newAttributes: Record<string, any>): Session;
   remove(key: string): Session;
   reset(): Session;
@@ -23,8 +25,17 @@ export interface Session extends Wrapper<JvmSession> {
 export const wrapSession = (_underlying: JvmSession): Session => ({
   _underlying,
   get: <T>(key: string): T => _underlying.get(key),
-  set: (key: string, value: any): Session => wrapSession(_underlying.set(key, value)),
-  setAll: (newAttributes: Record<string, any>): Session => wrapSession(_underlying.setAll(newAttributes as any)),
+  set: (key: string, value: any): Session => {
+    return wrapSession(_underlying.set(key, asJava(value)));
+  },
+  setByteArray: (key: string, value: number[]): Session => wrapSession(_underlying.set(key, wrapByteArray(value))),
+  setAll: (newAttributes: Record<string, any>): Session => {
+    let session = _underlying;
+    for (const key in newAttributes) {
+      session = session.set(key, asJava(newAttributes[key]));
+    }
+    return wrapSession(session);
+  },
   remove: (key: string): Session => wrapSession(_underlying.remove(key)),
   reset: (): Session => wrapSession(_underlying.reset()),
   removeAll: (...keys: string[]): Session => wrapSession(_underlying.removeAll(...keys)),
@@ -50,6 +61,11 @@ export const underlyingSessionTo =
   <T>(f: SessionTo<T>): ((jvmSession: JvmSession) => T) =>
   (jvmSession: JvmSession) =>
     f(wrapSession(jvmSession));
+
+export const underlyingSessionToJava =
+  <T>(f: SessionTo<T>): ((jvmSession: JvmSession) => unknown) =>
+  (jvmSession: JvmSession) =>
+    asJava(f(wrapSession(jvmSession)));
 
 export const underlyingSessionToDuration =
   (f: SessionTo<Duration>): ((jvmSession: JvmSession) => java.time.Duration) =>
