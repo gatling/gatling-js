@@ -89,12 +89,6 @@ const wrapFeederBuilder = <T>(_underlying: JvmFeederBuilder<T>): FeederBuilder<T
 });
 
 export interface FileBasedFeederBuilder<T> extends FeederBuilder<T> {
-  queue(): FileBasedFeederBuilder<T>;
-  random(): FileBasedFeederBuilder<T>;
-  shuffle(): FileBasedFeederBuilder<T>;
-  circular(): FileBasedFeederBuilder<T>;
-  shard(): FileBasedFeederBuilder<T>;
-
   /**
    * Advice to unzip the underlying source because it's a zip or tar file
    *
@@ -118,13 +112,6 @@ export const wrapFileBasedFeederBuilder = <T>(
 });
 
 export interface BatchableFeederBuilder<T> extends FileBasedFeederBuilder<T> {
-  queue(): BatchableFeederBuilder<T>;
-  random(): BatchableFeederBuilder<T>;
-  shuffle(): BatchableFeederBuilder<T>;
-  circular(): BatchableFeederBuilder<T>;
-  shard(): BatchableFeederBuilder<T>;
-  unzip(): BatchableFeederBuilder<T>;
-
   /**
    * Force loading the whole data in memory from the underlying source at once. Faster runtime but
    * slower boot time and higher heap usage.

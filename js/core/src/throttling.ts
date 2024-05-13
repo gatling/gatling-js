@@ -1,9 +1,10 @@
 import { CoreDsl as JvmCoreDsl } from "@gatling.io/jvm-types";
+
+import { Duration, toJvmDuration } from "./utils/duration";
+import { Wrapper } from "./common";
+
 import JvmThrottleStep = io.gatling.javaapi.core.ThrottleStep;
 import JvmThrottleStepReachIntermediate = io.gatling.javaapi.core.ThrottleStep$ReachIntermediate;
-
-import { Wrapper } from "./common";
-import { Duration, toJvmDuration } from "./utils/duration";
 
 /**
  * Bootstrap a new reachRps throttling profile, see {@link ThrottleStepReachIntermediate}
@@ -37,7 +38,9 @@ const wrapThrottleStep = (_underlying: JvmThrottleStep): ThrottleStep => ({
   _underlying
 });
 
-/** DSL step to define the duration of a throttling ramp. */
+/**
+ * DSL step to define the duration of a throttling ramp.
+ */
 export interface ThrottleStepReachIntermediate {
   /**
    * Define the duration of a throttling ramp

@@ -1,11 +1,12 @@
 import { CoreDsl as JvmCoreDsl } from "@gatling.io/jvm-types";
+
+import { Wrapper } from "./common";
+
 import JvmAssertion = io.gatling.javaapi.core.Assertion;
 import JvmAssertionWithPath = io.gatling.javaapi.core.Assertion$WithPath;
 import JvmAssertionWithPathAndTarget = io.gatling.javaapi.core.Assertion$WithPathAndTarget;
 import JvmAssertionWithPathAndCountMetric = io.gatling.javaapi.core.Assertion$WithPathAndCountMetric;
 import JvmAssertionWithPathAndTimeMetric = io.gatling.javaapi.core.Assertion$WithPathAndTimeMetric;
-
-import { Wrapper } from "./common";
 
 /**
  * Bootstrap a new global assertion that targets stats aggregated on all requests
@@ -298,6 +299,7 @@ const wrapAssertionWithPathAndTarget = (
 });
 
 export interface Assertion extends Wrapper<JvmAssertion> {}
+
 const wrapAssertion = (_underlying: JvmAssertion): Assertion => ({
   _underlying
 });

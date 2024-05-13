@@ -12,10 +12,44 @@ import { HttpDsl as JvmHttpDsl } from "@gatling.io/jvm-types";
 import JvmAddCookie = io.gatling.javaapi.http.AddCookie;
 import JvmGetCookie = io.gatling.javaapi.http.GetCookie;
 
+/**
+ * DSL for adding a <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies">cookie</a>
+ * in the virtual user's CookieJar instead of having the server send a Set-Cookie header.
+ *
+ * <p>Immutable, so all methods return a new occurrence and leave the original unmodified.
+ */
 export interface AddCookie extends Wrapper<JvmAddCookie> {
+  /**
+   * Define the domain of the cookie. If undefined, will try to use the domain of {@link
+   * HttpProtocolBuilder#baseUrl(String)}
+   *
+   * @param domain - the cookie domain
+   * @returns a new AddCookie
+   */
   withDomain(domain: string): AddCookie;
+
+  /**
+   * Define the path of the cookie.
+   *
+   * @param path - the cookie path
+   * @returns a new AddCookie
+   */
   withPath(path: string): AddCookie;
+
+  /**
+   * Define the maxAge attribute of the cookie.
+   *
+   * @param maxAge - the cookie maxAge
+   * @returns a new AddCookie
+   */
   withMaxAge(maxAge: number): AddCookie;
+
+  /**
+   * Define the secure attribute of the cookie.
+   *
+   * @param secure - if the cookie must only be sent with HTTPS requests
+   * @returns a new AddCookie
+   */
   withSecure(secure: boolean): AddCookie;
 }
 
@@ -27,11 +61,54 @@ const wrapAddCookie = (_underlying: JvmAddCookie): AddCookie => ({
   withSecure: (secure: boolean): AddCookie => wrapAddCookie(_underlying.withSecure(secure))
 });
 
+/**
+ * DSL for fetching the value of a <a
+ * href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies">cookie</a> from the virtual
+ * user's CookieJar into its {@link Session}.
+ *
+ * <p>Immutable, so all methods return a new occurrence and leave the original unmodified.
+ */
 export interface GetCookie extends Wrapper<JvmGetCookie> {
+  /**
+   * Define the domain of the cookie. If undefined, will try to use the domain of {@link
+   * HttpProtocolBuilder#baseUrl(String)}
+   *
+   * @param domain - the cookie domain, expressed as a Gatling Expression Language String
+   * @returns a new GetCookie
+   */
   withDomain(domain: string): GetCookie;
+
+  /**
+   * Define the domain of the cookie. If undefined, will try to use the domain of {@link
+   * HttpProtocolBuilder#baseUrl(String)}
+   *
+   * @param domain - the cookie domain, expressed as a function
+   * @returns a new GetCookie
+   */
   withDomain(domain: (session: Session) => string): GetCookie;
+
+  /**
+   * Define the path of the cookie.
+   *
+   * @param path - the cookie path
+   * @returns a new GetCookie
+   */
   withPath(path: string): GetCookie;
+
+  /**
+   * Define the secure attribute of the cookie.
+   *
+   * @param secure - the cookie secure attribute
+   * @returns a new GetCookie
+   */
   withSecure(secure: boolean): GetCookie;
+
+  /**
+   * Define the {@link Session} key to save the cookie value. If undefined, will use the cookie name
+   *
+   * @param saveAs - the key
+   * @returns a new GetCookie
+   */
   saveAs(saveAs: string): GetCookie;
 }
 

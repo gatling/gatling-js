@@ -6,7 +6,7 @@ import JvmCheckBuilderMultipleFind = io.gatling.javaapi.core.CheckBuilder$Multip
  * Step 1 of the Check DSL when the check can return multiple values Immutable, so all methods
  * return a new occurrence and leave the original unmodified.
  *
- * @typeParam <X> - the type of Java values the check can extract
+ * @typeParam X - the type of Java values the check can extract
  */
 export interface CheckBuilderMultipleFind<X> extends CheckBuilderValidate<X> {
   /**
