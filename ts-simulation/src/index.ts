@@ -52,7 +52,6 @@ simulation((setUp) => {
       group("Create").on(
         http("Get form").get("/computers/new"),
         pause(1),
-        // TODO: formParam not implemented yet, we just write to the console instead
         exec(session => {
           const name = session.get<string>("name");
           const introduced = session.get<string>("introduced");
@@ -62,13 +61,13 @@ simulation((setUp) => {
             `Create computer (name='${name}', introduced='${introduced}', discontinued='${discontinued}', company='${company}')`
           );
           return session;
-        })
-        // http("Post form")
-        //   .post("/computers")
-        //   .formParam("name", "Beautiful Computer")
-        //   .formParam("introduced", "2012-05-30")
-        //   .formParam("discontinued", "")
-        //   .formParam("company", "37")
+        }),
+        http("Post form")
+          .post("/computers")
+          .formParam("name", "Beautiful Computer")
+          .formParam("introduced", "2012-05-30")
+          .formParam("discontinued", "")
+          .formParam("company", "37")
       )
     );
 
