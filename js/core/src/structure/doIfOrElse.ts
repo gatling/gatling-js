@@ -1,12 +1,10 @@
-import "@gatling.io/jvm-types";
+import { wrapCallback } from "../gatlingJvm/callbacks";
+import { SessionTo, underlyingSessionTo } from "../session";
+import { Executable } from "./execs";
+
 import JvmDoIfOrElse = io.gatling.javaapi.core.condition.DoIfOrElse;
 import JvmDoIfEqualsOrElse = io.gatling.javaapi.core.condition.DoIfEqualsOrElse;
 import JvmExecutable = io.gatling.javaapi.core.exec.Executable;
-
-import { SessionTo, underlyingSessionTo } from "../session";
-import { wrapCallback } from "../gatlingJvm/callbacks";
-
-import { Executable } from "./execs";
 
 interface JvmThen<T> {
   then(executable: JvmExecutable, ...executables: JvmExecutable[]): JvmOrElse<T>;

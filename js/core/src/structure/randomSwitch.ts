@@ -1,8 +1,7 @@
-import "@gatling.io/jvm-types";
+import { ChoiceWithWeight } from "./choices";
+
 import JvmRandomSwitch = io.gatling.javaapi.core.condition.RandomSwitch;
 import JvmOn = io.gatling.javaapi.core.condition.RandomSwitch$On;
-
-import { ChoiceWithWeight } from "./choices";
 
 export interface On<T> {
   on(...choices: ChoiceWithWeight[]): T;

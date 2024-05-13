@@ -1,10 +1,9 @@
-import "@gatling.io/jvm-types";
-import JvmForEach = io.gatling.javaapi.core.loop.ForEach;
 
-import { SessionTo, underlyingSessionTo } from "../session";
 import { wrapCallback } from "../gatlingJvm/callbacks";
-
+import { SessionTo, underlyingSessionTo } from "../session";
 import { On, wrapOn } from "./on";
+
+import JvmForEach = io.gatling.javaapi.core.loop.ForEach;
 
 export interface ForEachFunction<T extends ForEach<T>> {
   /**

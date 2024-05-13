@@ -1,10 +1,8 @@
-import "@gatling.io/jvm-types";
-import JvmErrors = io.gatling.javaapi.core.error.Errors;
-
-import { SessionTo, underlyingSessionTo } from "../session";
 import { wrapCallback } from "../gatlingJvm/callbacks";
-
+import { SessionTo, underlyingSessionTo } from "../session";
 import { On, wrapOn } from "./on";
+
+import JvmErrors = io.gatling.javaapi.core.error.Errors;
 
 export interface ExitBlockOnFailFunction<T extends Errors<T>> {
   /**

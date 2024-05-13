@@ -1,4 +1,3 @@
-import "@gatling.io/jvm-types";
 import JvmRendezVous = io.gatling.javaapi.core.pause.RendezVous;
 
 export interface RendezVousFunction<T extends RendezVous<T>> {

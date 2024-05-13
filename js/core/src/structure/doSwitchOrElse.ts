@@ -1,13 +1,11 @@
-import "@gatling.io/jvm-types";
+import { wrapCallback } from "../gatlingJvm/callbacks";
+import { SessionTo, underlyingSessionTo } from "../session";
+import { ChoiceWithKey } from "./choices";
+import { Executable } from "./execs";
+
 import JvmDoSwitchOrElse = io.gatling.javaapi.core.condition.DoSwitchOrElse;
 import JvmOn = io.gatling.javaapi.core.condition.DoSwitchOrElse$On;
 import JvmOrElse = io.gatling.javaapi.core.condition.DoSwitchOrElse$OrElse;
-
-import { SessionTo, underlyingSessionTo } from "../session";
-import { wrapCallback } from "../gatlingJvm/callbacks";
-
-import { ChoiceWithKey } from "./choices";
-import { Executable } from "./execs";
 
 export interface On<T> {
   on(...choices: ChoiceWithKey[]): OrElse<T>;

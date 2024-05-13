@@ -1,11 +1,10 @@
-import "@gatling.io/jvm-types";
-import JvmActionBuilder = io.gatling.javaapi.core.ActionBuilder;
-import JvmExecs = io.gatling.javaapi.core.exec.Execs;
-import JvmExecutable = io.gatling.javaapi.core.exec.Executable;
-
 import { Wrapper } from "../common";
 import { SessionTransform, underlyingSessionTransform } from "../session";
 import { wrapCallback } from "../gatlingJvm/callbacks";
+
+import JvmActionBuilder = io.gatling.javaapi.core.ActionBuilder;
+import JvmExecs = io.gatling.javaapi.core.exec.Execs;
+import JvmExecutable = io.gatling.javaapi.core.exec.Executable;
 
 export interface Executable<T extends JvmExecutable> extends Wrapper<T> {}
 

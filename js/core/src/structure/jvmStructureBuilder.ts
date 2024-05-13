@@ -1,4 +1,3 @@
-import "@gatling.io/jvm-types";
 import JvmExecs = io.gatling.javaapi.core.exec.Execs;
 import JvmGroups = io.gatling.javaapi.core.group.Groups;
 import JvmFeeds = io.gatling.javaapi.core.feed.Feeds;

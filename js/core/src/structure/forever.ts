@@ -1,4 +1,3 @@
-import "@gatling.io/jvm-types";
 import JvmForever = io.gatling.javaapi.core.loop.Forever;
 
 import { On, wrapOn } from "./on";

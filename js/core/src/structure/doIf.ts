@@ -1,12 +1,10 @@
-import "@gatling.io/jvm-types";
+import { wrapCallback } from "../gatlingJvm/callbacks";
+import { SessionTo, underlyingSessionTo } from "../session";
+import { Executable } from "./execs";
+
 import JvmDoIf = io.gatling.javaapi.core.condition.DoIf;
 import JvmDoIfEquals = io.gatling.javaapi.core.condition.DoIfEquals;
 import JvmExecutable = io.gatling.javaapi.core.exec.Executable;
-
-import { SessionTo, underlyingSessionTo } from "../session";
-import { wrapCallback } from "../gatlingJvm/callbacks";
-
-import { Executable } from "./execs";
 
 // DoIf$Then and DoIfEquals$Then are equivalent for us
 interface JvmThen<T> {

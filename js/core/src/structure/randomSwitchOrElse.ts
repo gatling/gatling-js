@@ -1,10 +1,9 @@
-import "@gatling.io/jvm-types";
+import { ChoiceWithWeight } from "./choices";
+import { Executable } from "./execs";
+
 import JvmRandomSwitchOrElse = io.gatling.javaapi.core.condition.RandomSwitchOrElse;
 import JvmOn = io.gatling.javaapi.core.condition.RandomSwitchOrElse$On;
 import JvmOrElse = io.gatling.javaapi.core.condition.RandomSwitchOrElse$OrElse;
-
-import { ChoiceWithWeight } from "./choices";
-import { Executable } from "./execs";
 
 export interface On<T> {
   on(...choices: ChoiceWithWeight[]): OrElse<T>;

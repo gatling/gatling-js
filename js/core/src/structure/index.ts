@@ -1,12 +1,8 @@
-import "@gatling.io/jvm-types";
 import { CoreDsl as JvmCoreDsl } from "@gatling.io/jvm-types";
+
 import JvmChainBuilder = io.gatling.javaapi.core.ChainBuilder;
 
-import { SessionTo, SessionTransform } from "../session";
-import { Duration } from "../utils/duration";
-import { On } from "./on";
 import { JvmStructureBuilderLike } from "./jvmStructureBuilder";
-
 import { ExecFunction, Execs, execImpl, Executable } from "./execs";
 import { GroupFunction, Groups, groupImpl } from "./groups";
 import { FeedFunction, Feeds, feedImpl } from "./feeds";

@@ -1,9 +1,8 @@
-import "@gatling.io/jvm-types";
-import JvmPaces = io.gatling.javaapi.core.pause.Paces;
-
+import { wrapCallback } from "../gatlingJvm/callbacks";
 import { Duration, isDuration, toJvmDuration } from "../utils/duration";
 import { SessionTo, underlyingSessionToDuration } from "../session";
-import { wrapCallback } from "../gatlingJvm/callbacks";
+
+import JvmPaces = io.gatling.javaapi.core.pause.Paces;
 
 export interface PaceFunction<T extends Paces<T>> {
   /**

@@ -1,8 +1,7 @@
-import "@gatling.io/jvm-types";
+import { Executable } from "./execs";
+
 import JvmUniformRandomSwitch = io.gatling.javaapi.core.condition.UniformRandomSwitch;
 import JvmOn = io.gatling.javaapi.core.condition.UniformRandomSwitch$On;
-
-import { Executable } from "./execs";
 
 export interface On<T> {
   on(executable: Executable<any>, ...executables: Executable<any>[]): T;

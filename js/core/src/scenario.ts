@@ -1,10 +1,9 @@
-import "@gatling.io/jvm-types";
 import { CoreDsl as JvmCoreDsl } from "@gatling.io/jvm-types";
 
-import { StructureBuilder, structureBuilderImpl } from "./structure";
 import { ClosedInjectionStep } from "./closedInjection";
 import { OpenInjectionStep } from "./openInjection";
 import { PopulationBuilder, wrapPopulationBuilder } from "./population";
+import { StructureBuilder, structureBuilderImpl } from "./structure";
 
 import JvmScenarioBuilder = io.gatling.javaapi.core.ScenarioBuilder;
 

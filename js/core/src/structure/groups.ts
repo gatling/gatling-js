@@ -1,9 +1,7 @@
-import "@gatling.io/jvm-types";
 import JvmGroups = io.gatling.javaapi.core.group.Groups;
 
-import { SessionTo, underlyingSessionTo } from "../session";
 import { wrapCallback } from "../gatlingJvm/callbacks";
-
+import { SessionTo, underlyingSessionTo } from "../session";
 import { On, wrapOn } from "./on";
 
 export interface GroupFunction<T extends Groups<T>> {

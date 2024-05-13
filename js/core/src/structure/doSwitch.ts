@@ -1,11 +1,9 @@
-import "@gatling.io/jvm-types";
+import { wrapCallback } from "../gatlingJvm/callbacks";
+import { SessionTo, underlyingSessionTo } from "../session";
+import { ChoiceWithKey } from "./choices";
+
 import JvmDoSwitch = io.gatling.javaapi.core.condition.DoSwitch;
 import JvmOn = io.gatling.javaapi.core.condition.DoSwitch$On;
-
-import { SessionTo, underlyingSessionTo } from "../session";
-import { wrapCallback } from "../gatlingJvm/callbacks";
-
-import { ChoiceWithKey } from "./choices";
 
 export interface On<T> {
   on(...choices: ChoiceWithKey[]): T;

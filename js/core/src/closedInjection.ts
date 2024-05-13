@@ -1,4 +1,3 @@
-import "@gatling.io/jvm-types";
 import { CoreDsl as JvmCoreDsl } from "@gatling.io/jvm-types";
 
 import { Wrapper } from "./common";

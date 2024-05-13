@@ -1,8 +1,7 @@
-import "@gatling.io/jvm-types";
+import { Executable } from "./execs";
+
 import JvmRoundRobinSwitch = io.gatling.javaapi.core.condition.RoundRobinSwitch;
 import JvmOn = io.gatling.javaapi.core.condition.RoundRobinSwitch$On;
-
-import { Executable } from "./execs";
 
 export interface On<T> {
   on(executable: Executable<any>, ...executables: Executable<any>[]): T;

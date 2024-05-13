@@ -1,11 +1,9 @@
-import "@gatling.io/jvm-types";
-import JvmDuring = io.gatling.javaapi.core.loop.During;
-
+import { wrapCallback } from "../gatlingJvm/callbacks";
 import { Duration, isDuration, toJvmDuration } from "../utils/duration";
 import { SessionTo, underlyingSessionToDuration } from "../session";
-import { wrapCallback } from "../gatlingJvm/callbacks";
-
 import { On, wrapOn } from "./on";
+
+import JvmDuring = io.gatling.javaapi.core.loop.During;
 
 export interface DuringFunction<T extends During<T>> {
   /**

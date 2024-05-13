@@ -1,13 +1,12 @@
-import "@gatling.io/jvm-types";
-import JvmPopulationBuilder = io.gatling.javaapi.core.PopulationBuilder;
-
+import { wrapCallback } from "./gatlingJvm/callbacks";
+import { Duration, toJvmDuration } from "./utils/duration";
+import { PauseType, toJvmPauseType } from "./structure/pauses";
 import { Wrapper } from "./common";
 import { ProtocolBuilder } from "./protocol";
 import { SessionTo, underlyingSessionTo } from "./session";
-import { Duration, toJvmDuration } from "./utils/duration";
-import { PauseType, toJvmPauseType } from "./structure/pauses";
 import { ThrottleStep } from "./throttling";
-import { wrapCallback } from "./gatlingJvm/callbacks";
+
+import JvmPopulationBuilder = io.gatling.javaapi.core.PopulationBuilder;
 
 /**
  * A builder for a Population = a Scenario + an injection profile.

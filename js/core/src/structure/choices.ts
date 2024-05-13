@@ -1,13 +1,13 @@
-import "@gatling.io/jvm-types";
+import { CoreDsl as JvmCoreDsl } from "@gatling.io/jvm-types";
+
+import { Wrapper } from "../common";
+import { Executable } from "./execs";
+
 import JvmChoiceWithKey = io.gatling.javaapi.core.Choice$WithKey;
 import JvmChoiceWithKeyThen = io.gatling.javaapi.core.WithKey$Then;
 import JvmChoiceWithWeight = io.gatling.javaapi.core.Choice$WithWeight;
 import JvmChoiceWithWeightThen = io.gatling.javaapi.core.WithWeight$Then;
-import { CoreDsl as JvmCoreDsl } from "@gatling.io/jvm-types";
 
-import { Wrapper } from "../common";
-
-import { Executable } from "./execs";
 
 export interface ChoiceWithKey extends Wrapper<JvmChoiceWithKey> {}
 const wrapChoiceWithKey = (_underlying: JvmChoiceWithKey): ChoiceWithKey => ({

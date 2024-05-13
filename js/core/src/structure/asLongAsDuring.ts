@@ -1,11 +1,10 @@
-import "@gatling.io/jvm-types";
-import JvmAsLongAsDuring = io.gatling.javaapi.core.loop.AsLongAsDuring;
-
+import { wrapCallback } from "../gatlingJvm/callbacks";
 import { Duration, isDuration, toJvmDuration } from "../utils/duration";
 import { SessionTo, underlyingSessionTo, underlyingSessionToDuration } from "../session";
-import { wrapCallback } from "../gatlingJvm/callbacks";
 
 import { On, wrapOn } from "./on";
+
+import JvmAsLongAsDuring = io.gatling.javaapi.core.loop.AsLongAsDuring;
 
 export interface AsLongAsDuringFunction<T extends AsLongAsDuring<T>> {
   /**

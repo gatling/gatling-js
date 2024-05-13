@@ -1,10 +1,9 @@
-import "@gatling.io/jvm-types";
-import JvmRepeat = io.gatling.javaapi.core.loop.Repeat;
 
-import { SessionTo, underlyingSessionTo } from "../session";
 import { wrapCallback } from "../gatlingJvm/callbacks";
-
+import { SessionTo, underlyingSessionTo } from "../session";
 import { On, wrapOn } from "./on";
+
+import JvmRepeat = io.gatling.javaapi.core.loop.Repeat;
 
 export interface RepeatFunction<T extends Repeat<T>> {
   /**

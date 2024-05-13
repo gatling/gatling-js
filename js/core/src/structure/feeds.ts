@@ -1,9 +1,8 @@
-import "@gatling.io/jvm-types";
-import JvmFeeds = io.gatling.javaapi.core.feed.Feeds;
-
+import { wrapCallback } from "../gatlingJvm/callbacks";
 import { FeederBuilder } from "../feeders";
 import { SessionTo, underlyingSessionTo } from "../session";
-import { wrapCallback } from "../gatlingJvm/callbacks";
+
+import JvmFeeds = io.gatling.javaapi.core.feed.Feeds;
 
 export interface FeedFunction<T extends Feeds<T>> {
   // TODO (maybe?): Supplier<Iterator<Map<String, Object>>>, Iterator<Map<String, Object>>
