@@ -6,7 +6,7 @@ import { logger } from "./log";
 export interface RunOptions {
   graalvmHome: string;
   jvmClasspath: string;
-  entrypointName: string;
+  simulationName: string;
   bundleFile: string;
   resourcesFolder: string;
   resultsFolder: string;
@@ -14,7 +14,7 @@ export interface RunOptions {
 
 export const run = async (options: RunOptions): Promise<void> => {
   logger.info(`Running a Gatling simulation with options:
- - entrypointName: ${options.entrypointName}
+ - entrypointName: ${options.simulationName}
  - bundleFile: ${options.bundleFile}`);
 
   const bundleFolder = path.parse(options.bundleFile).dir;
@@ -30,7 +30,7 @@ export const run = async (options: RunOptions): Promise<void> => {
     "-classpath",
     `${bundleFolder}:${options.resourcesFolder}:${options.jvmClasspath}`,
     `-Dgatling.js.bundle.resourcePath=${bundleFileName}`,
-    `-Dgatling.js.entrypointName=${options.entrypointName}`,
+    `-Dgatling.js.simulationName=${options.simulationName}`,
     "io.gatling.app.Gatling",
     "--results-folder",
     options.resultsFolder,

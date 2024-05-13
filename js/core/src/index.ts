@@ -149,8 +149,28 @@ const wrapSetUp = (jvmSetUp: JvmSetUp): SetUp => ({
 export type SetUpFunction = (...populationBuilders: PopulationBuilder[]) => SetUp;
 export type Simulation = (setUp: SetUpFunction) => void;
 
-export const runSimulation =
-  (simulation: Simulation): jvm.Simulation =>
-  (jvmSetUp) => {
-    simulation((...populationBuilders) => wrapSetUp(jvmSetUp(populationBuilders.map((p) => p._underlying))));
-  };
+export interface SimulationFunction {
+  /**
+   * Register a Gatling simulation, with the default name (which is "default")
+   *
+   * @param simulationSetUp - The function setting up the simulation
+   */
+  (simulationSetUp: Simulation): void;
+
+  /**
+   * Register a Gatling simulation
+   *
+   * @param simulationName - The simulation name
+   * @param simulationSetUp - The function setting up the simulation
+   */
+  (simulationName: string, simulationSetUp: Simulation): void;
+}
+
+export const simulation: SimulationFunction = (arg0: string | Simulation, arg1?: Simulation) => {
+  const [simulationName, simulationSetUp] = arg1 !== undefined ? [arg0 as string, arg1] : ["default", arg0 as Simulation];
+
+  const JsSimulation = Java.type<any>("io.gatling.js.JsSimulation");
+  JsSimulation.registerJsSimulation(simulationName, (jvmSetUp: jvm.SetUpFunction) => {
+    simulationSetUp((...populationBuilders) => wrapSetUp(jvmSetUp(populationBuilders.map((p) => p._underlying))));
+  });
+};

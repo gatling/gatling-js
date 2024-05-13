@@ -23,26 +23,29 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Source;
-import org.graalvm.polyglot.TypeLiteral;
-import org.graalvm.polyglot.Value;
 
 public class JsSimulation extends Simulation {
   private static final String JS = "js";
+  private static final Map<String, Consumer<Function<List<PopulationBuilder>, SetUp>>>
+      JS_SIMULATIONS = new HashMap<>();
+
+  public static void registerJsSimulation(
+      String name, Consumer<Function<List<PopulationBuilder>, SetUp>> simulation) {
+    JS_SIMULATIONS.put(name, simulation);
+  }
 
   public JsSimulation() {
-    var entryPointName =
-        Optional.ofNullable(System.getProperty("gatling.js.entrypointName"))
+    var simulationName =
+        Optional.ofNullable(System.getProperty("gatling.js.simulationName"))
             .orElseThrow(
                 () ->
                     new NoSuchElementException(
-                        "System property gatling.js.entrypointName must be defined"));
+                        "System property gatling.js.simulationName must be defined"));
     var bundleUrl =
         Optional.ofNullable(System.getProperty("gatling.js.bundle.filePath"))
             .map(this::filePathToUrl)
@@ -55,7 +58,7 @@ public class JsSimulation extends Simulation {
                     new NoSuchElementException(
                         "One of the system properties gatling.js.bundle.filePath or gatling.js.bundle.resourcePath must be defined"));
 
-    // Context is not closed because it will live for the entire duration of the process
+    // Context is never closed because it will live for the entire duration of the process
     var context =
         Context.newBuilder(JS)
             .allowAllAccess(true)
@@ -68,11 +71,12 @@ public class JsSimulation extends Simulation {
       throw new IllegalStateException("Cannot load Javascript bundle file at " + bundleUrl, e);
     }
 
-    Value jsIifeWrapper = context.getBindings(JS).getMember("gatling");
-    Value jsSimulationValue = jsIifeWrapper.getMember(entryPointName);
-    Consumer<Function<List<PopulationBuilder>, SetUp>> jsSimulation =
-        jsSimulationValue.as(new TypeLiteral<>() {});
+    context.getBindings(JS).getMember("gatling");
 
+    var jsSimulation = JS_SIMULATIONS.get(simulationName);
+    if (jsSimulation == null) {
+      throw new RuntimeException("Simulation named " + simulationName + " was not found.");
+    }
     jsSimulation.accept(this::setUp);
   }
 

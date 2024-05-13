@@ -1,7 +1,7 @@
 import {
   constantUsersPerSec,
   scenario,
-  runSimulation,
+  simulation,
   exec,
   csv,
   jsonFile,
@@ -16,7 +16,7 @@ import {
 } from "@gatling.io/core";
 import { http } from "@gatling.io/http";
 
-const mySimulation = runSimulation(setUp => {
+simulation(setUp => {
   const baseHttpProtocol = http.baseUrl("https://computer-database.gatling.io");
 
   const searchFeeder = arrayFeeder([
@@ -81,5 +81,3 @@ const mySimulation = runSimulation(setUp => {
       global().responseTime().percentile(95.0).lte(500)
     );
 });
-
-export default mySimulation;

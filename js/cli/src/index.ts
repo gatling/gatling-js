@@ -26,8 +26,8 @@ const entrypointFileOption = new Option(
   'The simulation entry point source file path (default: "src/index.js", or "src/index.ts" when using the "--typescript" option)'
 );
 
-const entrypointNameOption = new Option(
-  "--entrypoint-name <value>",
+const simulationNameOption = new Option(
+  "--simulation-name <value>",
   "The simulation entry point function name"
 ).default("default", '"default", compatible with using "export default"');
 
@@ -85,18 +85,18 @@ program
   .description("Run a Gatling simulation")
   .addOption(graalvmHomeMandatoryOption)
   .addOption(jvmClasspathMandatoryOption)
-  .addOption(entrypointNameOption)
+  .addOption(simulationNameOption)
   .addOption(bundleFileOption)
   .addOption(resourcesFolderOption)
   .addOption(resultsFolderOption)
   .action(async (options) => {
     const graalvmHome: string = options.graalvmHome;
     const jvmClasspath: string = options.jvmClasspath;
-    const entrypointName: string = options.entrypointName;
+    const simulationName: string = options.simulationName;
     const bundleFile: string = options.bundleFile;
     const resourcesFolder: string = options.resourcesFolder;
     const resultsFolder: string = options.resultsFolder;
-    await run({ graalvmHome, jvmClasspath, entrypointName, bundleFile, resourcesFolder, resultsFolder });
+    await run({ graalvmHome, jvmClasspath, simulationName, bundleFile, resourcesFolder, resultsFolder });
   });
 
 program
@@ -105,7 +105,7 @@ program
     "Build and run a Gatling simulation, after installing all required components and dependencies for Gatling"
   )
   .addOption(entrypointFileOption)
-  .addOption(entrypointNameOption)
+  .addOption(simulationNameOption)
   .addOption(typescriptOption)
   .addOption(bundleFileOption)
   .addOption(resourcesFolderOption)
@@ -114,7 +114,7 @@ program
   .action(async (options) => {
     const gatlingHome: string = gatlingHomeDirWithDefaults(options);
     const entrypointFile: string = entrypointFileWithDefaults(options);
-    const entrypointName: string = options.entrypointName;
+    const simulationName: string = options.simulationName;
     const bundleFile: string = options.bundleFile;
     const resourcesFolder: string = options.resourcesFolder;
     const resultsFolder: string = options.resultsFolder;
@@ -127,7 +127,7 @@ program
 
     await bundle({ entrypointFile, bundleFile, typescript });
 
-    await run({ graalvmHome, jvmClasspath, entrypointName, bundleFile, resourcesFolder, resultsFolder });
+    await run({ graalvmHome, jvmClasspath, simulationName, bundleFile, resourcesFolder, resultsFolder });
   });
 
 program.parse(process.argv);
