@@ -14,7 +14,7 @@ export interface RunOptions {
 
 export const run = async (options: RunOptions): Promise<void> => {
   logger.info(`Running a Gatling simulation with options:
- - entrypointName: ${options.simulationName}
+ - simulationName: ${options.simulationName}
  - bundleFile: ${options.bundleFile}`);
 
   const bundleFolder = path.parse(options.bundleFile).dir;
