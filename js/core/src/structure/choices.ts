@@ -8,7 +8,6 @@ import JvmChoiceWithKeyThen = io.gatling.javaapi.core.WithKey$Then;
 import JvmChoiceWithWeight = io.gatling.javaapi.core.Choice$WithWeight;
 import JvmChoiceWithWeightThen = io.gatling.javaapi.core.WithWeight$Then;
 
-
 export interface ChoiceWithKey extends Wrapper<JvmChoiceWithKey> {}
 const wrapChoiceWithKey = (_underlying: JvmChoiceWithKey): ChoiceWithKey => ({
   _underlying

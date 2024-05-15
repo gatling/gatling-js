@@ -725,7 +725,9 @@ const requestWithBodyActionBuilderImpl = <T>(
   formParamMap: (map: Expression<Record<string, any>>): T =>
     wrap(
       typeof map === "function"
-        ? (jvmBuilder as any)["formParamMap(java.util.function.Function)"](wrapCallback(underlyingSessionToJava(map as any)))
+        ? (jvmBuilder as any)["formParamMap(java.util.function.Function)"](
+            wrapCallback(underlyingSessionToJava(map as any))
+          )
         : jvmBuilder.formParamMap(map)
     ),
   form: (form: string | ((session: Session) => Record<string, any>)): T =>
