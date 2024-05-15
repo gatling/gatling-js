@@ -116,6 +116,13 @@ export interface Session extends Wrapper<JvmSession> {
    * @returns the virtual user's id
    */
   userId(): number;
+
+  /**
+   * Provide a representation of the Session content
+   *
+   * @returns the Session content as a pretty printed string
+   */
+  toString(): string;
 }
 
 export const wrapSession = (_underlying: JvmSession): Session => ({
@@ -141,7 +148,8 @@ export const wrapSession = (_underlying: JvmSession): Session => ({
   markAsFailed: (): Session => wrapSession(_underlying.markAsFailed()),
   scenario: (): string => _underlying.scenario(),
   groups: (): string[] => _underlying.groups(),
-  userId: (): number => _underlying.userId()
+  userId: (): number => _underlying.userId(),
+  toString: (): string => _underlying.toString()
 });
 
 export type Expression<T> = T | ((session: Session) => T);
