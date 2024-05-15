@@ -1,3 +1,4 @@
+import "@gatling.io/jvm-types";
 import JvmSetUp = io.gatling.javaapi.core.Simulation$SetUp;
 
 import * as jvm from "./gatlingJvm/app";
