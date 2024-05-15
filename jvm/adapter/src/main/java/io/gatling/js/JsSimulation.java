@@ -36,6 +36,9 @@ public class JsSimulation extends Simulation {
 
   public static void registerJsSimulation(
       String name, Consumer<Function<List<PopulationBuilder>, SetUp>> simulation) {
+    if (JS_SIMULATIONS.containsKey(name)) {
+      throw new RuntimeException("A simulation named " + name + " already exists.");
+    }
     JS_SIMULATIONS.put(name, simulation);
   }
 
