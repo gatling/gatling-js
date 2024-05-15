@@ -57,3 +57,11 @@ Configure the version of the `@gatling.io` dependencies in `/js-simulation` or `
 npm install
 npm run start
 ```
+
+## Questions, help?
+
+Read the [documentation](https://docs.gatling.io).
+
+Join the [Gatling Community Forum](https://community.gatling.io).
+
+Found a real bug? Raise an [issue](https://github.com/gatling/gatling/issues).
