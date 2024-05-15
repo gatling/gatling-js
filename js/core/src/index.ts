@@ -160,14 +160,22 @@ export interface SimulationFunction {
   /**
    * Register a Gatling simulation
    *
-   * @param simulationName - The simulation name
+   * @param simulationName - The simulation name (max 100 characters)
    * @param simulationSetUp - The function setting up the simulation
    */
   (simulationName: string, simulationSetUp: Simulation): void;
 }
 
 export const simulation: SimulationFunction = (arg0: string | Simulation, arg1?: Simulation) => {
-  const [simulationName, simulationSetUp] = arg1 !== undefined ? [arg0 as string, arg1] : ["default", arg0 as Simulation];
+  const [simulationName, simulationSetUp] =
+    arg1 !== undefined ? [(arg0 as string).trim(), arg1] : ["default", arg0 as Simulation];
+  if (simulationName.length === 0) {
+    throw Error("simulationName must not be empty");
+  }
+  if ([...simulationName].length > 100) {
+    // Count actual characters, not UTF-16 code units as with simulationName.length
+    throw Error("simulationName must not exceed 100 characters");
+  }
 
   const JsSimulation = Java.type<any>("io.gatling.js.JsSimulation");
   JsSimulation.registerJsSimulation(simulationName, (jvmSetUp: jvm.SetUpFunction) => {
