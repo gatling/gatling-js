@@ -14,7 +14,7 @@
     "rimraf": "5.0.7"
   },
   "scripts": {
-    "clean": "rimraf target results tmp",
+    "clean": "rimraf target",
     "format": "prettier --write '**/*.ts'",
     "setup": "gatling-js-cli install",
     "build": "gatling-js-cli build",

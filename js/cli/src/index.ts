@@ -42,7 +42,7 @@ const resourcesFolderOption = new Option("--resources-folder <value>", "The reso
   "resources"
 );
 
-const resultsFolderOption = new Option("--results-folder <value>", "The results folder path").default("results");
+const resultsFolderOption = new Option("--results-folder <value>", "The results folder path").default("target/gatling");
 
 const typescriptOption = new Option("--typescript", "Use the typescript compiler to compile your code").default(false);
 
