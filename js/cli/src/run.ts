@@ -2,6 +2,7 @@ import { spawn } from "child_process";
 import * as path from "path";
 
 import { logger } from "./log";
+import { versions } from "./dependencies/versions";
 
 export interface RunOptions {
   graalvmHome: string;
@@ -35,7 +36,11 @@ export const run = async (options: RunOptions): Promise<void> => {
     "--results-folder",
     options.resultsFolder,
     "--simulation",
-    "io.gatling.js.JsSimulation"
+    "io.gatling.js.JsSimulation",
+    "--launcher",
+    "gatling-js-cli",
+    "--build-tool-version",
+    versions.gatling.jsAdapter
   ];
 
   const process = spawn(command, args);
