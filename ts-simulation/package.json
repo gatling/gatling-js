@@ -15,7 +15,7 @@
     "typescript": "5.4.5"
   },
   "scripts": {
-    "clean": "rimraf target results tmp",
+    "clean": "rimraf target",
     "format": "prettier --write '**/*.ts'",
     "setup": "gatling-js-cli install",
     "check": "tsc --noEmit",
