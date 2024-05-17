@@ -4,9 +4,9 @@ import { Command, Option } from "commander";
 import os from "os";
 
 import { bundle } from "./bundle";
-import { installAll } from "./dependencies";
+import { installGatlingJs, installRecorder } from "./dependencies";
 import { logger } from "./log";
-import { run } from "./run";
+import { runSimulation, runRecorder } from "./run";
 
 const program = new Command()
   .name("gatling-js-cli")
@@ -55,7 +55,7 @@ program
   .addOption(gatlingHomeOption)
   .action(async (options) => {
     const gatlingHome = gatlingHomeDirWithDefaults(options);
-    const { graalvmHome, coursierBinary, jvmClasspath } = await installAll({ gatlingHome });
+    const { graalvmHome, coursierBinary, jvmClasspath } = await installGatlingJs({ gatlingHome });
     logger.info(`graalvmHome=${graalvmHome}`);
     logger.info(`coursierBinary=${coursierBinary}`);
     logger.info(`jvmClasspath=${jvmClasspath}`);
@@ -90,7 +90,14 @@ program
     const bundleFile: string = options.bundleFile;
     const resourcesFolder: string = options.resourcesFolder;
     const resultsFolder: string = options.resultsFolder;
-    await run({ graalvmHome, jvmClasspath, simulation: simulation, bundleFile, resourcesFolder, resultsFolder });
+    await runSimulation({
+      graalvmHome,
+      jvmClasspath,
+      simulation: simulation,
+      bundleFile,
+      resourcesFolder,
+      resultsFolder
+    });
   });
 
 program
@@ -114,14 +121,35 @@ program
     const resultsFolder: string = options.resultsFolder;
     const typescript: boolean = options.typescript;
 
-    const { graalvmHome, coursierBinary, jvmClasspath } = await installAll({ gatlingHome });
+    const { graalvmHome, coursierBinary, jvmClasspath } = await installGatlingJs({ gatlingHome });
     logger.debug(`graalvmHome=${graalvmHome}`);
     logger.debug(`coursierBinary=${coursierBinary}`);
     logger.debug(`jvmClasspath=${jvmClasspath}`);
 
     await bundle({ sourcesFolder, bundleFile, typescript });
 
-    await run({ graalvmHome, jvmClasspath, simulation, bundleFile, resourcesFolder, resultsFolder });
+    await runSimulation({ graalvmHome, jvmClasspath, simulation, bundleFile, resourcesFolder, resultsFolder });
+  });
+
+program
+  .command("recorder")
+  .description("Run the Gatling recorder")
+  .addOption(gatlingHomeOption)
+  .addOption(sourcesFolderOption)
+  .addOption(typescriptOption)
+  .addOption(resourcesFolderOption)
+  .action(async (options) => {
+    const gatlingHome: string = gatlingHomeDirWithDefaults(options);
+    const sourcesFolder: string = options.sourcesFolder;
+    const resourcesFolder: string = options.resourcesFolder;
+    const typescript: boolean = options.typescript;
+
+    const { graalvmHome, coursierBinary, jvmClasspath } = await installRecorder({ gatlingHome });
+    logger.debug(`graalvmHome=${graalvmHome}`);
+    logger.debug(`coursierBinary=${coursierBinary}`);
+    logger.debug(`jvmClasspath=${jvmClasspath}`);
+
+    await runRecorder({ graalvmHome, jvmClasspath, sourcesFolder, typescript, resourcesFolder });
   });
 
 program.parse(process.argv);

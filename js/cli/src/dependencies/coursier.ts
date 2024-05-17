@@ -45,12 +45,25 @@ export const installCoursier = async (gatlingHomeDir: string, downloadDir: strin
   return coursierPath;
 };
 
-export const resolveDependencies = async (coursierPath: string, javaHome: string): Promise<string> => {
+export const resolveGatlingJsDependencies = async (coursierPath: string, javaHome: string): Promise<string> => {
   const gatlingDep = `"io.gatling.highcharts:gatling-charts-highcharts:${versions.gatling.core}"`;
   const gatlingAdapterDep = `"io.gatling:gatling-jvm-to-js-adapter:${versions.gatling.jsAdapter}"`;
   const graalvmJsDep = `"org.graalvm.polyglot:js-community:${versions.graalvm.js}"`;
 
-  const command = `"${coursierPath}" fetch --classpath ${gatlingDep} ${gatlingAdapterDep} ${graalvmJsDep}`;
+  return await resolveDependencies(coursierPath, javaHome, gatlingDep, gatlingAdapterDep, graalvmJsDep);
+};
+
+export const resolveRecorderDependencies = async (coursierPath: string, javaHome: string): Promise<string> => {
+  const recorderDep = `io.gatling:gatling-recorder:${versions.gatling.core}`;
+  return await resolveDependencies(coursierPath, javaHome, recorderDep);
+};
+
+const resolveDependencies = async (
+  coursierPath: string,
+  javaHome: string,
+  ...dependencies: string[]
+): Promise<string> => {
+  const command = `"${coursierPath}" fetch --classpath ${dependencies.join(" ")}`;
 
   // TODO could add a timeout
   logger.info(`Resolving dependencies with Coursier`);
