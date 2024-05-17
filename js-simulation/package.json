@@ -18,6 +18,7 @@
     "format": "prettier --write '**/*.ts'",
     "setup": "gatling install",
     "build": "gatling build",
-    "start": "gatling run --simulation test-simulation"
+    "start": "gatling run --simulation test-simulation",
+    "recorder": "gatling recorder"
   }
 }

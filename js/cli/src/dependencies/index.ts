@@ -1,6 +1,6 @@
 import fs from "fs/promises";
 
-import { installCoursier, resolveDependencies } from "./coursier";
+import { installCoursier, resolveGatlingJsDependencies, resolveRecorderDependencies } from "./coursier";
 import { installGraalVm } from "./graalVm";
 
 export interface DependenciesOptions {
@@ -13,14 +13,27 @@ export interface ResolvedDependencies {
   jvmClasspath: string;
 }
 
-export const installAll = async (options: DependenciesOptions): Promise<ResolvedDependencies> => {
+export const installGatlingJs = async (options: DependenciesOptions): Promise<ResolvedDependencies> => {
   const downloadDir = `${options.gatlingHome}/tmp/download`;
   await fs.mkdir(downloadDir, { recursive: true });
 
   const graalvmHomePath = await installGraalVm(options.gatlingHome, downloadDir);
   const coursierPath = await installCoursier(options.gatlingHome, downloadDir);
-  const classpath = await resolveDependencies(coursierPath, graalvmHomePath);
+  const classpath = await resolveGatlingJsDependencies(coursierPath, graalvmHomePath);
+  return {
+    graalvmHome: graalvmHomePath,
+    coursierBinary: coursierPath,
+    jvmClasspath: classpath.trim()
+  };
+};
 
+export const installRecorder = async (options: DependenciesOptions): Promise<ResolvedDependencies> => {
+  const downloadDir = `${options.gatlingHome}/tmp/download`;
+  await fs.mkdir(downloadDir, { recursive: true });
+
+  const graalvmHomePath = await installGraalVm(options.gatlingHome, downloadDir);
+  const coursierPath = await installCoursier(options.gatlingHome, downloadDir);
+  const classpath = await resolveRecorderDependencies(coursierPath, graalvmHomePath);
   return {
     graalvmHome: graalvmHomePath,
     coursierBinary: coursierPath,
