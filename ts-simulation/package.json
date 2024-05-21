@@ -17,9 +17,9 @@
   "scripts": {
     "clean": "rimraf target",
     "format": "prettier --write '**/*.ts'",
-    "setup": "gatling-js-cli install",
+    "setup": "gatling install",
     "check": "tsc --noEmit",
-    "build": "tsc --noEmit && gatling-js-cli build --typescript",
-    "start": "gatling-js-cli run --typescript"
+    "build": "tsc --noEmit && gatling build --typescript",
+    "start": "gatling run --typescript --simulation test-simulation"
   }
 }

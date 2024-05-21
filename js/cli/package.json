@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "Apache-2.0",
   "bin": {
-    "gatling-js-cli": "target/index.js"
+    "gatling": "target/index.js"
   },
   "main": "target/index.js",
   "types": "target/index.d.ts",

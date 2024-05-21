@@ -11,3 +11,7 @@ root_dir="$(dirname "$(realpath -- "$0")")"
 # Rebuild js-simulation
 cd "$root_dir/js-simulation"
 npm run build
+
+# Rebuild ts-simulation
+cd "$root_dir/ts-simulation"
+npm run build

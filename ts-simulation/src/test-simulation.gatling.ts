@@ -2,6 +2,8 @@ import {
   constantUsersPerSec,
   scenario,
   simulation,
+  Session,
+  ScenarioBuilder,
   exec,
   csv,
   jsonFile,
@@ -16,7 +18,7 @@ import {
 } from "@gatling.io/core";
 import { http } from "@gatling.io/http";
 
-simulation(setUp => {
+export default simulation((setUp) => {
   const baseHttpProtocol = http.baseUrl("https://computer-database.gatling.io");
 
   const searchFeeder = arrayFeeder([
@@ -28,15 +30,15 @@ simulation(setUp => {
   // const createFeeder = csv("computers/create.csv").circular();
   const createFeeder = jsonFile("computers/create.json").circular();
 
-  const scn = scenario("My scenario")
+  const scn: ScenarioBuilder = scenario("My scenario")
     .feed(searchFeeder)
     .feed(createFeeder)
     .exec(
       group("Browse").on(
         exec(session => session.set("page", 1)),
-        doWhile(session => session.get<number>("page") < 3).on(
+        doWhile((session: Session) => session.get<number>("page") < 3).on(
           http("Browse page #{page}").get("/computers?p=#{page}"),
-          exec(session => session.set("page", session.get("page") + 1)),
+          exec(session => session.set("page", session.get<number>("page") + 1)),
           pause({ amount: 500, unit: "milliseconds" })
         )
       ),
@@ -51,10 +53,10 @@ simulation(setUp => {
         http("Get form").get("/computers/new"),
         pause(1),
         exec(session => {
-          const name = session.get("name");
-          const introduced = session.get("introduced");
-          const discontinued = session.get("discontinued");
-          const company = session.get("company");
+          const name = session.get<string>("name");
+          const introduced = session.get<string>("introduced");
+          const discontinued = session.get<string>("discontinued");
+          const company = session.get<string>("company");
           console.log(
             `Create computer (name='${name}', introduced='${introduced}', discontinued='${discontinued}', company='${company}')`
           );

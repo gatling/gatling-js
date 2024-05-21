@@ -8,7 +8,7 @@ import { osType } from "./dependencies/os";
 export interface RunOptions {
   graalvmHome: string;
   jvmClasspath: string;
-  simulationName: string;
+  simulation: string;
   bundleFile: string;
   resourcesFolder: string;
   resultsFolder: string;
@@ -16,11 +16,8 @@ export interface RunOptions {
 
 export const run = async (options: RunOptions): Promise<void> => {
   logger.info(`Running a Gatling simulation with options:
- - simulationName: ${options.simulationName}
+ - simulation: ${options.simulation}
  - bundleFile: ${options.bundleFile}`);
-
-  const bundleFolder = path.parse(options.bundleFile).dir;
-  const bundleFileName = path.parse(options.bundleFile).base;
 
   const command = `${options.graalvmHome}/bin/java`;
 
@@ -32,9 +29,9 @@ export const run = async (options: RunOptions): Promise<void> => {
     "-XX:MaxTrivialSize=12",
     "-Xmx1G",
     "-classpath",
-    [bundleFolder, options.resourcesFolder, options.jvmClasspath].join(classpathSeparator),
-    `-Dgatling.js.bundle.resourcePath=${bundleFileName}`,
-    `-Dgatling.js.simulationName=${options.simulationName}`,
+    `${options.resourcesFolder}${classpathSeparator}${options.jvmClasspath}`,
+    `-Dgatling.js.bundle.filePath=${options.bundleFile}`,
+    `-Dgatling.js.simulation=${options.simulation}`,
     "io.gatling.app.Gatling",
     "--results-folder",
     options.resultsFolder,

@@ -28,27 +28,19 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Source;
+import org.graalvm.polyglot.TypeLiteral;
+import org.graalvm.polyglot.Value;
 
 public class JsSimulation extends Simulation {
   private static final String JS = "js";
-  private static final Map<String, Consumer<Function<List<PopulationBuilder>, SetUp>>>
-      JS_SIMULATIONS = new HashMap<>();
-
-  public static void registerJsSimulation(
-      String name, Consumer<Function<List<PopulationBuilder>, SetUp>> simulation) {
-    if (JS_SIMULATIONS.containsKey(name)) {
-      throw new RuntimeException("A simulation named " + name + " already exists.");
-    }
-    JS_SIMULATIONS.put(name, simulation);
-  }
 
   public JsSimulation() {
     var simulationName =
-        Optional.ofNullable(System.getProperty("gatling.js.simulationName"))
+        Optional.ofNullable(System.getProperty("gatling.js.simulation"))
             .orElseThrow(
                 () ->
                     new NoSuchElementException(
-                        "System property gatling.js.simulationName must be defined"));
+                        "System property gatling.js.simulation must be defined"));
     var bundleUrl =
         Optional.ofNullable(System.getProperty("gatling.js.bundle.filePath"))
             .map(this::filePathToUrl)
@@ -73,14 +65,16 @@ public class JsSimulation extends Simulation {
     } catch (IOException e) {
       throw new IllegalStateException("Cannot load Javascript bundle file at " + bundleUrl, e);
     }
-
-    context.getBindings(JS).getMember("gatling");
-
-    var jsSimulation = JS_SIMULATIONS.get(simulationName);
-    if (jsSimulation == null) {
-      throw new RuntimeException("Simulation named " + simulationName + " was not found.");
+    Value jsIifeWrapper = context.getBindings(JS).getMember("gatling");
+    Value jsSimulationValue = jsIifeWrapper.getMember(simulationName);
+    if (jsSimulationValue == null) {
+      throw new NoSuchElementException(
+          "Simulation '" + simulationName + "' was not found in the JavaScript bundle");
     }
-    jsSimulation.accept(this::setUp);
+
+    jsSimulationValue
+        .as(new TypeLiteral<Consumer<Function<List<PopulationBuilder>, SetUp>>>() {})
+        .accept(this::setUp);
   }
 
   private URL filePathToUrl(String filePath) {
