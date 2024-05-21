@@ -1,0 +1,61 @@
+import { existsSync } from "fs";
+import fs from "fs/promises";
+
+import { downloadFile } from "./download";
+import { logger } from "../log";
+import { versions } from "./versions";
+import { promisify } from "util";
+import { exec } from "child_process";
+import { osType } from "./os";
+
+export const installCoursier = async (gatlingHomeDir: string, downloadDir: string): Promise<string> => {
+  const coursierRootPath = `${gatlingHomeDir}/coursier/${versions.coursier}`;
+  const coursierPath = `${coursierRootPath}/cs`;
+
+  if (!existsSync(coursierPath)) {
+    const jarUrl = `https://github.com/coursier/coursier/releases/download/v${versions.coursier}/coursier`;
+    const windowsBatUrl = `https://github.com/coursier/launchers/raw/master/coursier.bat`;
+    const downloadPath = `${downloadDir}/cs`;
+
+    if (existsSync(coursierRootPath)) {
+      await fs.rm(coursierRootPath, { recursive: true });
+    }
+    if (existsSync(downloadPath)) {
+      await fs.rm(downloadPath);
+    }
+    await fs.mkdir(coursierRootPath, { recursive: true });
+
+    logger.info(`Downloading Coursier ${versions.coursier} to ${downloadPath}`);
+    await downloadFile(jarUrl, downloadPath);
+    if (osType === "Windows_NT") {
+      await downloadFile(windowsBatUrl, `${downloadPath}.bat`);
+    } else {
+      await fs.chmod(downloadPath, 0o744);
+    }
+
+    logger.info(`Installing Coursier to ${coursierPath}`);
+    await fs.rename(downloadPath, coursierPath);
+    if (osType === "Windows_NT") {
+      await fs.rename(`${downloadPath}.bat`, `${coursierPath}.bat`);
+    }
+  } else {
+    logger.info(`Coursier ${versions.coursier} already installed at ${coursierPath}`);
+  }
+
+  return coursierPath;
+};
+
+export const resolveDependencies = async (coursierPath: string, javaHome: string): Promise<string> => {
+  const gatlingDep = `"io.gatling.highcharts:gatling-charts-highcharts:${versions.gatling.core}"`;
+  const gatlingAdapterDep = `"io.gatling:gatling-jvm-to-js-adapter:${versions.gatling.jsAdapter}"`;
+  const graalvmJsDep = `"org.graalvm.polyglot:js-community:${versions.graalvm.js}"`;
+
+  const command = `"${coursierPath}" fetch --classpath ${gatlingDep} ${gatlingAdapterDep} ${graalvmJsDep}`;
+
+  // TODO could add a timeout
+  logger.info(`Resolving dependencies with Coursier`);
+  const { stdout } = await execAsync(command, { env: { ...process.env, JAVA_HOME: javaHome } });
+  return stdout;
+};
+
+const execAsync = promisify(exec);
