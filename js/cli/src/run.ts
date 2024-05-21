@@ -3,6 +3,7 @@ import * as path from "path";
 
 import { logger } from "./log";
 import { versions } from "./dependencies/versions";
+import { osType } from "./dependencies/os";
 
 export interface RunOptions {
   graalvmHome: string;
@@ -22,6 +23,8 @@ export const run = async (options: RunOptions): Promise<void> => {
   const bundleFileName = path.parse(options.bundleFile).base;
 
   const command = `${options.graalvmHome}/bin/java`;
+
+  const classpathSeparator = osType === "Windows_NT" ? ";" : ":";
   const args = [
     "-server",
     "-XX:+HeapDumpOnOutOfMemoryError",
@@ -29,7 +32,7 @@ export const run = async (options: RunOptions): Promise<void> => {
     "-XX:MaxTrivialSize=12",
     "-Xmx1G",
     "-classpath",
-    `${bundleFolder}:${options.resourcesFolder}:${options.jvmClasspath}`,
+    [bundleFolder, options.resourcesFolder, options.jvmClasspath].join(classpathSeparator),
     `-Dgatling.js.bundle.resourcePath=${bundleFileName}`,
     `-Dgatling.js.simulationName=${options.simulationName}`,
     "io.gatling.app.Gatling",
