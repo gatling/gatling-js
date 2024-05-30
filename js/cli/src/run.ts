@@ -26,7 +26,9 @@ export interface RunRecorderOptions extends RunOptions {
 export const runSimulation = async (options: RunSimulationOptions): Promise<void> => {
   logger.info(`Running a Gatling simulation with options:
  - simulation: ${options.simulation}
- - bundleFile: ${options.bundleFile}`);
+ - bundleFile: ${options.bundleFile}
+ - resourcesFolder: ${options.resourcesFolder}
+ - resultsFolder: ${options.resultsFolder}`);
 
   const additionalClasspathElements = [options.resourcesFolder];
   const javaArgs = [
@@ -47,7 +49,10 @@ export const runSimulation = async (options: RunSimulationOptions): Promise<void
 };
 
 export const runRecorder = async (options: RunRecorderOptions): Promise<void> => {
-  logger.info("Running the Gatling Recorder");
+  logger.info(`Running the Gatling Recorder with options:
+ - sourcesFolder: ${options.sourcesFolder}
+ - resourcesFolder: ${options.resourcesFolder}
+ - typescript: ${options.typescript}`);
 
   const recorderArgs = [
     "--simulations-folder",
