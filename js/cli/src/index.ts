@@ -5,6 +5,7 @@ import os from "os";
 
 import { bundle } from "./bundle";
 import { installGatlingJs, installRecorder } from "./dependencies";
+import { findSimulations, SimulationFile } from "./simulations";
 import { logger } from "./log";
 import { runSimulation, runRecorder } from "./run";
 
@@ -23,14 +24,36 @@ const gatlingHomeDirWithDefaults = (options: { gatlingHome?: string }): string =
 
 const sourcesFolderOption = new Option("--sources-folder <value>", "The sources folder path").default("src");
 
-const simulationOption = new Option("--simulation <value>", "The simulation entry point function name").default(
-  "default",
-  '"default", compatible with using "export default"'
+const simulationOption = new Option(
+  "--simulation <value>",
+  "The simulation entry point function name (default: if only one *.gatling.js or *.gatling.ts file is found, will execute that simulation)"
 );
 
-const bundleFileOption = new Option("--bundle-file <value>", "The simulation target bundle file path").default(
-  "target/bundle.js"
-);
+const simulationWithDefaults = (options: { simulation?: string }, simulationsFound: SimulationFile[]): string => {
+  if (options.simulation !== undefined) {
+    return options.simulation;
+  } else if (simulationsFound.length === 1) {
+    return simulationsFound[0].name;
+  } else if (simulationsFound.length === 0) {
+    throw new Error(
+      "No simulation found, simulations must be defined in a <simulation name>.gatling.js or <simulation name>.gatling.ts file)"
+    );
+  } else {
+    throw new Error(
+      `Several simulations found, specify one using the --simulation option (available simulations: ${simulationsFound.map((s) => s.name)})`
+    );
+  }
+};
+
+const simulationRequiredOption = new Option(
+  "--simulation <value>",
+  "The simulation entry point function name"
+).makeOptionMandatory(true);
+
+const bundleFileOption = new Option(
+  "--bundle-file <value>",
+  "The target bundle file path when building simulations"
+).default("target/bundle.js");
 
 const resourcesFolderOption = new Option("--resources-folder <value>", "The resources folder path").default(
   "resources"
@@ -38,7 +61,15 @@ const resourcesFolderOption = new Option("--resources-folder <value>", "The reso
 
 const resultsFolderOption = new Option("--results-folder <value>", "The results folder path").default("target/gatling");
 
-const typescriptOption = new Option("--typescript", "Use the typescript compiler to compile your code").default(false);
+const typescriptOption = new Option(
+  "--typescript",
+  "Use the typescript compiler to compile your code (default: true if the sourcesFolder contains any *.gatling.ts file, false otherwise)"
+);
+
+const typescriptWithDefaults = (options: { typescript?: boolean }, simulationsFound: SimulationFile[]): boolean =>
+  options.typescript !== undefined
+    ? options.typescript
+    : simulationsFound.findIndex((s) => s.type === "typescript") >= 0;
 
 const graalvmHomeMandatoryOption = new Option("--graalvm-home <value>", "Path to the GraalVM home").makeOptionMandatory(
   true
@@ -70,16 +101,19 @@ program
   .action(async (options) => {
     const sourcesFolder: string = options.sourcesFolder;
     const bundleFile: string = options.bundleFile;
-    const typescript: boolean = options.typescript;
-    await bundle({ sourcesFolder, bundleFile, typescript });
+
+    const simulations = await findSimulations(sourcesFolder);
+    const typescript = typescriptWithDefaults(options, simulations);
+
+    await bundle({ sourcesFolder, bundleFile, typescript, simulations });
   });
 
 program
   .command("run-only")
-  .description("Run a Gatling simulation")
+  .description("Run a Gatling simulation from an already built bundle")
   .addOption(graalvmHomeMandatoryOption)
   .addOption(jvmClasspathMandatoryOption)
-  .addOption(simulationOption)
+  .addOption(simulationRequiredOption)
   .addOption(bundleFileOption)
   .addOption(resourcesFolderOption)
   .addOption(resultsFolderOption)
@@ -90,6 +124,7 @@ program
     const bundleFile: string = options.bundleFile;
     const resourcesFolder: string = options.resourcesFolder;
     const resultsFolder: string = options.resultsFolder;
+
     await runSimulation({
       graalvmHome,
       jvmClasspath,
@@ -115,18 +150,20 @@ program
   .action(async (options) => {
     const gatlingHome = gatlingHomeDirWithDefaults(options);
     const sourcesFolder: string = options.sourcesFolder;
-    const simulation: string = options.simulation;
     const bundleFile: string = options.bundleFile;
     const resourcesFolder: string = options.resourcesFolder;
     const resultsFolder: string = options.resultsFolder;
-    const typescript: boolean = options.typescript;
+
+    const simulations = await findSimulations(sourcesFolder);
+    const typescript = typescriptWithDefaults(options, simulations);
+    const simulation = simulationWithDefaults(options, simulations);
 
     const { graalvmHome, coursierBinary, jvmClasspath } = await installGatlingJs({ gatlingHome });
     logger.debug(`graalvmHome=${graalvmHome}`);
     logger.debug(`coursierBinary=${coursierBinary}`);
     logger.debug(`jvmClasspath=${jvmClasspath}`);
 
-    await bundle({ sourcesFolder, bundleFile, typescript });
+    await bundle({ sourcesFolder, bundleFile, typescript, simulations });
 
     await runSimulation({ graalvmHome, jvmClasspath, simulation, bundleFile, resourcesFolder, resultsFolder });
   });
@@ -142,7 +179,9 @@ program
     const gatlingHome: string = gatlingHomeDirWithDefaults(options);
     const sourcesFolder: string = options.sourcesFolder;
     const resourcesFolder: string = options.resourcesFolder;
-    const typescript: boolean = options.typescript;
+
+    const simulations = await findSimulations(sourcesFolder);
+    const typescript = typescriptWithDefaults(options, simulations);
 
     const { graalvmHome, coursierBinary, jvmClasspath } = await installRecorder({ gatlingHome });
     logger.debug(`graalvmHome=${graalvmHome}`);

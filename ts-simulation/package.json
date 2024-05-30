@@ -20,7 +20,7 @@
     "setup": "gatling install",
     "check": "tsc --noEmit",
     "build": "tsc --noEmit && gatling build --typescript",
-    "start": "gatling run --typescript --simulation test-simulation",
+    "start": "gatling run",
     "recorder": "gatling recorder --typescript"
   }
 }
