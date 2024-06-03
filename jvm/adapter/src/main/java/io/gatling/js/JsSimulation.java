@@ -16,80 +16,25 @@
 
 package io.gatling.js;
 
-import com.oracle.truffle.js.runtime.JSContextOptions;
-import io.gatling.javaapi.core.PopulationBuilder;
+import com.oracle.truffle.js.lang.JavaScriptLanguageHack;
 import io.gatling.javaapi.core.Simulation;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.file.Paths;
-import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import org.graalvm.polyglot.Context;
-import org.graalvm.polyglot.Source;
-import org.graalvm.polyglot.TypeLiteral;
-import org.graalvm.polyglot.Value;
 
 public class JsSimulation extends Simulation {
-  private static final String JS = "js";
+
+  static {
+    try {
+      // Implemented in as separate class because Lookup#defineClass() needs to be called from the
+      // same package as the class being defined
+      JavaScriptLanguageHack.allowThreadAccess();
+    } catch (IOException | IllegalAccessException e) {
+      throw new RuntimeException(e);
+    }
+  }
 
   public JsSimulation() {
-    var simulationName =
-        Optional.ofNullable(System.getProperty("gatling.js.simulation"))
-            .orElseThrow(
-                () ->
-                    new NoSuchElementException(
-                        "System property gatling.js.simulation must be defined"));
-    var bundleUrl =
-        Optional.ofNullable(System.getProperty("gatling.js.bundle.filePath"))
-            .map(this::filePathToUrl)
-            .or(
-                () ->
-                    Optional.ofNullable(System.getProperty("gatling.js.bundle.resourcePath"))
-                        .map(this::resourcePathToUrl))
-            .orElseThrow(
-                () ->
-                    new NoSuchElementException(
-                        "One of the system properties gatling.js.bundle.filePath or gatling.js.bundle.resourcePath must be defined"));
-
-    // Context is never closed because it will live for the entire duration of the process
-    var context =
-        Context.newBuilder(JS)
-            .allowAllAccess(true)
-            .option(JSContextOptions.STRICT_NAME, "true")
-            .build();
-
-    try {
-      context.eval(Source.newBuilder(JS, bundleUrl).mimeType("application/javascript").build());
-    } catch (IOException e) {
-      throw new IllegalStateException("Cannot load Javascript bundle file at " + bundleUrl, e);
-    }
-    Value jsIifeWrapper = context.getBindings(JS).getMember("gatling");
-    Value jsSimulationValue = jsIifeWrapper.getMember(simulationName);
-    if (jsSimulationValue == null) {
-      throw new NoSuchElementException(
-          "Simulation '" + simulationName + "' was not found in the JavaScript bundle");
-    }
-
-    jsSimulationValue
-        .as(new TypeLiteral<Consumer<Function<List<PopulationBuilder>, SetUp>>>() {})
-        .accept(this::setUp);
-  }
-
-  private URL filePathToUrl(String filePath) {
-    try {
-      return Paths.get(filePath).toUri().toURL();
-    } catch (MalformedURLException e) {
-      throw new IllegalArgumentException("Not a valid file path: " + filePath, e);
-    }
-  }
-
-  private URL resourcePathToUrl(String resourcePath) {
-    var url = getClass().getClassLoader().getResource(resourcePath);
-    if (url == null) {
-      throw new IllegalArgumentException("Not a valid resource path: " + resourcePath);
-    }
-    return url;
+    // Implemented in a separate class to defer loading any GraalJS class until after the modified
+    // class has been loaded in this class's static block
+    JsSimulationHelper.loadSimulation(this::setUp);
   }
 }
