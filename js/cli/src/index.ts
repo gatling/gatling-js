@@ -5,6 +5,7 @@ import os from "os";
 
 import { bundle } from "./bundle";
 import { installGatlingJs, installRecorder } from "./dependencies";
+import { enterprisePackage } from "./enterprisePackage";
 import { findSimulations, SimulationFile } from "./simulations";
 import { logger } from "./log";
 import { runSimulation, runRecorder } from "./run";
@@ -55,6 +56,11 @@ const bundleFileOption = new Option(
   "The target bundle file path when building simulations"
 ).default("target/bundle.js");
 
+const enterprisePackageFileOption = new Option(
+  "--enterprise-package-file <value>",
+  "The target package file path when packaging simulations for Gatling Enterprise"
+).default("target/package.jar");
+
 const resourcesFolderOption = new Option("--resources-folder <value>", "The resources folder path").default(
   "resources"
 );
@@ -94,7 +100,7 @@ program
 
 program
   .command("build")
-  .description("Build a Gatling simulation")
+  .description("Build Gatling simulations")
   .addOption(sourcesFolderOption)
   .addOption(bundleFileOption)
   .addOption(typescriptOption)
@@ -189,6 +195,28 @@ program
     logger.debug(`jvmClasspath=${jvmClasspath}`);
 
     await runRecorder({ graalvmHome, jvmClasspath, sourcesFolder, typescript, resourcesFolder });
+  });
+
+program
+  .command("enterprise-package")
+  .description("Build Gatling simulations and package them for Gatling Enterprise")
+  .addOption(sourcesFolderOption)
+  .addOption(resourcesFolderOption)
+  .addOption(bundleFileOption)
+  .addOption(enterprisePackageFileOption)
+  .addOption(typescriptOption)
+  .action(async (options) => {
+    const sourcesFolder: string = options.sourcesFolder;
+    const resourcesFolder: string = options.resourcesFolder;
+    const bundleFile: string = options.bundleFile;
+    const enterprisePackageFile: string = options.enterprisePackageFile;
+
+    const simulations = await findSimulations(sourcesFolder);
+    const typescript = typescriptWithDefaults(options, simulations);
+
+    await bundle({ sourcesFolder, bundleFile, typescript, simulations });
+
+    await enterprisePackage({ bundleFile, resourcesFolder, enterprisePackageFile, simulations });
   });
 
 program.parse(process.argv);
