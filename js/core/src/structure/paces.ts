@@ -1,4 +1,3 @@
-import { wrapCallback } from "../gatlingJvm/callbacks";
 import { Duration, isDuration, toJvmDuration } from "../utils/duration";
 import { SessionTo, underlyingSessionToDuration } from "../session";
 
@@ -120,13 +119,7 @@ export const paceImpl =
       if (typeof arg0 === "string" && typeof arg1 === "string") {
         return wrap(jvmGroups.pace(arg0, arg1, arg2));
       } else if (typeof arg0 === "function" && typeof arg1 === "function") {
-        return wrap(
-          jvmGroups.pace(
-            wrapCallback(underlyingSessionToDuration(arg0)),
-            wrapCallback(underlyingSessionToDuration(arg1)),
-            arg2
-          )
-        );
+        return wrap(jvmGroups.pace(underlyingSessionToDuration(arg0), underlyingSessionToDuration(arg1), arg2));
       } else if (isDuration(arg0) && isDuration(arg1)) {
         return wrap(jvmGroups.pace(toJvmDuration(arg0), toJvmDuration(arg1), arg2));
       }
@@ -136,19 +129,14 @@ export const paceImpl =
         if (typeof arg0 === "string") {
           return wrap(jvmGroups.pace(arg0, arg1));
         } else if (typeof arg0 === "function") {
-          return wrap(jvmGroups.pace(wrapCallback(underlyingSessionToDuration(arg0)), arg1));
+          return wrap(jvmGroups.pace(underlyingSessionToDuration(arg0), arg1));
         } else if (isDuration(arg0)) {
           return wrap(jvmGroups.pace(toJvmDuration(arg0), arg1));
         }
       } else {
         // pace(min, max)
         if (typeof arg0 === "function" && typeof arg1 === "function") {
-          return wrap(
-            jvmGroups.pace(
-              wrapCallback(underlyingSessionToDuration(arg0)),
-              wrapCallback(underlyingSessionToDuration(arg1))
-            )
-          );
+          return wrap(jvmGroups.pace(underlyingSessionToDuration(arg0), underlyingSessionToDuration(arg1)));
         } else if (isDuration(arg0) && isDuration(arg1)) {
           return wrap(jvmGroups.pace(toJvmDuration(arg0), toJvmDuration(arg1)));
         }
@@ -158,7 +146,7 @@ export const paceImpl =
       if (typeof arg0 === "string") {
         return wrap(jvmGroups.pace(arg0));
       } else if (typeof arg0 === "function") {
-        return wrap(jvmGroups.pace(wrapCallback(underlyingSessionToDuration(arg0))));
+        return wrap(jvmGroups.pace(underlyingSessionToDuration(arg0)));
       } else if (isDuration(arg0)) {
         return wrap(jvmGroups.pace(toJvmDuration(arg0)));
       }

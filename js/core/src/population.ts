@@ -1,4 +1,3 @@
-import { wrapCallback } from "./gatlingJvm/callbacks";
 import { Duration, toJvmDuration } from "./utils/duration";
 import { PauseType, toJvmPauseType } from "./structure/pauses";
 import { Wrapper } from "./common";
@@ -98,7 +97,7 @@ export const wrapPopulationBuilder = (_underlying: JvmPopulationBuilder): Popula
   disablePauses: () => wrapPopulationBuilder(_underlying.disablePauses()),
   constantPauses: () => wrapPopulationBuilder(_underlying.constantPauses()),
   exponentialPauses: () => wrapPopulationBuilder(_underlying.exponentialPauses()),
-  customPauses: (f) => wrapPopulationBuilder(_underlying.customPauses(wrapCallback(underlyingSessionTo(f)))),
+  customPauses: (f) => wrapPopulationBuilder(_underlying.customPauses(underlyingSessionTo(f))),
   uniformPauses: (plusOrMinus) => wrapPopulationBuilder(_underlying.uniformPauses(toJvmDuration(plusOrMinus))),
   pauses: (pauseType) => wrapPopulationBuilder(_underlying.pauses(toJvmPauseType(pauseType))),
   throttle: (...throttleSteps) => wrapPopulationBuilder(_underlying.throttle(throttleSteps.map((t) => t._underlying))),

@@ -1,4 +1,3 @@
-import { wrapCallback } from "../gatlingJvm/callbacks";
 import { SessionTo, underlyingSessionTo } from "../session";
 import { On, wrapOn } from "./on";
 
@@ -142,7 +141,7 @@ export const errorsImpl = <J2, J1 extends JvmErrors<J2, any>, T extends Errors<T
   tryMax: (times: string | number | SessionTo<number>): On<T> =>
     wrapOn(
       typeof times === "function"
-        ? jvmErrors.tryMax(wrapCallback(underlyingSessionTo(times)))
+        ? jvmErrors.tryMax(underlyingSessionTo(times))
         : typeof times === "string"
           ? jvmErrors.tryMax(times)
           : jvmErrors.tryMax(times),
@@ -151,7 +150,7 @@ export const errorsImpl = <J2, J1 extends JvmErrors<J2, any>, T extends Errors<T
   exitHereIf: (condition: string | SessionTo<boolean>): T =>
     wrap(
       typeof condition === "function"
-        ? jvmErrors.exitHereIf(wrapCallback(underlyingSessionTo(condition)))
+        ? jvmErrors.exitHereIf(underlyingSessionTo(condition))
         : jvmErrors.exitHereIf(condition)
     ),
   exitHere: (): T => wrap(jvmErrors.exitHere()),
@@ -159,24 +158,19 @@ export const errorsImpl = <J2, J1 extends JvmErrors<J2, any>, T extends Errors<T
   stopInjector: (message: string | SessionTo<string>): T =>
     wrap(
       typeof message === "function"
-        ? jvmErrors.stopInjector(wrapCallback(underlyingSessionTo(message)))
+        ? jvmErrors.stopInjector(underlyingSessionTo(message))
         : jvmErrors.stopInjector(message)
     ),
   stopInjectorIf: (message: string | SessionTo<string>, condition: string | SessionTo<boolean>): T => {
     if (typeof message === "function") {
       if (typeof condition === "function") {
-        return wrap(
-          jvmErrors.stopInjectorIf(
-            wrapCallback(underlyingSessionTo(message)),
-            wrapCallback(underlyingSessionTo(condition))
-          )
-        );
+        return wrap(jvmErrors.stopInjectorIf(underlyingSessionTo(message), underlyingSessionTo(condition)));
       } else {
-        return wrap(jvmErrors.stopInjectorIf(wrapCallback(underlyingSessionTo(message)), condition));
+        return wrap(jvmErrors.stopInjectorIf(underlyingSessionTo(message), condition));
       }
     } else {
       if (typeof condition === "function") {
-        return wrap(jvmErrors.stopInjectorIf(message, wrapCallback(underlyingSessionTo(condition))));
+        return wrap(jvmErrors.stopInjectorIf(message, underlyingSessionTo(condition)));
       } else {
         return wrap(jvmErrors.stopInjectorIf(message, condition));
       }

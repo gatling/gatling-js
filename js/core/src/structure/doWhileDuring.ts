@@ -1,4 +1,3 @@
-import { wrapCallback } from "../gatlingJvm/callbacks";
 import { Duration, isDuration, toJvmDuration } from "../utils/duration";
 import { SessionTo, underlyingSessionTo, underlyingSessionToDuration } from "../session";
 import { On, wrapOn } from "./on";
@@ -259,17 +258,12 @@ export const doWhileDuringImpl =
     if (arg3 !== undefined && typeof arg2 === "string") {
       // doWhileDuring(condition, duration, counterName, exitASAP)
       if (typeof condition === "function") {
-        const wrappedCondition = wrapCallback(underlyingSessionTo(condition));
+        const wrappedCondition = underlyingSessionTo(condition);
         if (isDuration(duration)) {
           return wrapOn(jvmDoWhileDuring.doWhileDuring(wrappedCondition, toJvmDuration(duration), arg2, arg3), wrap);
         } else if (typeof duration === "function") {
           return wrapOn(
-            jvmDoWhileDuring.doWhileDuring(
-              wrappedCondition,
-              wrapCallback(underlyingSessionToDuration(duration)),
-              arg2,
-              arg3
-            ),
+            jvmDoWhileDuring.doWhileDuring(wrappedCondition, underlyingSessionToDuration(duration), arg2, arg3),
             wrap
           );
         }
@@ -278,7 +272,7 @@ export const doWhileDuringImpl =
           return wrapOn(jvmDoWhileDuring.doWhileDuring(condition, toJvmDuration(duration), arg2, arg3), wrap);
         } else if (typeof duration === "function") {
           return wrapOn(
-            jvmDoWhileDuring.doWhileDuring(condition, wrapCallback(underlyingSessionToDuration(duration)), arg2, arg3),
+            jvmDoWhileDuring.doWhileDuring(condition, underlyingSessionToDuration(duration), arg2, arg3),
             wrap
           );
         }
@@ -286,12 +280,12 @@ export const doWhileDuringImpl =
     } else if (typeof arg2 === "string") {
       // doWhileDuring(condition, duration, counterName)
       if (typeof condition === "function") {
-        const wrappedCondition = wrapCallback(underlyingSessionTo(condition));
+        const wrappedCondition = underlyingSessionTo(condition);
         if (isDuration(duration)) {
           return wrapOn(jvmDoWhileDuring.doWhileDuring(wrappedCondition, toJvmDuration(duration), arg2), wrap);
         } else if (typeof duration === "function") {
           return wrapOn(
-            jvmDoWhileDuring.doWhileDuring(wrappedCondition, wrapCallback(underlyingSessionToDuration(duration)), arg2),
+            jvmDoWhileDuring.doWhileDuring(wrappedCondition, underlyingSessionToDuration(duration), arg2),
             wrap
           );
         }
@@ -299,21 +293,18 @@ export const doWhileDuringImpl =
         if (isDuration(duration)) {
           return wrapOn(jvmDoWhileDuring.doWhileDuring(condition, toJvmDuration(duration), arg2), wrap);
         } else if (typeof duration === "function") {
-          return wrapOn(
-            jvmDoWhileDuring.doWhileDuring(condition, wrapCallback(underlyingSessionToDuration(duration)), arg2),
-            wrap
-          );
+          return wrapOn(jvmDoWhileDuring.doWhileDuring(condition, underlyingSessionToDuration(duration), arg2), wrap);
         }
       }
     } else if (typeof arg2 === "boolean") {
       // doWhileDuring(condition, duration, exitASAP)
       if (typeof condition === "function") {
-        const wrappedCondition = wrapCallback(underlyingSessionTo(condition));
+        const wrappedCondition = underlyingSessionTo(condition);
         if (isDuration(duration)) {
           return wrapOn(jvmDoWhileDuring.doWhileDuring(wrappedCondition, toJvmDuration(duration), arg2), wrap);
         } else if (typeof duration === "function") {
           return wrapOn(
-            jvmDoWhileDuring.doWhileDuring(wrappedCondition, wrapCallback(underlyingSessionToDuration(duration)), arg2),
+            jvmDoWhileDuring.doWhileDuring(wrappedCondition, underlyingSessionToDuration(duration), arg2),
             wrap
           );
         }
@@ -321,32 +312,23 @@ export const doWhileDuringImpl =
         if (isDuration(duration)) {
           return wrapOn(jvmDoWhileDuring.doWhileDuring(condition, toJvmDuration(duration), arg2), wrap);
         } else if (typeof duration === "function") {
-          return wrapOn(
-            jvmDoWhileDuring.doWhileDuring(condition, wrapCallback(underlyingSessionToDuration(duration)), arg2),
-            wrap
-          );
+          return wrapOn(jvmDoWhileDuring.doWhileDuring(condition, underlyingSessionToDuration(duration), arg2), wrap);
         }
       }
     } else if (arg2 === undefined) {
       // doWhileDuring(condition, duration)
       if (typeof condition === "function") {
-        const wrappedCondition = wrapCallback(underlyingSessionTo(condition));
+        const wrappedCondition = underlyingSessionTo(condition);
         if (isDuration(duration)) {
           return wrapOn(jvmDoWhileDuring.doWhileDuring(wrappedCondition, toJvmDuration(duration)), wrap);
         } else if (typeof duration === "function") {
-          return wrapOn(
-            jvmDoWhileDuring.doWhileDuring(wrappedCondition, wrapCallback(underlyingSessionToDuration(duration))),
-            wrap
-          );
+          return wrapOn(jvmDoWhileDuring.doWhileDuring(wrappedCondition, underlyingSessionToDuration(duration)), wrap);
         }
       } else {
         if (isDuration(duration)) {
           return wrapOn(jvmDoWhileDuring.doWhileDuring(condition, toJvmDuration(duration)), wrap);
         } else if (typeof duration === "function") {
-          return wrapOn(
-            jvmDoWhileDuring.doWhileDuring(condition, wrapCallback(underlyingSessionToDuration(duration))),
-            wrap
-          );
+          return wrapOn(jvmDoWhileDuring.doWhileDuring(condition, underlyingSessionToDuration(duration)), wrap);
         }
       }
     }

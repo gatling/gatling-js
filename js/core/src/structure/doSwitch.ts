@@ -1,4 +1,3 @@
-import { wrapCallback } from "../gatlingJvm/callbacks";
 import { SessionTo, underlyingSessionTo } from "../session";
 import { ChoiceWithKey } from "./choices";
 
@@ -42,8 +41,6 @@ export const doSwitchImpl =
   ): DoSwitchFunction<T> =>
   (actual: string | SessionTo<unknown>) =>
     wrapOn(
-      typeof actual === "function"
-        ? jvmDoSwitch.doSwitch(wrapCallback(underlyingSessionTo(actual)))
-        : jvmDoSwitch.doSwitch(actual),
+      typeof actual === "function" ? jvmDoSwitch.doSwitch(underlyingSessionTo(actual)) : jvmDoSwitch.doSwitch(actual),
       wrap
     );

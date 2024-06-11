@@ -1,4 +1,3 @@
-import { wrapCallback } from "../gatlingJvm/callbacks";
 import { Duration, isDuration, toJvmDuration } from "../utils/duration";
 import { SessionTo, underlyingSessionTo, underlyingSessionToDuration } from "../session";
 
@@ -256,17 +255,12 @@ export const asLongAsDuringImpl =
     if (arg3 !== undefined && typeof arg2 === "string") {
       // asLongAsDuring(condition, duration, counterName, exitASAP)
       if (typeof condition === "function") {
-        const wrappedCondition = wrapCallback(underlyingSessionTo(condition));
+        const wrappedCondition = underlyingSessionTo(condition);
         if (isDuration(duration)) {
           return wrapOn(jvmAsLongAsDuring.asLongAsDuring(wrappedCondition, toJvmDuration(duration), arg2, arg3), wrap);
         } else if (typeof duration === "function") {
           return wrapOn(
-            jvmAsLongAsDuring.asLongAsDuring(
-              wrappedCondition,
-              wrapCallback(underlyingSessionToDuration(duration)),
-              arg2,
-              arg3
-            ),
+            jvmAsLongAsDuring.asLongAsDuring(wrappedCondition, underlyingSessionToDuration(duration), arg2, arg3),
             wrap
           );
         }
@@ -275,12 +269,7 @@ export const asLongAsDuringImpl =
           return wrapOn(jvmAsLongAsDuring.asLongAsDuring(condition, toJvmDuration(duration), arg2, arg3), wrap);
         } else if (typeof duration === "function") {
           return wrapOn(
-            jvmAsLongAsDuring.asLongAsDuring(
-              condition,
-              wrapCallback(underlyingSessionToDuration(duration)),
-              arg2,
-              arg3
-            ),
+            jvmAsLongAsDuring.asLongAsDuring(condition, underlyingSessionToDuration(duration), arg2, arg3),
             wrap
           );
         }
@@ -288,16 +277,12 @@ export const asLongAsDuringImpl =
     } else if (typeof arg2 === "string") {
       // asLongAsDuring(condition, duration, counterName)
       if (typeof condition === "function") {
-        const wrappedCondition = wrapCallback(underlyingSessionTo(condition));
+        const wrappedCondition = underlyingSessionTo(condition);
         if (isDuration(duration)) {
           return wrapOn(jvmAsLongAsDuring.asLongAsDuring(wrappedCondition, toJvmDuration(duration), arg2), wrap);
         } else if (typeof duration === "function") {
           return wrapOn(
-            jvmAsLongAsDuring.asLongAsDuring(
-              wrappedCondition,
-              wrapCallback(underlyingSessionToDuration(duration)),
-              arg2
-            ),
+            jvmAsLongAsDuring.asLongAsDuring(wrappedCondition, underlyingSessionToDuration(duration), arg2),
             wrap
           );
         }
@@ -305,25 +290,18 @@ export const asLongAsDuringImpl =
         if (isDuration(duration)) {
           return wrapOn(jvmAsLongAsDuring.asLongAsDuring(condition, toJvmDuration(duration), arg2), wrap);
         } else if (typeof duration === "function") {
-          return wrapOn(
-            jvmAsLongAsDuring.asLongAsDuring(condition, wrapCallback(underlyingSessionToDuration(duration)), arg2),
-            wrap
-          );
+          return wrapOn(jvmAsLongAsDuring.asLongAsDuring(condition, underlyingSessionToDuration(duration), arg2), wrap);
         }
       }
     } else if (typeof arg2 === "boolean") {
       // asLongAsDuring(condition, duration, exitASAP)
       if (typeof condition === "function") {
-        const wrappedCondition = wrapCallback(underlyingSessionTo(condition));
+        const wrappedCondition = underlyingSessionTo(condition);
         if (isDuration(duration)) {
           return wrapOn(jvmAsLongAsDuring.asLongAsDuring(wrappedCondition, toJvmDuration(duration), arg2), wrap);
         } else if (typeof duration === "function") {
           return wrapOn(
-            jvmAsLongAsDuring.asLongAsDuring(
-              wrappedCondition,
-              wrapCallback(underlyingSessionToDuration(duration)),
-              arg2
-            ),
+            jvmAsLongAsDuring.asLongAsDuring(wrappedCondition, underlyingSessionToDuration(duration), arg2),
             wrap
           );
         }
@@ -331,21 +309,18 @@ export const asLongAsDuringImpl =
         if (isDuration(duration)) {
           return wrapOn(jvmAsLongAsDuring.asLongAsDuring(condition, toJvmDuration(duration), arg2), wrap);
         } else if (typeof duration === "function") {
-          return wrapOn(
-            jvmAsLongAsDuring.asLongAsDuring(condition, wrapCallback(underlyingSessionToDuration(duration)), arg2),
-            wrap
-          );
+          return wrapOn(jvmAsLongAsDuring.asLongAsDuring(condition, underlyingSessionToDuration(duration), arg2), wrap);
         }
       }
     } else if (arg2 === undefined) {
       // asLongAsDuring(condition, duration)
       if (typeof condition === "function") {
-        const wrappedCondition = wrapCallback(underlyingSessionTo(condition));
+        const wrappedCondition = underlyingSessionTo(condition);
         if (isDuration(duration)) {
           return wrapOn(jvmAsLongAsDuring.asLongAsDuring(wrappedCondition, toJvmDuration(duration)), wrap);
         } else if (typeof duration === "function") {
           return wrapOn(
-            jvmAsLongAsDuring.asLongAsDuring(wrappedCondition, wrapCallback(underlyingSessionToDuration(duration))),
+            jvmAsLongAsDuring.asLongAsDuring(wrappedCondition, underlyingSessionToDuration(duration)),
             wrap
           );
         }
@@ -353,10 +328,7 @@ export const asLongAsDuringImpl =
         if (isDuration(duration)) {
           return wrapOn(jvmAsLongAsDuring.asLongAsDuring(condition, toJvmDuration(duration)), wrap);
         } else if (typeof duration === "function") {
-          return wrapOn(
-            jvmAsLongAsDuring.asLongAsDuring(condition, wrapCallback(underlyingSessionToDuration(duration))),
-            wrap
-          );
+          return wrapOn(jvmAsLongAsDuring.asLongAsDuring(condition, underlyingSessionToDuration(duration)), wrap);
         }
       }
     }

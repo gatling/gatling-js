@@ -1,4 +1,3 @@
-import { wrapBiCallback, wrapCallback } from "../gatlingJvm/callbacks";
 import { Session, SessionTo, underlyingSessionTo, underlyingXWithSessionTo } from "../session";
 import { CheckBuilderFinal, wrapCheckBuilderFinal } from "./final";
 
@@ -276,22 +275,22 @@ export interface CheckBuilderValidate<X> extends CheckBuilderFinal {
 
 export const wrapCheckBuilderValidate = <X>(_underlying: JvmCheckBuilderValidate<X>): CheckBuilderValidate<X> => ({
   ...wrapCheckBuilderFinal(_underlying),
-  transform: <X2>(f: (x: X) => X2) => wrapCheckBuilderValidate(_underlying.transform(wrapCallback(f))),
+  transform: <X2>(f: (x: X) => X2) => wrapCheckBuilderValidate(_underlying.transform(f)),
   transformWithSession: <X2>(f: (x: X, session: Session) => X2) =>
-    wrapCheckBuilderValidate(_underlying.transformWithSession(wrapBiCallback(underlyingXWithSessionTo(f)))),
+    wrapCheckBuilderValidate(_underlying.transformWithSession(underlyingXWithSessionTo(f))),
   withDefault: (value: X | SessionTo<X>) =>
     wrapCheckBuilderValidate(
       typeof value === "function"
-        ? _underlying.withDefault(wrapCallback(underlyingSessionTo(value as SessionTo<X>)))
+        ? _underlying.withDefault(underlyingSessionTo(value as SessionTo<X>))
         : _underlying.withDefault(value)
     ),
   withDefaultEL: (value: string) => wrapCheckBuilderValidate(_underlying.withDefaultEl(value)),
   validate: (name: string, f: (x: X, session: Session) => X) =>
-    wrapCheckBuilderFinal(_underlying.validate(name, wrapBiCallback(underlyingXWithSessionTo(f)))),
+    wrapCheckBuilderFinal(_underlying.validate(name, underlyingXWithSessionTo(f))),
   is: (expected: X | SessionTo<X>) =>
     wrapCheckBuilderFinal(
       typeof expected === "function"
-        ? _underlying.is(wrapCallback(underlyingSessionTo(expected as SessionTo<X>)))
+        ? _underlying.is(underlyingSessionTo(expected as SessionTo<X>))
         : _underlying.is(expected)
     ),
   isEL: (expected: string) => wrapCheckBuilderFinal(_underlying.isEL(expected)),
@@ -299,7 +298,7 @@ export const wrapCheckBuilderValidate = <X>(_underlying: JvmCheckBuilderValidate
   not: (expected: X | SessionTo<X>) =>
     wrapCheckBuilderFinal(
       typeof expected === "function"
-        ? _underlying.not(wrapCallback(underlyingSessionTo(expected as SessionTo<X>)))
+        ? _underlying.not(underlyingSessionTo(expected as SessionTo<X>))
         : _underlying.not(expected)
     ),
   notEL: (expected: string) => wrapCheckBuilderFinal(_underlying.notEL(expected)),
@@ -307,7 +306,7 @@ export const wrapCheckBuilderValidate = <X>(_underlying: JvmCheckBuilderValidate
   in: (expected: X | SessionTo<X[]>, ...rest: X[]) =>
     wrapCheckBuilderFinal(
       typeof expected === "function"
-        ? _underlying.in(wrapCallback(underlyingSessionTo(expected as SessionTo<X[]>)))
+        ? _underlying.in(underlyingSessionTo(expected as SessionTo<X[]>))
         : _underlying.in([expected, ...rest])
     ),
   inEL: (expected: string) => wrapCheckBuilderFinal(_underlying.inEL(expected)),
@@ -316,30 +315,22 @@ export const wrapCheckBuilderValidate = <X>(_underlying: JvmCheckBuilderValidate
   optional: () => wrapCheckBuilderFinal(_underlying.optional()),
   lt: (value: X | SessionTo<X>) =>
     wrapCheckBuilderFinal(
-      typeof value === "function"
-        ? _underlying.lt(wrapCallback(underlyingSessionTo(value as SessionTo<X>)))
-        : _underlying.lt(value)
+      typeof value === "function" ? _underlying.lt(underlyingSessionTo(value as SessionTo<X>)) : _underlying.lt(value)
     ),
   ltEL: (value: string) => wrapCheckBuilderFinal(_underlying.ltEL(value)),
   lte: (value: X | SessionTo<X>) =>
     wrapCheckBuilderFinal(
-      typeof value === "function"
-        ? _underlying.lte(wrapCallback(underlyingSessionTo(value as SessionTo<X>)))
-        : _underlying.lte(value)
+      typeof value === "function" ? _underlying.lte(underlyingSessionTo(value as SessionTo<X>)) : _underlying.lte(value)
     ),
   lteEL: (value: string) => wrapCheckBuilderFinal(_underlying.lteEL(value)),
   gt: (value: X | SessionTo<X>) =>
     wrapCheckBuilderFinal(
-      typeof value === "function"
-        ? _underlying.gt(wrapCallback(underlyingSessionTo(value as SessionTo<X>)))
-        : _underlying.gt(value)
+      typeof value === "function" ? _underlying.gt(underlyingSessionTo(value as SessionTo<X>)) : _underlying.gt(value)
     ),
   gtEL: (value: string) => wrapCheckBuilderFinal(_underlying.gtEL(value)),
   gte: (value: X | SessionTo<X>) =>
     wrapCheckBuilderFinal(
-      typeof value === "function"
-        ? _underlying.gte(wrapCallback(underlyingSessionTo(value as SessionTo<X>)))
-        : _underlying.gte(value)
+      typeof value === "function" ? _underlying.gte(underlyingSessionTo(value as SessionTo<X>)) : _underlying.gte(value)
     ),
   gteEL: (value: string) => wrapCheckBuilderFinal(_underlying.gteEL(value))
 });

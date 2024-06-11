@@ -3,7 +3,6 @@ import JvmFeederBuilder = io.gatling.javaapi.core.FeederBuilder;
 import JvmFeederBuilderFileBased = io.gatling.javaapi.core.FeederBuilder$FileBased;
 import JvmFeederBuilderBatchable = io.gatling.javaapi.core.FeederBuilder$Batchable;
 
-import { wrapBiCallback } from "./gatlingJvm/callbacks";
 import { Wrapper } from "./common";
 
 export interface FeederBuilder<T> extends Wrapper<JvmFeederBuilder<T>> {
@@ -83,7 +82,7 @@ const wrapFeederBuilder = <T>(_underlying: JvmFeederBuilder<T>): FeederBuilder<T
   random: () => wrapFeederBuilder(_underlying.random()),
   shuffle: () => wrapFeederBuilder(_underlying.shuffle()),
   circular: () => wrapFeederBuilder(_underlying.circular()),
-  transform: (f: (name: string, value: T) => unknown) => wrapFeederBuilder(_underlying.transform(wrapBiCallback(f))),
+  transform: (f: (name: string, value: T) => unknown) => wrapFeederBuilder(_underlying.transform(f)),
   recordsCount: () => _underlying.recordsCount(),
   shard: () => wrapFeederBuilder(_underlying.shard())
 });
@@ -105,7 +104,7 @@ export const wrapFileBasedFeederBuilder = <T>(
   random: () => wrapFileBasedFeederBuilder(_underlying.random()),
   shuffle: () => wrapFileBasedFeederBuilder(_underlying.shuffle()),
   circular: () => wrapFileBasedFeederBuilder(_underlying.circular()),
-  transform: (f: (name: string, value: T) => unknown) => wrapFeederBuilder(_underlying.transform(wrapBiCallback(f))),
+  transform: (f: (name: string, value: T) => unknown) => wrapFeederBuilder(_underlying.transform(f)),
   recordsCount: () => _underlying.recordsCount(),
   shard: () => wrapFileBasedFeederBuilder(_underlying.shard()),
   unzip: () => wrapFileBasedFeederBuilder(_underlying.unzip())
@@ -144,7 +143,7 @@ const wrapBatchableFeederBuilder = <T>(_underlying: JvmFeederBuilderBatchable<T>
   random: () => wrapBatchableFeederBuilder(_underlying.random()),
   shuffle: () => wrapBatchableFeederBuilder(_underlying.shuffle()),
   circular: () => wrapBatchableFeederBuilder(_underlying.circular()),
-  transform: (f: (name: string, value: T) => unknown) => wrapFeederBuilder(_underlying.transform(wrapBiCallback(f))),
+  transform: (f: (name: string, value: T) => unknown) => wrapFeederBuilder(_underlying.transform(f)),
   recordsCount: () => _underlying.recordsCount(),
   shard: () => wrapBatchableFeederBuilder(_underlying.shard()),
   unzip: () => wrapBatchableFeederBuilder(_underlying.unzip()),

@@ -1,4 +1,3 @@
-import { wrapCallback } from "../gatlingJvm/callbacks";
 import { Duration, isDuration, toJvmDuration } from "../utils/duration";
 import { SessionTo, underlyingSessionToDuration } from "../session";
 import { On, wrapOn } from "./on";
@@ -146,7 +145,7 @@ export const duringImpl =
       if (isDuration(duration)) {
         return wrapOn(jvmDuring.during(toJvmDuration(duration), arg1, arg2), wrap);
       } else if (typeof duration === "function") {
-        return wrapOn(jvmDuring.during(wrapCallback(underlyingSessionToDuration(duration)), arg1, arg2), wrap);
+        return wrapOn(jvmDuring.during(underlyingSessionToDuration(duration), arg1, arg2), wrap);
       } else {
         return wrapOn(jvmDuring.during(duration, arg1, arg2), wrap);
       }
@@ -155,7 +154,7 @@ export const duringImpl =
       if (isDuration(duration)) {
         return wrapOn(jvmDuring.during(toJvmDuration(duration), arg1), wrap);
       } else if (typeof duration === "function") {
-        return wrapOn(jvmDuring.during(wrapCallback(underlyingSessionToDuration(duration)), arg1), wrap);
+        return wrapOn(jvmDuring.during(underlyingSessionToDuration(duration), arg1), wrap);
       } else {
         return wrapOn(jvmDuring.during(duration, arg1), wrap);
       }
@@ -164,7 +163,7 @@ export const duringImpl =
       if (isDuration(duration)) {
         return wrapOn(jvmDuring.during(toJvmDuration(duration), arg1), wrap);
       } else if (typeof duration === "function") {
-        return wrapOn(jvmDuring.during(wrapCallback(underlyingSessionToDuration(duration)), arg1), wrap);
+        return wrapOn(jvmDuring.during(underlyingSessionToDuration(duration), arg1), wrap);
       } else {
         return wrapOn(jvmDuring.during(duration, arg1), wrap);
       }
@@ -173,7 +172,7 @@ export const duringImpl =
       if (isDuration(duration)) {
         return wrapOn(jvmDuring.during(toJvmDuration(duration)), wrap);
       } else if (typeof duration === "function") {
-        return wrapOn(jvmDuring.during(wrapCallback(underlyingSessionToDuration(duration))), wrap);
+        return wrapOn(jvmDuring.during(underlyingSessionToDuration(duration)), wrap);
       } else {
         return wrapOn(jvmDuring.during(duration), wrap);
       }

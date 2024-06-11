@@ -6,7 +6,6 @@ import {
   Session,
   SessionTo,
   underlyingSessionTo,
-  wrapCallback,
   wrapCondition,
   AllowListFilter,
   DenyListFilter
@@ -773,7 +772,7 @@ export const wrapHttpProtocolBuilder = (_underlying: JvmHttpProtocolBuilder): Ht
   header: (name: string, value: Expression<string>): HttpProtocolBuilder =>
     wrapHttpProtocolBuilder(
       typeof value === "function"
-        ? _underlying.header(name, wrapCallback(underlyingSessionTo(value)))
+        ? _underlying.header(name, underlyingSessionTo(value))
         : _underlying.header(name, value)
     ),
   headers: (headers: Record<string, string>): HttpProtocolBuilder =>
@@ -781,93 +780,87 @@ export const wrapHttpProtocolBuilder = (_underlying: JvmHttpProtocolBuilder): Ht
   acceptHeader: (value: Expression<string>): HttpProtocolBuilder =>
     wrapHttpProtocolBuilder(
       typeof value === "function"
-        ? _underlying.acceptHeader(wrapCallback(underlyingSessionTo(value)))
+        ? _underlying.acceptHeader(underlyingSessionTo(value))
         : _underlying.acceptHeader(value)
     ),
   acceptCharsetHeader: (value: Expression<string>): HttpProtocolBuilder =>
     wrapHttpProtocolBuilder(
       typeof value === "function"
-        ? _underlying.acceptCharsetHeader(wrapCallback(underlyingSessionTo(value)))
+        ? _underlying.acceptCharsetHeader(underlyingSessionTo(value))
         : _underlying.acceptCharsetHeader(value)
     ),
   acceptEncodingHeader: (value: Expression<string>): HttpProtocolBuilder =>
     wrapHttpProtocolBuilder(
       typeof value === "function"
-        ? _underlying.acceptEncodingHeader(wrapCallback(underlyingSessionTo(value)))
+        ? _underlying.acceptEncodingHeader(underlyingSessionTo(value))
         : _underlying.acceptEncodingHeader(value)
     ),
   acceptLanguageHeader: (value: Expression<string>): HttpProtocolBuilder =>
     wrapHttpProtocolBuilder(
       typeof value === "function"
-        ? _underlying.acceptLanguageHeader(wrapCallback(underlyingSessionTo(value)))
+        ? _underlying.acceptLanguageHeader(underlyingSessionTo(value))
         : _underlying.acceptLanguageHeader(value)
     ),
   authorizationHeader: (value: Expression<string>): HttpProtocolBuilder =>
     wrapHttpProtocolBuilder(
       typeof value === "function"
-        ? _underlying.authorizationHeader(wrapCallback(underlyingSessionTo(value)))
+        ? _underlying.authorizationHeader(underlyingSessionTo(value))
         : _underlying.authorizationHeader(value)
     ),
   connectionHeader: (value: Expression<string>): HttpProtocolBuilder =>
     wrapHttpProtocolBuilder(
       typeof value === "function"
-        ? _underlying.connectionHeader(wrapCallback(underlyingSessionTo(value)))
+        ? _underlying.connectionHeader(underlyingSessionTo(value))
         : _underlying.connectionHeader(value)
     ),
   contentTypeHeader: (value: Expression<string>): HttpProtocolBuilder =>
     wrapHttpProtocolBuilder(
       typeof value === "function"
-        ? _underlying.contentTypeHeader(wrapCallback(underlyingSessionTo(value)))
+        ? _underlying.contentTypeHeader(underlyingSessionTo(value))
         : _underlying.contentTypeHeader(value)
     ),
   doNotTrackHeader: (value: Expression<string>): HttpProtocolBuilder =>
     wrapHttpProtocolBuilder(
       typeof value === "function"
-        ? _underlying.doNotTrackHeader(wrapCallback(underlyingSessionTo(value)))
+        ? _underlying.doNotTrackHeader(underlyingSessionTo(value))
         : _underlying.doNotTrackHeader(value)
     ),
   originHeader: (value: Expression<string>): HttpProtocolBuilder =>
     wrapHttpProtocolBuilder(
       typeof value === "function"
-        ? _underlying.originHeader(wrapCallback(underlyingSessionTo(value)))
+        ? _underlying.originHeader(underlyingSessionTo(value))
         : _underlying.originHeader(value)
     ),
   userAgentHeader: (value: Expression<string>): HttpProtocolBuilder =>
     wrapHttpProtocolBuilder(
       typeof value === "function"
-        ? _underlying.userAgentHeader(wrapCallback(underlyingSessionTo(value)))
+        ? _underlying.userAgentHeader(underlyingSessionTo(value))
         : _underlying.userAgentHeader(value)
     ),
   upgradeInsecureRequestsHeader: (value: Expression<string>): HttpProtocolBuilder =>
     wrapHttpProtocolBuilder(
       typeof value === "function"
-        ? _underlying.upgradeInsecureRequestsHeader(wrapCallback(underlyingSessionTo(value)))
+        ? _underlying.upgradeInsecureRequestsHeader(underlyingSessionTo(value))
         : _underlying.upgradeInsecureRequestsHeader(value)
     ),
   basicAuth: (username: Expression<string>, password: Expression<string>): HttpProtocolBuilder =>
     wrapHttpProtocolBuilder(
       typeof username === "function"
         ? typeof password === "function"
-          ? _underlying.basicAuth(
-              wrapCallback(underlyingSessionTo(username)),
-              wrapCallback(underlyingSessionTo(password))
-            )
-          : _underlying.basicAuth(wrapCallback(underlyingSessionTo(username)), password)
+          ? _underlying.basicAuth(underlyingSessionTo(username), underlyingSessionTo(password))
+          : _underlying.basicAuth(underlyingSessionTo(username), password)
         : typeof password === "function"
-          ? _underlying.basicAuth(username, wrapCallback(underlyingSessionTo(password)))
+          ? _underlying.basicAuth(username, underlyingSessionTo(password))
           : _underlying.basicAuth(username, password)
     ),
   digestAuth: (username: Expression<string>, password: Expression<string>): HttpProtocolBuilder =>
     wrapHttpProtocolBuilder(
       typeof username === "function"
         ? typeof password === "function"
-          ? _underlying.digestAuth(
-              wrapCallback(underlyingSessionTo(username)),
-              wrapCallback(underlyingSessionTo(password))
-            )
-          : _underlying.digestAuth(wrapCallback(underlyingSessionTo(username)), password)
+          ? _underlying.digestAuth(underlyingSessionTo(username), underlyingSessionTo(password))
+          : _underlying.digestAuth(underlyingSessionTo(username), password)
         : typeof password === "function"
-          ? _underlying.digestAuth(username, wrapCallback(underlyingSessionTo(password)))
+          ? _underlying.digestAuth(username, underlyingSessionTo(password))
           : _underlying.digestAuth(username, password)
     ),
   silentResources: (): HttpProtocolBuilder => wrapHttpProtocolBuilder(_underlying.silentResources()),
@@ -889,17 +882,17 @@ export const wrapHttpProtocolBuilder = (_underlying: JvmHttpProtocolBuilder): Ht
         typeof tokenSecret === "function"
         ? typeof useAuthorizationHeader !== "undefined"
           ? _underlying.signWithOAuth1(
-              wrapCallback(underlyingSessionTo(consumerKey)),
-              wrapCallback(underlyingSessionTo(clientSharedSecret)),
-              wrapCallback(underlyingSessionTo(token)),
-              wrapCallback(underlyingSessionTo(tokenSecret)),
+              underlyingSessionTo(consumerKey),
+              underlyingSessionTo(clientSharedSecret),
+              underlyingSessionTo(token),
+              underlyingSessionTo(tokenSecret),
               useAuthorizationHeader
             )
           : _underlying.signWithOAuth1(
-              wrapCallback(underlyingSessionTo(consumerKey)),
-              wrapCallback(underlyingSessionTo(clientSharedSecret)),
-              wrapCallback(underlyingSessionTo(token)),
-              wrapCallback(underlyingSessionTo(tokenSecret))
+              underlyingSessionTo(consumerKey),
+              underlyingSessionTo(clientSharedSecret),
+              underlyingSessionTo(token),
+              underlyingSessionTo(tokenSecret)
             )
         : typeof useAuthorizationHeader !== "undefined"
           ? _underlying.signWithOAuth1(
@@ -935,7 +928,7 @@ export const wrapHttpProtocolBuilder = (_underlying: JvmHttpProtocolBuilder): Ht
     wrapCondition(
       typeof condition === "string"
         ? _underlying.checkIf(condition)
-        : _underlying.checkIf(wrapCallback(underlyingSessionTo(condition))),
+        : _underlying.checkIf(underlyingSessionTo(condition)),
       wrapHttpProtocolBuilder
     ),
 

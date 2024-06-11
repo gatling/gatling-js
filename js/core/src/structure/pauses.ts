@@ -4,7 +4,6 @@ import JvmPauseType = io.gatling.javaapi.core.PauseType;
 
 import { Duration, isDuration, toJvmDuration } from "../utils/duration";
 import { SessionTo, underlyingSessionTo, underlyingSessionToDuration } from "../session";
-import { wrapCallback } from "../gatlingJvm/callbacks";
 
 export type PauseType =
   | "Disabled"
@@ -33,7 +32,7 @@ export const toJvmPauseType = (pauseType: PauseType): JvmPauseType => {
   } else if (pauseType.type === "NormalWithStdDevDuration") {
     return JvmCoreDsl.normalPausesWithStdDevDuration(toJvmDuration(pauseType.stdDev));
   } else if (pauseType.type === "Custom") {
-    return JvmCoreDsl.customPauses(wrapCallback(underlyingSessionTo(pauseType.f)));
+    return JvmCoreDsl.customPauses(underlyingSessionTo(pauseType.f));
   } else if (pauseType.type === "UniformPercentage") {
     return JvmCoreDsl.uniformPausesPlusOrMinusPercentage(pauseType.plusOrMinus);
   } else if (pauseType.type === "UniformDuration") {
@@ -172,11 +171,7 @@ export const pauseImpl =
         return wrap(jvmGroups.pause(arg0, arg1, toJvmPauseType(arg2)));
       } else if (typeof arg0 === "function" && typeof arg1 === "function") {
         return wrap(
-          jvmGroups.pause(
-            wrapCallback(underlyingSessionToDuration(arg0)),
-            wrapCallback(underlyingSessionToDuration(arg1)),
-            toJvmPauseType(arg2)
-          )
+          jvmGroups.pause(underlyingSessionToDuration(arg0), underlyingSessionToDuration(arg1), toJvmPauseType(arg2))
         );
       } else if (isDuration(arg0) && isDuration(arg1)) {
         return wrap(jvmGroups.pause(toJvmDuration(arg0), toJvmDuration(arg1), toJvmPauseType(arg2)));
@@ -187,7 +182,7 @@ export const pauseImpl =
         if (typeof arg0 === "string") {
           return wrap(jvmGroups.pause(arg0, toJvmPauseType(arg1)));
         } else if (typeof arg0 === "function") {
-          return wrap(jvmGroups.pause(wrapCallback(underlyingSessionToDuration(arg0)), toJvmPauseType(arg1)));
+          return wrap(jvmGroups.pause(underlyingSessionToDuration(arg0), toJvmPauseType(arg1)));
         } else if (isDuration(arg0)) {
           return wrap(jvmGroups.pause(toJvmDuration(arg0), toJvmPauseType(arg1)));
         }
@@ -196,12 +191,7 @@ export const pauseImpl =
         if (typeof arg0 === "string" && typeof arg1 === "string") {
           return wrap(jvmGroups.pause(arg0, arg1));
         } else if (typeof arg0 === "function" && typeof arg1 === "function") {
-          return wrap(
-            jvmGroups.pause(
-              wrapCallback(underlyingSessionToDuration(arg0)),
-              wrapCallback(underlyingSessionToDuration(arg1))
-            )
-          );
+          return wrap(jvmGroups.pause(underlyingSessionToDuration(arg0), underlyingSessionToDuration(arg1)));
         } else if (isDuration(arg0) && isDuration(arg1)) {
           return wrap(jvmGroups.pause(toJvmDuration(arg0), toJvmDuration(arg1)));
         }
@@ -211,7 +201,7 @@ export const pauseImpl =
       if (typeof arg0 === "string") {
         return wrap(jvmGroups.pause(arg0));
       } else if (typeof arg0 === "function") {
-        return wrap(jvmGroups.pause(wrapCallback(underlyingSessionToDuration(arg0))));
+        return wrap(jvmGroups.pause(underlyingSessionToDuration(arg0)));
       } else if (isDuration(arg0)) {
         return wrap(jvmGroups.pause(toJvmDuration(arg0)));
       }

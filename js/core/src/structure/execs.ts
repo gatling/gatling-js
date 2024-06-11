@@ -1,6 +1,5 @@
 import { Wrapper } from "../common";
 import { SessionTransform, underlyingSessionTransform } from "../session";
-import { wrapCallback } from "../gatlingJvm/callbacks";
 
 import JvmActionBuilder = io.gatling.javaapi.core.ActionBuilder;
 import JvmExecs = io.gatling.javaapi.core.exec.Execs;
@@ -62,6 +61,6 @@ export const execImpl =
   (arg0: Executable<any> | SessionTransform, ...arg1: Array<Executable<any>>) =>
     wrap(
       typeof arg0 === "function"
-        ? jvmExecs.exec(wrapCallback(underlyingSessionTransform(arg0))) // arg0: SessionTransform
+        ? jvmExecs.exec(underlyingSessionTransform(arg0)) // arg0: SessionTransform
         : jvmExecs.exec(arg0._underlying, ...arg1.map((e) => e._underlying)) // arg0: Executable, ...arg1: Executable[]
     );

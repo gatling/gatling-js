@@ -10,7 +10,6 @@ import {
   toJvmDuration,
   underlyingSessionTo,
   underlyingSessionToJava,
-  wrapCallback,
   wrapCondition
 } from "@gatling.io/core";
 
@@ -316,20 +315,18 @@ const requestWithParamsActionBuilderImpl = <T>(
   queryParam: (name: Expression<string>, value: string | Expression<any>): T => {
     if (typeof name === "function") {
       if (typeof value === "function") {
-        return wrap(
-          jvmBuilder.queryParam(wrapCallback(underlyingSessionTo(name)), wrapCallback(underlyingSessionTo(value)))
-        );
+        return wrap(jvmBuilder.queryParam(underlyingSessionTo(name), underlyingSessionTo(value)));
       } else if (typeof value === "string") {
         // FIXME it shows the value:any overload?
-        return wrap(jvmBuilder.queryParam(wrapCallback(underlyingSessionTo(name)), value));
+        return wrap(jvmBuilder.queryParam(underlyingSessionTo(name), value));
       } else {
         // FIXME it shows the value:func overload?
-        return wrap(jvmBuilder.queryParam(wrapCallback(underlyingSessionTo(name)), value));
+        return wrap(jvmBuilder.queryParam(underlyingSessionTo(name), value));
       }
     } else {
       if (typeof value === "function") {
         // FIXME it shows the value:any overload?
-        return wrap(jvmBuilder.queryParam(name, wrapCallback(underlyingSessionTo(value))));
+        return wrap(jvmBuilder.queryParam(name, underlyingSessionTo(value)));
       } else if (typeof value === "string") {
         // FIXME it shows the value:any overload?
         return wrap(jvmBuilder.queryParam(name, value));
@@ -342,19 +339,16 @@ const requestWithParamsActionBuilderImpl = <T>(
     if (typeof name === "function") {
       if (typeof values === "function") {
         return wrap(
-          jvmBuilder.multivaluedQueryParam(
-            wrapCallback(underlyingSessionTo(name)),
-            wrapCallback(underlyingSessionToJava(values)) as any
-          )
+          jvmBuilder.multivaluedQueryParam(underlyingSessionTo(name), underlyingSessionToJava(values) as any)
         );
       } else if (typeof values === "string") {
-        return wrap(jvmBuilder.multivaluedQueryParam(wrapCallback(underlyingSessionTo(name)), values));
+        return wrap(jvmBuilder.multivaluedQueryParam(underlyingSessionTo(name), values));
       } else {
-        return wrap(jvmBuilder.multivaluedQueryParam(wrapCallback(underlyingSessionTo(name)), values));
+        return wrap(jvmBuilder.multivaluedQueryParam(underlyingSessionTo(name), values));
       }
     } else {
       if (typeof values === "function") {
-        return wrap(jvmBuilder.multivaluedQueryParam(name, wrapCallback(underlyingSessionToJava(values)) as any));
+        return wrap(jvmBuilder.multivaluedQueryParam(name, underlyingSessionToJava(values) as any));
       } else if (typeof values === "string") {
         return wrap(jvmBuilder.multivaluedQueryParam(name, values));
       } else {
@@ -364,9 +358,7 @@ const requestWithParamsActionBuilderImpl = <T>(
   },
   queryParamMap: (map: string | Expression<Record<string, any>>): T => {
     if (typeof map === "function") {
-      return wrap(
-        jvmBuilder.queryParamMap(wrapCallback(underlyingSessionToJava(map as SessionTo<Record<string, any>>)))
-      );
+      return wrap(jvmBuilder.queryParamMap(underlyingSessionToJava(map as SessionTo<Record<string, any>>)));
     } else if (typeof map === "object") {
       return wrap(jvmBuilder.queryParamMap(map));
     } else {
@@ -375,9 +367,7 @@ const requestWithParamsActionBuilderImpl = <T>(
   },
   header: (name: string, value: Expression<string>): T =>
     wrap(
-      typeof value === "function"
-        ? jvmBuilder.header(name, wrapCallback(underlyingSessionTo(value)))
-        : jvmBuilder.header(name, value)
+      typeof value === "function" ? jvmBuilder.header(name, underlyingSessionTo(value)) : jvmBuilder.header(name, value)
     ),
   headers: (headers: Record<string, string>): T => wrap(jvmBuilder.headers(headers)),
   ignoreProtocolHeaders: (): T => wrap(jvmBuilder.ignoreProtocolHeaders()),
@@ -385,26 +375,20 @@ const requestWithParamsActionBuilderImpl = <T>(
     wrap(
       typeof username === "function"
         ? typeof password === "function"
-          ? jvmBuilder.basicAuth(
-              wrapCallback(underlyingSessionTo(username)),
-              wrapCallback(underlyingSessionTo(password))
-            )
-          : jvmBuilder.basicAuth(wrapCallback(underlyingSessionTo(username)), password)
+          ? jvmBuilder.basicAuth(underlyingSessionTo(username), underlyingSessionTo(password))
+          : jvmBuilder.basicAuth(underlyingSessionTo(username), password)
         : typeof password === "function"
-          ? jvmBuilder.basicAuth(username, wrapCallback(underlyingSessionTo(password)))
+          ? jvmBuilder.basicAuth(username, underlyingSessionTo(password))
           : jvmBuilder.basicAuth(username, password)
     ),
   digestAuth: (username: Expression<string>, password: Expression<string>): T =>
     wrap(
       typeof username === "function"
         ? typeof password === "function"
-          ? jvmBuilder.digestAuth(
-              wrapCallback(underlyingSessionTo(username)),
-              wrapCallback(underlyingSessionTo(password))
-            )
-          : jvmBuilder.digestAuth(wrapCallback(underlyingSessionTo(username)), password)
+          ? jvmBuilder.digestAuth(underlyingSessionTo(username), underlyingSessionTo(password))
+          : jvmBuilder.digestAuth(underlyingSessionTo(username), password)
         : typeof password === "function"
-          ? jvmBuilder.digestAuth(username, wrapCallback(underlyingSessionTo(password)))
+          ? jvmBuilder.digestAuth(username, underlyingSessionTo(password))
           : jvmBuilder.digestAuth(username, password)
     ),
   disableUrlEncoding: (): T => wrap(jvmBuilder.disableUrlEncoding()),
@@ -421,10 +405,10 @@ const requestWithParamsActionBuilderImpl = <T>(
         typeof token === "function" &&
         typeof tokenSecret === "function"
         ? jvmBuilder.signWithOAuth1(
-            wrapCallback(underlyingSessionTo(consumerKey)),
-            wrapCallback(underlyingSessionTo(clientSharedSecret)),
-            wrapCallback(underlyingSessionTo(token)),
-            wrapCallback(underlyingSessionTo(tokenSecret))
+            underlyingSessionTo(consumerKey),
+            underlyingSessionTo(clientSharedSecret),
+            underlyingSessionTo(token),
+            underlyingSessionTo(tokenSecret)
           )
         : jvmBuilder.signWithOAuth1(
             consumerKey as string,
@@ -676,20 +660,18 @@ const requestWithBodyActionBuilderImpl = <T>(
   formParam: (key: Expression<string>, value: string | Expression<any>): T => {
     if (typeof key === "function") {
       if (typeof value === "function") {
-        return wrap(
-          jvmBuilder.formParam(wrapCallback(underlyingSessionTo(key)), wrapCallback(underlyingSessionTo(value)))
-        );
+        return wrap(jvmBuilder.formParam(underlyingSessionTo(key), underlyingSessionTo(value)));
       } else if (typeof value === "string") {
         // FIXME it shows the value:any overload?
-        return wrap(jvmBuilder.formParam(wrapCallback(underlyingSessionTo(key)), value));
+        return wrap(jvmBuilder.formParam(underlyingSessionTo(key), value));
       } else {
         // FIXME it shows the value:func overload?
-        return wrap(jvmBuilder.formParam(wrapCallback(underlyingSessionTo(key)), value));
+        return wrap(jvmBuilder.formParam(underlyingSessionTo(key), value));
       }
     } else {
       if (typeof value === "function") {
         // FIXME it shows the value:any overload?
-        return wrap(jvmBuilder.formParam(key, wrapCallback(underlyingSessionTo(value))));
+        return wrap(jvmBuilder.formParam(key, underlyingSessionTo(value)));
       } else if (typeof value === "string") {
         // FIXME it shows the value:any overload?
         return wrap(jvmBuilder.formParam(key, value));
@@ -701,20 +683,15 @@ const requestWithBodyActionBuilderImpl = <T>(
   multivaluedFormParam: (key: Expression<string>, values: string | Expression<any[]>): T => {
     if (typeof key === "function") {
       if (typeof values === "function") {
-        return wrap(
-          jvmBuilder.multivaluedFormParam(
-            wrapCallback(underlyingSessionTo(key)),
-            wrapCallback(underlyingSessionToJava(values) as any)
-          )
-        );
+        return wrap(jvmBuilder.multivaluedFormParam(underlyingSessionTo(key), underlyingSessionToJava(values) as any));
       } else if (typeof values === "string") {
         throw Error(`multivaluedFormParam() called with invalid arguments ${key}, ${values}`);
       } else {
-        return wrap(jvmBuilder.multivaluedFormParam(wrapCallback(underlyingSessionTo(key)), values));
+        return wrap(jvmBuilder.multivaluedFormParam(underlyingSessionTo(key), values));
       }
     } else {
       if (typeof values === "function") {
-        return wrap(jvmBuilder.multivaluedFormParam(key, wrapCallback(underlyingSessionToJava(values) as any)));
+        return wrap(jvmBuilder.multivaluedFormParam(key, underlyingSessionToJava(values) as any));
       } else if (typeof values === "string") {
         return wrap(jvmBuilder.multivaluedFormParam(key, values));
       } else {
@@ -725,25 +702,19 @@ const requestWithBodyActionBuilderImpl = <T>(
   formParamMap: (map: Expression<Record<string, any>>): T =>
     wrap(
       typeof map === "function"
-        ? (jvmBuilder as any)["formParamMap(java.util.function.Function)"](
-            wrapCallback(underlyingSessionToJava(map as any))
-          )
+        ? (jvmBuilder as any)["formParamMap(java.util.function.Function)"](underlyingSessionToJava(map as any))
         : jvmBuilder.formParamMap(map)
     ),
   form: (form: string | ((session: Session) => Record<string, any>)): T =>
-    wrap(
-      typeof form === "function"
-        ? jvmBuilder.form(wrapCallback(underlyingSessionToJava(form)) as any)
-        : jvmBuilder.form(form)
-    ),
+    wrap(typeof form === "function" ? jvmBuilder.form(underlyingSessionToJava(form) as any) : jvmBuilder.form(form)),
   formUpload: (name: Expression<string>, filePath: Expression<string>): T =>
     wrap(
       typeof name === "function"
         ? typeof filePath === "function"
-          ? jvmBuilder.formUpload(wrapCallback(underlyingSessionTo(name)), wrapCallback(underlyingSessionTo(filePath)))
-          : jvmBuilder.formUpload(wrapCallback(underlyingSessionTo(name)), filePath)
+          ? jvmBuilder.formUpload(underlyingSessionTo(name), underlyingSessionTo(filePath))
+          : jvmBuilder.formUpload(underlyingSessionTo(name), filePath)
         : typeof filePath === "function"
-          ? jvmBuilder.formUpload(name, wrapCallback(underlyingSessionTo(filePath)))
+          ? jvmBuilder.formUpload(name, underlyingSessionTo(filePath))
           : jvmBuilder.formUpload(name, filePath)
     ),
   asJson: (): T => wrap(jvmBuilder.asJson()),
@@ -835,7 +806,7 @@ const requestActionBuilderImpl = <T>(
     wrapCondition(
       typeof condition === "string"
         ? jvmBuilder.checkIf(condition)
-        : jvmBuilder.checkIf(wrapCallback(underlyingSessionTo(condition))),
+        : jvmBuilder.checkIf(underlyingSessionTo(condition)),
       wrap
     ),
   ignoreProtocolChecks: (): T => wrap(jvmBuilder.ignoreProtocolChecks()),

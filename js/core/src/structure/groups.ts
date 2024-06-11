@@ -1,6 +1,5 @@
 import JvmGroups = io.gatling.javaapi.core.group.Groups;
 
-import { wrapCallback } from "../gatlingJvm/callbacks";
 import { SessionTo, underlyingSessionTo } from "../session";
 import { On, wrapOn } from "./on";
 
@@ -21,7 +20,4 @@ export interface Groups<T extends Groups<T>> {
 export const groupImpl =
   <J2, J1 extends JvmGroups<J2, any>, T extends Groups<T>>(jvmGroups: J1, wrap: (wrapped: J2) => T): GroupFunction<T> =>
   (group: string | SessionTo<string>) =>
-    wrapOn(
-      typeof group === "function" ? jvmGroups.group(wrapCallback(underlyingSessionTo(group))) : jvmGroups.group(group),
-      wrap
-    );
+    wrapOn(typeof group === "function" ? jvmGroups.group(underlyingSessionTo(group)) : jvmGroups.group(group), wrap);
