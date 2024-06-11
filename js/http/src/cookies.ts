@@ -1,12 +1,4 @@
-import {
-  ActionBuilder,
-  Expression,
-  Session,
-  underlyingSessionTo,
-  wrapActionBuilder,
-  wrapCallback,
-  Wrapper
-} from "@gatling.io/core";
+import { ActionBuilder, Expression, Session, underlyingSessionTo, wrapActionBuilder, Wrapper } from "@gatling.io/core";
 import { HttpDsl as JvmHttpDsl } from "@gatling.io/jvm-types";
 
 import JvmAddCookie = io.gatling.javaapi.http.AddCookie;
@@ -116,9 +108,7 @@ const wrapGetCookie = (_underlying: JvmGetCookie): GetCookie => ({
   _underlying,
   withDomain: (domain: Expression<string>): GetCookie =>
     wrapGetCookie(
-      typeof domain === "function"
-        ? _underlying.withDomain(wrapCallback(underlyingSessionTo(domain)))
-        : _underlying.withPath(domain)
+      typeof domain === "function" ? _underlying.withDomain(underlyingSessionTo(domain)) : _underlying.withPath(domain)
     ),
   withPath: (path: string): GetCookie => wrapGetCookie(_underlying.withPath(path)),
   withSecure: (secure: boolean): GetCookie => wrapGetCookie(_underlying.withSecure(secure)),
@@ -206,10 +196,10 @@ export const Cookie: CookieApply = (name: Expression<string>, value: Expression<
   wrapAddCookie(
     typeof name === "function"
       ? typeof value === "function"
-        ? JvmHttpDsl.Cookie(wrapCallback(underlyingSessionTo(name)), wrapCallback(underlyingSessionTo(value)))
-        : JvmHttpDsl.Cookie(wrapCallback(underlyingSessionTo(name)), value)
+        ? JvmHttpDsl.Cookie(underlyingSessionTo(name), underlyingSessionTo(value))
+        : JvmHttpDsl.Cookie(underlyingSessionTo(name), value)
       : typeof value === "function"
-        ? JvmHttpDsl.Cookie(name, wrapCallback(underlyingSessionTo(value)))
+        ? JvmHttpDsl.Cookie(name, underlyingSessionTo(value))
         : JvmHttpDsl.Cookie(name, value)
   );
 
@@ -233,7 +223,5 @@ export interface CookieKeyApply {
 
 export const CookieKey: CookieKeyApply = (name: Expression<string>): GetCookie =>
   wrapGetCookie(
-    typeof name === "function"
-      ? JvmHttpDsl.CookieKey(wrapCallback(underlyingSessionTo(name)))
-      : JvmHttpDsl.CookieKey(name)
+    typeof name === "function" ? JvmHttpDsl.CookieKey(underlyingSessionTo(name)) : JvmHttpDsl.CookieKey(name)
   );

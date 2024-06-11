@@ -1,12 +1,4 @@
-import {
-  Expression,
-  Session,
-  Wrapper,
-  underlyingSessionTo,
-  wrapCallback,
-  wrapByteArrayCallback,
-  wrapByteArray
-} from "@gatling.io/core";
+import { Expression, Session, Wrapper, underlyingSessionTo } from "@gatling.io/core";
 import { HttpDsl as JvmHttpDsl } from "@gatling.io/jvm-types";
 
 import JvmSession = io.gatling.javaapi.core.Session;
@@ -136,26 +128,26 @@ export const wrapBodyPart = (_underlying: JvmBodyPart): BodyPart => ({
   contentType: (contentType: Expression<string>): BodyPart =>
     wrapBodyPart(
       typeof contentType === "function"
-        ? _underlying.contentType(wrapCallback(underlyingSessionTo(contentType)))
+        ? _underlying.contentType(underlyingSessionTo(contentType))
         : _underlying.contentType(contentType)
     ),
   charset: (charset: string): BodyPart => wrapBodyPart(_underlying.charset(charset)),
   dispositionType: (dispositionType: Expression<string>): BodyPart =>
     wrapBodyPart(
       typeof dispositionType === "function"
-        ? _underlying.dispositionType(wrapCallback(underlyingSessionTo(dispositionType)))
+        ? _underlying.dispositionType(underlyingSessionTo(dispositionType))
         : _underlying.dispositionType(dispositionType)
     ),
   fileName: (fileName: Expression<string>): BodyPart =>
     wrapBodyPart(
       typeof fileName === "function"
-        ? _underlying.fileName(wrapCallback(underlyingSessionTo(fileName)))
+        ? _underlying.fileName(underlyingSessionTo(fileName))
         : _underlying.fileName(fileName)
     ),
   contentId: (contentId: Expression<string>): BodyPart =>
     wrapBodyPart(
       typeof contentId == "function"
-        ? _underlying.contentId(wrapCallback(underlyingSessionTo(contentId)))
+        ? _underlying.contentId(underlyingSessionTo(contentId))
         : _underlying.contentId(contentId)
     ),
   transferEncoding: (transferEncoding: string): BodyPart =>
@@ -164,10 +156,10 @@ export const wrapBodyPart = (_underlying: JvmBodyPart): BodyPart => ({
     wrapBodyPart(
       typeof name === "function"
         ? typeof value === "function"
-          ? _underlying.header(wrapCallback(underlyingSessionTo(name)), wrapCallback(underlyingSessionTo(value)))
-          : _underlying.header(wrapCallback(underlyingSessionTo(name)), value)
+          ? _underlying.header(underlyingSessionTo(name), underlyingSessionTo(value))
+          : _underlying.header(underlyingSessionTo(name), value)
         : typeof value === "function"
-          ? _underlying.header(name, wrapCallback(underlyingSessionTo(value)))
+          ? _underlying.header(name, underlyingSessionTo(value))
           : _underlying.header(name, value)
     )
 });
@@ -186,22 +178,20 @@ const bodyPartImpl =
   (arg0: Expression<string>, arg1?: Expression<string>): BodyPart => {
     if (arg1 === undefined) {
       if (typeof arg0 === "function") {
-        return wrapBodyPart(jvmBodyPart(wrapCallback(underlyingSessionTo(arg0))));
+        return wrapBodyPart(jvmBodyPart(underlyingSessionTo(arg0)));
       } else {
         return wrapBodyPart(jvmBodyPart(arg0));
       }
     } else {
       if (typeof arg0 === "function") {
         if (typeof arg1 === "function") {
-          return wrapBodyPart(
-            jvmBodyPart(wrapCallback(underlyingSessionTo(arg0)), wrapCallback(underlyingSessionTo(arg1)))
-          );
+          return wrapBodyPart(jvmBodyPart(underlyingSessionTo(arg0), underlyingSessionTo(arg1)));
         } else {
-          return wrapBodyPart(jvmBodyPart(wrapCallback(underlyingSessionTo(arg0)), arg1));
+          return wrapBodyPart(jvmBodyPart(underlyingSessionTo(arg0), arg1));
         }
       } else {
         if (typeof arg1 === "function") {
-          return wrapBodyPart(jvmBodyPart(arg0, wrapCallback(underlyingSessionTo(arg1))));
+          return wrapBodyPart(jvmBodyPart(arg0, underlyingSessionTo(arg1)));
         } else {
           return wrapBodyPart(jvmBodyPart(arg0, arg1));
         }
@@ -511,7 +501,7 @@ export const PebbleStringBodyPart: PebbleStringBodyPartFunction = (arg0: Express
     }
   } else {
     if (typeof arg0 === "function") {
-      return wrapBodyPart(JvmHttpDsl.PebbleStringBodyPart(wrapCallback(underlyingSessionTo(arg0)), arg1));
+      return wrapBodyPart(JvmHttpDsl.PebbleStringBodyPart(underlyingSessionTo(arg0), arg1));
     } else {
       return wrapBodyPart(JvmHttpDsl.PebbleStringBodyPart(arg0, arg1));
     }
@@ -580,24 +570,19 @@ export const ByteArrayBodyPart: ByteArrayBodyPartFunction = (
 ): BodyPart => {
   if (typeof arg0 === "function") {
     if (typeof arg1 === "function") {
-      return wrapBodyPart(
-        JvmHttpDsl.ByteArrayBodyPart(
-          wrapCallback(underlyingSessionTo(arg0)),
-          wrapByteArrayCallback(underlyingSessionTo(arg1))
-        )
-      );
+      return wrapBodyPart(JvmHttpDsl.ByteArrayBodyPart(underlyingSessionTo(arg0), underlyingSessionTo(arg1)));
     } else if (typeof arg1 === "string") {
-      return wrapBodyPart(JvmHttpDsl.ByteArrayBodyPart(wrapCallback(underlyingSessionTo(arg0)), arg1));
+      return wrapBodyPart(JvmHttpDsl.ByteArrayBodyPart(underlyingSessionTo(arg0), arg1));
     } else {
-      return wrapBodyPart(JvmHttpDsl.ByteArrayBodyPart(wrapCallback(underlyingSessionTo(arg0)), wrapByteArray(arg1)));
+      return wrapBodyPart(JvmHttpDsl.ByteArrayBodyPart(underlyingSessionTo(arg0), arg1));
     }
   } else {
     if (typeof arg1 === "function") {
-      return wrapBodyPart(JvmHttpDsl.ByteArrayBodyPart(arg0, wrapByteArrayCallback(underlyingSessionTo(arg1))));
+      return wrapBodyPart(JvmHttpDsl.ByteArrayBodyPart(arg0, underlyingSessionTo(arg1)));
     } else if (typeof arg1 === "string") {
       return wrapBodyPart(JvmHttpDsl.ByteArrayBodyPart(arg0, arg1));
     } else {
-      return wrapBodyPart(JvmHttpDsl.ByteArrayBodyPart(arg0, wrapByteArray(arg1)));
+      return wrapBodyPart(JvmHttpDsl.ByteArrayBodyPart(arg0, arg1));
     }
   }
 };

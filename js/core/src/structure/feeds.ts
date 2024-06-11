@@ -1,4 +1,3 @@
-import { wrapCallback } from "../gatlingJvm/callbacks";
 import { FeederBuilder } from "../feeders";
 import { SessionTo, underlyingSessionTo } from "../session";
 
@@ -56,7 +55,7 @@ export const feedImpl =
     } else if (typeof numberOfRecords === "string") {
       return wrap(jvmFeeds.feed(feederBuilder._underlying, numberOfRecords));
     } else if (typeof numberOfRecords === "function") {
-      return wrap(jvmFeeds.feed(feederBuilder._underlying, wrapCallback(underlyingSessionTo(numberOfRecords))));
+      return wrap(jvmFeeds.feed(feederBuilder._underlying, underlyingSessionTo(numberOfRecords)));
     } else {
       return wrap(jvmFeeds.feed(feederBuilder._underlying));
     }

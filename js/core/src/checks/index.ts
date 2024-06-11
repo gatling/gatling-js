@@ -1,6 +1,5 @@
 import { CoreDsl as JvmCoreDsl } from "@gatling.io/jvm-types";
 
-import { wrapByteArray, wrapByteArrayCallback, wrapCallback } from "../gatlingJvm/callbacks";
 import { Expression, Session, SessionTo, underlyingSessionTo } from "../session";
 import { CheckBuilderCaptureGroup, wrapCheckBuilderCaptureGroup } from "./captureGroup";
 import { wrapCheckBuilderFinal } from "./final";
@@ -49,14 +48,14 @@ export const bodyBytes = (): CheckBuilderFind<number[]> => ({
   is: (expected: number[] | SessionTo<number[]>) =>
     wrapCheckBuilderFinal(
       typeof expected === "function"
-        ? JvmCoreDsl.bodyBytes().is(wrapByteArrayCallback(underlyingSessionTo(expected)))
-        : JvmCoreDsl.bodyBytes().is(wrapByteArray(expected))
+        ? JvmCoreDsl.bodyBytes().is(underlyingSessionTo(expected))
+        : JvmCoreDsl.bodyBytes().is(expected)
     ),
   not: (expected: number[] | SessionTo<number[]>) =>
     wrapCheckBuilderFinal(
       typeof expected === "function"
-        ? JvmCoreDsl.bodyBytes().not(wrapByteArrayCallback(underlyingSessionTo(expected)))
-        : JvmCoreDsl.bodyBytes().not(wrapByteArray(expected))
+        ? JvmCoreDsl.bodyBytes().not(underlyingSessionTo(expected))
+        : JvmCoreDsl.bodyBytes().not(expected)
     )
 });
 
@@ -122,7 +121,7 @@ export interface SubstringFunction {
 export const substring: SubstringFunction = (pattern: string | SessionTo<string>): CheckBuilderMultipleFind<number> =>
   wrapCheckBuilderMultipleFind(
     (typeof pattern === "function"
-      ? JvmCoreDsl.substring(wrapCallback(underlyingSessionTo(pattern)))
+      ? JvmCoreDsl.substring(underlyingSessionTo(pattern))
       : JvmCoreDsl.substring(pattern)) as JvmCheckBuilderMultipleFind<number>
   );
 
@@ -195,9 +194,9 @@ export interface XpathFunction {
 export const xpath: XpathFunction = (path: string | SessionTo<string>, namespaces?: Record<string, string>) => {
   if (typeof path === "function") {
     if (namespaces !== undefined) {
-      return wrapCheckBuilderMultipleFind(JvmCoreDsl.xpath(wrapCallback(underlyingSessionTo(path)), namespaces)); // TODO change type of java.util.Map in java2typescript
+      return wrapCheckBuilderMultipleFind(JvmCoreDsl.xpath(underlyingSessionTo(path), namespaces)); // TODO change type of java.util.Map in java2typescript
     } else {
-      return wrapCheckBuilderMultipleFind(JvmCoreDsl.xpath(wrapCallback(underlyingSessionTo(path))));
+      return wrapCheckBuilderMultipleFind(JvmCoreDsl.xpath(underlyingSessionTo(path)));
     }
   } else {
     if (namespaces !== undefined) {
@@ -275,9 +274,9 @@ export interface CssFunction {
 export const css: CssFunction = (selector: string | SessionTo<string>, nodeAttribute?: string) => {
   if (typeof selector === "function") {
     if (nodeAttribute !== undefined) {
-      return wrapCheckBuilderMultipleFind(JvmCoreDsl.css(wrapCallback(underlyingSessionTo(selector)), nodeAttribute));
+      return wrapCheckBuilderMultipleFind(JvmCoreDsl.css(underlyingSessionTo(selector), nodeAttribute));
     } else {
-      return wrapCheckBuilderMultipleFind(JvmCoreDsl.css(wrapCallback(underlyingSessionTo(selector))));
+      return wrapCheckBuilderMultipleFind(JvmCoreDsl.css(underlyingSessionTo(selector)));
     }
   } else {
     if (nodeAttribute !== undefined) {
@@ -324,7 +323,7 @@ export interface FormFunction {
 export const form: FormFunction = (selector: string | SessionTo<string>) =>
   wrapCheckBuilderMultipleFind(
     (typeof selector === "function"
-      ? JvmCoreDsl.form(wrapCallback(underlyingSessionTo(selector)))
+      ? JvmCoreDsl.form(underlyingSessionTo(selector))
       : JvmCoreDsl.form(selector)) as JvmCheckBuilderMultipleFind<any> // TODO change type of java.util.Map in java2typescript
   );
 
@@ -360,9 +359,7 @@ export interface JsonPathFunction {
 
 export const jsonPath: JsonPathFunction = (path: Expression<string>): CheckBuilderJsonOfTypeMultipleFind =>
   wrapCheckBuilderJsonOfTypeMultipleFind(
-    typeof path === "function"
-      ? JvmCoreDsl.jsonPath(wrapCallback(underlyingSessionTo(path)))
-      : JvmCoreDsl.jsonPath(path)
+    typeof path === "function" ? JvmCoreDsl.jsonPath(underlyingSessionTo(path)) : JvmCoreDsl.jsonPath(path)
   );
 
 export interface JmesPathFunction {
@@ -395,9 +392,7 @@ export interface JmesPathFunction {
 
 export const jmesPath: JmesPathFunction = (path: Expression<string>): CheckBuilderJsonOfTypeFind =>
   wrapCheckBuilderJsonOfTypeFind(
-    typeof path === "function"
-      ? JvmCoreDsl.jmesPath(wrapCallback(underlyingSessionTo(path)))
-      : JvmCoreDsl.jmesPath(path)
+    typeof path === "function" ? JvmCoreDsl.jmesPath(underlyingSessionTo(path)) : JvmCoreDsl.jmesPath(path)
   );
 
 export interface JsonpJsonPathFunction {
@@ -432,9 +427,7 @@ export interface JsonpJsonPathFunction {
 
 export const jsonpJsonPath: JsonpJsonPathFunction = (path: Expression<string>): CheckBuilderJsonOfTypeMultipleFind =>
   wrapCheckBuilderJsonOfTypeMultipleFind(
-    typeof path === "function"
-      ? JvmCoreDsl.jsonpJsonPath(wrapCallback(underlyingSessionTo(path)))
-      : JvmCoreDsl.jsonpJsonPath(path)
+    typeof path === "function" ? JvmCoreDsl.jsonpJsonPath(underlyingSessionTo(path)) : JvmCoreDsl.jsonpJsonPath(path)
   );
 
 export interface JsonpJmesPathFunction {
@@ -469,9 +462,7 @@ export interface JsonpJmesPathFunction {
 
 export const jsonpJmesPath: JsonpJmesPathFunction = (path: Expression<string>): CheckBuilderJsonOfTypeFind =>
   wrapCheckBuilderJsonOfTypeFind(
-    typeof path === "function"
-      ? JvmCoreDsl.jsonpJmesPath(wrapCallback(underlyingSessionTo(path)))
-      : JvmCoreDsl.jsonpJmesPath(path)
+    typeof path === "function" ? JvmCoreDsl.jsonpJmesPath(underlyingSessionTo(path)) : JvmCoreDsl.jsonpJmesPath(path)
   );
 
 export interface RegexFunction {
@@ -508,9 +499,7 @@ export interface RegexFunction {
 
 export const regex: RegexFunction = (pattern: Expression<string>): CheckBuilderCaptureGroup =>
   wrapCheckBuilderCaptureGroup(
-    typeof pattern === "function"
-      ? JvmCoreDsl.regex(wrapCallback(underlyingSessionTo(pattern)))
-      : JvmCoreDsl.regex(pattern)
+    typeof pattern === "function" ? JvmCoreDsl.regex(underlyingSessionTo(pattern)) : JvmCoreDsl.regex(pattern)
   );
 
 /**

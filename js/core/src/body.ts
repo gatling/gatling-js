@@ -1,7 +1,6 @@
 import { CoreDsl as JvmCoreDsl } from "@gatling.io/jvm-types";
 
 import { Wrapper } from "./common";
-import { wrapByteArrayCallback, wrapCallback } from "./gatlingJvm/callbacks";
 import { Expression, Session, underlyingSessionTo } from "./session";
 
 import JvmBody = io.gatling.javaapi.core.Body;
@@ -51,9 +50,7 @@ export interface StringBodyFunction {
 
 export const StringBody: StringBodyFunction = (string: Expression<string>): Body.WithString =>
   wrapBodyWithString(
-    typeof string === "function"
-      ? JvmCoreDsl.StringBody(wrapCallback(underlyingSessionTo(string)))
-      : JvmCoreDsl.StringBody(string)
+    typeof string === "function" ? JvmCoreDsl.StringBody(underlyingSessionTo(string)) : JvmCoreDsl.StringBody(string)
   );
 
 export interface RawFileBodyFunction {
@@ -83,7 +80,7 @@ export interface RawFileBodyFunction {
 export const RawFileBody: RawFileBodyFunction = (filePath: Expression<string>): Body.WithBytes =>
   wrapBodyWithBytes(
     typeof filePath === "function"
-      ? JvmCoreDsl.RawFileBody(wrapCallback(underlyingSessionTo(filePath)))
+      ? JvmCoreDsl.RawFileBody(underlyingSessionTo(filePath))
       : JvmCoreDsl.RawFileBody(filePath)
   );
 
@@ -116,7 +113,7 @@ export interface ElFileBodyFunction {
 export const ElFileBody: ElFileBodyFunction = (filePath: Expression<string>): Body.WithString =>
   wrapBodyWithString(
     typeof filePath === "function"
-      ? JvmCoreDsl.ElFileBody(wrapCallback(underlyingSessionTo(filePath)))
+      ? JvmCoreDsl.ElFileBody(underlyingSessionTo(filePath))
       : JvmCoreDsl.ElFileBody(filePath)
   );
 
@@ -165,7 +162,7 @@ export interface PebbleFileBodyFunction {
 export const PebbleFileBody: PebbleFileBodyFunction = (filePath: Expression<string>): Body.WithString =>
   wrapBodyWithString(
     typeof filePath === "function"
-      ? JvmCoreDsl.PebbleFileBody(wrapCallback(underlyingSessionTo(filePath)))
+      ? JvmCoreDsl.PebbleFileBody(underlyingSessionTo(filePath))
       : JvmCoreDsl.PebbleFileBody(filePath)
   );
 
@@ -204,7 +201,7 @@ export interface ByteArrayBodyFunction {
 export const ByteArrayBody: ByteArrayBodyFunction = (bytes: string | Expression<number[]>): Body.WithBytes =>
   wrapBodyWithBytes(
     typeof bytes === "function"
-      ? JvmCoreDsl.ByteArrayBody(wrapByteArrayCallback(underlyingSessionTo(bytes)))
+      ? JvmCoreDsl.ByteArrayBody(underlyingSessionTo(bytes))
       : typeof bytes === "string"
         ? JvmCoreDsl.ByteArrayBody(bytes)
         : JvmCoreDsl.ByteArrayBody(bytes)

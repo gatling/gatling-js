@@ -1,4 +1,3 @@
-import { wrapCallback } from "../gatlingJvm/callbacks";
 import { SessionTo, underlyingSessionTo } from "../session";
 import { On, wrapOn } from "./on";
 
@@ -39,14 +38,14 @@ export const doWhileImpl =
     if (counterName !== undefined) {
       // doWhile(condition, counterName)
       if (typeof condition === "function") {
-        return wrapOn(jvmDoWhile.doWhile(wrapCallback(underlyingSessionTo(condition)), counterName), wrap);
+        return wrapOn(jvmDoWhile.doWhile(underlyingSessionTo(condition), counterName), wrap);
       } else {
         return wrapOn(jvmDoWhile.doWhile(condition, counterName), wrap);
       }
     } else {
       // doWhile(condition)
       if (typeof condition === "function") {
-        return wrapOn(jvmDoWhile.doWhile(wrapCallback(underlyingSessionTo(condition))), wrap);
+        return wrapOn(jvmDoWhile.doWhile(underlyingSessionTo(condition)), wrap);
       } else {
         return wrapOn(jvmDoWhile.doWhile(condition), wrap);
       }

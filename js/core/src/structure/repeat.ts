@@ -1,4 +1,3 @@
-import { wrapCallback } from "../gatlingJvm/callbacks";
 import { SessionTo, underlyingSessionTo } from "../session";
 import { On, wrapOn } from "./on";
 
@@ -50,7 +49,7 @@ export const repeatImpl =
       } else if (typeof times === "string") {
         return wrapOn(jvmRepeat.repeat(times, counterName), wrap);
       } else {
-        return wrapOn(jvmRepeat.repeat(wrapCallback(underlyingSessionTo(times)), counterName), wrap);
+        return wrapOn(jvmRepeat.repeat(underlyingSessionTo(times), counterName), wrap);
       }
     } else {
       // repeat(times)
@@ -59,7 +58,7 @@ export const repeatImpl =
       } else if (typeof times === "string") {
         return wrapOn(jvmRepeat.repeat(times), wrap);
       } else {
-        return wrapOn(jvmRepeat.repeat(wrapCallback(underlyingSessionTo(times))), wrap);
+        return wrapOn(jvmRepeat.repeat(underlyingSessionTo(times)), wrap);
       }
     }
   };

@@ -1,4 +1,4 @@
-import { Expression, Session, wrapCallback, wrapSession } from "@gatling.io/core";
+import { Expression, Session, wrapSession } from "@gatling.io/core";
 import { underlyingSessionTo } from "@gatling.io/core";
 import { HttpDsl as JvmHttpDsl } from "@gatling.io/jvm-types";
 
@@ -181,37 +181,33 @@ export interface Http {
 
 const wrapHttp = (jvmHttp: JvmHttp): Http => ({
   get: (url: Expression<string>): HttpRequestActionBuilder =>
-    wrapHttpRequestActionBuilder(
-      typeof url === "function" ? jvmHttp.get(wrapCallback(underlyingSessionTo(url))) : jvmHttp.get(url)
-    ),
+    wrapHttpRequestActionBuilder(typeof url === "function" ? jvmHttp.get(underlyingSessionTo(url)) : jvmHttp.get(url)),
   put: (url: Expression<string>): HttpRequestActionBuilder =>
-    wrapHttpRequestActionBuilder(
-      typeof url === "function" ? jvmHttp.put(wrapCallback(underlyingSessionTo(url))) : jvmHttp.put(url)
-    ),
+    wrapHttpRequestActionBuilder(typeof url === "function" ? jvmHttp.put(underlyingSessionTo(url)) : jvmHttp.put(url)),
   post: (url: Expression<string>): HttpRequestActionBuilder =>
     wrapHttpRequestActionBuilder(
-      typeof url === "function" ? jvmHttp.post(wrapCallback(underlyingSessionTo(url))) : jvmHttp.post(url)
+      typeof url === "function" ? jvmHttp.post(underlyingSessionTo(url)) : jvmHttp.post(url)
     ),
   patch: (url: Expression<string>): HttpRequestActionBuilder =>
     wrapHttpRequestActionBuilder(
-      typeof url === "function" ? jvmHttp.patch(wrapCallback(underlyingSessionTo(url))) : jvmHttp.patch(url)
+      typeof url === "function" ? jvmHttp.patch(underlyingSessionTo(url)) : jvmHttp.patch(url)
     ),
   head: (url: Expression<string>): HttpRequestActionBuilder =>
     wrapHttpRequestActionBuilder(
-      typeof url === "function" ? jvmHttp.head(wrapCallback(underlyingSessionTo(url))) : jvmHttp.head(url)
+      typeof url === "function" ? jvmHttp.head(underlyingSessionTo(url)) : jvmHttp.head(url)
     ),
   delete: (url: Expression<string>): HttpRequestActionBuilder =>
     wrapHttpRequestActionBuilder(
-      typeof url === "function" ? jvmHttp.delete(wrapCallback(underlyingSessionTo(url))) : jvmHttp.delete(url)
+      typeof url === "function" ? jvmHttp.delete(underlyingSessionTo(url)) : jvmHttp.delete(url)
     ),
   options: (url: Expression<string>): HttpRequestActionBuilder =>
     wrapHttpRequestActionBuilder(
-      typeof url === "function" ? jvmHttp.options(wrapCallback(underlyingSessionTo(url))) : jvmHttp.options(url)
+      typeof url === "function" ? jvmHttp.options(underlyingSessionTo(url)) : jvmHttp.options(url)
     ),
   httpRequest: (method: string, url: Expression<string>): HttpRequestActionBuilder =>
     wrapHttpRequestActionBuilder(
       typeof url === "function"
-        ? jvmHttp.httpRequest(method, wrapCallback(underlyingSessionTo(url)))
+        ? jvmHttp.httpRequest(method, underlyingSessionTo(url))
         : jvmHttp.httpRequest(method, url)
     )
 });
@@ -239,8 +235,7 @@ export interface HttpApply {
 
 const httpApply = (name: Expression<string>): Http => {
   // Handle overloading
-  const jvmHttp =
-    typeof name === "string" ? JvmHttpDsl.http(name) : JvmHttpDsl.http(wrapCallback(underlyingSessionTo(name)));
+  const jvmHttp = typeof name === "string" ? JvmHttpDsl.http(name) : JvmHttpDsl.http(underlyingSessionTo(name));
   return wrapHttp(jvmHttp);
 };
 

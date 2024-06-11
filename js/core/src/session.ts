@@ -1,4 +1,3 @@
-import { wrapByteArray } from "./gatlingJvm/callbacks";
 import { asJava } from "./gatlingJvm/collections";
 import { Duration, toJvmDuration } from "./utils/duration";
 import { Wrapper } from "./common";
@@ -131,7 +130,7 @@ export const wrapSession = (_underlying: JvmSession): Session => ({
   set: (key: string, value: any): Session => {
     return wrapSession(_underlying.set(key, asJava(value)));
   },
-  setByteArray: (key: string, value: number[]): Session => wrapSession(_underlying.set(key, wrapByteArray(value))),
+  setByteArray: (key: string, value: number[]): Session => wrapSession(_underlying.set(key, value)),
   setAll: (newAttributes: Record<string, any>): Session => {
     let session = _underlying;
     for (const key in newAttributes) {

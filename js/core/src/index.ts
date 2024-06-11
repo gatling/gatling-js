@@ -2,7 +2,6 @@ import "@gatling.io/jvm-types";
 import JvmSetUp = io.gatling.javaapi.core.Simulation$SetUp;
 
 import * as jvm from "./gatlingJvm/app";
-import { wrapCallback } from "./gatlingJvm/callbacks";
 import { PauseType, toJvmPauseType } from "./structure/pauses";
 import { Duration, toJvmDuration } from "./utils/duration";
 import { SessionTo, underlyingSessionTo } from "./session";
@@ -12,7 +11,6 @@ import { ProtocolBuilder } from "./protocol";
 import { ThrottleStep } from "./throttling";
 
 // FIXME no export *
-export * from "./gatlingJvm/callbacks";
 export * from "./utils/duration";
 export * from "./assertions";
 export * from "./body";
@@ -138,7 +136,7 @@ const wrapSetUp = (jvmSetUp: JvmSetUp): SetUp => ({
   disablePauses: () => wrapSetUp(jvmSetUp.disablePauses()),
   constantPauses: () => wrapSetUp(jvmSetUp.constantPauses()),
   exponentialPauses: () => wrapSetUp(jvmSetUp.exponentialPauses()),
-  customPauses: (f) => wrapSetUp(jvmSetUp.customPauses(wrapCallback(underlyingSessionTo(f)))),
+  customPauses: (f) => wrapSetUp(jvmSetUp.customPauses(underlyingSessionTo(f))),
   uniformPauses: (plusOrMinus) => wrapSetUp(jvmSetUp.uniformPauses(toJvmDuration(plusOrMinus))),
   normalPausesWithStdDevDuration: (stdDevDuration) =>
     wrapSetUp(jvmSetUp.normalPausesWithStdDevDuration(toJvmDuration(stdDevDuration))),

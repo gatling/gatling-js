@@ -1,4 +1,3 @@
-import { wrapCallback } from "../gatlingJvm/callbacks";
 import { SessionTo, underlyingSessionTo } from "../session";
 import { On, wrapOn } from "./on";
 
@@ -49,9 +48,9 @@ export const foreachImpl =
   (seq: unknown[] | string | SessionTo<Array<unknown>>, attributeName: string, counterName?: string) => {
     if (typeof seq === "function") {
       if (counterName !== undefined) {
-        return wrapOn(jvmForEach.foreach(wrapCallback(underlyingSessionTo(seq)), attributeName, counterName), wrap);
+        return wrapOn(jvmForEach.foreach(underlyingSessionTo(seq), attributeName, counterName), wrap);
       } else {
-        return wrapOn(jvmForEach.foreach(wrapCallback(underlyingSessionTo(seq)), attributeName), wrap);
+        return wrapOn(jvmForEach.foreach(underlyingSessionTo(seq), attributeName), wrap);
       }
     } else if (typeof seq === "string") {
       if (counterName !== undefined) {

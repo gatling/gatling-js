@@ -1,4 +1,3 @@
-import { wrapCallback } from "../gatlingJvm/callbacks";
 import { SessionTo, underlyingSessionTo } from "../session";
 import { Executable } from "./execs";
 
@@ -63,7 +62,7 @@ export const doIfOrElseImpl =
   (condition: string | SessionTo<boolean>) =>
     wrapThen(
       typeof condition === "function"
-        ? jvmDoIfOrElse.doIfOrElse(wrapCallback(underlyingSessionTo(condition)))
+        ? jvmDoIfOrElse.doIfOrElse(underlyingSessionTo(condition))
         : jvmDoIfOrElse.doIfOrElse(condition),
       wrap
     );
@@ -135,13 +134,10 @@ export const doIfEqualsOrElseImpl =
   ): DoIfEqualsOrElseFunction<T> =>
   (actual: string | SessionTo<unknown>, expected: string | SessionTo<unknown> | unknown) => {
     if (typeof actual === "function") {
-      const wrappedActual = wrapCallback(underlyingSessionTo(actual));
+      const wrappedActual = underlyingSessionTo(actual);
       if (typeof expected === "function") {
         return wrapThen(
-          jvmDoIfEqualsOrElse.doIfEqualsOrElse(
-            wrappedActual,
-            wrapCallback(underlyingSessionTo(expected as SessionTo<unknown>))
-          ),
+          jvmDoIfEqualsOrElse.doIfEqualsOrElse(wrappedActual, underlyingSessionTo(expected as SessionTo<unknown>)),
           wrap
         );
       } else if (typeof expected === "string") {
@@ -152,10 +148,7 @@ export const doIfEqualsOrElseImpl =
     } else {
       if (typeof expected === "function") {
         return wrapThen(
-          jvmDoIfEqualsOrElse.doIfEqualsOrElse(
-            actual,
-            wrapCallback(underlyingSessionTo(expected as SessionTo<unknown>))
-          ),
+          jvmDoIfEqualsOrElse.doIfEqualsOrElse(actual, underlyingSessionTo(expected as SessionTo<unknown>)),
           wrap
         );
       } else if (typeof expected === "string") {

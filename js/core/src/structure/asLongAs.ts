@@ -1,4 +1,3 @@
-import { wrapCallback } from "../gatlingJvm/callbacks";
 import { SessionTo, underlyingSessionTo } from "../session";
 import { On, wrapOn } from "./on";
 
@@ -91,28 +90,28 @@ export const asLongAsImpl =
     if (arg2 !== undefined && typeof arg1 === "string") {
       // asLongAs(condition, counterName, exitASAP)
       if (typeof condition === "function") {
-        return wrapOn(jvmAsLongAs.asLongAs(wrapCallback(underlyingSessionTo(condition)), arg1, arg2), wrap);
+        return wrapOn(jvmAsLongAs.asLongAs(underlyingSessionTo(condition), arg1, arg2), wrap);
       } else {
         return wrapOn(jvmAsLongAs.asLongAs(condition, arg1, arg2), wrap);
       }
     } else if (typeof arg1 === "string") {
       // asLongAs(condition, counterName)
       if (typeof condition === "function") {
-        return wrapOn(jvmAsLongAs.asLongAs(wrapCallback(underlyingSessionTo(condition)), arg1), wrap);
+        return wrapOn(jvmAsLongAs.asLongAs(underlyingSessionTo(condition), arg1), wrap);
       } else {
         return wrapOn(jvmAsLongAs.asLongAs(condition, arg1), wrap);
       }
     } else if (typeof arg1 === "boolean") {
       // asLongAs(condition, exitASAP)
       if (typeof condition === "function") {
-        return wrapOn(jvmAsLongAs.asLongAs(wrapCallback(underlyingSessionTo(condition)), arg1), wrap);
+        return wrapOn(jvmAsLongAs.asLongAs(underlyingSessionTo(condition), arg1), wrap);
       } else {
         return wrapOn(jvmAsLongAs.asLongAs(condition, arg1), wrap);
       }
     } else if (arg1 === undefined) {
       // asLongAs(condition)
       if (typeof condition === "function") {
-        return wrapOn(jvmAsLongAs.asLongAs(wrapCallback(underlyingSessionTo(condition))), wrap);
+        return wrapOn(jvmAsLongAs.asLongAs(underlyingSessionTo(condition)), wrap);
       } else {
         return wrapOn(jvmAsLongAs.asLongAs(condition), wrap);
       }

@@ -1,7 +1,6 @@
 import { HttpDsl, HttpDsl as JvmHttpDsl } from "@gatling.io/jvm-types";
 import {
   underlyingSessionTo,
-  wrapCallback,
   wrapCheckBuilderCaptureGroup,
   wrapCheckBuilderFind,
   wrapCheckBuilderMultipleFind,
@@ -49,7 +48,7 @@ export interface CurrentLocationRegexFunction {
 export const currentLocationRegex: CurrentLocationRegexFunction = (pattern: Expression<string>) =>
   wrapCheckBuilderCaptureGroup(
     typeof pattern === "function"
-      ? JvmHttpDsl.currentLocationRegex(wrapCallback(underlyingSessionTo(pattern)))
+      ? JvmHttpDsl.currentLocationRegex(underlyingSessionTo(pattern))
       : JvmHttpDsl.currentLocationRegex(pattern)
   );
 
@@ -73,7 +72,7 @@ export interface HeaderFunction {
 
 export const header: HeaderFunction = (name: Expression<string>) =>
   wrapCheckBuilderMultipleFind(
-    typeof name === "function" ? JvmHttpDsl.header(wrapCallback(underlyingSessionTo(name))) : JvmHttpDsl.header(name)
+    typeof name === "function" ? JvmHttpDsl.header(underlyingSessionTo(name)) : JvmHttpDsl.header(name)
   );
 
 export interface HeaderRegexFunction {
@@ -126,10 +125,10 @@ export const headerRegex: HeaderRegexFunction = (name: Expression<string>, patte
   wrapCheckBuilderCaptureGroup(
     typeof name === "function"
       ? typeof pattern === "function"
-        ? HttpDsl.headerRegex(wrapCallback(underlyingSessionTo(name)), wrapCallback(underlyingSessionTo(pattern)))
-        : HttpDsl.headerRegex(wrapCallback(underlyingSessionTo(name)), pattern)
+        ? HttpDsl.headerRegex(underlyingSessionTo(name), underlyingSessionTo(pattern))
+        : HttpDsl.headerRegex(underlyingSessionTo(name), pattern)
       : typeof pattern === "function"
-        ? HttpDsl.headerRegex(name, wrapCallback(underlyingSessionTo(pattern)))
+        ? HttpDsl.headerRegex(name, underlyingSessionTo(pattern))
         : // FIXME forced to use the charsequence version
           HttpDsl.headerRegex(name, pattern)
   );
