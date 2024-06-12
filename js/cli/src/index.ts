@@ -86,6 +86,27 @@ const jvmClasspathMandatoryOption = new Option(
   "The classpath containing all Gatling JVM components"
 ).makeOptionMandatory(true);
 
+const propertyOption = new Option(
+  "--property <key=value...>",
+  "Specify one or more properties which can be read in the simulation script"
+);
+
+const parseProperties = (options: { property: string[] }): Record<string, string> => {
+  const properties: Record<string, string> = {};
+  if (options.property !== undefined) {
+    for (const p of options.property) {
+      const i = p.indexOf("=");
+      if (i < 0) {
+        throw Error(`property '${p}' is not valid: format should be key=value`);
+      } else {
+        const key = p.slice(0, i).trim();
+        properties[key] = p.slice(i + 1);
+      }
+    }
+  }
+  return properties;
+};
+
 program
   .command("install")
   .description("Install all required components and dependencies for Gatling")
@@ -123,6 +144,7 @@ program
   .addOption(bundleFileOption)
   .addOption(resourcesFolderOption)
   .addOption(resultsFolderOption)
+  .addOption(propertyOption)
   .action(async (options) => {
     const graalvmHome: string = options.graalvmHome;
     const jvmClasspath: string = options.jvmClasspath;
@@ -130,6 +152,7 @@ program
     const bundleFile: string = options.bundleFile;
     const resourcesFolder: string = options.resourcesFolder;
     const resultsFolder: string = options.resultsFolder;
+    const properties = parseProperties(options);
 
     await runSimulation({
       graalvmHome,
@@ -137,7 +160,8 @@ program
       simulation: simulation,
       bundleFile,
       resourcesFolder,
-      resultsFolder
+      resultsFolder,
+      properties
     });
   });
 
@@ -153,12 +177,14 @@ program
   .addOption(resourcesFolderOption)
   .addOption(resultsFolderOption)
   .addOption(gatlingHomeOption)
+  .addOption(propertyOption)
   .action(async (options) => {
     const gatlingHome = gatlingHomeDirWithDefaults(options);
     const sourcesFolder: string = options.sourcesFolder;
     const bundleFile: string = options.bundleFile;
     const resourcesFolder: string = options.resourcesFolder;
     const resultsFolder: string = options.resultsFolder;
+    const properties = parseProperties(options);
 
     const simulations = await findSimulations(sourcesFolder);
     const typescript = typescriptWithDefaults(options, simulations);
@@ -171,7 +197,15 @@ program
 
     await bundle({ sourcesFolder, bundleFile, typescript, simulations });
 
-    await runSimulation({ graalvmHome, jvmClasspath, simulation, bundleFile, resourcesFolder, resultsFolder });
+    await runSimulation({
+      graalvmHome,
+      jvmClasspath,
+      simulation,
+      bundleFile,
+      resourcesFolder,
+      resultsFolder,
+      properties
+    });
   });
 
 program
