@@ -17,6 +17,7 @@
 @Java2TS(
     declare = {
         // ********** java **********
+        @Type(value = java.lang.System.class, export = true),
         // java.time
         @Type(value = java.time.Duration.class, export = true),
         @Type(value = java.time.temporal.ChronoUnit.class, export = true),

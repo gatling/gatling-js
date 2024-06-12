@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { Command, Option } from "commander";
+import { Command, Option, Argument } from "commander";
 import os from "os";
 
 import { bundle } from "./bundle";
@@ -133,6 +133,25 @@ const nonInteractiveOption = new Option(
   "Switch to non-interactive mode and fail if no simulation is explicitly specified"
 ).default(false);
 
+const runOptionsArgument = new Argument(
+  "[optionKey=optionValue...]",
+  "Specify one or more option which can be read in the simulation script with the getOption() function; format must be key=value"
+);
+
+const parseRunOptions = (args: string[]): Record<string, string> => {
+  const parsedOptions: Record<string, string> = {};
+  for (const arg of args) {
+    const i = arg.indexOf("=");
+    if (i < 0) {
+      throw Error(`Option '${arg}' is not valid: format should be key=value`);
+    } else {
+      const key = arg.slice(0, i).trim();
+      parsedOptions[key] = arg.slice(i + 1);
+    }
+  }
+  return parsedOptions;
+};
+
 program
   .command("install")
   .description("Install all required components and dependencies for Gatling")
@@ -171,7 +190,8 @@ program
   .addOption(resourcesFolderOption)
   .addOption(resultsFolderOption)
   .addOption(memoryOption)
-  .action(async (options) => {
+  .addArgument(runOptionsArgument)
+  .action(async (args: string[], options) => {
     const graalvmHome: string = options.graalvmHome;
     const jvmClasspath: string = options.jvmClasspath;
     const simulation: string = options.simulation;
@@ -179,6 +199,7 @@ program
     const resourcesFolder: string = options.resourcesFolder;
     const resultsFolder: string = options.resultsFolder;
     const memory: number | undefined = options.memory;
+    const runOptions = parseRunOptions(args);
 
     await runSimulation({
       graalvmHome,
@@ -187,7 +208,8 @@ program
       bundleFile,
       resourcesFolder,
       resultsFolder,
-      memory
+      memory,
+      runOptions
     });
   });
 
@@ -205,7 +227,8 @@ program
   .addOption(gatlingHomeOption)
   .addOption(memoryOption)
   .addOption(nonInteractiveOption)
-  .action(async (options) => {
+  .addArgument(runOptionsArgument)
+  .action(async (args: string[], options) => {
     const gatlingHome = gatlingHomeDirWithDefaults(options);
     const sourcesFolder: string = options.sourcesFolder;
     const bundleFile = validateBundleFile(options);
@@ -213,6 +236,7 @@ program
     const resultsFolder: string = options.resultsFolder;
     const memory: number | undefined = options.memory;
     const nonInteractive: boolean = options.nonInteractive;
+    const runOptions = parseRunOptions(args);
 
     const simulations = await findSimulations(sourcesFolder);
     const typescript = typescriptWithDefaults(options, simulations);
@@ -225,7 +249,16 @@ program
 
     await bundle({ sourcesFolder, bundleFile, typescript, simulations });
 
-    await runSimulation({ graalvmHome, jvmClasspath, simulation, bundleFile, resourcesFolder, resultsFolder, memory });
+    await runSimulation({
+      graalvmHome,
+      jvmClasspath,
+      simulation,
+      bundleFile,
+      resourcesFolder,
+      resultsFolder,
+      memory,
+      runOptions
+    });
   });
 
 program

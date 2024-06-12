@@ -2137,6 +2137,40 @@ interface StructureBuilderStatic {
 
 export const StructureBuilder: StructureBuilderStatic = Java.type("io.gatling.javaapi.core.StructureBuilder");
 
+interface SystemStatic {
+  readonly class: any;
+  console(): any /*java.io.Console*/;
+  getSecurityManager(): any /*java.lang.SecurityManager*/;
+  clearProperty(arg0: string): string;
+  getProperty(arg0: string): string;
+  getProperty(arg0: string, arg1: string): string;
+  getenv(arg0: string): string;
+  lineSeparator(): string;
+  setProperty(arg0: string, arg1: string): string;
+  getLogger(arg0: string): any /*java.lang.System$Logger*/;
+  getLogger(arg0: string, arg1: any /*java.util.ResourceBundle*/): any /*java.lang.System$Logger*/;
+  inheritedChannel(): any /*java.nio.channels.Channel*/;
+  getenv(): java.util.Map<string, string>;
+  getProperties(): any /*java.util.Properties*/;
+  identityHashCode(arg0: any /*java.lang.Object*/): int;
+  mapLibraryName(arg0: string): string;
+  currentTimeMillis(): long;
+  nanoTime(): long;
+  arraycopy(arg0: any /*java.lang.Object*/, arg1: int, arg2: any /*java.lang.Object*/, arg3: int, arg4: int): void;
+  exit(arg0: int): void;
+  gc(): void;
+  load(arg0: string): void;
+  loadLibrary(arg0: string): void;
+  runFinalization(): void;
+  setErr(arg0: any /*java.io.PrintStream*/): void;
+  setIn(arg0: any /*java.io.InputStream*/): void;
+  setOut(arg0: any /*java.io.PrintStream*/): void;
+  setProperties(arg0: any /*java.util.Properties*/): void;
+  setSecurityManager(arg0: any /*java.lang.SecurityManager*/): void;
+}
+
+export const System: SystemStatic = Java.type("java.lang.System");
+
 interface TemporalUnitStatic {
   readonly class: any;
 }
