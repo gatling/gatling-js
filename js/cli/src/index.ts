@@ -53,13 +53,27 @@ const simulationRequiredOption = new Option(
 
 const bundleFileOption = new Option(
   "--bundle-file <value>",
-  "The target bundle file path when building simulations"
+  "The target bundle file path when building simulations (must have a .js extension)"
 ).default("target/bundle.js");
+
+const validateBundleFile = (options: { bundleFile: string }): string => {
+  if (!options.bundleFile.endsWith(".js")) {
+    throw Error(`'${options.bundleFile}' is not a valid bundle file path: should have a .js extension`);
+  }
+  return options.bundleFile;
+};
 
 const enterprisePackageFileOption = new Option(
   "--enterprise-package-file <value>",
-  "The target package file path when packaging simulations for Gatling Enterprise"
-).default("target/package.jar");
+  "The target package file path when packaging simulations for Gatling Enterprise (must have a .zip extension)"
+).default("target/package.zip");
+
+const validateEnterprisePackageFile = (options: { enterprisePackageFile: string }): string => {
+  if (!options.enterprisePackageFile.endsWith(".zip")) {
+    throw Error(`'${options.enterprisePackageFile}' is not a valid package file path: should have a .zip extension`);
+  }
+  return options.enterprisePackageFile;
+};
 
 const resourcesFolderOption = new Option("--resources-folder <value>", "The resources folder path").default(
   "resources"
@@ -106,7 +120,7 @@ program
   .addOption(typescriptOption)
   .action(async (options) => {
     const sourcesFolder: string = options.sourcesFolder;
-    const bundleFile: string = options.bundleFile;
+    const bundleFile = validateBundleFile(options);
 
     const simulations = await findSimulations(sourcesFolder);
     const typescript = typescriptWithDefaults(options, simulations);
@@ -127,7 +141,7 @@ program
     const graalvmHome: string = options.graalvmHome;
     const jvmClasspath: string = options.jvmClasspath;
     const simulation: string = options.simulation;
-    const bundleFile: string = options.bundleFile;
+    const bundleFile = validateBundleFile(options);
     const resourcesFolder: string = options.resourcesFolder;
     const resultsFolder: string = options.resultsFolder;
 
@@ -156,7 +170,7 @@ program
   .action(async (options) => {
     const gatlingHome = gatlingHomeDirWithDefaults(options);
     const sourcesFolder: string = options.sourcesFolder;
-    const bundleFile: string = options.bundleFile;
+    const bundleFile = validateBundleFile(options);
     const resourcesFolder: string = options.resourcesFolder;
     const resultsFolder: string = options.resultsFolder;
 
@@ -208,8 +222,8 @@ program
   .action(async (options) => {
     const sourcesFolder: string = options.sourcesFolder;
     const resourcesFolder: string = options.resourcesFolder;
-    const bundleFile: string = options.bundleFile;
-    const enterprisePackageFile: string = options.enterprisePackageFile;
+    const bundleFile = validateBundleFile(options);
+    const enterprisePackageFile = validateEnterprisePackageFile(options);
 
     const simulations = await findSimulations(sourcesFolder);
     const typescript = typescriptWithDefaults(options, simulations);
