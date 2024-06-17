@@ -15,7 +15,7 @@ export interface RunSimulationOptions extends RunOptions {
   bundleFile: string;
   resourcesFolder: string;
   resultsFolder: string;
-  properties: Record<string, string>;
+  parameters: Record<string, string>;
 }
 
 export interface RunRecorderOptions extends RunOptions {
@@ -33,7 +33,7 @@ export const runSimulation = async (options: RunSimulationOptions): Promise<void
 
   const additionalClasspathElements = [options.resourcesFolder];
   const javaArgs = [
-    ...Object.entries(options.properties).map(([key, value]) => `-D${key}=${value}`),
+    ...Object.entries(options.parameters).map(([key, value]) => `-D${key}=${value}`),
     `-Dgatling.js.bundle.filePath=${options.bundleFile}`,
     `-Dgatling.js.simulation=${options.simulation}`
   ];

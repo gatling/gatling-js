@@ -23,7 +23,7 @@ export * from "./feeders";
 export * from "./filters";
 export * from "./openInjection";
 export * from "./population";
-export { getProperty, getEnvironmentVariable, GetWithDefault } from "./properties";
+export { getParameter, getEnvironmentVariable, GetWithDefault } from "./parameters";
 export * from "./protocol";
 export * from "./scenario";
 export * from "./session";

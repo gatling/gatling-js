@@ -6,15 +6,16 @@ export interface GetWithDefault {
 }
 
 /**
- * Gets the property indicated by the specified name.
+ * Gets the parameter indicated by the specified name.
  *
- * Properties can be specified with the --property option in the Gatling CLI.
+ * Parameters can be specified in the `gatling run` command by passing arguments with the format `key=value`, e.g.
+ * `gatling run param1=foo param2=bar`.
  *
  * @param name - the name of the property.
  * @param defaultValue - a default value
  * @returns the string value of the property if it is defined, or else `defaultValue` if provided, or else `undefined`.
  */
-export const getProperty: GetWithDefault = (name: string, defaultValue?: string) =>
+export const getParameter: GetWithDefault = (name: string, defaultValue?: string) =>
   getOrElse(JvmSystem.getProperty(name), defaultValue) as any;
 
 /**
