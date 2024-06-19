@@ -14,7 +14,8 @@ import {
   nothingFor,
   doWhile,
   css,
-  global
+  global,
+  GlobalStore
 } from "@gatling.io/core";
 import { http } from "@gatling.io/http";
 
@@ -36,9 +37,12 @@ export default simulation((setUp) => {
     .exec(
       group("Browse").on(
         exec(session => session.set("page", 1)),
-        doWhile((session: Session) => session.get<number>("page") < 3).on(
+        doWhile((session: Session) => session.get<number>("page") <= 3).on(
           http("Browse page #{page}").get("/computers?p=#{page}"),
-          exec(session => session.set("page", session.get<number>("page") + 1)),
+          exec(session => {
+            GlobalStore.update("browsedPages", old => typeof old === "number" ? old + 1 : 1);
+            return session.set("page", session.get<number>("page") + 1)
+          }),
           pause({ amount: 500, unit: "milliseconds" })
         )
       ),
@@ -76,6 +80,13 @@ export default simulation((setUp) => {
       atOnceUsers(10),
       nothingFor({ amount: 5, unit: "seconds" }),
       constantUsersPerSec(2).during(30)
+    ).andThen(
+      scenario("Post execution")
+        .exec(session => {
+          console.log(`browsedPages=${GlobalStore.get("browsedPages")}`);
+          return session;
+        })
+        .injectOpen(atOnceUsers(1))
     )
   ).protocols(baseHttpProtocol)
     .assertions(

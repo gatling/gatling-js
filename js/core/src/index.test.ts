@@ -37,7 +37,8 @@ import {
   ssv,
   stressPeakUsers,
   tsv,
-  ProtocolBuilder
+  ProtocolBuilder,
+  GlobalStore
 } from "./index";
 
 const runSimulationMock = (_: Simulation): void => {};
@@ -68,6 +69,15 @@ const byteArrayBody2 = ByteArrayBody((session) => [1]);
 
 //const records = csv("foo").readRecords();
 const recordsCount = csv("foo").recordsCount();
+
+// global store
+GlobalStore.getOrDefault<number>("key", 0);
+GlobalStore.put<number>("key", 0);
+GlobalStore.get<number>("key");
+GlobalStore.containsKey("key");
+GlobalStore.update<number>("key", (oldValue) => (oldValue === null ? 0 : oldValue + 1));
+GlobalStore.remove<number>("key");
+GlobalStore.clear();
 
 // scenario
 const scn = scenario("scenario")
