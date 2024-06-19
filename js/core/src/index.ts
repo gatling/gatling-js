@@ -19,6 +19,7 @@ export * from "./closedInjection";
 export * from "./common";
 export * from "./feeders";
 export * from "./filters";
+export { GlobalStore } from "./globalStore";
 export * from "./openInjection";
 export * from "./population";
 export * from "./protocol";
