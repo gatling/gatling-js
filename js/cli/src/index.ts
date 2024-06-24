@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { Command, Option } from "commander";
+import { Command, Option, Argument } from "commander";
 import os from "os";
 
 import { bundle } from "./bundle";
@@ -100,6 +100,25 @@ const jvmClasspathMandatoryOption = new Option(
   "The classpath containing all Gatling JVM components"
 ).makeOptionMandatory(true);
 
+const runParameters = new Argument(
+  "[parameterKey=parameterValue...]",
+  "Specify one or more parameter which can be read in the simulation script, using the format key=value"
+);
+
+const parseRunParameters = (args: string[]): Record<string, string> => {
+  const parsedArgs: Record<string, string> = {};
+  for (const arg of args) {
+    const i = arg.indexOf("=");
+    if (i < 0) {
+      throw Error(`Parameter '${arg}' is not valid: format should be key=value`);
+    } else {
+      const key = arg.slice(0, i).trim();
+      parsedArgs[key] = arg.slice(i + 1);
+    }
+  }
+  return parsedArgs;
+};
+
 program
   .command("install")
   .description("Install all required components and dependencies for Gatling")
@@ -137,13 +156,15 @@ program
   .addOption(bundleFileOption)
   .addOption(resourcesFolderOption)
   .addOption(resultsFolderOption)
-  .action(async (options) => {
+  .addArgument(runParameters)
+  .action(async (args: string[], options) => {
     const graalvmHome: string = options.graalvmHome;
     const jvmClasspath: string = options.jvmClasspath;
     const simulation: string = options.simulation;
     const bundleFile = validateBundleFile(options);
     const resourcesFolder: string = options.resourcesFolder;
     const resultsFolder: string = options.resultsFolder;
+    const parameters = parseRunParameters(args);
 
     await runSimulation({
       graalvmHome,
@@ -151,7 +172,8 @@ program
       simulation: simulation,
       bundleFile,
       resourcesFolder,
-      resultsFolder
+      resultsFolder,
+      parameters
     });
   });
 
@@ -167,12 +189,14 @@ program
   .addOption(resourcesFolderOption)
   .addOption(resultsFolderOption)
   .addOption(gatlingHomeOption)
-  .action(async (options) => {
+  .addArgument(runParameters)
+  .action(async (args: string[], options) => {
     const gatlingHome = gatlingHomeDirWithDefaults(options);
     const sourcesFolder: string = options.sourcesFolder;
     const bundleFile = validateBundleFile(options);
     const resourcesFolder: string = options.resourcesFolder;
     const resultsFolder: string = options.resultsFolder;
+    const parameters = parseRunParameters(args);
 
     const simulations = await findSimulations(sourcesFolder);
     const typescript = typescriptWithDefaults(options, simulations);
@@ -185,7 +209,15 @@ program
 
     await bundle({ sourcesFolder, bundleFile, typescript, simulations });
 
-    await runSimulation({ graalvmHome, jvmClasspath, simulation, bundleFile, resourcesFolder, resultsFolder });
+    await runSimulation({
+      graalvmHome,
+      jvmClasspath,
+      simulation,
+      bundleFile,
+      resourcesFolder,
+      resultsFolder,
+      parameters
+    });
   });
 
 program

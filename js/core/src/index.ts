@@ -22,6 +22,7 @@ export * from "./filters";
 export { GlobalStore } from "./globalStore";
 export * from "./openInjection";
 export * from "./population";
+export { getParameter, getEnvironmentVariable, GetWithDefault } from "./parameters";
 export * from "./protocol";
 export * from "./scenario";
 export * from "./session";
