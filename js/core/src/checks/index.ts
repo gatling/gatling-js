@@ -2,6 +2,7 @@ import { CoreDsl as JvmCoreDsl } from "@gatling.io/jvm-types";
 
 import { Expression, Session, SessionTo, underlyingSessionTo } from "../session";
 import { CheckBuilderCaptureGroup, wrapCheckBuilderCaptureGroup } from "./captureGroup";
+import { asByteArray, asByteArrayFunction } from "../gatlingJvm/byteArrays";
 import { wrapCheckBuilderFinal } from "./final";
 import { CheckBuilderFind, wrapCheckBuilderFind } from "./find";
 import { CheckBuilderJsonOfTypeFind, wrapCheckBuilderJsonOfTypeFind } from "./jsonOfTypeFind";
@@ -48,14 +49,14 @@ export const bodyBytes = (): CheckBuilderFind<number[]> => ({
   is: (expected: number[] | SessionTo<number[]>) =>
     wrapCheckBuilderFinal(
       typeof expected === "function"
-        ? JvmCoreDsl.bodyBytes().is(underlyingSessionTo(expected))
-        : JvmCoreDsl.bodyBytes().is(expected)
+        ? JvmCoreDsl.bodyBytes().is(asByteArrayFunction(underlyingSessionTo(expected)))
+        : JvmCoreDsl.bodyBytes().is(asByteArray(expected))
     ),
   not: (expected: number[] | SessionTo<number[]>) =>
     wrapCheckBuilderFinal(
       typeof expected === "function"
-        ? JvmCoreDsl.bodyBytes().not(underlyingSessionTo(expected))
-        : JvmCoreDsl.bodyBytes().not(expected)
+        ? JvmCoreDsl.bodyBytes().not(asByteArrayFunction(underlyingSessionTo(expected)))
+        : JvmCoreDsl.bodyBytes().not(asByteArray(expected))
     )
 });
 

@@ -1,6 +1,7 @@
 import { CoreDsl as JvmCoreDsl } from "@gatling.io/jvm-types";
 
 import { Wrapper } from "./common";
+import { asByteArrayFunction } from "./gatlingJvm/byteArrays";
 import { Expression, Session, underlyingSessionTo } from "./session";
 
 import JvmBody = io.gatling.javaapi.core.Body;
@@ -201,7 +202,7 @@ export interface ByteArrayBodyFunction {
 export const ByteArrayBody: ByteArrayBodyFunction = (bytes: string | Expression<number[]>): Body.WithBytes =>
   wrapBodyWithBytes(
     typeof bytes === "function"
-      ? JvmCoreDsl.ByteArrayBody(underlyingSessionTo(bytes))
+      ? JvmCoreDsl.ByteArrayBody(asByteArrayFunction(underlyingSessionTo(bytes)))
       : typeof bytes === "string"
         ? JvmCoreDsl.ByteArrayBody(bytes)
         : JvmCoreDsl.ByteArrayBody(bytes)
