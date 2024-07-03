@@ -48,9 +48,17 @@ export const installCoursier = async (gatlingHomeDir: string, downloadDir: strin
 export const resolveGatlingJsDependencies = async (coursierPath: string, javaHome: string): Promise<string> => {
   const gatlingDep = `"io.gatling.highcharts:gatling-charts-highcharts:${versions.gatling.core}"`;
   const gatlingAdapterDep = `"io.gatling:gatling-jvm-to-js-adapter:${versions.gatling.jsAdapter}"`;
+  const gatlingEnterprisePluginCommonsDep = `"io.gatling:gatling-enterprise-plugin-commons:${versions.gatling.enterprisePluginCommons}"`;
   const graalvmJsDep = `"org.graalvm.polyglot:js-community:${versions.graalvm.js}"`;
 
-  return await resolveDependencies(coursierPath, javaHome, gatlingDep, gatlingAdapterDep, graalvmJsDep);
+  return await resolveDependencies(
+    coursierPath,
+    javaHome,
+    gatlingDep,
+    gatlingAdapterDep,
+    gatlingEnterprisePluginCommonsDep,
+    graalvmJsDep
+  );
 };
 
 export const resolveRecorderDependencies = async (coursierPath: string, javaHome: string): Promise<string> => {

@@ -5,10 +5,10 @@ import os from "os";
 
 import { bundle } from "./bundle";
 import { installGatlingJs, installRecorder } from "./dependencies";
-import { enterprisePackage } from "./enterprisePackage";
-import { findSimulations, SimulationFile } from "./simulations";
+import { EnterpriseDeployOptions, enterpriseDeploy, enterprisePackage, enterpriseStart } from "./enterprise";
+import { SimulationFile, findSimulations } from "./simulations";
 import { logger } from "./log";
-import { runSimulation, runRecorder } from "./run";
+import { runRecorder, runSimulation } from "./run";
 
 const program = new Command()
   .name("gatling-js-cli")
@@ -63,16 +63,16 @@ const validateBundleFile = (options: { bundleFile: string }): string => {
   return options.bundleFile;
 };
 
-const enterprisePackageFileOption = new Option(
-  "--enterprise-package-file <value>",
+const packageFileOption = new Option(
+  "--package-file <value>",
   "The target package file path when packaging simulations for Gatling Enterprise (must have a .zip extension)"
 ).default("target/package.zip");
 
-const validateEnterprisePackageFile = (options: { enterprisePackageFile: string }): string => {
-  if (!options.enterprisePackageFile.endsWith(".zip")) {
-    throw Error(`'${options.enterprisePackageFile}' is not a valid package file path: should have a .zip extension`);
+const validatePackageFile = (options: { packageFile: string }): string => {
+  if (!options.packageFile.endsWith(".zip")) {
+    throw Error(`'${options.packageFile}' is not a valid package file path: should have a .zip extension`);
   }
-  return options.enterprisePackageFile;
+  return options.packageFile;
 };
 
 const resourcesFolderOption = new Option("--resources-folder <value>", "The resources folder path").default(
@@ -217,20 +217,179 @@ program
   .addOption(sourcesFolderOption)
   .addOption(resourcesFolderOption)
   .addOption(bundleFileOption)
-  .addOption(enterprisePackageFileOption)
+  .addOption(packageFileOption)
   .addOption(typescriptOption)
   .action(async (options) => {
     const sourcesFolder: string = options.sourcesFolder;
     const resourcesFolder: string = options.resourcesFolder;
     const bundleFile = validateBundleFile(options);
-    const enterprisePackageFile = validateEnterprisePackageFile(options);
+    const packageFile = validatePackageFile(options);
 
     const simulations = await findSimulations(sourcesFolder);
     const typescript = typescriptWithDefaults(options, simulations);
 
     await bundle({ sourcesFolder, bundleFile, typescript, simulations });
 
-    await enterprisePackage({ bundleFile, resourcesFolder, enterprisePackageFile, simulations });
+    await enterprisePackage({ bundleFile, resourcesFolder, packageFile, simulations });
+  });
+
+const urlOption = new Option("--url <value>", "URL of Gatling Enterprise")
+  .default("https://cloud.gatling.io")
+  .hideHelp();
+
+const apiTokenOption = new Option(
+  "--api-token <value>",
+  "API Token on Gatling Enterprise. Prefer configuration using `GATLING_ENTERPRISE_API_TOKEN` environment variable."
+);
+
+// Plugin configuration
+
+const controlPlaneUrlOption = new Option(
+  "--control-plane-url <value>",
+  "URL of a control plane for Gatling Enterprise providing a private repository. If this parameter is provided, packages will be registered as private packages and uploaded through this private control plane."
+);
+
+const nonInteractiveOption = new Option(
+  "--non-interactive",
+  "Switch to non-interactive mode and fail if no simulation is explicitly specified"
+).default(false);
+
+// Descriptor file
+
+const packageDescriptorFilenameOption = new Option(
+  "--package-descriptor-filename <value>",
+  "Path to a package descriptor inside the .gatling folder"
+).default("package.conf");
+
+const enterpriseBundleAndPackage = async (options: any): Promise<EnterpriseDeployOptions> => {
+  const gatlingHome = gatlingHomeDirWithDefaults(options);
+  const sourcesFolder: string = options.sourcesFolder;
+  const bundleFile = validateBundleFile(options);
+  const resourcesFolder: string = options.resourcesFolder;
+  const resultsFolder: string = options.resultsFolder;
+
+  const simulations = await findSimulations(sourcesFolder);
+  const typescript = typescriptWithDefaults(options, simulations);
+
+  // Base
+  const url = options.url;
+  const apiToken = options.apiToken;
+
+  // Plugin configuration
+  const controlPlaneUrl = options.controlPlaneUrl;
+  const nonInteractive = options.nonInteractive;
+
+  // Descriptor file
+  const packageDescriptorFilename = options.packageDescriptorFilename;
+
+  // Deployment info
+  const packageFile = validatePackageFile(options);
+
+  const { graalvmHome, coursierBinary, jvmClasspath } = await installGatlingJs({ gatlingHome });
+  logger.debug(`graalvmHome=${graalvmHome}`);
+  logger.debug(`coursierBinary=${coursierBinary}`);
+  logger.debug(`jvmClasspath=${jvmClasspath}`);
+
+  await bundle({ sourcesFolder, bundleFile, typescript, simulations });
+  await enterprisePackage({ bundleFile, resourcesFolder, packageFile, simulations });
+
+  return {
+    graalvmHome,
+    jvmClasspath,
+    bundleFile,
+    resourcesFolder,
+    resultsFolder,
+    // Base
+    url,
+    apiToken,
+    // Plugin configuration
+    controlPlaneUrl,
+    nonInteractive,
+    // Descriptor file
+    packageDescriptorFilename,
+    // Deployment info
+    packageFile
+  };
+};
+
+program
+  .command("enterprise-deploy")
+  .description("Deploy a package and configured simulations")
+  .addOption(sourcesFolderOption)
+  .addOption(resourcesFolderOption)
+  .addOption(bundleFileOption)
+  .addOption(resultsFolderOption)
+  // Base
+  .addOption(urlOption)
+  .addOption(apiTokenOption)
+  // Plugin configuration
+  .addOption(controlPlaneUrlOption)
+  .addOption(nonInteractiveOption)
+  // Descriptor file
+  .addOption(packageDescriptorFilenameOption)
+  // Deployment info
+  .addOption(packageFileOption)
+  .action(async (options) => {
+    const deployOptions = await enterpriseBundleAndPackage(options);
+    await enterpriseDeploy(deployOptions);
+  });
+
+// Deployment info
+
+const enterpriseSimulationOption = new Option(
+  "--enterprise-simulation <value>",
+  "Specify the simulation name directly to bypass the prompt using the following command."
+);
+
+const runTitleOption = new Option("--run-title <value>", "Allows setting a title for your run reports.");
+
+const runDescriptionOption = new Option(
+  "--run-description <value>",
+  "Allows setting a description for your run reports summary."
+);
+
+const waitForRunEndOption = new Option(
+  "--wait-for-run-end",
+  "Wait for the result after starting the simulation on Gatling Enterprise, and complete with an error if the simulation ends with any error status"
+).default(false);
+
+program
+  .command("enterprise-start")
+  .description("Start a simulation deployed with `enterprise-deploy`")
+  .addOption(sourcesFolderOption)
+  .addOption(resourcesFolderOption)
+  .addOption(bundleFileOption)
+  .addOption(resultsFolderOption)
+  // Base
+  .addOption(urlOption)
+  .addOption(apiTokenOption)
+  // Plugin configuration
+  .addOption(controlPlaneUrlOption)
+  .addOption(nonInteractiveOption)
+  // Descriptor file
+  .addOption(packageDescriptorFilenameOption)
+  // Deployment info
+  .addOption(packageFileOption)
+  // Start
+  .addOption(enterpriseSimulationOption)
+  .addOption(runTitleOption)
+  .addOption(runDescriptionOption)
+  .addOption(waitForRunEndOption)
+  .action(async (options) => {
+    const deployOptions = await enterpriseBundleAndPackage(options);
+
+    if (options.nonInteractive && options.enterpriseSimulation === undefined) {
+      throw new Error(`No simulation specified when using non-interactive mode`);
+    }
+
+    await enterpriseStart({
+      ...deployOptions,
+      // Start
+      enterpriseSimulation: options.enterpriseSimulation,
+      runTitle: options.runTitle,
+      runDescription: options.runDescription,
+      waitForRunEnd: options.waitForRunEnd
+    });
   });
 
 program.parse(process.argv);

@@ -1,23 +1,15 @@
-import { spawn } from "child_process";
-import * as path from "path";
-
 import { logger } from "./log";
 import { versions } from "./dependencies/versions";
-import { osType } from "./dependencies/os";
+import { RunJavaProcessOptions, runJavaProcess } from "./java";
 
-export interface RunOptions {
-  graalvmHome: string;
-  jvmClasspath: string;
-}
-
-export interface RunSimulationOptions extends RunOptions {
+export interface RunSimulationOptions extends RunJavaProcessOptions {
   simulation: string;
   bundleFile: string;
   resourcesFolder: string;
   resultsFolder: string;
 }
 
-export interface RunRecorderOptions extends RunOptions {
+export interface RunRecorderOptions extends RunJavaProcessOptions {
   sourcesFolder: string;
   typescript: boolean;
   resourcesFolder: string;
@@ -45,7 +37,8 @@ export const runSimulation = async (options: RunSimulationOptions): Promise<void
     "--build-tool-version",
     versions.gatling.jsAdapter
   ];
-  return run(options, "io.gatling.app.Gatling", additionalClasspathElements, javaArgs, simulationArgs);
+
+  return runJavaProcess(options, "io.gatling.app.Gatling", additionalClasspathElements, javaArgs, simulationArgs);
 };
 
 export const runRecorder = async (options: RunRecorderOptions): Promise<void> => {
@@ -62,44 +55,6 @@ export const runRecorder = async (options: RunRecorderOptions): Promise<void> =>
     "--format",
     options.typescript ? "typescript" : "javascript"
   ];
-  return run(options, "io.gatling.recorder.GatlingRecorder", [], [], recorderArgs);
-};
 
-const run = (
-  options: RunOptions,
-  mainClass: string,
-  additionalClasspathElements: string[],
-  javaArgs: string[],
-  mainClassArgs: string[]
-): Promise<void> => {
-  const command = `${options.graalvmHome}/bin/java`;
-  const classpathSeparator = osType === "Windows_NT" ? ";" : ":";
-  const classpath = [...additionalClasspathElements, options.jvmClasspath].join(classpathSeparator);
-  const allArgs = [
-    "-server",
-    "-XX:+HeapDumpOnOutOfMemoryError",
-    "-XX:MaxInlineLevel=20",
-    "-XX:MaxTrivialSize=12",
-    "-Xmx1G",
-    "-classpath",
-    classpath,
-    ...javaArgs,
-    mainClass,
-    ...mainClassArgs
-  ];
-
-  const process = spawn(command, allArgs);
-
-  return new Promise((resolve, reject) => {
-    process.stdout.on("data", (data) => logger.info(data.toString()));
-    process.stderr.on("data", (data) => logger.error(data.toString()));
-    process.on("error", (error) => logger.error("Failed to run Gatling process: " + error.toString()));
-    process.on("close", (code) => {
-      if (code === 0) {
-        resolve();
-      } else {
-        reject(Error("Gatling process finished with code " + code));
-      }
-    });
-  });
+  return runJavaProcess(options, "io.gatling.recorder.GatlingRecorder", [], [], recorderArgs);
 };

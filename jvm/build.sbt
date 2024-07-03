@@ -18,6 +18,9 @@ val graalvmJsVersion = "24.0.1"
 val coursierVersion = "2.1.10"
 val gatlingVersion = "3.11.5"
 
+// bit weird cause this is not a dependency of this project
+val gatlingEnterpriseComponentPluginVersion = "1.9.4"
+
 lazy val root = (project in file("."))
   .aggregate(adapter, java2ts)
 
@@ -53,6 +56,7 @@ lazy val adapter = (project in file("adapter"))
            |    coursier: "$coursierVersion",
            |    gatling: {
            |        core: "$gatlingVersion",
+           |        enterprisePluginCommons: "$gatlingEnterpriseComponentPluginVersion",
            |        jsAdapter: "$jsAdapterVersion"
            |    }
            |};
@@ -62,7 +66,7 @@ lazy val adapter = (project in file("adapter"))
       Seq()
     }.taskValue,
     Compile / packageDoc / mappings := Seq.empty,
-    Compile / packageSrc / mappings := Seq.empty,
+    Compile / packageSrc / mappings := Seq.empty
   )
 
 lazy val java2ts = (project in file("java2ts"))
