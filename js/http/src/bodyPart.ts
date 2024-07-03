@@ -1,4 +1,4 @@
-import { Expression, Session, Wrapper, underlyingSessionTo } from "@gatling.io/core";
+import { Expression, Session, Wrapper, underlyingSessionTo, asByteArray, asByteArrayFunction } from "@gatling.io/core";
 import { HttpDsl as JvmHttpDsl } from "@gatling.io/jvm-types";
 
 import JvmSession = io.gatling.javaapi.core.Session;
@@ -570,19 +570,21 @@ export const ByteArrayBodyPart: ByteArrayBodyPartFunction = (
 ): BodyPart => {
   if (typeof arg0 === "function") {
     if (typeof arg1 === "function") {
-      return wrapBodyPart(JvmHttpDsl.ByteArrayBodyPart(underlyingSessionTo(arg0), underlyingSessionTo(arg1)));
+      return wrapBodyPart(
+        JvmHttpDsl.ByteArrayBodyPart(underlyingSessionTo(arg0), asByteArrayFunction(underlyingSessionTo(arg1)))
+      );
     } else if (typeof arg1 === "string") {
       return wrapBodyPart(JvmHttpDsl.ByteArrayBodyPart(underlyingSessionTo(arg0), arg1));
     } else {
-      return wrapBodyPart(JvmHttpDsl.ByteArrayBodyPart(underlyingSessionTo(arg0), arg1));
+      return wrapBodyPart(JvmHttpDsl.ByteArrayBodyPart(underlyingSessionTo(arg0), asByteArray(arg1)));
     }
   } else {
     if (typeof arg1 === "function") {
-      return wrapBodyPart(JvmHttpDsl.ByteArrayBodyPart(arg0, underlyingSessionTo(arg1)));
+      return wrapBodyPart(JvmHttpDsl.ByteArrayBodyPart(arg0, asByteArrayFunction(underlyingSessionTo(arg1))));
     } else if (typeof arg1 === "string") {
       return wrapBodyPart(JvmHttpDsl.ByteArrayBodyPart(arg0, arg1));
     } else {
-      return wrapBodyPart(JvmHttpDsl.ByteArrayBodyPart(arg0, arg1));
+      return wrapBodyPart(JvmHttpDsl.ByteArrayBodyPart(arg0, asByteArray(arg1)));
     }
   }
 };
