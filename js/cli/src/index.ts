@@ -100,6 +100,17 @@ const jvmClasspathMandatoryOption = new Option(
   "The classpath containing all Gatling JVM components"
 ).makeOptionMandatory(true);
 
+const memoryOption = new Option(
+  "--memory <value>",
+  "Heap space memory size in MiB for Gatling. Half the total available memory is usually a good default, as the Gatling process will use more memory than just the heap space."
+).argParser((value) => {
+  const parsedValue = parseInt(value, 10);
+  if (isNaN(parsedValue)) {
+    throw new Error(`${value} is not a valid memory size, must be an integer number`);
+  }
+  return parsedValue;
+});
+
 program
   .command("install")
   .description("Install all required components and dependencies for Gatling")
@@ -137,6 +148,7 @@ program
   .addOption(bundleFileOption)
   .addOption(resourcesFolderOption)
   .addOption(resultsFolderOption)
+  .addOption(memoryOption)
   .action(async (options) => {
     const graalvmHome: string = options.graalvmHome;
     const jvmClasspath: string = options.jvmClasspath;
@@ -144,6 +156,7 @@ program
     const bundleFile = validateBundleFile(options);
     const resourcesFolder: string = options.resourcesFolder;
     const resultsFolder: string = options.resultsFolder;
+    const memory: number | undefined = options.memory;
 
     await runSimulation({
       graalvmHome,
@@ -151,7 +164,8 @@ program
       simulation: simulation,
       bundleFile,
       resourcesFolder,
-      resultsFolder
+      resultsFolder,
+      memory
     });
   });
 
@@ -167,12 +181,14 @@ program
   .addOption(resourcesFolderOption)
   .addOption(resultsFolderOption)
   .addOption(gatlingHomeOption)
+  .addOption(memoryOption)
   .action(async (options) => {
     const gatlingHome = gatlingHomeDirWithDefaults(options);
     const sourcesFolder: string = options.sourcesFolder;
     const bundleFile = validateBundleFile(options);
     const resourcesFolder: string = options.resourcesFolder;
     const resultsFolder: string = options.resultsFolder;
+    const memory: number | undefined = options.memory;
 
     const simulations = await findSimulations(sourcesFolder);
     const typescript = typescriptWithDefaults(options, simulations);
@@ -185,7 +201,7 @@ program
 
     await bundle({ sourcesFolder, bundleFile, typescript, simulations });
 
-    await runSimulation({ graalvmHome, jvmClasspath, simulation, bundleFile, resourcesFolder, resultsFolder });
+    await runSimulation({ graalvmHome, jvmClasspath, simulation, bundleFile, resourcesFolder, resultsFolder, memory });
   });
 
 program

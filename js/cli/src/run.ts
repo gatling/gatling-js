@@ -7,6 +7,7 @@ export interface RunSimulationOptions extends RunJavaProcessOptions {
   bundleFile: string;
   resourcesFolder: string;
   resultsFolder: string;
+  memory?: number;
 }
 
 export interface RunRecorderOptions extends RunJavaProcessOptions {
@@ -23,9 +24,11 @@ export const runSimulation = async (options: RunSimulationOptions): Promise<void
  - resultsFolder: ${options.resultsFolder}`);
 
   const additionalClasspathElements = [options.resourcesFolder];
+  const memoryArgs = options.memory !== undefined ? [`-Xms${options.memory}M`, `-Xmx${options.memory}M`] : [];
   const javaArgs = [
     `-Dgatling.js.bundle.filePath=${options.bundleFile}`,
-    `-Dgatling.js.simulation=${options.simulation}`
+    `-Dgatling.js.simulation=${options.simulation}`,
+    ...memoryArgs
   ];
   const simulationArgs = [
     "--results-folder",

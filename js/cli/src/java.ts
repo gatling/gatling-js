@@ -23,7 +23,6 @@ export const runJavaProcess = (
     "-XX:+HeapDumpOnOutOfMemoryError",
     "-XX:MaxInlineLevel=20",
     "-XX:MaxTrivialSize=12",
-    "-Xmx1G",
     "-classpath",
     classpath,
     ...javaArgs,
