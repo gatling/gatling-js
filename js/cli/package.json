@@ -9,17 +9,17 @@
   "types": "target/index.d.ts",
   "dependencies": {
     "archiver": "7.0.1",
-    "axios": "1.6.8",
-    "commander": "12.0.0",
+    "axios": "1.7.2",
+    "commander": "12.1.0",
     "decompress": "4.2.1",
-    "esbuild": "0.21.2",
+    "esbuild": "0.23.0",
     "esbuild-plugin-tsc": "0.4.0"
   },
   "devDependencies": {
     "@types/archiver": "6.0.2",
     "@types/decompress": "4.2.7",
-    "@types/node": "20.12.12",
-    "prettier": "3.2.5",
+    "@types/node": "20.14.9",
+    "prettier": "3.3.2",
     "rimraf": "5.0.7",
     "typescript": "5.4.5"
   },
