@@ -8,6 +8,7 @@ import { installGatlingJs, installRecorder } from "./dependencies";
 import { EnterpriseDeployOptions, enterpriseDeploy, enterprisePackage, enterpriseStart } from "./enterprise";
 import { SimulationFile, findSimulations } from "./simulations";
 import { logger } from "./log";
+import { keyInSelectPaginated } from "./readline";
 import { runRecorder, runSimulation } from "./run";
 
 const program = new Command()
@@ -30,7 +31,11 @@ const simulationOption = new Option(
   "The simulation entry point function name (default: if only one *.gatling.js or *.gatling.ts file is found, will execute that simulation)"
 );
 
-const simulationWithDefaults = (options: { simulation?: string }, simulationsFound: SimulationFile[]): string => {
+const simulationWithDefaults = (
+  options: { simulation?: string },
+  simulationsFound: SimulationFile[],
+  interactive: boolean
+): string => {
   if (options.simulation !== undefined) {
     return options.simulation;
   } else if (simulationsFound.length === 1) {
@@ -39,6 +44,18 @@ const simulationWithDefaults = (options: { simulation?: string }, simulationsFou
     throw new Error(
       "No simulation found, simulations must be defined in a <simulation name>.gatling.js or <simulation name>.gatling.ts file)"
     );
+  } else if (interactive) {
+    const idx = keyInSelectPaginated(
+      simulationsFound.map((s) => s.name).sort((a, b) => a.localeCompare(b)),
+      "Choose a simulation to run"
+    );
+    if (idx >= 0) {
+      const simulation = simulationsFound[idx].name;
+      logger.info(`Simulation '${simulation}' was chosen.`);
+      return simulation;
+    } else {
+      throw new Error("Simulation choice was cancelled.");
+    }
   } else {
     throw new Error(
       `Several simulations found, specify one using the --simulation option (available simulations: ${simulationsFound.map((s) => s.name)})`
@@ -111,6 +128,11 @@ const memoryOption = new Option(
   return parsedValue;
 });
 
+const nonInteractiveOption = new Option(
+  "--non-interactive",
+  "Switch to non-interactive mode and fail if no simulation is explicitly specified"
+).default(false);
+
 program
   .command("install")
   .description("Install all required components and dependencies for Gatling")
@@ -182,6 +204,7 @@ program
   .addOption(resultsFolderOption)
   .addOption(gatlingHomeOption)
   .addOption(memoryOption)
+  .addOption(nonInteractiveOption)
   .action(async (options) => {
     const gatlingHome = gatlingHomeDirWithDefaults(options);
     const sourcesFolder: string = options.sourcesFolder;
@@ -189,10 +212,11 @@ program
     const resourcesFolder: string = options.resourcesFolder;
     const resultsFolder: string = options.resultsFolder;
     const memory: number | undefined = options.memory;
+    const nonInteractive: boolean = options.nonInteractive;
 
     const simulations = await findSimulations(sourcesFolder);
     const typescript = typescriptWithDefaults(options, simulations);
-    const simulation = simulationWithDefaults(options, simulations);
+    const simulation = simulationWithDefaults(options, simulations, !nonInteractive);
 
     const { graalvmHome, coursierBinary, jvmClasspath } = await installGatlingJs({ gatlingHome });
     logger.debug(`graalvmHome=${graalvmHome}`);
@@ -264,11 +288,6 @@ const controlPlaneUrlOption = new Option(
   "--control-plane-url <value>",
   "URL of a control plane for Gatling Enterprise providing a private repository. If this parameter is provided, packages will be registered as private packages and uploaded through this private control plane."
 );
-
-const nonInteractiveOption = new Option(
-  "--non-interactive",
-  "Switch to non-interactive mode and fail if no simulation is explicitly specified"
-).default(false);
 
 // Descriptor file
 
