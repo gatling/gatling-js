@@ -6,7 +6,7 @@
  * TYPESCRIPT EXPORTED DECLARATIONS
  *
  */
-/// <reference path="gatling.d.ts"/>
+/// <reference path="gatling.d.ts" preserve="true" />
 
 interface ActionBuilderStatic {
   readonly class: any;
