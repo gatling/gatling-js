@@ -1,0 +1,32 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/js"
+    labels:
+      - "dependencies"
+      - "npm"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+    ignore:
+      - dependency-name: "@gatling.io/*"
+  - package-ecosystem: "npm"
+    directory: "/js-simulation"
+    labels:
+      - "dependencies"
+      - "npm"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+    ignore:
+      - dependency-name: "@gatling.io/*"
+  - package-ecosystem: "npm"
+    directory: "/ts-simulation"
+    labels:
+      - "dependencies"
+      - "npm"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+    ignore:
+      - dependency-name: "@gatling.io/*"
