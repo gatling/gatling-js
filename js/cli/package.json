@@ -28,6 +28,7 @@
   "scripts": {
     "clean": "rimraf target",
     "format": "prettier --write '**/*.ts'",
+    "format-check": "prettier --check '**/*.ts'",
     "build": "tsc -p . && chmod +x ./target/index.js"
   }
 }

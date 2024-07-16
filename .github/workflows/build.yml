@@ -1,0 +1,48 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      JAVA_OPTS: "-Xmx4G"
+      SBT_OPTS: "-Dsbt.ci=true"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '21'
+
+      - name: Build JVM projects
+        working-directory: ./jvm
+        run: sbt gatling-jvm-to-js-adapter/spotlessCheck gatling-jvm-to-js-adapter/compile gatling-jvm-to-js-adapter/test
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Build JS projects
+        working-directory: ./js
+        run: |
+          npm ci
+          npm run format-check --workspaces
+          npm run build --workspaces
