@@ -20,6 +20,7 @@
   "scripts": {
     "clean": "rimraf target",
     "format": "prettier --write '**/*.ts'",
+    "format-check": "prettier --check '**/*.ts'",
     "test": "jest",
     "build": "tsc -p ."
   }

@@ -49,16 +49,16 @@ lazy val adapter = (project in file("adapter"))
       val jsAdapterVersion = version.value
       val content =
         s"""export const versions = {
-           |    graalvm: {
-           |        jdk: "$graalvmJdkVersion",
-           |        js: "$graalvmJsVersion"
-           |    },
-           |    coursier: "$coursierVersion",
-           |    gatling: {
-           |        core: "$gatlingVersion",
-           |        enterprisePluginCommons: "$gatlingEnterpriseComponentPluginVersion",
-           |        jsAdapter: "$jsAdapterVersion"
-           |    }
+           |  graalvm: {
+           |    jdk: "$graalvmJdkVersion",
+           |    js: "$graalvmJsVersion"
+           |  },
+           |  coursier: "$coursierVersion",
+           |  gatling: {
+           |    core: "$gatlingVersion",
+           |    enterprisePluginCommons: "$gatlingEnterpriseComponentPluginVersion",
+           |    jsAdapter: "$jsAdapterVersion"
+           |  }
            |};
            |""".stripMargin
       IO.write(path, content)
