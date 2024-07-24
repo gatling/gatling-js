@@ -54,7 +54,7 @@ const generateManifest = (simulationNames: string[]) => {
     "Specification-Vendor: GatlingCorp",
     "Gatling-Context: js",
     `Gatling-Version: ${versions.gatling.core}`,
-    "Gatling-Packager: javascript",
+    "Gatling-Packager: js-cli",
     `Gatling-Packager-Version: ${versions.gatling.jsAdapter}`,
     `Gatling-Simulations: ${simulationNames.join(",")}`,
     `Java-Version: ${versions.graalvm.jdk.split(".")[0]}`
