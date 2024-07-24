@@ -48,9 +48,6 @@ const generateManifest = (simulationNames: string[]) => {
   const continuation = utf8Encoder.encode("\n ");
   const lines = [
     "Manifest-Version: 1.0",
-    "Implementation-Title: gatling-javascript",
-    `Implementation-Version: ${versions.gatling.jsAdapter}`,
-    "Implementation-Vendor: GatlingCorp",
     "Specification-Vendor: GatlingCorp",
     "Gatling-Context: js",
     `Gatling-Version: ${versions.gatling.core}`,
@@ -59,6 +56,11 @@ const generateManifest = (simulationNames: string[]) => {
     `Gatling-Simulations: ${simulationNames.join(",")}`,
     `Java-Version: ${versions.graalvm.jdk.split(".")[0]}`
   ];
+  const pkg = getPackageNameAndVersion();
+  lines.push(`Implementation-Title: ${pkg.name}`);
+  if (pkg.version !== undefined) {
+    lines.push(`Implementation-Version: ${pkg.version}`);
+  }
 
   let totalLength = 0;
   const buffer: Uint8Array[] = [];
@@ -91,6 +93,30 @@ const generateManifest = (simulationNames: string[]) => {
   }
 
   return manifest;
+};
+
+const getPackageNameAndVersion = (): { name: string; version?: string } => {
+  // npm_package_* env vars are available when launching CLI with npx
+  let name = process.env.npm_package_name;
+  let version = process.env.npm_package_version;
+  // otherwise, try to read from package.json file
+  if (name === undefined || version === undefined) {
+    if (!fs.existsSync("package.json")) {
+      throw Error("package.json not found");
+    }
+    const pkg = JSON.parse(fs.readFileSync("package.json", "utf-8"));
+    if (name === undefined) {
+      if (typeof pkg.name === "string") {
+        name = pkg.name;
+      } else {
+        throw Error("package.json does not contain a valid package name");
+      }
+    }
+    if (version === undefined && typeof pkg.version === "string") {
+      version = pkg.version;
+    }
+  }
+  return { name: name as string, version: version };
 };
 
 export interface EnterprisePluginOptions extends RunJavaProcessOptions {
@@ -144,9 +170,7 @@ const javaArgsFromDeployOptions = (options: EnterpriseDeployOptions) => {
 
   // Deployment info
   javaArgs.push(`-Dgatling.enterprise.packageFile=${options.packageFile}`);
-  if (process.env.npm_package_name !== undefined) {
-    javaArgs.push(`-Dgatling.enterprise.artifactId=${process.env.npm_package_name}`);
-  }
+  javaArgs.push(`-Dgatling.enterprise.artifactId=${getPackageNameAndVersion().name}`);
 
   return javaArgs;
 };
