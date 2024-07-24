@@ -144,7 +144,7 @@ const javaArgsFromPluginOptions = (options: EnterprisePluginOptions) => {
   if (options.controlPlaneUrl !== undefined) {
     javaArgs.push(`-Dgatling.enterprise.controlPlaneUrl=${options.controlPlaneUrl}`);
   }
-  javaArgs.push("-Dgatling.enterprise.buildTool=JS_CLI");
+  javaArgs.push("-Dgatling.enterprise.buildTool=js-cli");
   javaArgs.push(`-Dgatling.enterprise.pluginVersion=${versions.gatling.jsAdapter}`);
 
   if (options.nonInteractive) {
