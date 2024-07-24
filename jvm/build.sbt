@@ -19,7 +19,7 @@ val coursierVersion = "2.1.10"
 val gatlingVersion = "3.11.5"
 
 // bit weird cause this is not a dependency of this project
-val gatlingEnterpriseComponentPluginVersion = "1.9.5"
+val gatlingEnterpriseComponentPluginVersion = "1.9.6"
 
 lazy val root = (project in file("."))
   .aggregate(adapter, java2ts)
