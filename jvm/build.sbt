@@ -13,8 +13,8 @@ Global / gatlingDevelopers := Seq(
   GatlingDeveloper("ggaly@gatling.io", "Guillaume Galy", isGatlingCorp = true)
 )
 
-val graalvmJdkVersion = "22.0.1"
-val graalvmJsVersion = "24.0.1"
+val graalvmJdkVersion = "22.0.2"
+val graalvmJsVersion = "24.0.2"
 val coursierVersion = "2.1.10"
 val gatlingVersion = "3.11.5"
 
