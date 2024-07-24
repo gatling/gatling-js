@@ -14,7 +14,8 @@ defaults:
     shell: bash
 
 jobs:
-  release:
+  release-jvm:
+    name: Release JVM
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
@@ -45,15 +46,40 @@ jobs:
           PGP_PASSPHRASE: ${{ secrets.SONATYPE_PGP_PASSPHRASE }}
         working-directory: ./jvm
         run: |
-          sbt "project gatling-jvm-to-js-adapter" "release with-defaults"
-          version="$(cat adapter/target/release-info)"
-          echo "version=$version"
-          echo "version=$version" >> $GITHUB_OUTPUT
+          sbt "project gatling-jvm-to-js-adapter" "compile"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: gatling-js-workdir
+          path: .
+          retention-days: 1
+
+  release-js:
+    name: Release JS
+    needs: release-jvm
+    runs-on: ubuntu-latest
+    environment:
+      name: npm
+      url: https://www.npmjs.com/org/gatling.io
+    timeout-minutes: 10
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: gatling-js-workdir
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
+
+      - name: Setup version
+        id: version
+        run: |
+          #version="$(cat jvm/adapter/target/release-info)"
+          echo "version=3.11.6"
+          echo "version=3.11.6" >> $GITHUB_OUTPUT
 
       - name: Deploy JS packages
         env:
@@ -62,7 +88,7 @@ jobs:
         run: |
           echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
           npm ci
-          npm version "${{ steps.deploy-jvm.outputs.version }}"
+          npm version "${{ steps.version.outputs.version }}"
           npm run build --workspaces
           for pkg in "cli" "jvm-types" "core" "http"; do
             cp ../LICENSE "./$pkg/LICENSE"
