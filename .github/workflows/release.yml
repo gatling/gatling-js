@@ -46,7 +46,7 @@ jobs:
           PGP_PASSPHRASE: ${{ secrets.SONATYPE_PGP_PASSPHRASE }}
         working-directory: ./jvm
         run: |
-          sbt "project gatling-jvm-to-js-adapter" "compile"
+          sbt "project gatling-jvm-to-js-adapter" "release with-default"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -78,8 +78,8 @@ jobs:
         id: version
         run: |
           #version="$(cat jvm/adapter/target/release-info)"
-          echo "version=3.11.6"
-          echo "version=3.11.6" >> $GITHUB_OUTPUT
+          echo "version=$version"
+          echo "version=$version" >> $GITHUB_OUTPUT
 
       - name: Deploy JS packages
         env:
