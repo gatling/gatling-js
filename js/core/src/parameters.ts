@@ -6,17 +6,23 @@ export interface GetWithDefault {
 }
 
 /**
- * Gets the option indicated by the specified name.
+ * Gets the parameter indicated by the specified name.
  *
- * Options can be specified in the `gatling run` command by passing arguments with the format `key=value`, e.g.
- * `gatling run option1=foo option2=bar`.
+ * Parameters can be specified in the `gatling run` command by passing arguments with the format `key=value`, e.g.
+ * `gatling run parameter1=foo parameter2=bar`. You would then retrieve them in your simulation by calling
+ * `getParameter("parameter1")` and `getParameter("parameter2")`.
  *
- * @param key - the key of the option.
+ * @param key - the key of the parameter.
  * @param defaultValue - a default value
- * @returns the string value of the option if it is defined, or else `defaultValue` if provided, or else `undefined`.
+ * @returns the string value of the parameter if it is defined, or else `defaultValue` if provided, or else `undefined`.
  */
-export const getOption: GetWithDefault = (key: string, defaultValue?: string) =>
+export const getParameter: GetWithDefault = (key: string, defaultValue?: string) =>
   getOrElse(JvmSystem.getProperty(key), defaultValue) as any;
+
+/**
+ * @deprecated Use {@link getParameter} instead.
+ */
+export const getOption: GetWithDefault = getParameter;
 
 /**
  * Gets the environment variable indicated by the specified name.
