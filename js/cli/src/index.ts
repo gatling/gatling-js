@@ -133,23 +133,23 @@ const nonInteractiveOption = new Option(
   "Switch to non-interactive mode and fail if no simulation is explicitly specified"
 ).default(false);
 
-const runOptionsArgument = new Argument(
+const runParametersArgument = new Argument(
   "[optionKey=optionValue...]",
-  "Specify one or more option which can be read in the simulation script with the getOption() function; format must be key=value"
+  "Specify one or more parameter which can be read in the simulation script with the getParameter() function; format must be key=value"
 );
 
-const parseRunOptions = (args: string[]): Record<string, string> => {
-  const parsedOptions: Record<string, string> = {};
+const parseRunParameters = (args: string[]): Record<string, string> => {
+  const parsedParameters: Record<string, string> = {};
   for (const arg of args) {
     const i = arg.indexOf("=");
     if (i < 0) {
-      throw Error(`Option '${arg}' is not valid: format should be key=value`);
+      throw Error(`Parameter '${arg}' is not valid: format should be key=value`);
     } else {
       const key = arg.slice(0, i).trim();
-      parsedOptions[key] = arg.slice(i + 1);
+      parsedParameters[key] = arg.slice(i + 1);
     }
   }
-  return parsedOptions;
+  return parsedParameters;
 };
 
 program
@@ -190,7 +190,7 @@ program
   .addOption(resourcesFolderOption)
   .addOption(resultsFolderOption)
   .addOption(memoryOption)
-  .addArgument(runOptionsArgument)
+  .addArgument(runParametersArgument)
   .action(async (args: string[], options) => {
     const graalvmHome: string = options.graalvmHome;
     const jvmClasspath: string = options.jvmClasspath;
@@ -199,7 +199,7 @@ program
     const resourcesFolder: string = options.resourcesFolder;
     const resultsFolder: string = options.resultsFolder;
     const memory: number | undefined = options.memory;
-    const runOptions = parseRunOptions(args);
+    const runParameters = parseRunParameters(args);
 
     await runSimulation({
       graalvmHome,
@@ -209,7 +209,7 @@ program
       resourcesFolder,
       resultsFolder,
       memory,
-      runOptions
+      runParameters
     });
   });
 
@@ -227,7 +227,7 @@ program
   .addOption(gatlingHomeOption)
   .addOption(memoryOption)
   .addOption(nonInteractiveOption)
-  .addArgument(runOptionsArgument)
+  .addArgument(runParametersArgument)
   .action(async (args: string[], options) => {
     const gatlingHome = gatlingHomeDirWithDefaults(options);
     const sourcesFolder: string = options.sourcesFolder;
@@ -236,7 +236,7 @@ program
     const resultsFolder: string = options.resultsFolder;
     const memory: number | undefined = options.memory;
     const nonInteractive: boolean = options.nonInteractive;
-    const runOptions = parseRunOptions(args);
+    const runParameters = parseRunParameters(args);
 
     const simulations = await findSimulations(sourcesFolder);
     const typescript = typescriptWithDefaults(options, simulations);
@@ -257,7 +257,7 @@ program
       resourcesFolder,
       resultsFolder,
       memory,
-      runOptions
+      runParameters
     });
   });
 
