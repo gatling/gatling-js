@@ -77,7 +77,7 @@ jobs:
       - name: Setup version
         id: version
         run: |
-          #version="$(cat jvm/adapter/target/release-info)"
+          version="$(cat jvm/adapter/target/release-info)"
           echo "version=$version"
           echo "version=$version" >> $GITHUB_OUTPUT
 
