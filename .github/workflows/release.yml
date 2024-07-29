@@ -46,7 +46,7 @@ jobs:
           PGP_PASSPHRASE: ${{ secrets.SONATYPE_PGP_PASSPHRASE }}
         working-directory: ./jvm
         run: |
-          sbt "project gatling-jvm-to-js-adapter" "release with-default"
+          sbt "project gatling-jvm-to-js-adapter" "release with-defaults"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
