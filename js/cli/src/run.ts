@@ -1,5 +1,5 @@
 import { logger } from "./log";
-import { versions } from "./dependencies/versions";
+import { versions } from "./dependencies";
 import { RunJavaProcessOptions, runJavaProcess } from "./java";
 
 export interface RunSimulationOptions extends RunJavaProcessOptions {

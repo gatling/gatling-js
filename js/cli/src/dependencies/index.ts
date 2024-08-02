@@ -3,6 +3,8 @@ import fs from "fs/promises";
 import { installCoursier, resolveGatlingJsDependencies, resolveRecorderDependencies } from "./coursier";
 import { installGraalVm } from "./graalVm";
 
+export { versions } from "./versions";
+
 export interface DependenciesOptions {
   gatlingHome: string;
 }

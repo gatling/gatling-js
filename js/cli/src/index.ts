@@ -3,7 +3,7 @@
 import { Command } from "commander";
 
 import { bundle } from "./bundle";
-import { installGatlingJs, installRecorder } from "./dependencies";
+import { installGatlingJs, installRecorder, versions } from "./dependencies";
 import { enterpriseDeploy, enterprisePackage, enterpriseStart } from "./enterprise";
 import { findSimulations } from "./simulations";
 import { logger } from "./log";
@@ -58,7 +58,7 @@ import {
 
 const program = new Command()
   .name("gatling-js-cli")
-  .version("0.0.1")
+  .version(versions.gatling.jsAdapter)
   .description("The Gatling Javascript run & packaging tool");
 
 program
