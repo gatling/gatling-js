@@ -4,7 +4,7 @@ import { Command } from "commander";
 
 import { bundle } from "./bundle";
 import { installGatlingJs, installRecorder } from "./dependencies";
-import { EnterpriseDeployOptions, enterpriseDeploy, enterprisePackage, enterpriseStart } from "./enterprise";
+import { enterpriseDeploy, enterprisePackage, enterpriseStart } from "./enterprise";
 import { findSimulations } from "./simulations";
 import { logger } from "./log";
 import { runRecorder, runSimulation } from "./run";
@@ -215,57 +215,6 @@ program
     await enterprisePackage({ bundleFile, resourcesFolder, packageFile, simulations });
   });
 
-const enterpriseBundleAndPackage = async (options: any): Promise<EnterpriseDeployOptions> => {
-  const gatlingHome = gatlingHomeOptionValueWithDefaults(options);
-  const sourcesFolder: string = sourcesFolderOptionValue(options);
-  const bundleFile = bundleFileOptionValue(options);
-  const resourcesFolder: string = resourcesFolderOptionValue(options);
-  const resultsFolder: string = resultsFolderOptionValue(options);
-
-  const simulations = await findSimulations(sourcesFolder);
-  const typescript = typescriptOptionValueWithDefaults(options, simulations);
-
-  // Base
-  const url = urlOptionValue(options);
-  const apiToken = apiTokenOptionValue(options);
-
-  // Plugin configuration
-  const controlPlaneUrl = controlPlaneUrlOptionValue(options);
-  const nonInteractive = nonInteractiveOptionValue(options);
-
-  // Descriptor file
-  const packageDescriptorFilename = packageDescriptorFilenameOptionValue(options);
-
-  // Deployment info
-  const packageFile = packageFileOptionValue(options);
-
-  const { graalvmHome, coursierBinary, jvmClasspath } = await installGatlingJs({ gatlingHome });
-  logger.debug(`graalvmHome=${graalvmHome}`);
-  logger.debug(`coursierBinary=${coursierBinary}`);
-  logger.debug(`jvmClasspath=${jvmClasspath}`);
-
-  await bundle({ sourcesFolder, bundleFile, typescript, simulations });
-  await enterprisePackage({ bundleFile, resourcesFolder, packageFile, simulations });
-
-  return {
-    graalvmHome,
-    jvmClasspath,
-    bundleFile,
-    resourcesFolder,
-    resultsFolder,
-    // Base
-    url,
-    apiToken,
-    // Plugin configuration
-    controlPlaneUrl,
-    nonInteractive,
-    // Descriptor file
-    packageDescriptorFilename,
-    // Deployment info
-    packageFile
-  };
-};
-
 program
   .command("enterprise-deploy")
   .description("Deploy a package and configured simulations")
@@ -274,6 +223,7 @@ program
   .addOption(bundleFileOption)
   .addOption(resultsFolderOption)
   .addOption(typescriptOption)
+  .addOption(gatlingHomeOption)
   // Base
   .addOption(urlOption)
   .addOption(apiTokenOption)
@@ -285,8 +235,38 @@ program
   // Deployment info
   .addOption(packageFileOption)
   .action(async (options) => {
-    const deployOptions = await enterpriseBundleAndPackage(options);
-    await enterpriseDeploy(deployOptions);
+    const sourcesFolder: string = sourcesFolderOptionValue(options);
+
+    const simulations = await findSimulations(sourcesFolder);
+    const typescript = typescriptOptionValueWithDefaults(options, simulations);
+
+    const resourcesFolder: string = resourcesFolderOptionValue(options);
+    const bundleFile = bundleFileOptionValue(options);
+    const resultsFolder: string = resultsFolderOptionValue(options);
+    const gatlingHome = gatlingHomeOptionValueWithDefaults(options);
+    const url = urlOptionValue(options);
+    const apiToken = apiTokenOptionValue(options);
+    const controlPlaneUrl = controlPlaneUrlOptionValue(options);
+    const nonInteractive = nonInteractiveOptionValue(options);
+    const packageDescriptorFilename = packageDescriptorFilenameOptionValue(options);
+    const packageFile = packageFileOptionValue(options);
+
+    const { graalvmHome, jvmClasspath } = await installGatlingJs({ gatlingHome });
+    await bundle({ sourcesFolder, bundleFile, typescript, simulations });
+    await enterprisePackage({ bundleFile, resourcesFolder, packageFile, simulations });
+    await enterpriseDeploy({
+      graalvmHome,
+      jvmClasspath,
+      bundleFile,
+      resourcesFolder,
+      resultsFolder,
+      url,
+      apiToken,
+      controlPlaneUrl,
+      nonInteractive,
+      packageDescriptorFilename,
+      packageFile
+    });
   });
 
 program
@@ -297,6 +277,7 @@ program
   .addOption(bundleFileOption)
   .addOption(resultsFolderOption)
   .addOption(typescriptOption)
+  .addOption(gatlingHomeOption)
   // Base
   .addOption(urlOption)
   .addOption(apiTokenOption)
@@ -313,19 +294,45 @@ program
   .addOption(runDescriptionOption)
   .addOption(waitForRunEndOption)
   .action(async (options) => {
-    const deployOptions = await enterpriseBundleAndPackage(options);
+    const sourcesFolder: string = sourcesFolderOptionValue(options);
 
+    const simulations = await findSimulations(sourcesFolder);
+    const typescript = typescriptOptionValueWithDefaults(options, simulations);
+
+    const resourcesFolder: string = resourcesFolderOptionValue(options);
+    const bundleFile = bundleFileOptionValue(options);
+    const resultsFolder: string = resultsFolderOptionValue(options);
+    const gatlingHome = gatlingHomeOptionValueWithDefaults(options);
+    const url = urlOptionValue(options);
+    const apiToken = apiTokenOptionValue(options);
+    const controlPlaneUrl = controlPlaneUrlOptionValue(options);
+    const nonInteractive = nonInteractiveOptionValue(options);
+    const packageDescriptorFilename = packageDescriptorFilenameOptionValue(options);
+    const packageFile = packageFileOptionValue(options);
     const enterpriseSimulation = enterpriseSimulationOptionValue(options);
+    const runTitle = runTitleOptionValue(options);
+    const runDescription = runDescriptionOptionValue(options);
+    const waitForRunEnd = waitForRunEndOptionValue(options);
+
     if (nonInteractiveOptionValue(options) && enterpriseSimulation === undefined) {
       throw new Error(`No simulation specified when using non-interactive mode`);
     }
 
-    const runTitle = runTitleOptionValue(options);
-    const runDescription = runDescriptionOptionValue(options);
-    const waitForRunEnd = waitForRunEndOptionValue(options);
+    const { graalvmHome, jvmClasspath } = await installGatlingJs({ gatlingHome });
+    await bundle({ sourcesFolder, bundleFile, typescript, simulations });
+    await enterprisePackage({ bundleFile, resourcesFolder, packageFile, simulations });
     await enterpriseStart({
-      ...deployOptions,
-      // Start
+      graalvmHome,
+      jvmClasspath,
+      bundleFile,
+      resourcesFolder,
+      resultsFolder,
+      url,
+      apiToken,
+      controlPlaneUrl,
+      nonInteractive,
+      packageDescriptorFilename,
+      packageFile,
       enterpriseSimulation,
       runTitle,
       runDescription,
