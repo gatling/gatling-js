@@ -3,7 +3,7 @@ import fs from "fs";
 import { pipeline } from "stream/promises";
 import { constants as zConstants } from "zlib";
 
-import { versions } from "./dependencies/versions";
+import { versions } from "./dependencies";
 import { RunJavaProcessOptions, runJavaProcess } from "./java";
 import { logger } from "./log";
 import { SimulationFile } from "./simulations";
