@@ -124,5 +124,5 @@ export const tryMax = errorsImpl(JvmCoreDsl, wrapChainBuilder).tryMax;
 export const exitHereIf = errorsImpl(JvmCoreDsl, wrapChainBuilder).exitHereIf;
 export const exitHere = errorsImpl(JvmCoreDsl, wrapChainBuilder).exitHere;
 export const exitHereIfFailed = errorsImpl(JvmCoreDsl, wrapChainBuilder).exitHereIfFailed;
-export const stopInjector = errorsImpl(JvmCoreDsl, wrapChainBuilder).stopInjector;
-export const stopInjectorIf = errorsImpl(JvmCoreDsl, wrapChainBuilder).stopInjectorIf;
+export const stopLoadGenerator = errorsImpl(JvmCoreDsl, wrapChainBuilder).stopLoadGenerator;
+export const stopLoadGeneratorIf = errorsImpl(JvmCoreDsl, wrapChainBuilder).stopLoadGeneratorIf;

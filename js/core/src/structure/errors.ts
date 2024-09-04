@@ -67,9 +67,9 @@ export interface ExitHereIfFailedFunction<T extends Errors<T>> {
   (): T;
 }
 
-export interface StopInjectorFunction<T extends Errors<T>> {
+export interface StopLoadGeneratorFunction<T extends Errors<T>> {
   /**
-   * Have the virtual user abruptly stop the injector
+   * Have the virtual user abruptly stop the load generator with a successful status
    *
    * @param message - the message, expressed as a Gatling Expression Language String
    * @returns a new StructureBuilder
@@ -77,7 +77,7 @@ export interface StopInjectorFunction<T extends Errors<T>> {
   (message: string): T;
 
   /**
-   * Have the virtual user abruptly stop the injector
+   * Have the virtual user abruptly stop the load generator with a successful status
    *
    * @param message - the message, expressed as a function
    * @returns a new StructureBuilder
@@ -85,9 +85,10 @@ export interface StopInjectorFunction<T extends Errors<T>> {
   (message: SessionTo<string>): T;
 }
 
-export interface StopInjectorIfFunction<T extends Errors<T>> {
+export interface StopLoadGeneratorIfFunction<T extends Errors<T>> {
   /**
-   * Have the virtual user abruptly stop the injector if a condition is met
+   * Have the virtual user abruptly stop the load generator with a successful status if a condition
+   * is met
    *
    * @param message - the message, expressed as a Gatling Expression Language String
    * @param condition - the condition, expressed as a Gatling Expression Language String
@@ -96,7 +97,8 @@ export interface StopInjectorIfFunction<T extends Errors<T>> {
   (message: string, condition: string): T;
 
   /**
-   * Have the virtual user abruptly stop the injector if a condition is met
+   * Have the virtual user abruptly stop the load generator with a successful status if a condition
+   * is met
    *
    * @param message - the message, expressed as a Gatling Expression Language String
    * @param condition - the condition, expressed as a function
@@ -105,7 +107,8 @@ export interface StopInjectorIfFunction<T extends Errors<T>> {
   (message: string, condition: SessionTo<boolean>): T;
 
   /**
-   * Have the virtual user abruptly stop the injector if a condition is met
+   * Have the virtual user abruptly stop the load generator with a successful status if a condition
+   * is met
    *
    * @param message - the message, expressed as a function
    * @param condition - the condition, expressed as a Gatling Expression Language String
@@ -114,7 +117,8 @@ export interface StopInjectorIfFunction<T extends Errors<T>> {
   (message: SessionTo<string>, condition: string): T;
 
   /**
-   * Have the virtual user abruptly stop the injector if a condition is met
+   * Have the virtual user abruptly stop the load generator with a successful status if a condition
+   * is met
    *
    * @param message - the message, expressed as a function
    * @param condition - the condition, expressed as a function
@@ -129,8 +133,8 @@ export interface Errors<T extends Errors<T>> {
   exitHereIf: ExitHereIfFunction<T>;
   exitHere: ExitHereFunction<T>;
   exitHereIfFailed: ExitHereIfFailedFunction<T>;
-  stopInjector: StopInjectorFunction<T>;
-  stopInjectorIf: StopInjectorIfFunction<T>;
+  stopLoadGenerator: StopLoadGeneratorFunction<T>;
+  stopLoadGeneratorIf: StopLoadGeneratorIfFunction<T>;
 }
 
 export const errorsImpl = <J2, J1 extends JvmErrors<J2, any>, T extends Errors<T>>(
@@ -155,24 +159,24 @@ export const errorsImpl = <J2, J1 extends JvmErrors<J2, any>, T extends Errors<T
     ),
   exitHere: (): T => wrap(jvmErrors.exitHere()),
   exitHereIfFailed: (): T => wrap(jvmErrors.exitHereIfFailed()),
-  stopInjector: (message: string | SessionTo<string>): T =>
+  stopLoadGenerator: (message: string | SessionTo<string>): T =>
     wrap(
       typeof message === "function"
-        ? jvmErrors.stopInjector(underlyingSessionTo(message))
-        : jvmErrors.stopInjector(message)
+        ? jvmErrors.stopLoadGenerator(underlyingSessionTo(message))
+        : jvmErrors.stopLoadGenerator(message)
     ),
-  stopInjectorIf: (message: string | SessionTo<string>, condition: string | SessionTo<boolean>): T => {
+  stopLoadGeneratorIf: (message: string | SessionTo<string>, condition: string | SessionTo<boolean>): T => {
     if (typeof message === "function") {
       if (typeof condition === "function") {
-        return wrap(jvmErrors.stopInjectorIf(underlyingSessionTo(message), underlyingSessionTo(condition)));
+        return wrap(jvmErrors.stopLoadGeneratorIf(underlyingSessionTo(message), underlyingSessionTo(condition)));
       } else {
-        return wrap(jvmErrors.stopInjectorIf(underlyingSessionTo(message), condition));
+        return wrap(jvmErrors.stopLoadGeneratorIf(underlyingSessionTo(message), condition));
       }
     } else {
       if (typeof condition === "function") {
-        return wrap(jvmErrors.stopInjectorIf(message, underlyingSessionTo(condition)));
+        return wrap(jvmErrors.stopLoadGeneratorIf(message, underlyingSessionTo(condition)));
       } else {
-        return wrap(jvmErrors.stopInjectorIf(message, condition));
+        return wrap(jvmErrors.stopLoadGeneratorIf(message, condition));
       }
     }
   }
