@@ -127,6 +127,66 @@ export interface StopLoadGeneratorIfFunction<T extends Errors<T>> {
   (message: SessionTo<string>, condition: SessionTo<boolean>): T;
 }
 
+export interface CrashLoadGeneratorFunction<T extends Errors<T>> {
+  /**
+   * Have the virtual user abruptly stop the load generator with a failed status
+   *
+   * @param message - the message, expressed as a Gatling Expression Language String
+   * @returns a new StructureBuilder
+   */
+  (message: string): T;
+
+  /**
+   * Have the virtual user abruptly crash the load generator with a failed status
+   *
+   * @param message - the message, expressed as a function
+   * @returns a new StructureBuilder
+   */
+  (message: SessionTo<string>): T;
+}
+
+export interface CrashLoadGeneratorIfFunction<T extends Errors<T>> {
+  /**
+   * Have the virtual user abruptly crash the load generator with a failed status if a condition is
+   * met
+   *
+   * @param message - the message, expressed as a Gatling Expression Language String
+   * @param condition - the condition, expressed as a Gatling Expression Language String
+   * @returns a new StructureBuilder
+   */
+  (message: string, condition: string): T;
+
+  /**
+   * Have the virtual user abruptly crash the load generator with a failed status if a condition is
+   * met
+   *
+   * @param message - the message, expressed as a Gatling Expression Language String
+   * @param condition - the condition, expressed as a function
+   * @returns a new StructureBuilder
+   */
+  (message: string, condition: SessionTo<boolean>): T;
+
+  /**
+   * Have the virtual user abruptly crash the load generator with a failed status if a condition is
+   * met
+   *
+   * @param message - the message, expressed as a function
+   * @param condition - the condition, expressed as a Gatling Expression Language String
+   * @returns a new StructureBuilder
+   */
+  (message: SessionTo<string>, condition: string): T;
+
+  /**
+   * Have the virtual user abruptly crash the load generator with a failed status if a condition is
+   * met
+   *
+   * @param message - the message, expressed as a function
+   * @param condition - the condition, expressed as a function
+   * @returns a new StructureBuilder
+   */
+  (message: SessionTo<string>, condition: SessionTo<boolean>): T;
+}
+
 export interface Errors<T extends Errors<T>> {
   exitBlockOnFail: ExitBlockOnFailFunction<T>;
   tryMax: TryMaxFunction<T>;
@@ -135,6 +195,8 @@ export interface Errors<T extends Errors<T>> {
   exitHereIfFailed: ExitHereIfFailedFunction<T>;
   stopLoadGenerator: StopLoadGeneratorFunction<T>;
   stopLoadGeneratorIf: StopLoadGeneratorIfFunction<T>;
+  crashLoadGenerator: CrashLoadGeneratorFunction<T>;
+  crashLoadGeneratorIf: CrashLoadGeneratorIfFunction<T>;
 }
 
 export const errorsImpl = <J2, J1 extends JvmErrors<J2, any>, T extends Errors<T>>(
@@ -177,6 +239,27 @@ export const errorsImpl = <J2, J1 extends JvmErrors<J2, any>, T extends Errors<T
         return wrap(jvmErrors.stopLoadGeneratorIf(message, underlyingSessionTo(condition)));
       } else {
         return wrap(jvmErrors.stopLoadGeneratorIf(message, condition));
+      }
+    }
+  },
+  crashLoadGenerator: (message: string | SessionTo<string>): T =>
+    wrap(
+      typeof message === "function"
+        ? jvmErrors.crashLoadGenerator(underlyingSessionTo(message))
+        : jvmErrors.crashLoadGenerator(message)
+    ),
+  crashLoadGeneratorIf: (message: string | SessionTo<string>, condition: string | SessionTo<boolean>): T => {
+    if (typeof message === "function") {
+      if (typeof condition === "function") {
+        return wrap(jvmErrors.crashLoadGeneratorIf(underlyingSessionTo(message), underlyingSessionTo(condition)));
+      } else {
+        return wrap(jvmErrors.crashLoadGeneratorIf(underlyingSessionTo(message), condition));
+      }
+    } else {
+      if (typeof condition === "function") {
+        return wrap(jvmErrors.crashLoadGeneratorIf(message, underlyingSessionTo(condition)));
+      } else {
+        return wrap(jvmErrors.crashLoadGeneratorIf(message, condition));
       }
     }
   }

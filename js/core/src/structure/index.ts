@@ -126,3 +126,5 @@ export const exitHere = errorsImpl(JvmCoreDsl, wrapChainBuilder).exitHere;
 export const exitHereIfFailed = errorsImpl(JvmCoreDsl, wrapChainBuilder).exitHereIfFailed;
 export const stopLoadGenerator = errorsImpl(JvmCoreDsl, wrapChainBuilder).stopLoadGenerator;
 export const stopLoadGeneratorIf = errorsImpl(JvmCoreDsl, wrapChainBuilder).stopLoadGeneratorIf;
+export const crashLoadGenerator = errorsImpl(JvmCoreDsl, wrapChainBuilder).crashLoadGenerator;
+export const crashLoadGeneratorIf = errorsImpl(JvmCoreDsl, wrapChainBuilder).crashLoadGeneratorIf;

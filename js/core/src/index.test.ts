@@ -442,7 +442,18 @@ const scn = scenario("scenario")
     (session) => true
   )
   .stopLoadGeneratorIf("#{message}", (session) => true)
-  .stopLoadGeneratorIf((session) => "message", "#{condition}");
+  .stopLoadGeneratorIf((session) => "message", "#{condition}")
+  // crashLoadGenerator
+  .crashLoadGenerator("#{message}")
+  .crashLoadGenerator((session) => "message")
+  // crashLoadGeneratorIf
+  .crashLoadGeneratorIf("#{message}", "#{condition}")
+  .crashLoadGeneratorIf(
+    (session) => "message",
+    (session) => true
+  )
+  .crashLoadGeneratorIf("#{message}", (session) => true)
+  .crashLoadGeneratorIf((session) => "message", "#{condition}");
 
 //registerPebbleExtensions((io.pebbletemplates.pebble.extension.Extension) null);
 
