@@ -14,8 +14,7 @@ export interface Request extends Wrapper<JvmRequest> {
   //getCookies(): java.util.List<any /*io.netty.handler.codec.http.cookie.Cookie*/>;
   headers(): HttpHeaders;
   //getHttp2PriorKnowledge(): any /*io.gatling.http.client.Http2PriorKnowledge*/;
-  //getLocalIpV4Address(): any /*java.net.InetAddress*/;
-  //getLocalIpV6Address(): any /*java.net.InetAddress*/;
+  //getLocalAddresses(): any /*io.gatling.http.client.LocalAddresses*/;
   //getMethod(): any /*io.netty.handler.codec.http.HttpMethod*/;
   //getName(): string;
   //getNameResolver(): any /*io.gatling.http.client.resolver.InetAddressNameResolver*/;
