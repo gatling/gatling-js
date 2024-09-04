@@ -10,6 +10,9 @@ updates:
       day: "sunday"
     ignore:
       - dependency-name: "@gatling.io/*"
+      # the major version for Node should match the minimum version required in the documentation
+      - dependency-name: "@types/node"
+        update-types: [ "version-update:semver-major" ]
   - package-ecosystem: "npm"
     directory: "/js-simulation"
     labels:
