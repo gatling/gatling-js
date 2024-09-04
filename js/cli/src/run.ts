@@ -25,11 +25,13 @@ export const runSimulation = async (options: RunSimulationOptions): Promise<void
  - resultsFolder: ${options.resultsFolder}`);
 
   const additionalClasspathElements = [options.resourcesFolder];
+  const jitTuningArgs = ["-XX:JVMCINativeLibraryThreadFraction=0.8", "-Dgraal.MethodInlineBailoutLimit=500"];
   const memoryArgs = options.memory !== undefined ? [`-Xms${options.memory}M`, `-Xmx${options.memory}M`] : [];
   const javaArgs = [
     ...Object.entries(options.runParameters).map(([key, value]) => `-D${key}=${value}`),
     `-Dgatling.js.bundle.filePath=${options.bundleFile}`,
     `-Dgatling.js.simulation=${options.simulation}`,
+    ...jitTuningArgs,
     ...memoryArgs
   ];
   const simulationArgs = [
