@@ -67,8 +67,7 @@ declare namespace io.gatling.http.client {
     getCookies(): java.util.List<any /*io.netty.handler.codec.http.cookie.Cookie*/>;
     getHeaders(): io.netty.handler.codec.http.HttpHeaders;
     getHttp2PriorKnowledge(): any /*io.gatling.http.client.Http2PriorKnowledge*/;
-    getLocalIpV4Address(): any /*java.net.InetAddress*/;
-    getLocalIpV6Address(): any /*java.net.InetAddress*/;
+    getLocalAddresses(): any /*io.gatling.http.client.LocalAddresses*/;
     getMethod(): any /*io.netty.handler.codec.http.HttpMethod*/;
     getName(): string;
     getNameResolver(): any /*io.gatling.http.client.resolver.InetAddressNameResolver*/;
@@ -358,6 +357,12 @@ declare namespace io.gatling.javaapi.core {
       arg2: string,
       arg3: boolean
     ): io.gatling.javaapi.core.loop.AsLongAsDuring$On<T>;
+    crashLoadGenerator<T>(arg0: Func<Session, string>): T;
+    crashLoadGenerator<T>(arg0: string): T;
+    crashLoadGeneratorIf<T>(arg0: Func<Session, string>, arg1: Func<Session, boolean | null>): T;
+    crashLoadGeneratorIf<T>(arg0: Func<Session, string>, arg1: string): T;
+    crashLoadGeneratorIf<T>(arg0: string, arg1: Func<Session, boolean | null>): T;
+    crashLoadGeneratorIf<T>(arg0: string, arg1: string): T;
     doIf<T>(arg0: Func<Session, boolean | null>): io.gatling.javaapi.core.condition.DoIf$Then<T>;
     doIf<T>(arg0: string): io.gatling.javaapi.core.condition.DoIf$Then<T>;
     doIfEquals<T>(
@@ -635,12 +640,12 @@ declare namespace io.gatling.javaapi.core {
     repeat<T>(arg0: string): io.gatling.javaapi.core.loop.Repeat$On<T>;
     repeat<T>(arg0: string, arg1: string): io.gatling.javaapi.core.loop.Repeat$On<T>;
     roundRobinSwitch<T>(): io.gatling.javaapi.core.condition.RoundRobinSwitch$On<T>;
-    stopInjector<T>(arg0: Func<Session, string>): T;
-    stopInjector<T>(arg0: string): T;
-    stopInjectorIf<T>(arg0: Func<Session, string>, arg1: Func<Session, boolean | null>): T;
-    stopInjectorIf<T>(arg0: Func<Session, string>, arg1: string): T;
-    stopInjectorIf<T>(arg0: string, arg1: Func<Session, boolean | null>): T;
-    stopInjectorIf<T>(arg0: string, arg1: string): T;
+    stopLoadGenerator<T>(arg0: Func<Session, string>): T;
+    stopLoadGenerator<T>(arg0: string): T;
+    stopLoadGeneratorIf<T>(arg0: Func<Session, string>, arg1: Func<Session, boolean | null>): T;
+    stopLoadGeneratorIf<T>(arg0: Func<Session, string>, arg1: string): T;
+    stopLoadGeneratorIf<T>(arg0: string, arg1: Func<Session, boolean | null>): T;
+    stopLoadGeneratorIf<T>(arg0: string, arg1: string): T;
     toChainBuilder(): ChainBuilder;
     toString(): string;
     tryMax<T>(arg0: Func<Session, int | null>): io.gatling.javaapi.core.error.Errors$TryMax<T>;
@@ -1013,6 +1018,12 @@ declare namespace io.gatling.javaapi.core {
       arg2: string,
       arg3: boolean
     ): io.gatling.javaapi.core.loop.AsLongAsDuring$On<T>;
+    crashLoadGenerator<T>(arg0: Func<Session, string>): T;
+    crashLoadGenerator<T>(arg0: string): T;
+    crashLoadGeneratorIf<T>(arg0: Func<Session, string>, arg1: Func<Session, boolean | null>): T;
+    crashLoadGeneratorIf<T>(arg0: Func<Session, string>, arg1: string): T;
+    crashLoadGeneratorIf<T>(arg0: string, arg1: Func<Session, boolean | null>): T;
+    crashLoadGeneratorIf<T>(arg0: string, arg1: string): T;
     doIf<T>(arg0: Func<Session, boolean | null>): io.gatling.javaapi.core.condition.DoIf$Then<T>;
     doIf<T>(arg0: string): io.gatling.javaapi.core.condition.DoIf$Then<T>;
     doIfEquals<T>(
@@ -1294,12 +1305,12 @@ declare namespace io.gatling.javaapi.core {
     repeat<T>(arg0: string): io.gatling.javaapi.core.loop.Repeat$On<T>;
     repeat<T>(arg0: string, arg1: string): io.gatling.javaapi.core.loop.Repeat$On<T>;
     roundRobinSwitch<T>(): io.gatling.javaapi.core.condition.RoundRobinSwitch$On<T>;
-    stopInjector<T>(arg0: Func<Session, string>): T;
-    stopInjector<T>(arg0: string): T;
-    stopInjectorIf<T>(arg0: Func<Session, string>, arg1: Func<Session, boolean | null>): T;
-    stopInjectorIf<T>(arg0: Func<Session, string>, arg1: string): T;
-    stopInjectorIf<T>(arg0: string, arg1: Func<Session, boolean | null>): T;
-    stopInjectorIf<T>(arg0: string, arg1: string): T;
+    stopLoadGenerator<T>(arg0: Func<Session, string>): T;
+    stopLoadGenerator<T>(arg0: string): T;
+    stopLoadGeneratorIf<T>(arg0: Func<Session, string>, arg1: Func<Session, boolean | null>): T;
+    stopLoadGeneratorIf<T>(arg0: Func<Session, string>, arg1: string): T;
+    stopLoadGeneratorIf<T>(arg0: string, arg1: Func<Session, boolean | null>): T;
+    stopLoadGeneratorIf<T>(arg0: string, arg1: string): T;
     toString(): string;
     tryMax<T>(arg0: Func<Session, int | null>): io.gatling.javaapi.core.error.Errors$TryMax<T>;
     tryMax<T>(arg0: Func<Session, int | null>, arg1: string): io.gatling.javaapi.core.error.Errors$TryMax<T>;
@@ -1525,6 +1536,12 @@ declare namespace io.gatling.javaapi.core {
       arg2: string,
       arg3: boolean
     ): io.gatling.javaapi.core.loop.AsLongAsDuring$On<T>;
+    crashLoadGenerator(arg0: Func<Session, string>): T;
+    crashLoadGenerator(arg0: string): T;
+    crashLoadGeneratorIf(arg0: Func<Session, string>, arg1: Func<Session, boolean | null>): T;
+    crashLoadGeneratorIf(arg0: Func<Session, string>, arg1: string): T;
+    crashLoadGeneratorIf(arg0: string, arg1: Func<Session, boolean | null>): T;
+    crashLoadGeneratorIf(arg0: string, arg1: string): T;
     doIf(arg0: Func<Session, boolean | null>): io.gatling.javaapi.core.condition.DoIf$Then<T>;
     doIf(arg0: string): io.gatling.javaapi.core.condition.DoIf$Then<T>;
     doIfEquals(
@@ -1796,12 +1813,12 @@ declare namespace io.gatling.javaapi.core {
     repeat(arg0: string): io.gatling.javaapi.core.loop.Repeat$On<T>;
     repeat(arg0: string, arg1: string): io.gatling.javaapi.core.loop.Repeat$On<T>;
     roundRobinSwitch(): io.gatling.javaapi.core.condition.RoundRobinSwitch$On<T>;
-    stopInjector(arg0: Func<Session, string>): T;
-    stopInjector(arg0: string): T;
-    stopInjectorIf(arg0: Func<Session, string>, arg1: Func<Session, boolean | null>): T;
-    stopInjectorIf(arg0: Func<Session, string>, arg1: string): T;
-    stopInjectorIf(arg0: string, arg1: Func<Session, boolean | null>): T;
-    stopInjectorIf(arg0: string, arg1: string): T;
+    stopLoadGenerator(arg0: Func<Session, string>): T;
+    stopLoadGenerator(arg0: string): T;
+    stopLoadGeneratorIf(arg0: Func<Session, string>, arg1: Func<Session, boolean | null>): T;
+    stopLoadGeneratorIf(arg0: Func<Session, string>, arg1: string): T;
+    stopLoadGeneratorIf(arg0: string, arg1: Func<Session, boolean | null>): T;
+    stopLoadGeneratorIf(arg0: string, arg1: string): T;
     toString(): string;
     tryMax(arg0: Func<Session, int | null>): io.gatling.javaapi.core.error.Errors$TryMax<T>;
     tryMax(arg0: Func<Session, int | null>, arg1: string): io.gatling.javaapi.core.error.Errors$TryMax<T>;
@@ -2441,20 +2458,29 @@ declare namespace io.gatling.javaapi.core.error {
 } // end namespace io.gatling.javaapi.core.error
 declare namespace io.gatling.javaapi.core.error {
   interface Errors<T, W> {
+    crashLoadGenerator(arg0: Func<io.gatling.javaapi.core.Session, string>): T;
+    crashLoadGenerator(arg0: string): T;
+    crashLoadGeneratorIf(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: Func<io.gatling.javaapi.core.Session, boolean | null>
+    ): T;
+    crashLoadGeneratorIf(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): T;
+    crashLoadGeneratorIf(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, boolean | null>): T;
+    crashLoadGeneratorIf(arg0: string, arg1: string): T;
     exitBlockOnFail(): Errors$ExitBlockOnFail<T>;
     exitHere(): T;
     exitHereIf(arg0: Func<io.gatling.javaapi.core.Session, boolean | null>): T;
     exitHereIf(arg0: string): T;
     exitHereIfFailed(): T;
-    stopInjector(arg0: Func<io.gatling.javaapi.core.Session, string>): T;
-    stopInjector(arg0: string): T;
-    stopInjectorIf(
+    stopLoadGenerator(arg0: Func<io.gatling.javaapi.core.Session, string>): T;
+    stopLoadGenerator(arg0: string): T;
+    stopLoadGeneratorIf(
       arg0: Func<io.gatling.javaapi.core.Session, string>,
       arg1: Func<io.gatling.javaapi.core.Session, boolean | null>
     ): T;
-    stopInjectorIf(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): T;
-    stopInjectorIf(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, boolean | null>): T;
-    stopInjectorIf(arg0: string, arg1: string): T;
+    stopLoadGeneratorIf(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): T;
+    stopLoadGeneratorIf(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, boolean | null>): T;
+    stopLoadGeneratorIf(arg0: string, arg1: string): T;
     tryMax(arg0: Func<io.gatling.javaapi.core.Session, int | null>): Errors$TryMax<T>;
     tryMax(arg0: Func<io.gatling.javaapi.core.Session, int | null>, arg1: string): Errors$TryMax<T>;
     tryMax(arg0: int): Errors$TryMax<T>;

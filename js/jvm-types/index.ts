@@ -395,6 +395,21 @@ interface CoreDslStatic {
   PebbleStringBody(arg0: string): io.gatling.javaapi.core.Body$WithString;
   StringBody(arg0: string): io.gatling.javaapi.core.Body$WithString;
   StringBody(arg0: Func<io.gatling.javaapi.core.Session, string>): io.gatling.javaapi.core.Body$WithString;
+  crashLoadGenerator(arg0: string): io.gatling.javaapi.core.ChainBuilder;
+  crashLoadGenerator(arg0: Func<io.gatling.javaapi.core.Session, string>): io.gatling.javaapi.core.ChainBuilder;
+  crashLoadGeneratorIf(arg0: string, arg1: string): io.gatling.javaapi.core.ChainBuilder;
+  crashLoadGeneratorIf(
+    arg0: string,
+    arg1: Func<io.gatling.javaapi.core.Session, boolean | null>
+  ): io.gatling.javaapi.core.ChainBuilder;
+  crashLoadGeneratorIf(
+    arg0: Func<io.gatling.javaapi.core.Session, string>,
+    arg1: string
+  ): io.gatling.javaapi.core.ChainBuilder;
+  crashLoadGeneratorIf(
+    arg0: Func<io.gatling.javaapi.core.Session, string>,
+    arg1: Func<io.gatling.javaapi.core.Session, boolean | null>
+  ): io.gatling.javaapi.core.ChainBuilder;
   exec(
     arg0: io.gatling.javaapi.core.exec.Executable,
     ...arg1: io.gatling.javaapi.core.exec.Executable[]
@@ -504,18 +519,18 @@ interface CoreDslStatic {
   pause(arg0: long, arg1: long): io.gatling.javaapi.core.ChainBuilder;
   pause(arg0: long, arg1: long, arg2: io.gatling.javaapi.core.PauseType): io.gatling.javaapi.core.ChainBuilder;
   rendezVous(arg0: int): io.gatling.javaapi.core.ChainBuilder;
-  stopInjector(arg0: string): io.gatling.javaapi.core.ChainBuilder;
-  stopInjector(arg0: Func<io.gatling.javaapi.core.Session, string>): io.gatling.javaapi.core.ChainBuilder;
-  stopInjectorIf(arg0: string, arg1: string): io.gatling.javaapi.core.ChainBuilder;
-  stopInjectorIf(
+  stopLoadGenerator(arg0: string): io.gatling.javaapi.core.ChainBuilder;
+  stopLoadGenerator(arg0: Func<io.gatling.javaapi.core.Session, string>): io.gatling.javaapi.core.ChainBuilder;
+  stopLoadGeneratorIf(arg0: string, arg1: string): io.gatling.javaapi.core.ChainBuilder;
+  stopLoadGeneratorIf(
     arg0: string,
     arg1: Func<io.gatling.javaapi.core.Session, boolean | null>
   ): io.gatling.javaapi.core.ChainBuilder;
-  stopInjectorIf(
+  stopLoadGeneratorIf(
     arg0: Func<io.gatling.javaapi.core.Session, string>,
     arg1: string
   ): io.gatling.javaapi.core.ChainBuilder;
-  stopInjectorIf(
+  stopLoadGeneratorIf(
     arg0: Func<io.gatling.javaapi.core.Session, string>,
     arg1: Func<io.gatling.javaapi.core.Session, boolean | null>
   ): io.gatling.javaapi.core.ChainBuilder;
@@ -1933,15 +1948,14 @@ interface RequestStatic {
     arg5: io.gatling.http.client.body.RequestBody,
     arg6: long,
     arg7: boolean,
-    arg8: any /*java.net.InetAddress*/,
-    arg9: any /*java.net.InetAddress*/,
-    arg10: any /*io.gatling.http.client.realm.Realm*/,
-    arg11: any /*io.gatling.http.client.proxy.ProxyServer*/,
-    arg12: Func<io.gatling.http.client.Request, io.gatling.http.client.Request>,
-    arg13: any /*io.gatling.http.client.resolver.InetAddressNameResolver*/,
-    arg14: boolean,
-    arg15: any /*io.gatling.http.client.Http2PriorKnowledge*/,
-    arg16: string
+    arg8: any /*io.gatling.http.client.LocalAddresses*/,
+    arg9: any /*io.gatling.http.client.realm.Realm*/,
+    arg10: any /*io.gatling.http.client.proxy.ProxyServer*/,
+    arg11: Func<io.gatling.http.client.Request, io.gatling.http.client.Request>,
+    arg12: any /*io.gatling.http.client.resolver.InetAddressNameResolver*/,
+    arg13: boolean,
+    arg14: any /*io.gatling.http.client.Http2PriorKnowledge*/,
+    arg15: string
   ): io.gatling.http.client.Request;
 }
 
