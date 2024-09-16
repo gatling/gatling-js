@@ -95,12 +95,13 @@ export const simulationOptionValueWithDefaults = (
       "No simulation found, simulations must be defined in a <simulation name>.gatling.js or <simulation name>.gatling.ts file)"
     );
   } else if (interactive) {
+    const sortedSimulations = simulationsFound.sort((a, b) => a.name.localeCompare(b.name));
     const idx = keyInSelectPaginated(
-      simulationsFound.map((s) => s.name).sort((a, b) => a.localeCompare(b)),
+      sortedSimulations.map((s) => s.name),
       "Choose a simulation to run"
     );
     if (idx >= 0) {
-      const simulation = simulationsFound[idx].name;
+      const simulation = sortedSimulations[idx].name;
       logger.info(`Simulation '${simulation}' was chosen.`);
       return simulation;
     } else {
