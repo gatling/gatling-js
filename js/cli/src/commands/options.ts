@@ -213,10 +213,15 @@ export const parseRunParametersArgument = (args: string[]): Record<string, strin
   return parsedParameters;
 };
 
-export const urlOption = new Option("--url <value>", "URL of Gatling Enterprise")
+export const apiUrlOption = new Option("--apiUrl <value>", "URL of the Gatling Enterprise API")
+  .default("https://api.gatling.io")
+  .hideHelp();
+export const apiUrlOptionValue = getStringValueMandatory(apiUrlOption);
+
+export const webAppUrlOption = new Option("--webAppUrl <value>", "URL of the Gatling Enterprise web app")
   .default("https://cloud.gatling.io")
   .hideHelp();
-export const urlOptionValue = getStringValueMandatory(urlOption);
+export const webAppUrlOptionValue = getStringValueMandatory(webAppUrlOption);
 
 export const apiTokenOption = new Option(
   "--api-token <value>",
