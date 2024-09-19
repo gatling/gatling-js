@@ -124,7 +124,8 @@ export interface EnterprisePluginOptions extends RunJavaProcessOptions {
   resourcesFolder: string;
   resultsFolder: string;
   // Base
-  url: string;
+  apiUrl: string;
+  webAppUrl: string;
   apiToken?: string;
   // Plugin configuration
   controlPlaneUrl?: string;
@@ -135,7 +136,8 @@ const javaArgsFromPluginOptions = (options: EnterprisePluginOptions) => {
   const javaArgs: string[] = [];
 
   // Base
-  javaArgs.push(`-Dgatling.enterprise.url=${options.url}`);
+  javaArgs.push(`-Dgatling.enterprise.apiUrl=${options.apiUrl}`);
+  javaArgs.push(`-Dgatling.enterprise.webAppUrl=${options.webAppUrl}`);
   if (options.apiToken !== undefined) {
     javaArgs.push(`-Dgatling.enterprise.apiToken=${options.apiToken}`);
   }

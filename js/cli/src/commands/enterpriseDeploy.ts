@@ -23,8 +23,10 @@ import {
   sourcesFolderOptionValue,
   typescriptOption,
   typescriptOptionValueWithDefaults,
-  urlOption,
-  urlOptionValue
+  apiUrlOption,
+  apiUrlOptionValue,
+  webAppUrlOption,
+  webAppUrlOptionValue
 } from "./options";
 import { findSimulations } from "../simulations";
 import { installGatlingJs } from "../dependencies";
@@ -42,7 +44,8 @@ export default (program: Command): void => {
     .addOption(typescriptOption)
     .addOption(gatlingHomeOption)
     // Base
-    .addOption(urlOption)
+    .addOption(apiUrlOption)
+    .addOption(webAppUrlOption)
     .addOption(apiTokenOption)
     // Plugin configuration
     .addOption(controlPlaneUrlOption)
@@ -61,7 +64,8 @@ export default (program: Command): void => {
       const bundleFile = bundleFileOptionValue(options);
       const resultsFolder: string = resultsFolderOptionValue(options);
       const gatlingHome = gatlingHomeOptionValueWithDefaults(options);
-      const url = urlOptionValue(options);
+      const apiUrl = apiUrlOptionValue(options);
+      const webAppUrl = webAppUrlOptionValue(options);
       const apiToken = apiTokenOptionValue(options);
       const controlPlaneUrl = controlPlaneUrlOptionValue(options);
       const nonInteractive = nonInteractiveOptionValue(options);
@@ -77,7 +81,8 @@ export default (program: Command): void => {
         bundleFile,
         resourcesFolder,
         resultsFolder,
-        url,
+        apiUrl,
+        webAppUrl,
         apiToken,
         controlPlaneUrl,
         nonInteractive,
