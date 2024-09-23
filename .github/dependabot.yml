@@ -4,7 +4,6 @@ updates:
     directory: "/js"
     labels:
       - "dependencies"
-      - "npm"
     schedule:
       interval: "weekly"
       day: "sunday"
@@ -17,7 +16,6 @@ updates:
     directory: "/js-simulation"
     labels:
       - "dependencies"
-      - "npm"
     schedule:
       interval: "weekly"
       day: "sunday"
@@ -27,7 +25,6 @@ updates:
     directory: "/ts-simulation"
     labels:
       - "dependencies"
-      - "npm"
     schedule:
       interval: "weekly"
       day: "sunday"
