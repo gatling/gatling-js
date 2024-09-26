@@ -15,7 +15,7 @@ import {
   doWhile,
   css,
   global,
-  GlobalStore
+  GlobalStore, readResourceAsString, readResourceAsBytes
 } from "@gatling.io/core";
 import { http } from "@gatling.io/http";
 
@@ -30,6 +30,8 @@ export default simulation((setUp) => {
   // Either CSV or JSON feeder can be used in this example:
   // const createFeeder = csv("computers/create.csv").circular();
   const createFeeder = jsonFile("computers/create.json").circular();
+
+  console.log(`JSON file: ${String.fromCharCode(...readResourceAsBytes("computers/create.csv"))}`);
 
   const scn: ScenarioBuilder = scenario("My scenario")
     .feed(searchFeeder)
@@ -77,9 +79,10 @@ export default simulation((setUp) => {
 
   setUp(
     scn.injectOpen(
-      atOnceUsers(10),
-      nothingFor({ amount: 5, unit: "seconds" }),
-      constantUsersPerSec(2).during(30)
+      atOnceUsers(1)
+      // atOnceUsers(10),
+      // nothingFor({ amount: 5, unit: "seconds" }),
+      // constantUsersPerSec(2).during(30)
     ).andThen(
       scenario("Post execution")
         .exec(session => {
