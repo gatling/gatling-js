@@ -11,6 +11,7 @@ import { ProtocolBuilder } from "./protocol";
 import { ThrottleStep } from "./throttling";
 
 // FIXME no export *
+export { asJava } from "./gatlingJvm/collections";
 export { asByteArray, asByteArrayFunction } from "./gatlingJvm/byteArrays";
 export * from "./utils/duration";
 export * from "./assertions";

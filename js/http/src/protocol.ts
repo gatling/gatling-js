@@ -1,14 +1,15 @@
 import {
+  AllowListFilter,
   CheckBuilder,
   Condition,
+  DenyListFilter,
   Expression,
   ProtocolBuilder,
   Session,
   SessionTo,
+  asJava,
   underlyingSessionTo,
-  wrapCondition,
-  AllowListFilter,
-  DenyListFilter
+  wrapCondition
 } from "@gatling.io/core";
 
 import { Proxy } from "./proxy";
@@ -776,7 +777,7 @@ export const wrapHttpProtocolBuilder = (_underlying: JvmHttpProtocolBuilder): Ht
         : _underlying.header(name, value)
     ),
   headers: (headers: Record<string, string>): HttpProtocolBuilder =>
-    wrapHttpProtocolBuilder(_underlying.headers(headers)),
+    wrapHttpProtocolBuilder(_underlying.headers(asJava(headers) as any)),
   acceptHeader: (value: Expression<string>): HttpProtocolBuilder =>
     wrapHttpProtocolBuilder(
       typeof value === "function"

@@ -7,6 +7,7 @@ import {
   Expression,
   Session,
   SessionTo,
+  asJava,
   toJvmDuration,
   underlyingSessionTo,
   underlyingSessionToJava,
@@ -369,7 +370,7 @@ const requestWithParamsActionBuilderImpl = <T>(
     wrap(
       typeof value === "function" ? jvmBuilder.header(name, underlyingSessionTo(value)) : jvmBuilder.header(name, value)
     ),
-  headers: (headers: Record<string, string>): T => wrap(jvmBuilder.headers(headers)),
+  headers: (headers: Record<string, string>): T => wrap(jvmBuilder.headers(asJava(headers) as any)),
   ignoreProtocolHeaders: (): T => wrap(jvmBuilder.ignoreProtocolHeaders()),
   basicAuth: (username: Expression<string>, password: Expression<string>): T =>
     wrap(
