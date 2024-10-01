@@ -54,7 +54,7 @@ const generateManifest = (simulationNames: string[]) => {
     "Gatling-Packager: js-cli",
     `Gatling-Packager-Version: ${versions.gatling.jsAdapter}`,
     `Gatling-Simulations: ${simulationNames.join(",")}`,
-    `Java-Version: ${versions.graalvm.jdk.split(".")[0]}`
+    `Java-Version: ${versions.java.compilerRelease}`
   ];
   const pkg = getPackageNameAndVersion();
   lines.push(`Implementation-Title: ${pkg.name}`);
