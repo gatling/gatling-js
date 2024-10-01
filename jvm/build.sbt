@@ -13,6 +13,7 @@ Global / gatlingDevelopers := Seq(
   GatlingDeveloper("ggaly@gatling.io", "Guillaume Galy", isGatlingCorp = true)
 )
 
+val compilerRelease = 21
 val graalvmJdkVersion = "23.0.0"
 val graalvmJsVersion = "24.1.0"
 val coursierVersion = "2.1.12"
@@ -29,7 +30,7 @@ lazy val adapter = (project in file("adapter"))
   .enablePlugins(GatlingOssPlugin)
   .settings(
     name := "gatling-jvm-to-js-adapter",
-    gatlingCompilerRelease := 21,
+    gatlingCompilerRelease := compilerRelease,
     Compile / javacOptions ++= Seq("-encoding", "utf8", "-Xdoclint:none"), // FIXME: see why -Xdoclint:none does not seem to work
     Test / javacOptions ++= Seq("-encoding", "utf8"),
     spotless := SpotlessConfig(
@@ -52,6 +53,9 @@ lazy val adapter = (project in file("adapter"))
            |  graalvm: {
            |    jdk: "$graalvmJdkVersion",
            |    js: "$graalvmJsVersion"
+           |  },
+           |  java: {
+           |    compilerRelease: "$compilerRelease"
            |  },
            |  coursier: "$coursierVersion",
            |  gatling: {
