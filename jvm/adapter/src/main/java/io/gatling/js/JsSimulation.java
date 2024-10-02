@@ -16,25 +16,14 @@
 
 package io.gatling.js;
 
-import com.oracle.truffle.js.lang.JavaScriptLanguageHack;
+import io.gatling.javaapi.core.PopulationBuilder;
 import io.gatling.javaapi.core.Simulation;
-import java.io.IOException;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class JsSimulation extends Simulation {
-
-  static {
-    try {
-      // Implemented in as separate class because Lookup#defineClass() needs to be called from the
-      // same package as the class being defined
-      JavaScriptLanguageHack.allowThreadAccess();
-    } catch (IOException | IllegalAccessException e) {
-      throw new RuntimeException(e);
-    }
-  }
-
-  public JsSimulation() {
-    // Implemented in a separate class to defer loading any GraalJS class until after the modified
-    // class has been loaded in this class's static block
-    JsSimulationHelper.loadSimulation(this::setUp);
+  public JsSimulation(Consumer<Function<List<PopulationBuilder>, SetUp>> jsSimulation) {
+    jsSimulation.accept(this::setUp);
   }
 }

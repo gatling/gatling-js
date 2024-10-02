@@ -63,9 +63,9 @@ export default simulation((setUp) => {
           const introduced = session.get<string>("introduced");
           const discontinued = session.get<string>("discontinued");
           const company = session.get<string>("company");
-          console.log(
-            `Create computer (name='${name}', introduced='${introduced}', discontinued='${discontinued}', company='${company}')`
-          );
+          // console.log(
+          //   `Create computer (name='${name}', introduced='${introduced}', discontinued='${discontinued}', company='${company}')`
+          // );
           return session;
         }),
         http("Post form")
@@ -83,14 +83,15 @@ export default simulation((setUp) => {
       // atOnceUsers(10),
       // nothingFor({ amount: 5, unit: "seconds" }),
       // constantUsersPerSec(2).during(30)
-    ).andThen(
-      scenario("Post execution")
-        .exec(session => {
-          console.log(`browsedPages=${GlobalStore.get("browsedPages")}`);
-          return session;
-        })
-        .injectOpen(atOnceUsers(1))
     )
+    //   .andThen(
+    //   scenario("Post execution")
+    //     .exec(session => {
+    //       console.log(`browsedPages=${GlobalStore.get("browsedPages")}`);
+    //       return session;
+    //     })
+    //     .injectOpen(atOnceUsers(1))
+    // )
   ).protocols(baseHttpProtocol)
     .assertions(
       global().responseTime().percentile(95.0).lte(500)

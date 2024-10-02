@@ -9,13 +9,13 @@ import { versions } from "./versions";
 
 export const installGraalVm = async (gatlingHomeDir: string, downloadDir: string): Promise<string> => {
   const { os, arch, extension, homePath, binPath } = graalVmPlatformParams();
-  const graalvmRootPath = `${gatlingHomeDir}/graalvm/${versions.graalvm.jdk}`;
+  const graalvmRootPath = `${gatlingHomeDir}/graalnodejs/${versions.graalvm.js}`;
   const graalvmHomePath = `${graalvmRootPath}${homePath}`;
   const graalvmJavaPath = `${graalvmHomePath}${binPath}`;
 
   if (!existsSync(graalvmJavaPath)) {
-    const url = `https://github.com/graalvm/graalvm-ce-builds/releases/download/jdk-${versions.graalvm.jdk}/graalvm-community-jdk-${versions.graalvm.jdk}_${os}-${arch}_bin.${extension}`;
-    const downloadPath = `${downloadDir}/graalvm.${extension}`;
+    const url = `https://github.com/oracle/graaljs/releases/download/graal-${versions.graalvm.js}/graalnodejs-community-jvm-${versions.graalvm.js}-${os}-${arch}.${extension}`;
+    const downloadPath = `${downloadDir}/graalnodejs.${extension}`;
 
     if (existsSync(graalvmRootPath)) {
       await fs.rm(graalvmRootPath, { recursive: true });
@@ -25,10 +25,10 @@ export const installGraalVm = async (gatlingHomeDir: string, downloadDir: string
     }
     await fs.mkdir(graalvmRootPath, { recursive: true });
 
-    logger.info(`Downloading GraalVM Community Edition ${versions.graalvm.jdk} to ${downloadPath}`);
+    logger.info(`Downloading GraalNodeJs Community Edition ${versions.graalvm.jdk} to ${downloadPath}`);
     await downloadFile(url, downloadPath);
 
-    logger.info(`Unpacking GraalVM to ${graalvmRootPath}`);
+    logger.info(`Unpacking GraalNodeJs Community Edition to ${graalvmRootPath}`);
     await decompress(downloadPath, graalvmRootPath, {
       map: (file) => {
         // Remove first level of file name, because it already contains a root directory
@@ -39,36 +39,33 @@ export const installGraalVm = async (gatlingHomeDir: string, downloadDir: string
 
     await fs.rm(downloadPath);
   } else {
-    logger.info(`GraalVM Community Edition ${versions.graalvm.jdk} already installed at ${graalvmRootPath}`);
+    logger.info(`GraalNodeJs Community Edition ${versions.graalvm.jdk} already installed at ${graalvmRootPath}`);
   }
 
   return graalvmHomePath;
 };
 
 const graalVmPlatformParams = () => {
-  if (osType === "Linux") {
-    const os = "linux";
-    const extension = "tar.gz";
-    const homePath = "";
-    const binPath = "/bin/java";
-    if (osArch === "x64") {
-      return { os, arch: "x64", extension, homePath, binPath };
-    } else if (osArch === "arm64") {
-      return { os, arch: "aarch64", extension, homePath, binPath };
-    }
-  } else if (osType === "Darwin") {
-    const os = "macos";
-    const extension = "tar.gz";
-    const homePath = "/Contents/Home";
-    const binPath = "/bin/java";
-    if (osArch === "x64") {
-      return { os, arch: "x64", extension, homePath, binPath };
-    } else if (osArch === "arm64") {
-      return { os, arch: "aarch64", extension, homePath, binPath };
-    }
+  const homePath = "";
+  const binPath = "/bin/node";
+
+  let osAndArch: [string, string] | undefined = undefined;
+  let extension = "tar.gz";
+  if (osType === "Linux" && osArch === "x64") {
+    osAndArch = ["linux", "amd64"];
+  } else if (osType === "Linux" && osArch === "arm64") {
+    osAndArch = ["linux", "aarch64"];
+  } else if (osType === "Darwin" && osArch === "x64") {
+    osAndArch = ["macos", "amd64"];
+  } else if (osType === "Darwin" && osArch === "arm64") {
+    osAndArch = ["macos", "aarch64"];
   } else if (osType === "Windows_NT" && osArch === "x64") {
-    return { os: "windows", arch: "x64", extension: "zip", homePath: "", binPath: "/bin/java.exe" };
+    osAndArch = ["windows", "amd64"];
+    extension = "zip";
+  }
+  if (osAndArch === undefined) {
+    throw Error(`Operating system type '${osType}' with architecture '${osArch}' is not currently supported.`);
   }
 
-  throw Error(`Operating system type '${osType}' with architecture '${osArch}' is not currently supported.`);
+  return { os: osAndArch[0], arch: osAndArch[1], extension, homePath, binPath };
 };

@@ -17,7 +17,13 @@ export const bundle = async (options: BundleOptions): Promise<void> => {
  - bundleFile: ${options.bundleFile}
  - typescript: ${options.typescript}`);
 
-  const contents = options.simulations.map((s) => `export { default as "${s.name}" } from "./${s.path}";`).join("\n");
+  const contents = `
+${options.simulations.map((s, i) => `import simulation_${i} from "./${s.path}";`).join("\n")}
+
+export const gatling = {
+  ${options.simulations.map((s, i) => `"${s.name}": simulation_${i}`).join(",\n")}
+};
+`;
 
   const plugins = options.typescript ? [esbuildPluginTsc({ force: true })] : [];
   await esbuild.build({
@@ -29,8 +35,8 @@ export const bundle = async (options: BundleOptions): Promise<void> => {
     bundle: true,
     minify: false,
     sourcemap: true,
-    format: "iife",
-    globalName: "gatling",
+    platform: "node",
+    format: "cjs",
     plugins
   });
 };

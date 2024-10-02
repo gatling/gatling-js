@@ -14,20 +14,33 @@ export const runJavaProcess = (
   additionalClasspathElements: string[],
   javaArgs: string[],
   mainClassArgs: string[]
+): Promise<void> =>
+  // TODO escape strings or pass args some other way
+  runNodeProcess(
+    options,
+    additionalClasspathElements,
+    javaArgs,
+    `Java.type("${mainClass}").main([${mainClassArgs.map((arg) => `"${arg}"`).join(",")}]);`
+  );
+
+export const runNodeProcess = (
+  options: RunJavaProcessOptions,
+  additionalClasspathElements: string[],
+  javaArgs: string[],
+  evalScript: string
 ): Promise<void> => {
-  const command = `${options.graalvmHome}/bin/java`;
+  const command = `${options.graalvmHome}/bin/node`;
   const classpathSeparator = osType === "Windows_NT" ? ";" : ":";
   const classpath = [...additionalClasspathElements, options.jvmClasspath].join(classpathSeparator);
   const allArgs = [
-    "-server",
-    "-XX:+HeapDumpOnOutOfMemoryError",
-    "-XX:MaxInlineLevel=20",
-    "-XX:MaxTrivialSize=12",
-    "-classpath",
+    "--vm.XX:+HeapDumpOnOutOfMemoryError",
+    "--vm.XX:MaxInlineLevel=20",
+    "--vm.XX:MaxTrivialSize=12",
+    "--vm.classpath",
     classpath,
     ...javaArgs,
-    mainClass,
-    ...mainClassArgs
+    "--eval",
+    evalScript
   ];
 
   const spawned = spawn(command, allArgs, {

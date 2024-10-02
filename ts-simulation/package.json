@@ -2,7 +2,6 @@
   "name": "gatling-ts-demo",
   "version": "1.0.0",
   "private": true,
-  "type": "module",
   "main": "target/bundle",
   "dependencies": {
     "@gatling.io/core": "0.0.0",

@@ -1,6 +1,6 @@
 import { logger } from "./log";
 import { versions } from "./dependencies";
-import { RunJavaProcessOptions, runJavaProcess } from "./java";
+import { RunJavaProcessOptions, runJavaProcess, runNodeProcess } from "./java";
 
 export interface RunSimulationOptions extends RunJavaProcessOptions {
   simulation: string;
@@ -25,12 +25,12 @@ export const runSimulation = async (options: RunSimulationOptions): Promise<void
  - resultsFolder: ${options.resultsFolder}`);
 
   const additionalClasspathElements = [options.resourcesFolder];
-  const jitTuningArgs = ["-XX:JVMCINativeLibraryThreadFraction=0.8", "-Dgraal.MethodInlineBailoutLimit=500"];
-  const memoryArgs = options.memory !== undefined ? [`-Xms${options.memory}M`, `-Xmx${options.memory}M`] : [];
+  const jitTuningArgs = ["--vm.XX:JVMCINativeLibraryThreadFraction=0.8", "--vm.Dgraal.MethodInlineBailoutLimit=500"];
+  const memoryArgs = options.memory !== undefined ? [`--vm.Xms${options.memory}M`, `--vm.Xmx${options.memory}M`] : [];
   const javaArgs = [
-    ...Object.entries(options.runParameters).map(([key, value]) => `-D${key}=${value}`),
-    `-Dgatling.js.bundle.filePath=${options.bundleFile}`,
-    `-Dgatling.js.simulation=${options.simulation}`,
+    ...Object.entries(options.runParameters).map(([key, value]) => `--vm.D${key}=${value}`),
+    `--vm.Dgatling.js.bundle.filePath=${options.bundleFile}`,
+    `--vm.Dgatling.js.simulation=${options.simulation}`,
     ...jitTuningArgs,
     ...memoryArgs
   ];
@@ -45,7 +45,21 @@ export const runSimulation = async (options: RunSimulationOptions): Promise<void
     versions.gatling.jsAdapter
   ];
 
-  return runJavaProcess(options, "io.gatling.app.Gatling", additionalClasspathElements, javaArgs, simulationArgs);
+  const evalScript = `
+const simulationInitializer = () => {
+  const bundle = require("./${options.bundleFile}");
+  const jsSimulation = bundle.gatling["${options.simulation}"];
+
+  const JsSimulationWrapper = Java.type("io.gatling.js.JsSimulation");
+  return new JsSimulationWrapper(jsSimulation);
+}
+
+const Gatling = Java.type("io.gatling.app.Gatling");
+// TODO escape strings or pass args some other way
+Gatling.run([${simulationArgs.map((arg) => `"${arg}"`)}], simulationInitializer);
+`;
+
+  return runNodeProcess(options, additionalClasspathElements, javaArgs, evalScript);
 };
 
 export const runRecorder = async (options: RunRecorderOptions): Promise<void> => {
