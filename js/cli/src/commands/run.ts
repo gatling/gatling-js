@@ -26,6 +26,7 @@ import { installGatlingJs } from "../dependencies";
 import { logger } from "../log";
 import { bundle } from "../bundle";
 import { runSimulation } from "../run";
+import { resolveGatlingJsAgent } from "../dependencies/coursier";
 
 export default (program: Command): void => {
   program
@@ -57,16 +58,19 @@ export default (program: Command): void => {
       const typescript = typescriptOptionValueWithDefaults(options, simulations);
       const simulation = simulationOptionValueWithDefaults(options, simulations, !nonInteractive);
 
-      const { graalvmHome, coursierBinary, jvmClasspath } = await installGatlingJs({ gatlingHome });
-      logger.debug(`graalvmHome=${graalvmHome}`);
-      logger.debug(`coursierBinary=${coursierBinary}`);
-      logger.debug(`jvmClasspath=${jvmClasspath}`);
+      const resolvedDependencies = await installGatlingJs({ gatlingHome });
+      logger.debug(`graalvmHome=${resolvedDependencies.graalvmHome}`);
+      logger.debug(`coursierBinary=${resolvedDependencies.coursierBinary}`);
+      logger.debug(`jvmClasspath=${resolvedDependencies.jvmClasspath}`);
+      const gatlingJsAgent = await resolveGatlingJsAgent(resolvedDependencies);
+      logger.debug(`gatlingJsAgent=${gatlingJsAgent}`);
 
       await bundle({ sourcesFolder, bundleFile, typescript, simulations });
 
       await runSimulation({
-        graalvmHome,
-        jvmClasspath,
+        graalvmHome: resolvedDependencies.graalvmHome,
+        jvmClasspath: resolvedDependencies.jvmClasspath,
+        jsAgent: gatlingJsAgent,
         simulation,
         bundleFile,
         resourcesFolder,

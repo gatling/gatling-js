@@ -42,12 +42,13 @@ lazy val adapter = (project in file("adapter"))
     libraryDependencies ++= Seq(
       "io.gatling.highcharts" % "gatling-charts-highcharts" % gatlingVersion,
       "org.graalvm.polyglot" % "js-community" % graalvmJsVersion,
+      // Dependency of js-agent kept here so we don't have to make a fat jar
       "io.gatling" % "gatling-asm-shaded" % "9.7.0"
     ),
     Compile / sourceGenerators += Def.task {
       // Bit of a hack, generate a file directly into the CLI project to share version numbers
       val path = (ThisBuild / baseDirectory).value / ".." / "js" / "cli" / "src" / "dependencies" / "versions.ts"
-      val jsAdapterVersion = version.value
+      val gatlingJsVersion = version.value
       val content =
         s"""export const versions = {
            |  graalvm: {
@@ -61,7 +62,7 @@ lazy val adapter = (project in file("adapter"))
            |  gatling: {
            |    core: "$gatlingVersion",
            |    enterprisePluginCommons: "$gatlingEnterpriseComponentPluginVersion",
-           |    jsAdapter: "$jsAdapterVersion"
+           |    js: "$gatlingJsVersion",
            |  }
            |};
            |""".stripMargin
@@ -69,6 +70,31 @@ lazy val adapter = (project in file("adapter"))
       // The file isn't actually part of _this_ project's sources, return empty Seq
       Seq()
     }.taskValue,
+    Compile / packageDoc / mappings := Seq.empty,
+    Compile / packageSrc / mappings := Seq.empty
+  )
+
+lazy val agent = (project in file("agent"))
+  .withId("gatling-js-agent")
+  .enablePlugins(GatlingOssPlugin)
+  .settings(
+    name := "gatling-js-agent",
+    gatlingCompilerRelease := compilerRelease,
+    Compile / javacOptions ++= Seq("-encoding", "utf8", "-Xdoclint:none"), // FIXME: see why -Xdoclint:none does not seem to work
+    Compile / packageBin / packageOptions +=
+      Package.ManifestAttributes(
+        "Premain-Class" -> "io.gatling.js.JavaScriptLanguageHack"
+      ),
+    Test / javacOptions ++= Seq("-encoding", "utf8"),
+    spotless := SpotlessConfig(
+      applyOnCompile = !sys.env.getOrElse("CI", "false").toBoolean
+    ),
+    spotlessJava := JavaConfig(
+      googleJavaFormat = GoogleJavaFormatConfig()
+    ),
+    libraryDependencies ++= Seq(
+      "io.gatling" % "gatling-asm-shaded" % "9.7.0"
+    ),
     Compile / packageDoc / mappings := Seq.empty,
     Compile / packageSrc / mappings := Seq.empty
   )

@@ -7,6 +7,7 @@ import { versions } from "./versions";
 import { promisify } from "util";
 import { exec } from "child_process";
 import { osType } from "./os";
+import { ResolvedDependencies } from "./index";
 
 export const installCoursier = async (gatlingHomeDir: string, downloadDir: string): Promise<string> => {
   const coursierRootPath = `${gatlingHomeDir}/coursier/${versions.coursier}`;
@@ -45,9 +46,18 @@ export const installCoursier = async (gatlingHomeDir: string, downloadDir: strin
   return coursierPath;
 };
 
+export const resolveGatlingJsAgent = async (dependencies: ResolvedDependencies): Promise<string> => {
+  const gatlingJsAgentDep = `"io.gatling:gatling-js-agent:${versions.gatling.js}"`;
+  const command = `"${dependencies.coursierBinary}" fetch ${gatlingJsAgentDep}`;
+
+  // TODO could add a timeout
+  const { stdout } = await execAsync(command, { env: { ...process.env, JAVA_HOME: dependencies.graalvmHome } });
+  return stdout.split(/[\r\n]+/g)[0];
+};
+
 export const resolveGatlingJsDependencies = async (coursierPath: string, javaHome: string): Promise<string> => {
   const gatlingDep = `"io.gatling.highcharts:gatling-charts-highcharts:${versions.gatling.core}"`;
-  const gatlingAdapterDep = `"io.gatling:gatling-jvm-to-js-adapter:${versions.gatling.jsAdapter}"`;
+  const gatlingAdapterDep = `"io.gatling:gatling-jvm-to-js-adapter:${versions.gatling.js}"`;
   const gatlingEnterprisePluginCommonsDep = `"io.gatling:gatling-enterprise-plugin-commons:${versions.gatling.enterprisePluginCommons}"`;
   const graalvmJsDep = `"org.graalvm.polyglot:js-community:${versions.graalvm.js}"`;
 
