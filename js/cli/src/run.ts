@@ -3,6 +3,7 @@ import { versions } from "./dependencies";
 import { RunJavaProcessOptions, runJavaProcess, runNodeProcess } from "./java";
 
 export interface RunSimulationOptions extends RunJavaProcessOptions {
+  jsAgent: string;
   simulation: string;
   bundleFile: string;
   resourcesFolder: string;
@@ -29,11 +30,13 @@ export const runSimulation = async (options: RunSimulationOptions): Promise<void
   const memoryArgs = options.memory !== undefined ? [`--vm.Xms${options.memory}M`, `--vm.Xmx${options.memory}M`] : [];
   const javaArgs = [
     ...Object.entries(options.runParameters).map(([key, value]) => `--vm.D${key}=${value}`),
+    `--vm.javaagent:${options.jsAgent}`,
     `--vm.Dgatling.js.bundle.filePath=${options.bundleFile}`,
     `--vm.Dgatling.js.simulation=${options.simulation}`,
     ...jitTuningArgs,
     ...memoryArgs
   ];
+  logger.debug(`javaArgs=${javaArgs}`);
   const simulationArgs = [
     "--results-folder",
     options.resultsFolder,
@@ -42,7 +45,7 @@ export const runSimulation = async (options: RunSimulationOptions): Promise<void
     "--launcher",
     "gatling-js-cli",
     "--build-tool-version",
-    versions.gatling.jsAdapter
+    versions.gatling.js
   ];
 
   const evalScript = `

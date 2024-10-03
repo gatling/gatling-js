@@ -52,7 +52,7 @@ const generateManifest = (simulationNames: string[]) => {
     "Gatling-Context: js",
     `Gatling-Version: ${versions.gatling.core}`,
     "Gatling-Packager: js-cli",
-    `Gatling-Packager-Version: ${versions.gatling.jsAdapter}`,
+    `Gatling-Packager-Version: ${versions.gatling.js}`,
     `Gatling-Simulations: ${simulationNames.join(",")}`,
     `Java-Version: ${versions.java.compilerRelease}`
   ];
@@ -147,7 +147,7 @@ const javaArgsFromPluginOptions = (options: EnterprisePluginOptions) => {
     javaArgs.push(`-Dgatling.enterprise.controlPlaneUrl=${options.controlPlaneUrl}`);
   }
   javaArgs.push("-Dgatling.enterprise.buildTool=js-cli");
-  javaArgs.push(`-Dgatling.enterprise.pluginVersion=${versions.gatling.jsAdapter}`);
+  javaArgs.push(`-Dgatling.enterprise.pluginVersion=${versions.gatling.js}`);
 
   if (options.nonInteractive) {
     javaArgs.push(`-Dgatling.enterprise.batchMode=true`);
