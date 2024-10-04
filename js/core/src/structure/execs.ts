@@ -1,5 +1,9 @@
+import { Worker } from "worker_threads";
+
 import { Wrapper } from "../common";
-import { SessionTransform, underlyingSessionTransform } from "../session";
+import { Session, SessionTransform, underlyingSessionTransform } from "../session";
+
+import { CountDownLatch, LinkedBlockingDeque, AtomicReference } from "@gatling.io/jvm-types";
 
 import JvmActionBuilder = io.gatling.javaapi.core.ActionBuilder;
 import JvmExecs = io.gatling.javaapi.core.exec.Execs;
@@ -54,6 +58,7 @@ export interface ExecFunction<T extends Execs<T>> {
 
 export interface Execs<T extends Execs<T>> {
   exec: ExecFunction<T>;
+  execNode: (executable: SessionTransform) => T;
 }
 
 export const execImpl =
@@ -64,3 +69,58 @@ export const execImpl =
         ? jvmExecs.exec(underlyingSessionTransform(arg0)) // arg0: SessionTransform
         : jvmExecs.exec(arg0._underlying, ...arg1.map((e) => e._underlying)) // arg0: Executable, ...arg1: Executable[]
     );
+
+const println = Java.type<any>("java.lang.System").out.println;
+
+const executeOnWorkerThread = (f: (_: Session) => Session) => {
+  const queue = new LinkedBlockingDeque();
+  const w = new Worker(
+    `
+  const { workerData, parentPort } = require('worker_threads');
+  const println = Java.type("java.lang.System").out.println;
+  println("worker 1");
+  while (true) {
+    try {
+      println("worker 2");
+      const data = workerData.queue.take();
+      println("worker 3");
+      const response = data.f(data.session);
+      println("worker 4");
+      data.ref.set(response);
+      println("worker 5");
+      data.latch.countDown();
+      println("worker 6");
+    } catch (e) {
+      println("ERROR in worker thread: " + e.message);
+      println("ERROR in worker thread: " + e.stack);
+    }
+  }
+  `,
+    { eval: true, workerData: { queue } }
+  );
+  //w.on("messageerror", err => println("MESSAGEERROR: " + err.message));
+  //w.on("error", err => println("ERROR: " + err.message));
+
+  println("f: " + typeof f);
+
+  return (session: Session): Session => {
+    const latch = new CountDownLatch(1);
+    const ref = new AtomicReference<Session>();
+    queue.offer({ f, session, latch, ref });
+
+    //w.on("message", () => { latch.countDown(); });
+    latch.await();
+    const response = ref.get();
+    println("response: " + response);
+
+    return response;
+  };
+};
+
+export const execNodeImpl =
+  <J2, J1 extends JvmExecs<J2, any>, T extends Execs<T>>(
+    jvmExecs: J1,
+    wrap: (wrapped: J2) => T
+  ): ((executable: SessionTransform) => T) =>
+  (executable: SessionTransform) =>
+    wrap(jvmExecs.exec(underlyingSessionTransform(executeOnWorkerThread(executable))));

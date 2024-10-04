@@ -80,6 +80,14 @@ interface AssertionStatic {
 
 export const Assertion: AssertionStatic = Java.type("io.gatling.javaapi.core.Assertion");
 
+interface AtomicReferenceStatic {
+  readonly class: any;
+  new <V>(arg0: V): java.util.concurrent.atomic.AtomicReference<V>;
+  new <V>(): java.util.concurrent.atomic.AtomicReference<V>;
+}
+
+export const AtomicReference: AtomicReferenceStatic = Java.type("java.util.concurrent.atomic.AtomicReference");
+
 interface Body$WithBytesStatic {
   readonly class: any;
   new (arg0: any /*io.gatling.core.body.BodyWithBytesExpression*/): io.gatling.javaapi.core.Body$WithBytes;
@@ -1118,6 +1126,13 @@ interface CoreDslStatic {
 
 export const CoreDsl: CoreDslStatic = Java.type("io.gatling.javaapi.core.CoreDsl");
 
+interface CountDownLatchStatic {
+  readonly class: any;
+  new (arg0: int): java.util.concurrent.CountDownLatch;
+}
+
+export const CountDownLatch: CountDownLatchStatic = Java.type("java.util.concurrent.CountDownLatch");
+
 interface DoIf$ThenStatic {
   readonly class: any;
 }
@@ -1712,6 +1727,15 @@ interface IterableStatic {
 }
 
 export const Iterable: IterableStatic = Java.type("java.lang.Iterable");
+
+interface LinkedBlockingDequeStatic {
+  readonly class: any;
+  new <E>(): java.util.concurrent.LinkedBlockingDeque<E>;
+  new <E>(arg0: java.util.Collection<E>): java.util.concurrent.LinkedBlockingDeque<E>;
+  new <E>(arg0: int): java.util.concurrent.LinkedBlockingDeque<E>;
+}
+
+export const LinkedBlockingDeque: LinkedBlockingDequeStatic = Java.type("java.util.concurrent.LinkedBlockingDeque");
 
 interface OpenInjectionStep$ConstantRateStatic {
   readonly class: any;

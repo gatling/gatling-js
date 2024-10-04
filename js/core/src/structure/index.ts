@@ -3,7 +3,7 @@ import { CoreDsl as JvmCoreDsl } from "@gatling.io/jvm-types";
 import JvmChainBuilder = io.gatling.javaapi.core.ChainBuilder;
 
 import { JvmStructureBuilderLike } from "./jvmStructureBuilder";
-import { ExecFunction, Execs, execImpl, Executable } from "./execs";
+import { ExecFunction, Execs, execImpl, Executable, execNodeImpl } from "./execs";
 import { GroupFunction, Groups, groupImpl } from "./groups";
 import { FeedFunction, Feeds, feedImpl } from "./feeds";
 import { PauseFunction, Pauses, pauseImpl } from "./pauses";
@@ -59,6 +59,7 @@ export const structureBuilderImpl = <J2, J1 extends JvmStructureBuilderLike<J2, 
   wrap: (wrapped: J2) => T
 ): StructureBuilder<T> => ({
   exec: execImpl(jvm, wrap),
+  execNode: execNodeImpl(jvm, wrap),
   group: groupImpl(jvm, wrap),
   feed: feedImpl(jvm, wrap),
   pause: pauseImpl(jvm, wrap),

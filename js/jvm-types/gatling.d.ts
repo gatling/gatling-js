@@ -3894,6 +3894,110 @@ declare namespace java.util {
     toArray<T>(arg0: any /*java.util.function.IntFunction*/): T[];
   } // end Set
 } // end namespace java.util
+declare namespace java.util.concurrent {
+  class CountDownLatch /* extends java.lang.Object*/ {
+    await(): void;
+    await(arg0: long, arg1: any /*java.util.concurrent.TimeUnit*/): boolean;
+    countDown(): void;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    getCount(): long;
+    toString(): string;
+  } // end CountDownLatch
+} // end namespace java.util.concurrent
+declare namespace java.util.concurrent {
+  class LinkedBlockingDeque<
+    E
+  > /* extends java.util.AbstractQueue<E> implements BlockingDeque<E>, java.io.Serializable*/ {
+    add(arg0: E): boolean;
+    addAll(arg0: java.util.Collection<E>): boolean;
+    addFirst(arg0: E): void;
+    addLast(arg0: E): void;
+    clear(): void;
+    contains(arg0: any /*java.lang.Object*/): boolean;
+    containsAll(arg0: java.util.Collection<any /*java.lang.Object*/>): boolean;
+    descendingIterator(): java.util.Iterator<E>;
+    drainTo(arg0: java.util.Collection<E>): int;
+    drainTo(arg0: java.util.Collection<E>, arg1: int): int;
+    element(): E;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    forEach(arg0: Consumer<E>): void;
+    getFirst(): E;
+    getLast(): E;
+    isEmpty(): boolean;
+    iterator(): java.util.Iterator<E>;
+    offer(arg0: E): boolean;
+    offer(arg0: E, arg1: long, arg2: any /*java.util.concurrent.TimeUnit*/): boolean;
+    offerFirst(arg0: E): boolean;
+    offerFirst(arg0: E, arg1: long, arg2: any /*java.util.concurrent.TimeUnit*/): boolean;
+    offerLast(arg0: E): boolean;
+    offerLast(arg0: E, arg1: long, arg2: any /*java.util.concurrent.TimeUnit*/): boolean;
+    parallelStream(): java.util.stream.Stream<E>;
+    peek(): E;
+    peekFirst(): E;
+    peekLast(): E;
+    poll(): E;
+    poll(arg0: long, arg1: any /*java.util.concurrent.TimeUnit*/): E;
+    pollFirst(): E;
+    pollFirst(arg0: long, arg1: any /*java.util.concurrent.TimeUnit*/): E;
+    pollLast(): E;
+    pollLast(arg0: long, arg1: any /*java.util.concurrent.TimeUnit*/): E;
+    pop(): E;
+    push(arg0: E): void;
+    put(arg0: E): void;
+    putFirst(arg0: E): void;
+    putLast(arg0: E): void;
+    remainingCapacity(): int;
+    remove(): E;
+    remove(arg0: any /*java.lang.Object*/): boolean;
+    removeAll(arg0: java.util.Collection<any /*java.lang.Object*/>): boolean;
+    removeFirst(): E;
+    removeFirstOccurrence(arg0: any /*java.lang.Object*/): boolean;
+    removeIf(arg0: Predicate<E>): boolean;
+    removeLast(): E;
+    removeLastOccurrence(arg0: any /*java.lang.Object*/): boolean;
+    retainAll(arg0: java.util.Collection<any /*java.lang.Object*/>): boolean;
+    reversed(): any /*java.util.Deque*/;
+    size(): int;
+    spliterator(): any /*java.util.Spliterator*/;
+    stream(): java.util.stream.Stream<E>;
+    take(): E;
+    takeFirst(): E;
+    takeLast(): E;
+    toArray(): [any /*java.lang.Object*/];
+    toArray<T>(arg0: T[]): T[];
+    toArray<T>(arg0: any /*java.util.function.IntFunction*/): T[];
+    toString(): string;
+  } // end LinkedBlockingDeque
+} // end namespace java.util.concurrent
+declare namespace java.util.concurrent.atomic {
+  class AtomicReference<V> /* extends java.lang.Object implements java.io.Serializable*/ {
+    accumulateAndGet(arg0: V, arg1: BinaryOperator<V>): V;
+    compareAndExchange(arg0: V, arg1: V): V;
+    compareAndExchangeAcquire(arg0: V, arg1: V): V;
+    compareAndExchangeRelease(arg0: V, arg1: V): V;
+    compareAndSet(arg0: V, arg1: V): boolean;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    get(): V;
+    getAcquire(): V;
+    getAndAccumulate(arg0: V, arg1: BinaryOperator<V>): V;
+    getAndSet(arg0: V): V;
+    getAndUpdate(arg0: UnaryOperator<V>): V;
+    getOpaque(): V;
+    getPlain(): V;
+    lazySet(arg0: V): void;
+    set(arg0: V): void;
+    setOpaque(arg0: V): void;
+    setPlain(arg0: V): void;
+    setRelease(arg0: V): void;
+    toString(): string;
+    updateAndGet(arg0: UnaryOperator<V>): V;
+    weakCompareAndSet(arg0: V, arg1: V): boolean;
+    weakCompareAndSetAcquire(arg0: V, arg1: V): boolean;
+    weakCompareAndSetPlain(arg0: V, arg1: V): boolean;
+    weakCompareAndSetRelease(arg0: V, arg1: V): boolean;
+    weakCompareAndSetVolatile(arg0: V, arg1: V): boolean;
+  } // end AtomicReference
+} // end namespace java.util.concurrent.atomic
 declare namespace java.util.stream {
   class Collectors /* extends java.lang.Object*/ {
     equals(arg0: any /*java.lang.Object*/): boolean;
