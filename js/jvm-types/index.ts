@@ -80,6 +80,14 @@ interface AssertionStatic {
 
 export const Assertion: AssertionStatic = Java.type("io.gatling.javaapi.core.Assertion");
 
+interface AtomicReferenceStatic {
+  readonly class: any;
+  new <V>(arg0: V): java.util.concurrent.atomic.AtomicReference<V>;
+  new <V>(): java.util.concurrent.atomic.AtomicReference<V>;
+}
+
+export const AtomicReference: AtomicReferenceStatic = Java.type("java.util.concurrent.atomic.AtomicReference");
+
 interface Body$WithBytesStatic {
   readonly class: any;
   new (arg0: any /*io.gatling.core.body.BodyWithBytesExpression*/): io.gatling.javaapi.core.Body$WithBytes;
@@ -365,6 +373,39 @@ interface CollectorsStatic {
 
 export const Collectors: CollectorsStatic = Java.type("java.util.stream.Collectors");
 
+interface CompletableFutureStatic {
+  readonly class: any;
+  new <T>(): java.util.concurrent.CompletableFuture<T>;
+  completedFuture<U>(arg0: U): java.util.concurrent.CompletableFuture<U>;
+  failedFuture<U>(arg0: any /*java.lang.Throwable*/): java.util.concurrent.CompletableFuture<U>;
+  supplyAsync<U>(arg0: Supplier<U>): java.util.concurrent.CompletableFuture<U>;
+  supplyAsync<U>(
+    arg0: Supplier<U>,
+    arg1: any /*java.util.concurrent.Executor*/
+  ): java.util.concurrent.CompletableFuture<U>;
+  completedStage<U>(arg0: U): any /*java.util.concurrent.CompletionStage*/;
+  failedStage(arg0: any /*java.lang.Throwable*/): any /*java.util.concurrent.CompletionStage*/;
+  anyOf(
+    ...arg0: java.util.concurrent.CompletableFuture<any /*java.lang.Object*/>[]
+  ): java.util.concurrent.CompletableFuture<any /*java.lang.Object*/>;
+  allOf(
+    ...arg0: java.util.concurrent.CompletableFuture<any /*java.lang.Object*/>[]
+  ): java.util.concurrent.CompletableFuture<void>;
+  runAsync(arg0: java.lang.Runnable): java.util.concurrent.CompletableFuture<void>;
+  runAsync(
+    arg0: java.lang.Runnable,
+    arg1: any /*java.util.concurrent.Executor*/
+  ): java.util.concurrent.CompletableFuture<void>;
+  delayedExecutor(arg0: long, arg1: any /*java.util.concurrent.TimeUnit*/): any /*java.util.concurrent.Executor*/;
+  delayedExecutor(
+    arg0: long,
+    arg1: any /*java.util.concurrent.TimeUnit*/,
+    arg2: any /*java.util.concurrent.Executor*/
+  ): any /*java.util.concurrent.Executor*/;
+}
+
+export const CompletableFuture: CompletableFutureStatic = Java.type("java.util.concurrent.CompletableFuture");
+
 interface ConstantRate$ConstantRateOpenInjectionStepStatic {
   readonly class: any;
   atOnceUsers(arg0: int): io.gatling.javaapi.core.OpenInjectionStep;
@@ -417,6 +458,12 @@ interface CoreDslStatic {
   exec(arg0: java.util.List<io.gatling.javaapi.core.ChainBuilder>): io.gatling.javaapi.core.ChainBuilder;
   exec(
     arg0: Func<io.gatling.javaapi.core.Session, io.gatling.javaapi.core.Session>
+  ): io.gatling.javaapi.core.ChainBuilder;
+  execAsync(
+    arg0: Func<io.gatling.javaapi.core.Session, java.util.concurrent.CompletableFuture<io.gatling.javaapi.core.Session>>
+  ): io.gatling.javaapi.core.ChainBuilder;
+  execAsync2(
+    arg0: BiConsumer<io.gatling.javaapi.core.Session, BiConsumer<io.gatling.javaapi.core.Session, java.lang.String>>
   ): io.gatling.javaapi.core.ChainBuilder;
   exitHere(): io.gatling.javaapi.core.ChainBuilder;
   exitHereIf(arg0: string): io.gatling.javaapi.core.ChainBuilder;
@@ -1118,6 +1165,13 @@ interface CoreDslStatic {
 
 export const CoreDsl: CoreDslStatic = Java.type("io.gatling.javaapi.core.CoreDsl");
 
+interface CountDownLatchStatic {
+  readonly class: any;
+  new (arg0: int): java.util.concurrent.CountDownLatch;
+}
+
+export const CountDownLatch: CountDownLatchStatic = Java.type("java.util.concurrent.CountDownLatch");
+
 interface DoIf$ThenStatic {
   readonly class: any;
 }
@@ -1712,6 +1766,15 @@ interface IterableStatic {
 }
 
 export const Iterable: IterableStatic = Java.type("java.lang.Iterable");
+
+interface LinkedBlockingDequeStatic {
+  readonly class: any;
+  new <E>(): java.util.concurrent.LinkedBlockingDeque<E>;
+  new <E>(arg0: java.util.Collection<E>): java.util.concurrent.LinkedBlockingDeque<E>;
+  new <E>(arg0: int): java.util.concurrent.LinkedBlockingDeque<E>;
+}
+
+export const LinkedBlockingDeque: LinkedBlockingDequeStatic = Java.type("java.util.concurrent.LinkedBlockingDeque");
 
 interface OpenInjectionStep$ConstantRateStatic {
   readonly class: any;

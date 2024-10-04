@@ -1,5 +1,9 @@
+import { Worker } from "worker_threads";
+
 import { Wrapper } from "../common";
-import { SessionTransform, underlyingSessionTransform } from "../session";
+import { Session, SessionTransform, underlyingSessionTransform, wrapSession } from "../session";
+
+import { LinkedBlockingDeque } from "@gatling.io/jvm-types";
 
 import JvmActionBuilder = io.gatling.javaapi.core.ActionBuilder;
 import JvmExecs = io.gatling.javaapi.core.exec.Execs;
@@ -12,12 +16,6 @@ export interface ActionBuilder extends Executable<JvmActionBuilder> {}
 export const wrapActionBuilder = (_underlying: JvmActionBuilder): ActionBuilder => ({
   _underlying
 });
-
-// interface JvmExecs {
-//   exec<T>(arg0: JvmExecutable, ...arg1: JvmExecutable[]): T;
-//   exec<T>(arg0: JvmChainBuilder[]): T;
-//   exec<T>(arg0: Func<JvmSession, JvmSession>): T;
-// }
 
 export interface ExecFunction<T extends Execs<T>> {
   /**
@@ -54,6 +52,7 @@ export interface ExecFunction<T extends Execs<T>> {
 
 export interface Execs<T extends Execs<T>> {
   exec: ExecFunction<T>;
+  execNode: (executable: SessionTransform) => T;
 }
 
 export const execImpl =
@@ -64,3 +63,41 @@ export const execImpl =
         ? jvmExecs.exec(underlyingSessionTransform(arg0)) // arg0: SessionTransform
         : jvmExecs.exec(arg0._underlying, ...arg1.map((e) => e._underlying)) // arg0: Executable, ...arg1: Executable[]
     );
+
+const println = Java.type<any>("java.lang.System").out.println;
+
+const queue = new LinkedBlockingDeque();
+new Worker(`
+  const { workerData, parentPort } = require('worker_threads');
+  const println = Java.type("java.lang.System").out.println;
+  while (true) {
+    println("before take");
+    const data = workerData.queue.take();
+    try {
+      println("after take");
+      throw Error("lol"); // works here, but not if called from the \`executable\` callback
+      data.onComplete(data.newSession());
+      println("after onComplete");
+    } catch (e) {
+      println("ERROR in worker thread: " + e.message);
+      println("ERROR in worker thread: " + e.stack);
+      data.onError("Error: " + e.message);
+    }
+  }`,
+  { eval: true, workerData: { queue } }
+);
+
+export const execNodeImpl =
+  <J2, J1 extends JvmExecs<J2, any>, T extends Execs<T>>(
+    jvmExecs: J1,
+    wrap: (wrapped: J2) => T
+  ) => (executable: SessionTransform): T =>
+    wrap(jvmExecs.execAsync2((session, callback) => {
+      const onComplete = (newSession: Session) =>
+        callback(newSession._underlying, null as any);
+      const onError = (msg: string) => {
+        println("onError: " + msg);
+        callback(null as any, msg as any);
+      }
+      queue.offer({ newSession: () => executable(wrapSession(session)), onComplete, onError });
+    }));

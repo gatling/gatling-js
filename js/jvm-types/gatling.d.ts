@@ -552,6 +552,8 @@ declare namespace io.gatling.javaapi.core {
     exec<T>(arg0: Func<Session, Session>): T;
     exec<T>(arg0: io.gatling.javaapi.core.exec.Executable, ...arg1: io.gatling.javaapi.core.exec.Executable[]): T;
     exec<T>(arg0: java.util.List<ChainBuilder>): T;
+    execAsync2<T>(arg0: BiConsumer<Session, BiConsumer<Session, java.lang.String>>): T;
+    execAsync<T>(arg0: Func<Session, java.util.concurrent.CompletableFuture<Session>>): T;
     exitBlockOnFail<T>(): io.gatling.javaapi.core.error.Errors$ExitBlockOnFail<T>;
     exitHere<T>(): T;
     exitHereIf<T>(arg0: Func<Session, boolean | null>): T;
@@ -1213,6 +1215,8 @@ declare namespace io.gatling.javaapi.core {
     exec<T>(arg0: Func<Session, Session>): T;
     exec<T>(arg0: io.gatling.javaapi.core.exec.Executable, ...arg1: io.gatling.javaapi.core.exec.Executable[]): T;
     exec<T>(arg0: java.util.List<ChainBuilder>): T;
+    execAsync2<T>(arg0: BiConsumer<Session, BiConsumer<Session, java.lang.String>>): T;
+    execAsync<T>(arg0: Func<Session, java.util.concurrent.CompletableFuture<Session>>): T;
     exitBlockOnFail<T>(): io.gatling.javaapi.core.error.Errors$ExitBlockOnFail<T>;
     exitHere<T>(): T;
     exitHereIf<T>(arg0: Func<Session, boolean | null>): T;
@@ -1731,6 +1735,8 @@ declare namespace io.gatling.javaapi.core {
     exec(arg0: Func<Session, Session>): T;
     exec(arg0: io.gatling.javaapi.core.exec.Executable, ...arg1: io.gatling.javaapi.core.exec.Executable[]): T;
     exec(arg0: java.util.List<ChainBuilder>): T;
+    execAsync(arg0: Func<Session, java.util.concurrent.CompletableFuture<Session>>): T;
+    execAsync2(arg0: BiConsumer<Session, BiConsumer<Session, java.lang.String>>): T;
     exitBlockOnFail(): io.gatling.javaapi.core.error.Errors$ExitBlockOnFail<T>;
     exitHere(): T;
     exitHereIf(arg0: Func<Session, boolean | null>): T;
@@ -2494,6 +2500,15 @@ declare namespace io.gatling.javaapi.core.exec {
     exec(arg0: Executable, ...arg1: Executable[]): T;
     exec(arg0: Func<io.gatling.javaapi.core.Session, io.gatling.javaapi.core.Session>): T;
     exec(arg0: java.util.List<io.gatling.javaapi.core.ChainBuilder>): T;
+    execAsync(
+      arg0: Func<
+        io.gatling.javaapi.core.Session,
+        java.util.concurrent.CompletableFuture<io.gatling.javaapi.core.Session>
+      >
+    ): T;
+    execAsync2(
+      arg0: BiConsumer<io.gatling.javaapi.core.Session, BiConsumer<io.gatling.javaapi.core.Session, java.lang.String>>
+    ): T;
   } // end Execs
 } // end namespace io.gatling.javaapi.core.exec
 declare namespace io.gatling.javaapi.core.exec {
@@ -3894,6 +3909,247 @@ declare namespace java.util {
     toArray<T>(arg0: any /*java.util.function.IntFunction*/): T[];
   } // end Set
 } // end namespace java.util
+declare namespace java.util.concurrent {
+  class CompletableFuture<T> /* extends java.lang.Object implements Future<T>, CompletionStage<T>*/ {
+    acceptEither(arg0: any /*java.util.concurrent.CompletionStage*/, arg1: Consumer<T>): CompletableFuture<void>;
+    acceptEitherAsync(arg0: any /*java.util.concurrent.CompletionStage*/, arg1: Consumer<T>): CompletableFuture<void>;
+    acceptEitherAsync(
+      arg0: any /*java.util.concurrent.CompletionStage*/,
+      arg1: Consumer<T>,
+      arg2: any /*java.util.concurrent.Executor*/
+    ): CompletableFuture<void>;
+    applyToEither<U>(arg0: any /*java.util.concurrent.CompletionStage*/, arg1: Func<T, U>): CompletableFuture<U>;
+    applyToEitherAsync<U>(arg0: any /*java.util.concurrent.CompletionStage*/, arg1: Func<T, U>): CompletableFuture<U>;
+    applyToEitherAsync<U>(
+      arg0: any /*java.util.concurrent.CompletionStage*/,
+      arg1: Func<T, U>,
+      arg2: any /*java.util.concurrent.Executor*/
+    ): CompletableFuture<U>;
+    cancel(arg0: boolean): boolean;
+    complete(arg0: T): boolean;
+    completeAsync(arg0: Supplier<T>): CompletableFuture<T>;
+    completeAsync(arg0: Supplier<T>, arg1: any /*java.util.concurrent.Executor*/): CompletableFuture<T>;
+    completeExceptionally(arg0: any /*java.lang.Throwable*/): boolean;
+    completeOnTimeout(arg0: T, arg1: long, arg2: any /*java.util.concurrent.TimeUnit*/): CompletableFuture<T>;
+    copy(): CompletableFuture<T>;
+    defaultExecutor(): any /*java.util.concurrent.Executor*/;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    exceptionNow(): any /*java.lang.Throwable*/;
+    exceptionally(arg0: Func<any /*java.lang.Throwable*/, T>): CompletableFuture<T>;
+    exceptionallyAsync(arg0: Func<any /*java.lang.Throwable*/, T>): CompletableFuture<T>;
+    exceptionallyAsync(
+      arg0: Func<any /*java.lang.Throwable*/, T>,
+      arg1: any /*java.util.concurrent.Executor*/
+    ): CompletableFuture<T>;
+    exceptionallyCompose(
+      arg0: Func<any /*java.lang.Throwable*/, any /*java.util.concurrent.CompletionStage*/>
+    ): CompletableFuture<T>;
+    exceptionallyComposeAsync(
+      arg0: Func<any /*java.lang.Throwable*/, any /*java.util.concurrent.CompletionStage*/>
+    ): CompletableFuture<T>;
+    exceptionallyComposeAsync(
+      arg0: Func<any /*java.lang.Throwable*/, any /*java.util.concurrent.CompletionStage*/>,
+      arg1: any /*java.util.concurrent.Executor*/
+    ): CompletableFuture<T>;
+    get(): T;
+    get(arg0: long, arg1: any /*java.util.concurrent.TimeUnit*/): T;
+    getNow(arg0: T): T;
+    getNumberOfDependents(): int;
+    handle<U>(arg0: BiFunction<T, any /*java.lang.Throwable*/, U>): CompletableFuture<U>;
+    handleAsync<U>(arg0: BiFunction<T, any /*java.lang.Throwable*/, U>): CompletableFuture<U>;
+    handleAsync<U>(
+      arg0: BiFunction<T, any /*java.lang.Throwable*/, U>,
+      arg1: any /*java.util.concurrent.Executor*/
+    ): CompletableFuture<U>;
+    isCancelled(): boolean;
+    isCompletedExceptionally(): boolean;
+    isDone(): boolean;
+    join(): T;
+    minimalCompletionStage(): any /*java.util.concurrent.CompletionStage*/;
+    newIncompleteFuture<U>(): CompletableFuture<U>;
+    obtrudeException(arg0: any /*java.lang.Throwable*/): void;
+    obtrudeValue(arg0: T): void;
+    orTimeout(arg0: long, arg1: any /*java.util.concurrent.TimeUnit*/): CompletableFuture<T>;
+    resultNow(): T;
+    runAfterBoth(arg0: any /*java.util.concurrent.CompletionStage*/, arg1: java.lang.Runnable): CompletableFuture<void>;
+    runAfterBothAsync(
+      arg0: any /*java.util.concurrent.CompletionStage*/,
+      arg1: java.lang.Runnable
+    ): CompletableFuture<void>;
+    runAfterBothAsync(
+      arg0: any /*java.util.concurrent.CompletionStage*/,
+      arg1: java.lang.Runnable,
+      arg2: any /*java.util.concurrent.Executor*/
+    ): CompletableFuture<void>;
+    runAfterEither(
+      arg0: any /*java.util.concurrent.CompletionStage*/,
+      arg1: java.lang.Runnable
+    ): CompletableFuture<void>;
+    runAfterEitherAsync(
+      arg0: any /*java.util.concurrent.CompletionStage*/,
+      arg1: java.lang.Runnable
+    ): CompletableFuture<void>;
+    runAfterEitherAsync(
+      arg0: any /*java.util.concurrent.CompletionStage*/,
+      arg1: java.lang.Runnable,
+      arg2: any /*java.util.concurrent.Executor*/
+    ): CompletableFuture<void>;
+    state(): any /*java.util.concurrent.Future$State*/;
+    thenAccept(arg0: Consumer<T>): CompletableFuture<void>;
+    thenAcceptAsync(arg0: Consumer<T>): CompletableFuture<void>;
+    thenAcceptAsync(arg0: Consumer<T>, arg1: any /*java.util.concurrent.Executor*/): CompletableFuture<void>;
+    thenAcceptBoth<U>(
+      arg0: any /*java.util.concurrent.CompletionStage*/,
+      arg1: BiConsumer<T, U>
+    ): CompletableFuture<void>;
+    thenAcceptBothAsync<U>(
+      arg0: any /*java.util.concurrent.CompletionStage*/,
+      arg1: BiConsumer<T, U>
+    ): CompletableFuture<void>;
+    thenAcceptBothAsync<U>(
+      arg0: any /*java.util.concurrent.CompletionStage*/,
+      arg1: BiConsumer<T, U>,
+      arg2: any /*java.util.concurrent.Executor*/
+    ): CompletableFuture<void>;
+    thenApply<U>(arg0: Func<T, U>): CompletableFuture<U>;
+    thenApplyAsync<U>(arg0: Func<T, U>): CompletableFuture<U>;
+    thenApplyAsync<U>(arg0: Func<T, U>, arg1: any /*java.util.concurrent.Executor*/): CompletableFuture<U>;
+    thenCombine<U, V>(
+      arg0: any /*java.util.concurrent.CompletionStage*/,
+      arg1: BiFunction<T, U, V>
+    ): CompletableFuture<V>;
+    thenCombineAsync<U, V>(
+      arg0: any /*java.util.concurrent.CompletionStage*/,
+      arg1: BiFunction<T, U, V>
+    ): CompletableFuture<V>;
+    thenCombineAsync<U, V>(
+      arg0: any /*java.util.concurrent.CompletionStage*/,
+      arg1: BiFunction<T, U, V>,
+      arg2: any /*java.util.concurrent.Executor*/
+    ): CompletableFuture<V>;
+    thenCompose<U>(arg0: Func<T, any /*java.util.concurrent.CompletionStage*/>): CompletableFuture<U>;
+    thenComposeAsync<U>(arg0: Func<T, any /*java.util.concurrent.CompletionStage*/>): CompletableFuture<U>;
+    thenComposeAsync<U>(
+      arg0: Func<T, any /*java.util.concurrent.CompletionStage*/>,
+      arg1: any /*java.util.concurrent.Executor*/
+    ): CompletableFuture<U>;
+    thenRun(arg0: java.lang.Runnable): CompletableFuture<void>;
+    thenRunAsync(arg0: java.lang.Runnable): CompletableFuture<void>;
+    thenRunAsync(arg0: java.lang.Runnable, arg1: any /*java.util.concurrent.Executor*/): CompletableFuture<void>;
+    toCompletableFuture(): CompletableFuture<T>;
+    toString(): string;
+    whenComplete(arg0: BiConsumer<T, any /*java.lang.Throwable*/>): CompletableFuture<T>;
+    whenCompleteAsync(arg0: BiConsumer<T, any /*java.lang.Throwable*/>): CompletableFuture<T>;
+    whenCompleteAsync(
+      arg0: BiConsumer<T, any /*java.lang.Throwable*/>,
+      arg1: any /*java.util.concurrent.Executor*/
+    ): CompletableFuture<T>;
+  } // end CompletableFuture
+} // end namespace java.util.concurrent
+declare namespace java.util.concurrent {
+  class CountDownLatch /* extends java.lang.Object*/ {
+    await(): void;
+    await(arg0: long, arg1: any /*java.util.concurrent.TimeUnit*/): boolean;
+    countDown(): void;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    getCount(): long;
+    toString(): string;
+  } // end CountDownLatch
+} // end namespace java.util.concurrent
+declare namespace java.util.concurrent {
+  class LinkedBlockingDeque<
+    E
+  > /* extends java.util.AbstractQueue<E> implements BlockingDeque<E>, java.io.Serializable*/ {
+    add(arg0: E): boolean;
+    addAll(arg0: java.util.Collection<E>): boolean;
+    addFirst(arg0: E): void;
+    addLast(arg0: E): void;
+    clear(): void;
+    contains(arg0: any /*java.lang.Object*/): boolean;
+    containsAll(arg0: java.util.Collection<any /*java.lang.Object*/>): boolean;
+    descendingIterator(): java.util.Iterator<E>;
+    drainTo(arg0: java.util.Collection<E>): int;
+    drainTo(arg0: java.util.Collection<E>, arg1: int): int;
+    element(): E;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    forEach(arg0: Consumer<E>): void;
+    getFirst(): E;
+    getLast(): E;
+    isEmpty(): boolean;
+    iterator(): java.util.Iterator<E>;
+    offer(arg0: E): boolean;
+    offer(arg0: E, arg1: long, arg2: any /*java.util.concurrent.TimeUnit*/): boolean;
+    offerFirst(arg0: E): boolean;
+    offerFirst(arg0: E, arg1: long, arg2: any /*java.util.concurrent.TimeUnit*/): boolean;
+    offerLast(arg0: E): boolean;
+    offerLast(arg0: E, arg1: long, arg2: any /*java.util.concurrent.TimeUnit*/): boolean;
+    parallelStream(): java.util.stream.Stream<E>;
+    peek(): E;
+    peekFirst(): E;
+    peekLast(): E;
+    poll(): E;
+    poll(arg0: long, arg1: any /*java.util.concurrent.TimeUnit*/): E;
+    pollFirst(): E;
+    pollFirst(arg0: long, arg1: any /*java.util.concurrent.TimeUnit*/): E;
+    pollLast(): E;
+    pollLast(arg0: long, arg1: any /*java.util.concurrent.TimeUnit*/): E;
+    pop(): E;
+    push(arg0: E): void;
+    put(arg0: E): void;
+    putFirst(arg0: E): void;
+    putLast(arg0: E): void;
+    remainingCapacity(): int;
+    remove(): E;
+    remove(arg0: any /*java.lang.Object*/): boolean;
+    removeAll(arg0: java.util.Collection<any /*java.lang.Object*/>): boolean;
+    removeFirst(): E;
+    removeFirstOccurrence(arg0: any /*java.lang.Object*/): boolean;
+    removeIf(arg0: Predicate<E>): boolean;
+    removeLast(): E;
+    removeLastOccurrence(arg0: any /*java.lang.Object*/): boolean;
+    retainAll(arg0: java.util.Collection<any /*java.lang.Object*/>): boolean;
+    reversed(): any /*java.util.Deque*/;
+    size(): int;
+    spliterator(): any /*java.util.Spliterator*/;
+    stream(): java.util.stream.Stream<E>;
+    take(): E;
+    takeFirst(): E;
+    takeLast(): E;
+    toArray(): [any /*java.lang.Object*/];
+    toArray<T>(arg0: T[]): T[];
+    toArray<T>(arg0: any /*java.util.function.IntFunction*/): T[];
+    toString(): string;
+  } // end LinkedBlockingDeque
+} // end namespace java.util.concurrent
+declare namespace java.util.concurrent.atomic {
+  class AtomicReference<V> /* extends java.lang.Object implements java.io.Serializable*/ {
+    accumulateAndGet(arg0: V, arg1: BinaryOperator<V>): V;
+    compareAndExchange(arg0: V, arg1: V): V;
+    compareAndExchangeAcquire(arg0: V, arg1: V): V;
+    compareAndExchangeRelease(arg0: V, arg1: V): V;
+    compareAndSet(arg0: V, arg1: V): boolean;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    get(): V;
+    getAcquire(): V;
+    getAndAccumulate(arg0: V, arg1: BinaryOperator<V>): V;
+    getAndSet(arg0: V): V;
+    getAndUpdate(arg0: UnaryOperator<V>): V;
+    getOpaque(): V;
+    getPlain(): V;
+    lazySet(arg0: V): void;
+    set(arg0: V): void;
+    setOpaque(arg0: V): void;
+    setPlain(arg0: V): void;
+    setRelease(arg0: V): void;
+    toString(): string;
+    updateAndGet(arg0: UnaryOperator<V>): V;
+    weakCompareAndSet(arg0: V, arg1: V): boolean;
+    weakCompareAndSetAcquire(arg0: V, arg1: V): boolean;
+    weakCompareAndSetPlain(arg0: V, arg1: V): boolean;
+    weakCompareAndSetRelease(arg0: V, arg1: V): boolean;
+    weakCompareAndSetVolatile(arg0: V, arg1: V): boolean;
+  } // end AtomicReference
+} // end namespace java.util.concurrent.atomic
 declare namespace java.util.stream {
   class Collectors /* extends java.lang.Object*/ {
     equals(arg0: any /*java.lang.Object*/): boolean;

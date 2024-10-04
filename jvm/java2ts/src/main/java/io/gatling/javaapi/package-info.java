@@ -22,6 +22,11 @@
         @Type(value = java.time.Duration.class, export = true),
         @Type(value = java.time.temporal.ChronoUnit.class, export = true),
         @Type(value = java.time.temporal.TemporalUnit.class, export = true),
+        // java.util.concurrent
+        @Type(value = java.util.concurrent.CompletableFuture.class, export = true),
+        @Type(value = java.util.concurrent.CountDownLatch.class, export = true),
+        @Type(value = java.util.concurrent.LinkedBlockingDeque.class, export = true),
+        @Type(value = java.util.concurrent.atomic.AtomicReference.class, export = true),
         // ********** core **********
         @Type(value = io.gatling.javaapi.core.CoreDsl.class, export = true),
         @Type(value = io.gatling.javaapi.core.ActionBuilder.class, export = true),
