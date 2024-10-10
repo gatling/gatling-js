@@ -418,6 +418,9 @@ interface CoreDslStatic {
   exec(
     arg0: Func<io.gatling.javaapi.core.Session, io.gatling.javaapi.core.Session>
   ): io.gatling.javaapi.core.ChainBuilder;
+  execAsync(
+    arg0: BiConsumer<io.gatling.javaapi.core.Session, BiConsumer<io.gatling.javaapi.core.Session, java.lang.String>>
+  ): io.gatling.javaapi.core.ChainBuilder;
   exitHere(): io.gatling.javaapi.core.ChainBuilder;
   exitHereIf(arg0: string): io.gatling.javaapi.core.ChainBuilder;
   exitHereIf(arg0: Func<io.gatling.javaapi.core.Session, boolean | null>): io.gatling.javaapi.core.ChainBuilder;
