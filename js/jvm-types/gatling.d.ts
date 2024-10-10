@@ -552,6 +552,7 @@ declare namespace io.gatling.javaapi.core {
     exec<T>(arg0: Func<Session, Session>): T;
     exec<T>(arg0: io.gatling.javaapi.core.exec.Executable, ...arg1: io.gatling.javaapi.core.exec.Executable[]): T;
     exec<T>(arg0: java.util.List<ChainBuilder>): T;
+    execAsync<T>(arg0: BiConsumer<Session, BiConsumer<Session, java.lang.String>>): T;
     exitBlockOnFail<T>(): io.gatling.javaapi.core.error.Errors$ExitBlockOnFail<T>;
     exitHere<T>(): T;
     exitHereIf<T>(arg0: Func<Session, boolean | null>): T;
@@ -1213,6 +1214,7 @@ declare namespace io.gatling.javaapi.core {
     exec<T>(arg0: Func<Session, Session>): T;
     exec<T>(arg0: io.gatling.javaapi.core.exec.Executable, ...arg1: io.gatling.javaapi.core.exec.Executable[]): T;
     exec<T>(arg0: java.util.List<ChainBuilder>): T;
+    execAsync<T>(arg0: BiConsumer<Session, BiConsumer<Session, java.lang.String>>): T;
     exitBlockOnFail<T>(): io.gatling.javaapi.core.error.Errors$ExitBlockOnFail<T>;
     exitHere<T>(): T;
     exitHereIf<T>(arg0: Func<Session, boolean | null>): T;
@@ -1731,6 +1733,7 @@ declare namespace io.gatling.javaapi.core {
     exec(arg0: Func<Session, Session>): T;
     exec(arg0: io.gatling.javaapi.core.exec.Executable, ...arg1: io.gatling.javaapi.core.exec.Executable[]): T;
     exec(arg0: java.util.List<ChainBuilder>): T;
+    execAsync(arg0: BiConsumer<Session, BiConsumer<Session, java.lang.String>>): T;
     exitBlockOnFail(): io.gatling.javaapi.core.error.Errors$ExitBlockOnFail<T>;
     exitHere(): T;
     exitHereIf(arg0: Func<Session, boolean | null>): T;
@@ -2494,6 +2497,9 @@ declare namespace io.gatling.javaapi.core.exec {
     exec(arg0: Executable, ...arg1: Executable[]): T;
     exec(arg0: Func<io.gatling.javaapi.core.Session, io.gatling.javaapi.core.Session>): T;
     exec(arg0: java.util.List<io.gatling.javaapi.core.ChainBuilder>): T;
+    execAsync(
+      arg0: BiConsumer<io.gatling.javaapi.core.Session, BiConsumer<io.gatling.javaapi.core.Session, java.lang.String>>
+    ): T;
   } // end Execs
 } // end namespace io.gatling.javaapi.core.exec
 declare namespace io.gatling.javaapi.core.exec {

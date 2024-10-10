@@ -1,4 +1,7 @@
+import { String as JvmString } from "@gatling.io/jvm-types"
+
 import { Wrapper } from "../common";
+import { logger } from "../log";
 import { SessionTransform, underlyingSessionTransform } from "../session";
 
 import JvmActionBuilder = io.gatling.javaapi.core.ActionBuilder;
@@ -12,12 +15,6 @@ export interface ActionBuilder extends Executable<JvmActionBuilder> {}
 export const wrapActionBuilder = (_underlying: JvmActionBuilder): ActionBuilder => ({
   _underlying
 });
-
-// interface JvmExecs {
-//   exec<T>(arg0: JvmExecutable, ...arg1: JvmExecutable[]): T;
-//   exec<T>(arg0: JvmChainBuilder[]): T;
-//   exec<T>(arg0: Func<JvmSession, JvmSession>): T;
-// }
 
 export interface ExecFunction<T extends Execs<T>> {
   /**
@@ -54,6 +51,7 @@ export interface ExecFunction<T extends Execs<T>> {
 
 export interface Execs<T extends Execs<T>> {
   exec: ExecFunction<T>;
+  execScript: (script: string) => T;
 }
 
 export const execImpl =
@@ -64,3 +62,111 @@ export const execImpl =
         ? jvmExecs.exec(underlyingSessionTransform(arg0)) // arg0: SessionTransform
         : jvmExecs.exec(arg0._underlying, ...arg1.map((e) => e._underlying)) // arg0: Executable, ...arg1: Executable[]
     );
+
+const Files = Java.type<any>("java.nio.file.Files");
+const Paths = Java.type<any>("java.nio.file.Paths");
+const StandardCharsets = Java.type<any>("java.nio.charset.StandardCharsets");
+
+const fs = {
+  readFileSync(filename: string): string {
+    const bytes: byte[] = Files.readAllBytes(Paths.get(filename))
+    return new JvmString(bytes, StandardCharsets.UTF_8);
+  }
+}
+
+// FIXME concurrent hash map?
+const moduleExportsCache: { [filename: string]: unknown } = {};
+
+// FIXME all of these above are available in the script scope?
+const evalInPostmanContext = (script: string) => {
+  const pm = {
+    response: {
+      json() {
+        return JSON.parse(`{"message":"salutations maximales","args":{"randomDate":1728487778769}}`);
+      }
+    }
+  };
+  const modulesDepth: string[] = [];
+  const require = (moduleName: string) => {
+    if (moduleName.startsWith("node:") || moduleName === "crypto") {
+      return {};
+    }
+
+    logger.debug(`require: trying to load module or file ${moduleName} ${modulesDepth.length > 0 ? `(depth: ${modulesDepth.join(", ")})` : ""}`);
+    // FIXME cwd?
+
+    let filename: string;
+
+    if (moduleName.startsWith(".")) {
+      if (modulesDepth.length === 0) {
+        //throw Error(`require: requiring local file \`${moduleName}\` outside of a node module is not allowed`);
+        filename = `src/${moduleName}`;
+      } else {
+        const moduleHome = `node_modules/${modulesDepth[modulesDepth.length - 1]}`;
+        filename = `${moduleHome}/${moduleName}`;
+      }
+      if (!moduleName.endsWith(".js")) {
+        filename = filename + ".js";
+      }
+      //throw Error(`require: embedded require in module ${currentDepthModule} for module ${moduleName}`);
+    } else {
+      modulesDepth.push(moduleName);
+      const moduleHome = `node_modules/${moduleName}`;
+      // FIXME try catch
+      const moduleConf = JSON.parse(fs.readFileSync(`${moduleHome}/package.json`));
+
+      // FIXME main always present? => index.js
+      if (moduleConf.hasOwnProperty("main")) {
+        filename = `${moduleHome}/${moduleConf['main']}`;
+      } else {
+        filename = `${moduleHome}/index.js`;
+      }
+    }
+
+    if (moduleExportsCache.hasOwnProperty(filename)) {
+      logger.debug("require: cache hit");
+      return moduleExportsCache[filename];
+    }
+
+    logger.debug("require: cache miss");
+
+    const source = fs.readFileSync(filename);
+    const wrapper = new Function("module", "exports", "require", source);
+
+    const module = { exports: {} };
+    logger.debug(`require: eval start ${moduleName}`);
+    wrapper(module, module.exports, require);
+    logger.debug(`require: eval end ${moduleName}`);
+
+    moduleExportsCache[filename] = module.exports;
+
+    if (!moduleName.startsWith(".") && modulesDepth.length > 0) {
+      modulesDepth.pop();
+    }
+
+    return module.exports;
+  }
+  eval(script);
+};
+
+export const execScriptImpl =
+  <J2, J1 extends JvmExecs<J2, any>, T extends Execs<T>>(
+    jvmExecs: J1,
+    wrap: (wrapped: J2) => T
+  ) => (script: string): T =>
+    wrap(jvmExecs.execAsync((session, callback) => {
+      try {
+        evalInPostmanContext(script);
+        callback(session, null as any);
+      } catch (e) {
+        let message;
+        if (e instanceof Error) {
+          message = e.message;
+        } else if (e instanceof String) {
+          message = e;
+        } else {
+          message = (e as any).toString();
+        }
+        callback(null as any, message as any)
+      }
+    }));
