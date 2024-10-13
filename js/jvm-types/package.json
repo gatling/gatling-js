@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "Apache-2.0",
   "devDependencies": {
-    "typescript": "5.6.2"
+    "typescript": "5.6.3"
   },
   "scripts": {
     "clean": "rm -f ./index.js ./index.d.ts",
