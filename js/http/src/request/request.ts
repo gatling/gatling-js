@@ -7,30 +7,31 @@ import JvmRequest = io.gatling.http.client.Request;
 
 export interface Request extends Wrapper<JvmRequest> {
   //copyWithCopiedHeaders(): Request;
-  //copyWithHttp2PriorKnowledge(arg0: any /*io.gatling.http.client.Http2PriorKnowledge*/): Request;
-  //copyWithNewBody(arg0: io.gatling.http.client.body.RequestBody): Request;
   //copyWithNewUri(arg0: any /*io.gatling.http.client.uri.Uri*/): Request;
-  body(): RequestBody;
-  //getCookies(): java.util.List<any /*io.netty.handler.codec.http.cookie.Cookie*/>;
-  headers(): HttpHeaders;
-  //getHttp2PriorKnowledge(): any /*io.gatling.http.client.Http2PriorKnowledge*/;
-  //getLocalAddresses(): any /*io.gatling.http.client.LocalAddresses*/;
-  //getMethod(): any /*io.netty.handler.codec.http.HttpMethod*/;
+  //copyWithNewBody(arg0: io.gatling.http.client.body.RequestBody): Request;
+  //copyWithHttp2PriorKnowledge(arg0: any /*io.gatling.http.client.Http2PriorKnowledge*/): Request;
   //getName(): string;
-  //getNameResolver(): any /*io.gatling.http.client.resolver.InetAddressNameResolver*/;
-  //getProxyServer(): any /*io.gatling.http.client.proxy.ProxyServer*/;
-  //getRealm(): any /*io.gatling.http.client.realm.Realm*/;
-  //getRequestTimeout(): long;
-  //getSignatureCalculator(): Func<Request, Request>;
+  //getMethod(): any /*io.netty.handler.codec.http.HttpMethod*/;
   //getUri(): any /*io.gatling.http.client.uri.Uri*/;
-  //getVirtualHost(): string;
-  //getWsSubprotocol(): string;
+  headers(): HttpHeaders;
+  //getCookies(): java.util.List<any /*io.netty.handler.codec.http.cookie.Cookie*/>;
+  body(): RequestBody;
+  //getRequestTimeout(): long;
   //isAutoOrigin(): boolean;
+  //getLocalAddresses(): any /*io.gatling.http.client.LocalAddresses*/;
+  //getRealm(): any /*io.gatling.http.client.realm.Realm*/;
+  //getProxyServer(): any /*io.gatling.http.client.proxy.ProxyServer*/;
+  //getProxyProtocolSourceIpV4Address(): string;
+  //getProxyProtocolSourceIpV6Address(): string;
+  //getSignatureCalculator(): Func<Request, Request>;
+  //getNameResolver(): any /*io.gatling.http.client.resolver.InetAddressNameResolver*/;
   //isHttp2Enabled(): boolean;
+  //getHttp2PriorKnowledge(): any /*io.gatling.http.client.Http2PriorKnowledge*/;
+  //getWsSubprotocol(): string;
 }
 
 export const wrapRequest = (_underlying: JvmRequest): Request => ({
   _underlying,
-  body: (): RequestBody => wrapRequestBody(_underlying.getBody()),
-  headers: (): HttpHeaders => wrapHttpHeaders(_underlying.getHeaders())
+  headers: (): HttpHeaders => wrapHttpHeaders(_underlying.getHeaders()),
+  body: (): RequestBody => wrapRequestBody(_underlying.getBody())
 });

@@ -71,6 +71,8 @@ declare namespace io.gatling.http.client {
     getMethod(): any /*io.netty.handler.codec.http.HttpMethod*/;
     getName(): string;
     getNameResolver(): any /*io.gatling.http.client.resolver.InetAddressNameResolver*/;
+    getProxyProtocolSourceIpV4Address(): string;
+    getProxyProtocolSourceIpV6Address(): string;
     getProxyServer(): any /*io.gatling.http.client.proxy.ProxyServer*/;
     getRealm(): any /*io.gatling.http.client.realm.Realm*/;
     getRequestTimeout(): long;
@@ -3082,6 +3084,10 @@ declare namespace io.gatling.javaapi.http {
     perUserNameResolution(): HttpProtocolBuilder;
     protocol(): any /*io.gatling.core.protocol.Protocol*/;
     proxy(arg0: Proxy): HttpProtocolBuilder;
+    proxyProtocolSourceIpV4Address(arg0: Func<io.gatling.javaapi.core.Session, string>): HttpProtocolBuilder;
+    proxyProtocolSourceIpV4Address(arg0: string): HttpProtocolBuilder;
+    proxyProtocolSourceIpV6Address(arg0: Func<io.gatling.javaapi.core.Session, string>): HttpProtocolBuilder;
+    proxyProtocolSourceIpV6Address(arg0: string): HttpProtocolBuilder;
     redirectNamingStrategy(
       arg0: any /*io.gatling.javaapi.http.HttpProtocolBuilder$RedirectNamingStrategy*/
     ): HttpProtocolBuilder;

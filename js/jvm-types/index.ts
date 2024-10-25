@@ -1951,11 +1951,13 @@ interface RequestStatic {
     arg8: any /*io.gatling.http.client.LocalAddresses*/,
     arg9: any /*io.gatling.http.client.realm.Realm*/,
     arg10: any /*io.gatling.http.client.proxy.ProxyServer*/,
-    arg11: Func<io.gatling.http.client.Request, io.gatling.http.client.Request>,
-    arg12: any /*io.gatling.http.client.resolver.InetAddressNameResolver*/,
-    arg13: boolean,
-    arg14: any /*io.gatling.http.client.Http2PriorKnowledge*/,
-    arg15: string
+    arg11: string,
+    arg12: string,
+    arg13: Func<io.gatling.http.client.Request, io.gatling.http.client.Request>,
+    arg14: any /*io.gatling.http.client.resolver.InetAddressNameResolver*/,
+    arg15: boolean,
+    arg16: any /*io.gatling.http.client.Http2PriorKnowledge*/,
+    arg17: string
   ): io.gatling.http.client.Request;
 }
 

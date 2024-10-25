@@ -17,7 +17,7 @@ val compilerRelease = 21
 val graalvmJdkVersion = "23.0.0"
 val graalvmJsVersion = "24.1.1"
 val coursierVersion = "2.1.12"
-val gatlingVersion = "3.12.0"
+val gatlingVersion = "3.13.1"
 
 // bit weird cause this is not a dependency of this project
 val gatlingEnterpriseComponentPluginVersion = "1.9.8"
