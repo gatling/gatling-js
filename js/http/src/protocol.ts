@@ -702,6 +702,14 @@ export interface HttpProtocolBuilder extends ProtocolBuilder {
   // Proxy part
 
   /**
+   * Define a Proxy to be used for all requests
+   *
+   * @param proxy - the proxy
+   * @returns a new HttpProtocolBuilder instance
+   */
+  proxy(proxy: Proxy): HttpProtocolBuilder;
+
+  /**
    * Ignore any configured proxy for some hosts
    *
    * @param hosts - the hosts that must be connected directly without the proxy
@@ -710,12 +718,36 @@ export interface HttpProtocolBuilder extends ProtocolBuilder {
   noProxyFor(...hosts: string[]): HttpProtocolBuilder;
 
   /**
-   * Define a Proxy to be used for all requests
+   * Enable Proxy Protocol for IPv4
    *
-   * @param proxy - the proxy
+   * @param address - a fake local address in IPv4 format
    * @returns a new HttpProtocolBuilder instance
    */
-  proxy(proxy: Proxy): HttpProtocolBuilder;
+  proxyProtocolSourceIpV4Address(address: string): HttpProtocolBuilder;
+
+  /**
+   * Enable Proxy Protocol for IPv4
+   *
+   * @param address - a fake local address in IPv4 format
+   * @returns a new HttpProtocolBuilder instance
+   */
+  proxyProtocolSourceIpV4Address(address: (session: Session) => string): HttpProtocolBuilder;
+
+  /**
+   * Enable Proxy Protocol for IPv6
+   *
+   * @param address - a fake local address in IPv6 format
+   * @returns a new HttpProtocolBuilder instance
+   */
+  proxyProtocolSourceIpV6Address(address: string): HttpProtocolBuilder;
+
+  /**
+   * Enable Proxy Protocol for IPv6
+   *
+   * @param address - a fake local address in IPv6 format
+   * @returns a new HttpProtocolBuilder instance
+   */
+  proxyProtocolSourceIpV6Address(address: (session: Session) => string): HttpProtocolBuilder;
 
   // DNS part
 
@@ -955,8 +987,20 @@ export const wrapHttpProtocolBuilder = (_underlying: JvmHttpProtocolBuilder): Ht
 
   // Proxy part
 
-  noProxyFor: (...hosts: string[]): HttpProtocolBuilder => wrapHttpProtocolBuilder(_underlying.noProxyFor(...hosts)),
   proxy: (proxy: Proxy): HttpProtocolBuilder => wrapHttpProtocolBuilder(_underlying.proxy(proxy._underlying)),
+  noProxyFor: (...hosts: string[]): HttpProtocolBuilder => wrapHttpProtocolBuilder(_underlying.noProxyFor(...hosts)),
+  proxyProtocolSourceIpV4Address: (address: Expression<string>) =>
+    wrapHttpProtocolBuilder(
+      typeof address === "string"
+        ? _underlying.proxyProtocolSourceIpV4Address(address)
+        : _underlying.proxyProtocolSourceIpV4Address(underlyingSessionTo(address))
+    ),
+  proxyProtocolSourceIpV6Address: (address: Expression<string>) =>
+    wrapHttpProtocolBuilder(
+      typeof address === "string"
+        ? _underlying.proxyProtocolSourceIpV6Address(address)
+        : _underlying.proxyProtocolSourceIpV6Address(underlyingSessionTo(address))
+    ),
 
   // DNS part
 
