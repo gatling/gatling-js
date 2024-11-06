@@ -5,6 +5,8 @@ import {
   bundleFileOptionValue,
   packageFileOption,
   packageFileOptionValue,
+  postmanOption,
+  postmanOptionValueWithDefaults,
   resourcesFolderOption,
   resourcesFolderOptionValue,
   sourcesFolderOption,
@@ -24,6 +26,7 @@ export default (program: Command): void => {
     .addOption(resourcesFolderOption)
     .addOption(bundleFileOption)
     .addOption(packageFileOption)
+    .addOption(postmanOption)
     .addOption(typescriptOption)
     .action(async (options) => {
       const sourcesFolder: string = sourcesFolderOptionValue(options);
@@ -32,9 +35,10 @@ export default (program: Command): void => {
       const packageFile = packageFileOptionValue(options);
 
       const simulations = await findSimulations(sourcesFolder);
+      const postman = postmanOptionValueWithDefaults(options);
       const typescript = typescriptOptionValueWithDefaults(options, simulations);
 
-      await bundle({ sourcesFolder, bundleFile, typescript, simulations });
+      await bundle({ sourcesFolder, bundleFile, postman, typescript, simulations });
 
       await enterprisePackage({ bundleFile, resourcesFolder, packageFile, simulations });
     });

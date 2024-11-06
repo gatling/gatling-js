@@ -3,6 +3,8 @@ import { Command } from "commander";
 import {
   bundleFileOption,
   bundleFileOptionValue,
+  postmanOption,
+  postmanOptionValueWithDefaults,
   sourcesFolderOption,
   sourcesFolderOptionValue,
   typescriptOption,
@@ -17,14 +19,16 @@ export default (program: Command): void => {
     .description("Build Gatling simulations")
     .addOption(sourcesFolderOption)
     .addOption(bundleFileOption)
+    .addOption(postmanOption)
     .addOption(typescriptOption)
     .action(async (options) => {
       const sourcesFolder: string = sourcesFolderOptionValue(options);
       const bundleFile = bundleFileOptionValue(options);
 
       const simulations = await findSimulations(sourcesFolder);
+      const postman = postmanOptionValueWithDefaults(options);
       const typescript = typescriptOptionValueWithDefaults(options, simulations);
 
-      await bundle({ sourcesFolder, bundleFile, typescript, simulations });
+      await bundle({ sourcesFolder, bundleFile, postman, typescript, simulations });
     });
 };
