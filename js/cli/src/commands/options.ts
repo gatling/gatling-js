@@ -1,4 +1,5 @@
 import { Option, Argument } from "commander";
+import fs from "fs";
 import os from "os";
 
 import { SimulationFile } from "../simulations";
@@ -194,6 +195,25 @@ export const nonInteractiveOption = new Option(
   "Switch to non-interactive mode and fail if no simulation is explicitly specified"
 ).default(false);
 export const nonInteractiveOptionValue = getBooleanValueMandatory(nonInteractiveOption);
+
+export const postmanOption = new Option("--postman", "Postman compatibility option: adds polyfills, etc.").hideHelp();
+export const postmanOptionValueWithDefaults = (options: any): boolean => {
+  const postmanOptionValue = getBooleanValueOptional(postmanOption)(options);
+  if (postmanOptionValue !== undefined) {
+    return postmanOptionValue;
+  } else {
+    try {
+      const file: string = fs.readFileSync("package.json", { encoding: "utf-8", flag: "r" });
+      const conf = JSON.parse(file);
+      return (
+        conf.dependencies?.["@gatling.io/postman"] !== undefined ||
+        conf.devDependencies?.["@gatling.io/postman"] !== undefined
+      );
+    } catch {
+      return false;
+    }
+  }
+};
 
 export const runParametersArgument = new Argument(
   "[optionKey=optionValue...]",

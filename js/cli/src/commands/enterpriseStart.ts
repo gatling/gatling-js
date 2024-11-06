@@ -17,6 +17,8 @@ import {
   packageDescriptorFilenameOptionValue,
   packageFileOption,
   packageFileOptionValue,
+  postmanOption,
+  postmanOptionValueWithDefaults,
   resourcesFolderOption,
   resourcesFolderOptionValue,
   resultsFolderOption,
@@ -49,6 +51,7 @@ export default (program: Command): void => {
     .addOption(resourcesFolderOption)
     .addOption(bundleFileOption)
     .addOption(resultsFolderOption)
+    .addOption(postmanOption)
     .addOption(typescriptOption)
     .addOption(gatlingHomeOption)
     // Base
@@ -71,6 +74,7 @@ export default (program: Command): void => {
       const sourcesFolder: string = sourcesFolderOptionValue(options);
 
       const simulations = await findSimulations(sourcesFolder);
+      const postman = postmanOptionValueWithDefaults(options);
       const typescript = typescriptOptionValueWithDefaults(options, simulations);
 
       const resourcesFolder: string = resourcesFolderOptionValue(options);
@@ -94,7 +98,7 @@ export default (program: Command): void => {
       }
 
       const { graalvmHome, jvmClasspath } = await installGatlingJs({ gatlingHome });
-      await bundle({ sourcesFolder, bundleFile, typescript, simulations });
+      await bundle({ sourcesFolder, bundleFile, postman, typescript, simulations });
       await enterprisePackage({ bundleFile, resourcesFolder, packageFile, simulations });
       await enterpriseStart({
         graalvmHome,

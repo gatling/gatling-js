@@ -9,6 +9,8 @@ import {
   nonInteractiveOption,
   nonInteractiveOptionValue,
   parseRunParametersArgument,
+  postmanOption,
+  postmanOptionValueWithDefaults,
   resourcesFolderOption,
   resourcesFolderOptionValue,
   resultsFolderOption,
@@ -41,6 +43,7 @@ export default (program: Command): void => {
     .addOption(resultsFolderOption)
     .addOption(gatlingHomeOption)
     .addOption(memoryOption)
+    .addOption(postmanOption)
     .addOption(nonInteractiveOption)
     .addArgument(runParametersArgument)
     .action(async (args: string[], options) => {
@@ -51,6 +54,7 @@ export default (program: Command): void => {
       const resultsFolder: string = resultsFolderOptionValue(options);
       const memory: number | undefined = memoryOptionValue(options);
       const nonInteractive: boolean = nonInteractiveOptionValue(options);
+      const postman = postmanOptionValueWithDefaults(options);
       const runParameters = parseRunParametersArgument(args);
 
       const simulations = await findSimulations(sourcesFolder);
@@ -62,7 +66,7 @@ export default (program: Command): void => {
       logger.debug(`coursierBinary=${coursierBinary}`);
       logger.debug(`jvmClasspath=${jvmClasspath}`);
 
-      await bundle({ sourcesFolder, bundleFile, typescript, simulations });
+      await bundle({ sourcesFolder, bundleFile, postman, typescript, simulations });
 
       await runSimulation({
         graalvmHome,
