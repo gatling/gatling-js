@@ -45,20 +45,22 @@ export const installCoursier = async (gatlingHomeDir: string, downloadDir: strin
   return coursierPath;
 };
 
-export const resolveGatlingJsDependencies = async (coursierPath: string, javaHome: string): Promise<string> => {
-  const gatlingDep = `"io.gatling.highcharts:gatling-charts-highcharts:${versions.gatling.core}"`;
-  const gatlingAdapterDep = `"io.gatling:gatling-jvm-to-js-adapter:${versions.gatling.jsAdapter}"`;
-  const gatlingEnterprisePluginCommonsDep = `"io.gatling:gatling-enterprise-plugin-commons:${versions.gatling.enterprisePluginCommons}"`;
-  const graalvmJsDep = `"org.graalvm.polyglot:js-community:${versions.graalvm.js}"`;
+export const resolveGatlingJsDependencies = async (
+  coursierPath: string,
+  javaHome: string,
+  postmanVersion?: string
+): Promise<string> => {
+  const dependencies = [
+    `"io.gatling.highcharts:gatling-charts-highcharts:${versions.gatling.core}"`,
+    `"io.gatling:gatling-jvm-to-js-adapter:${versions.gatling.jsAdapter}"`,
+    `"io.gatling:gatling-enterprise-plugin-commons:${versions.gatling.enterprisePluginCommons}"`,
+    `"org.graalvm.polyglot:js-community:${versions.graalvm.js}"`
+  ];
+  if (postmanVersion !== undefined) {
+    dependencies.push(`"io.gatling:gatling-postman-jvm-to-js-adapter:${postmanVersion}"`);
+  }
 
-  return await resolveDependencies(
-    coursierPath,
-    javaHome,
-    gatlingDep,
-    gatlingAdapterDep,
-    gatlingEnterprisePluginCommonsDep,
-    graalvmJsDep
-  );
+  return await resolveDependencies(coursierPath, javaHome, ...dependencies);
 };
 
 export const resolveRecorderDependencies = async (coursierPath: string, javaHome: string): Promise<string> => {

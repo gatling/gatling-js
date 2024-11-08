@@ -7,6 +7,7 @@ export { versions } from "./versions";
 
 export interface DependenciesOptions {
   gatlingHome: string;
+  postman?: string;
 }
 
 export interface ResolvedDependencies {
@@ -21,7 +22,7 @@ export const installGatlingJs = async (options: DependenciesOptions): Promise<Re
 
   const graalvmHomePath = await installGraalVm(options.gatlingHome, downloadDir);
   const coursierPath = await installCoursier(options.gatlingHome, downloadDir);
-  const classpath = await resolveGatlingJsDependencies(coursierPath, graalvmHomePath);
+  const classpath = await resolveGatlingJsDependencies(coursierPath, graalvmHomePath, options.postman);
   return {
     graalvmHome: graalvmHomePath,
     coursierBinary: coursierPath,

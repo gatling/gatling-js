@@ -61,7 +61,7 @@ export default (program: Command): void => {
       const typescript = typescriptOptionValueWithDefaults(options, simulations);
       const simulation = simulationOptionValueWithDefaults(options, simulations, !nonInteractive);
 
-      const { graalvmHome, coursierBinary, jvmClasspath } = await installGatlingJs({ gatlingHome });
+      const { graalvmHome, coursierBinary, jvmClasspath } = await installGatlingJs({ gatlingHome, postman });
       logger.debug(`graalvmHome=${graalvmHome}`);
       logger.debug(`coursierBinary=${coursierBinary}`);
       logger.debug(`jvmClasspath=${jvmClasspath}`);
