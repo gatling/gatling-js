@@ -8,7 +8,7 @@ import { logger } from "../log";
 export interface BundleOptions {
   sourcesFolder: string;
   bundleFile: string;
-  postman: boolean;
+  postman?: string;
   typescript: boolean;
   simulations: SimulationFile[];
 }
@@ -22,7 +22,7 @@ export const bundle = async (options: BundleOptions): Promise<void> => {
   const contents = options.simulations.map((s) => `export { default as "${s.name}" } from "./${s.path}";`).join("\n");
 
   const plugins = options.typescript ? [esbuildPluginTsc({ force: true })] : [];
-  if (options.postman) {
+  if (options.postman !== undefined) {
     plugins.push(polyfill());
   }
   await esbuild.build({

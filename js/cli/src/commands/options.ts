@@ -1,6 +1,7 @@
 import { Option, Argument } from "commander";
 import fs from "fs";
 import os from "os";
+import path from "path";
 
 import { SimulationFile } from "../simulations";
 import { keyInSelectPaginated } from "../readline";
@@ -196,21 +197,39 @@ export const nonInteractiveOption = new Option(
 ).default(false);
 export const nonInteractiveOptionValue = getBooleanValueMandatory(nonInteractiveOption);
 
-export const postmanOption = new Option("--postman", "Postman compatibility option: adds polyfills, etc.").hideHelp();
-export const postmanOptionValueWithDefaults = (options: any): boolean => {
-  const postmanOptionValue = getBooleanValueOptional(postmanOption)(options);
+export const postmanOption = new Option(
+  "--postman <version>",
+  "Postman compatibility option: adds polyfills, etc."
+).hideHelp();
+export const postmanOptionValueWithDefaults = (options: any): string | undefined => {
+  const postmanOptionValue = getStringValueOptional(postmanOption)(options);
   if (postmanOptionValue !== undefined) {
     return postmanOptionValue;
   } else {
     try {
-      const file: string = fs.readFileSync("package.json", { encoding: "utf-8", flag: "r" });
-      const conf = JSON.parse(file);
-      return (
+      const conf = JSON.parse(fs.readFileSync("package.json", { encoding: "utf-8", flag: "r" }));
+      const withPostman =
         conf.dependencies?.["@gatling.io/postman"] !== undefined ||
-        conf.devDependencies?.["@gatling.io/postman"] !== undefined
-      );
+        conf.devDependencies?.["@gatling.io/postman"] !== undefined;
+      if (withPostman) {
+        let directory = path.normalize(path.dirname("package.json"));
+        const root = path.parse(directory).root;
+        while (true) {
+          const file = path.join(directory, "node_modules", "@gatling.io", "postman", "package.json");
+          if (fs.existsSync(file)) {
+            const installedPackage = JSON.parse(fs.readFileSync(file, { encoding: "utf-8", flag: "r" }));
+            return installedPackage.version;
+          } else if (directory === root) {
+            return undefined;
+          } else {
+            directory = path.normalize(path.join(directory, ".."));
+          }
+        }
+      } else {
+        return undefined;
+      }
     } catch {
-      return false;
+      return undefined;
     }
   }
 };
