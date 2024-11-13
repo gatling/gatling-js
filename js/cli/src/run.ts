@@ -29,6 +29,7 @@ export const runSimulation = async (options: RunSimulationOptions): Promise<void
   const memoryArgs = options.memory !== undefined ? [`-Xms${options.memory}M`, `-Xmx${options.memory}M`] : [];
   const javaArgs = [
     ...Object.entries(options.runParameters).map(([key, value]) => `-D${key}=${value}`),
+    "--add-opens=java.base/java.lang=ALL-UNNAMED",
     `-Dgatling.js.bundle.filePath=${options.bundleFile}`,
     `-Dgatling.js.simulation=${options.simulation}`,
     ...jitTuningArgs,
