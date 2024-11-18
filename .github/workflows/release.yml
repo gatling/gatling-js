@@ -92,5 +92,5 @@ jobs:
           npm run build --workspaces
           for pkg in "cli" "jvm-types" "core" "http"; do
             cp ../LICENSE "./$pkg/LICENSE"
-            npm publish "--workspace=@gatling.io/$pkg"
+            npm publish --access public "--workspace=@gatling.io/$pkg"
           done
