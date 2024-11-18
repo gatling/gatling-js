@@ -2,6 +2,21 @@
   "name": "@gatling.io/cli",
   "version": "0.0.0",
   "license": "Apache-2.0",
+  "homepage": "https://gatling.io",
+  "repository": "github:gatling/gatling-js",
+  "bugs": "https://github.com/gatling/gatling/issues",
+  "keywords": [
+    "gatling",
+    "typescript",
+    "test",
+    "testing",
+    "loadtest",
+    "loadtesting",
+    "load test",
+    "load testing",
+    "performance test",
+    "performance testing"
+  ],
   "bin": {
     "gatling": "target/index.js"
   },
