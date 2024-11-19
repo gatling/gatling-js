@@ -40,6 +40,8 @@ export const runSimulation = async (options: RunSimulationOptions): Promise<void
     options.resultsFolder,
     "--simulation",
     "io.gatling.js.JsSimulation",
+    "--simulation-name",
+    options.simulation,
     "--launcher",
     "gatling-js-cli",
     "--build-tool-version",
