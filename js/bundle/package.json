@@ -1,0 +1,28 @@
+{
+  "name": "@gatling.io/bundle",
+  "version": "0.0.0",
+  "license": "Apache-2.0",
+  "main": "target/index.js",
+  "types": "target/index.d.ts",
+  "dependencies": {
+    "archiver": "7.0.1",
+    "axios": "1.7.7",
+    "commander": "12.1.0",
+    "decompress": "4.2.1"
+  },
+  "devDependencies": {
+    "@types/archiver": "6.0.3",
+    "@types/decompress": "4.2.7",
+    "@types/node": "18.19.64",
+    "prettier": "3.3.3",
+    "rimraf": "6.0.1",
+    "typescript": "5.6.3"
+  },
+  "scripts": {
+    "clean": "rimraf target",
+    "format": "prettier --write '**/*.ts'",
+    "format-check": "prettier --check '**/*.ts'",
+    "build": "tsc -p .",
+    "generate": "tsc -p . && node ./target/index.js"
+  }
+}
