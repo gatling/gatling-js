@@ -45,8 +45,8 @@ lazy val adapter = (project in file("adapter"))
       "io.gatling" % "gatling-asm-shaded" % "9.7.1"
     ),
     Compile / sourceGenerators += Def.task {
-      // Bit of a hack, generate a file directly into the CLI project to share version numbers
-      val path = (ThisBuild / baseDirectory).value / ".." / "js" / "cli" / "src" / "dependencies" / "versions.ts"
+      // Generate a file directly into the CLI project and bundle project to share version numbers
+      val basePath = (ThisBuild / baseDirectory).value / ".."
       val jsAdapterVersion = version.value
       val content =
         s"""export const versions = {
@@ -65,8 +65,9 @@ lazy val adapter = (project in file("adapter"))
            |  }
            |};
            |""".stripMargin
-      IO.write(path, content)
-      // The file isn't actually part of _this_ project's sources, return empty Seq
+      IO.write(basePath / "js" / "cli" / "src" / "dependencies" / "versions.ts", content)
+      IO.write(basePath / "js" / "bundle" / "src"/ "versions.ts", content)
+      // These files aren't actually part of _this_ project's sources, return empty Seq
       Seq()
     }.taskValue,
     Compile / packageDoc / mappings := Seq.empty,

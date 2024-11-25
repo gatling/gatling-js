@@ -7,7 +7,8 @@ node_modules/
 
 # build targets
 target/
-/tmp/
+tmp/
+/js/bundle/src/versions.ts
 /js/cli/src/dependencies/versions.ts
 /js/jvm-types/index.js
 /js/jvm-types/index.d.ts
