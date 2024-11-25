@@ -2,6 +2,7 @@
   "name": "@gatling.io/js",
   "version": "0.0.0",
   "workspaces": [
+    "bundle",
     "cli",
     "jvm-types",
     "core",
