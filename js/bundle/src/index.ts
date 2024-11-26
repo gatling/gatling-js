@@ -1,4 +1,5 @@
 import { bundle } from "./bundle";
+import { resolveJavaLibraries } from "./coursier";
 import { buildGraalVm } from "./graalvm";
 import { osType, osArch } from "./os";
 import { initTmpDir } from "./tmpDir";
@@ -27,6 +28,14 @@ GraalJS version: ${versions.graalvm.js}`);
   console.log("Building slimmed down GraalVM...");
   await buildGraalVm(tmpDir);
   console.log(`Slimmed down GraalVM built.`);
+
+  console.log(`
+********** Java dependencies **********
+`);
+
+  console.log("Resolving Java libraries...");
+  await resolveJavaLibraries(tmpDir);
+  console.log(`Java libraries resolved.`);
 
   console.log(`
 ********** Bundle **********
