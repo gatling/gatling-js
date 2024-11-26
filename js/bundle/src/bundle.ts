@@ -14,13 +14,15 @@ export const bundle = async (tmpDir: TmpDirStructure): Promise<void> => {
   const archive = archiver("zip", {
     zlib: { level: zConstants.Z_MAX_LEVEL }
   });
-  archive.on("warning", (err) => {
-    // The pipeline will rethrow errors but not warnings. We don't want to ignore warnings from the archiver, because
-    // they include things like 'no such file or directory'.
-    throw err;
-  });
-  archive.directory(tmpDir.graalVm.homeDir + "/", "graalvm");
-  archive.finalize();
+  archive
+    .on("warning", (err) => {
+      // The pipeline will rethrow errors but not warnings. We don't want to ignore warnings from the archiver, because
+      // they include things like 'no such file or directory'.
+      throw err;
+    })
+    .directory(tmpDir.graalVm.homeDir + "/", "graalvm")
+    .directory(tmpDir.lib.dir + "/", "lib")
+    .finalize();
 
   await pipeline(archive, output);
 };
