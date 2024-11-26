@@ -20,6 +20,10 @@ export interface TmpDirStructure {
     jarFile: string;
     batFile: string;
   };
+  lib: {
+    dir: string;
+    javaDir: string;
+  };
 }
 
 export const initTmpDir = (): TmpDirStructure => {
@@ -56,6 +60,10 @@ export const initTmpDir = (): TmpDirStructure => {
       dir: coursierDir,
       jarFile: path.join(coursierDir, "coursier"),
       batFile: path.join(coursierDir, "coursier.bat")
+    },
+    lib: {
+      dir: libDir,
+      javaDir: libJavaDir
     }
   };
 
