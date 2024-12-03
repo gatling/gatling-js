@@ -31,7 +31,7 @@ import {
   webAppUrlOptionValue
 } from "./options";
 import { findSimulations } from "../simulations";
-import { installGatlingJs } from "../dependencies";
+import { resolveBundle } from "../dependencies";
 import { bundle } from "../bundle";
 import { enterpriseDeploy, enterprisePackage } from "../enterprise";
 
@@ -76,7 +76,7 @@ export default (program: Command): void => {
       const packageDescriptorFilename = packageDescriptorFilenameOptionValue(options);
       const packageFile = packageFileOptionValue(options);
 
-      const { graalvmHome, jvmClasspath } = await installGatlingJs({ gatlingHome });
+      const { graalvmHome, jvmClasspath } = await resolveBundle({ gatlingHome });
       await bundle({ sourcesFolder, bundleFile, postman, typescript, simulations });
       await enterprisePackage({ bundleFile, resourcesFolder, packageFile, simulations });
       await enterpriseDeploy({

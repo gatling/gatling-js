@@ -1,7 +1,7 @@
 import { Command } from "commander";
 
-import { gatlingHomeOption, gatlingHomeOptionValueWithDefaults } from "./options";
-import { installGatlingJs } from "../dependencies";
+import { bundleFileArgument, gatlingHomeOption, gatlingHomeOptionValueWithDefaults } from "./options";
+import { installBundleFile, resolveBundle } from "../dependencies";
 import { logger } from "../log";
 
 export default (program: Command): void => {
@@ -9,11 +9,14 @@ export default (program: Command): void => {
     .command("install")
     .description("Install all required components and dependencies for Gatling")
     .addOption(gatlingHomeOption)
-    .action(async (options) => {
+    .addArgument(bundleFileArgument)
+    .action(async (bundleFilePath: string | undefined, options) => {
       const gatlingHome = gatlingHomeOptionValueWithDefaults(options);
-      const { graalvmHome, coursierBinary, jvmClasspath } = await installGatlingJs({ gatlingHome });
+      const { graalvmHome, jvmClasspath } =
+        bundleFilePath !== undefined
+          ? await installBundleFile({ gatlingHome, bundleFilePath })
+          : await resolveBundle({ gatlingHome });
       logger.info(`graalvmHome=${graalvmHome}`);
-      logger.info(`coursierBinary=${coursierBinary}`);
       logger.info(`jvmClasspath=${jvmClasspath}`);
     });
 };
