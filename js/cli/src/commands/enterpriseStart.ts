@@ -39,7 +39,7 @@ import {
   waitForRunEndOptionValue
 } from "./options";
 import { findSimulations } from "../simulations";
-import { installGatlingJs } from "../dependencies";
+import { resolveBundle } from "../dependencies";
 import { bundle } from "../bundle";
 import { enterprisePackage, enterpriseStart } from "../enterprise";
 
@@ -97,7 +97,7 @@ export default (program: Command): void => {
         throw new Error(`No simulation specified when using non-interactive mode`);
       }
 
-      const { graalvmHome, jvmClasspath } = await installGatlingJs({ gatlingHome });
+      const { graalvmHome, jvmClasspath } = await resolveBundle({ gatlingHome });
       await bundle({ sourcesFolder, bundleFile, postman, typescript, simulations });
       await enterprisePackage({ bundleFile, resourcesFolder, packageFile, simulations });
       await enterpriseStart({

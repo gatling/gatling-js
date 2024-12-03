@@ -6,6 +6,7 @@ import path from "path";
 import { SimulationFile } from "../simulations";
 import { keyInSelectPaginated } from "../readline";
 import { logger } from "../log";
+import stream from "stream";
 
 const getStringValueOptional =
   (option: Option) =>
@@ -70,7 +71,7 @@ const getNumberValueOptional =
 
 export const gatlingHomeOption = new Option(
   "--gatling-home <value>",
-  'The folder used to download and install Gatling components (default: "~/.gatling")'
+  'The folder used to download and install Gatling components (default: "<user home>/.gatling")'
 );
 export const gatlingHomeOptionValueWithDefaults = (options: any): string =>
   getStringValueOptional(gatlingHomeOption)(options) || `${os.homedir()}/.gatling`;
@@ -251,6 +252,11 @@ export const parseRunParametersArgument = (args: string[]): Record<string, strin
   }
   return parsedParameters;
 };
+
+export const bundleFileArgument = new Argument(
+  "[bundleFile]",
+  "Specify the path to a Gatling JS bundle file to install; if not specified, bundle will be downloaded automatically"
+);
 
 export const apiUrlOption = new Option("--apiUrl <value>", "URL of the Gatling Enterprise API")
   .default("https://api.gatling.io")
