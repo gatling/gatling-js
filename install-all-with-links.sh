@@ -12,6 +12,9 @@ cd "$root_dir/js"
 npm install
 "$root_dir/build-js.sh"
 
+# Install bundle
+"$root_dir/build-bundle.sh"
+
 # Install js-simulation
 cd "$root_dir/js-simulation"
 # Multiple packages MUST be linked all at once (executing 'npm link <pkg>' again will remove previous links...):

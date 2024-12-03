@@ -24,7 +24,7 @@ import {
   typescriptOptionValueWithDefaults
 } from "./options";
 import { findSimulations } from "../simulations";
-import { installGatlingJs } from "../dependencies";
+import { resolveBundle } from "../dependencies";
 import { logger } from "../log";
 import { bundle } from "../bundle";
 import { runSimulation } from "../run";
@@ -61,9 +61,8 @@ export default (program: Command): void => {
       const typescript = typescriptOptionValueWithDefaults(options, simulations);
       const simulation = simulationOptionValueWithDefaults(options, simulations, !nonInteractive);
 
-      const { graalvmHome, coursierBinary, jvmClasspath } = await installGatlingJs({ gatlingHome, postman });
+      const { graalvmHome, jvmClasspath } = await resolveBundle({ gatlingHome });
       logger.debug(`graalvmHome=${graalvmHome}`);
-      logger.debug(`coursierBinary=${coursierBinary}`);
       logger.debug(`jvmClasspath=${jvmClasspath}`);
 
       await bundle({ sourcesFolder, bundleFile, postman, typescript, simulations });
