@@ -1,0 +1,49 @@
+name: "Build and upload bundle"
+description: "Build bundle (GraalVM + JVM dependencies) and upload it to a GitHub release"
+inputs:
+  version:
+    description: "Gatling JS version"
+    required: true
+  upload-url:
+    description: "GitHub release upload URL"
+    required: true
+  os-type:
+    description: "Linux|Darwin|Windows_NT"
+    required: true
+  os-arch:
+    description: "x64|arm64"
+    required: true
+  github-token:
+    description: "Token used to upload file to the GitHub release"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+
+    - name: Build bundle
+      shell: bash
+      working-directory: ./js
+      run: |
+        echo "architecture: $(arch)"
+        npm ci
+        npm version "${{ inputs.version }}"
+        npm run generate --workspace=bundle
+        upload_url=$(echo "${{ inputs.upload_url }}" | sed 's/{[^}]*}//')
+        echo "upload_url=$upload_url"
+        curl --location \
+          --silent \
+          --show-error \
+          --connect-timeout 10 \
+          --max-time 300 \
+          --request POST \
+          --header "Accept: application/vnd.github+json" \
+          --header "Authorization: Bearer ${{ inputs.github-token }}" \
+          --header "Content-Type: application/octet-stream" \
+          --header "X-GitHub-Api-Version: 2022-11-28" \
+          "${upload_url}?name=gatling-js-bundle-${{ inputs.version }}-${{ inputs.os-type }}-${{ inputs.os-arch }}.zip" \
+          --data-binary "@bundle/tmp/gatling-js-bundle-${{ inputs.version }}-${{ inputs.os-type }}-${{ inputs.os-arch }}.zip"
