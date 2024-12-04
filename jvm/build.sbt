@@ -57,7 +57,6 @@ lazy val adapter = (project in file("adapter"))
            |  java: {
            |    compilerRelease: "$compilerRelease"
            |  },
-           |  coursier: "$coursierVersion",
            |  gatling: {
            |    core: "$gatlingVersion",
            |    enterprisePluginCommons: "$gatlingEnterpriseComponentPluginVersion",

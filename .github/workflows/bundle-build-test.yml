@@ -1,0 +1,74 @@
+name: Bundle build test
+
+on:
+  workflow_dispatch:
+  push:
+
+permissions:
+  contents: write
+
+jobs:
+
+  build-linux-x64:
+    name: Build bundle for Linux x64
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build and upload bundle
+        uses: ./.github/actions/build-and-upload-bundle
+        with:
+          version: 3.13.103
+          release-id: 188962826
+          os-type: Linux
+          os-arch: x64
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  build-macos-x64:
+    name: Build bundle for macOS x64
+    runs-on: macos-13
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build and upload bundle
+        uses: ./.github/actions/build-and-upload-bundle
+        with:
+          version: 3.13.103
+          release-id: 188962826
+          os-type: Darwin
+          os-arch: x64
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  build-macos-arm64:
+    name: Build bundle for macOS ARM64
+    runs-on: macos-14
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build and upload bundle
+        uses: ./.github/actions/build-and-upload-bundle
+        with:
+          version: 3.13.103
+          release-id: 188962826
+          os-type: Darwin
+          os-arch: arm64
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  build-windows-x64:
+    name: Build bundle for Windows x64
+    runs-on: windows-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build and upload bundle
+        uses: ./.github/actions/build-and-upload-bundle
+        with:
+          version: 3.13.103
+          release-id: 188962826
+          os-type: Windows_NT
+          os-arch: x64
+          github-token: ${{ secrets.GITHUB_TOKEN }}
