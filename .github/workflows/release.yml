@@ -7,7 +7,7 @@ on:
 
 permissions:
   id-token: write
-  contents: read
+  contents: write
 
 defaults:
   run:
@@ -21,6 +21,8 @@ jobs:
     env:
       JAVA_OPTS: "-Xmx4G"
       SBT_OPTS: "-Dsbt.ci=true"
+    outputs:
+      version: ${{ steps.version.outputs.version }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -48,38 +50,38 @@ jobs:
         run: |
           sbt "project gatling-jvm-to-js-adapter" "release with-defaults"
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: gatling-js-workdir
-          path: .
-          retention-days: 1
-
-  release-js:
-    name: Release JS
-    needs: release-jvm
-    runs-on: ubuntu-latest
-    environment:
-      name: npm
-      url: https://www.npmjs.com/org/gatling.io
-    timeout-minutes: 10
-    steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: gatling-js-workdir
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
       - name: Setup version
         id: version
         run: |
           version="$(cat jvm/adapter/target/release-info)"
           echo "version=$version"
           echo "version=$version" >> $GITHUB_OUTPUT
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-jvm-workdir
+          path: .
+          retention-days: 7
+
+  release-js:
+    name: Release JS
+    needs: release-jvm
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: npm
+      url: https://www.npmjs.com/org/gatling.io
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: release-jvm-workdir
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
       - name: Deploy JS packages
         env:
@@ -88,9 +90,223 @@ jobs:
         run: |
           echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
           npm ci
-          npm version "${{ steps.version.outputs.version }}"
+          npm version "${{ needs.release-jvm.outputs.version }}"
           npm run build --workspaces
           for pkg in "cli" "jvm-types" "core" "http"; do
             cp ../LICENSE "./$pkg/LICENSE"
             npm publish --access public "--workspace=@gatling.io/$pkg"
           done
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-js-workdir
+          path: .
+          retention-days: 7
+
+  create-github-release:
+    name: Create GitHub release (draft)
+    needs: release-js
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    environment:
+      name: GitHub release (draft)
+      url: ${{ steps.release.outputs.html_url }}
+    outputs:
+      prerelease: ${{ steps.release.outputs.prerelease }}
+      upload_url: ${{ steps.release.outputs.upload_url }}
+    steps:
+      - name: Create GitHub release (draft)
+        id: release
+        run: |
+          version="${{ needs.release-jvm.outputs.version }}"
+          if [[ "$version" =~ -M[0-9]+$ ]]; then
+            prerelease=true
+          else
+            prerelease=false
+          fi
+          echo "prerelease=$prerelease"
+          echo "prerelease=$prerelease" >> $GITHUB_OUTPUT
+          releases_url=$(echo "${{ github.event.repository.releases_url }}" | sed 's/{\/id}//')
+          response=$(curl \
+            --location \
+            --silent \
+            --show-error \
+            --request POST \
+            --header "Accept: application/vnd.github+json" \
+            --header "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            --header "X-GitHub-Api-Version: 2022-11-28" \
+            "$releases_url" \
+            --data @- <<EOF
+          {
+            "name": "Gatling JS $version",
+            "tag_name": "${{ github.ref_name }}",
+            "body": "To get started with Gatling JS, please check [the tutorial](https://docs.gatling.io/tutorials/scripting-intro-js/).\n\nThe bundle files in this release are normally automatically downloaded by the Gatling JS CLI. If you need to perform a manual install, please refer to [the documentation](https://docs.gatling.io/reference/integrations/build-tools/js-cli/).",
+            "draft": true,
+            "prerelease": $prerelease
+          }
+          EOF
+          )
+          echo "response=$response"
+          html_url=$(echo "$response" | jq --raw-output ".html_url")
+          echo "html_url=$html_url"
+          echo "html_url=$html_url" >> $GITHUB_OUTPUT
+          upload_url=$(echo "$response" | jq --raw-output ".upload_url")
+          echo "upload_url=$upload_url"
+          echo "upload_url=$upload_url" >> $GITHUB_OUTPUT
+
+  build-linux-x64:
+    name: Build bundle for Linux x64
+    needs:
+      - release-jvm
+      - create-github-release
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: release-js-workdir
+
+      - name: Build and upload bundle
+        uses: ./.github/actions/build-and-upload-bundle
+        with:
+          version: ${{ needs.release-jvm.outputs.version }}
+          upload-url: ${{ needs.create-github-release.outputs.upload_url }}
+          os-type: Linux
+          os-arch: x64
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  build-linux-arm64:
+    name: Build bundle for Linux x64
+    needs:
+      - release-jvm
+      - create-github-release
+    runs-on: ubuntu-24-arm-2-cores
+    timeout-minutes: 5
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: release-js-workdir
+
+      - name: Build and upload bundle
+        uses: ./.github/actions/build-and-upload-bundle
+        with:
+          version: ${{ needs.release-jvm.outputs.version }}
+          upload-url: ${{ needs.create-github-release.outputs.upload_url }}
+          os-type: Linux
+          os-arch: arm64
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  build-macos-x64:
+    name: Build bundle for macOS x64
+    needs:
+      - release-jvm
+      - create-github-release
+    runs-on: macos-13
+    timeout-minutes: 5
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: release-js-workdir
+
+      - name: Build and upload bundle
+        uses: ./.github/actions/build-and-upload-bundle
+        with:
+          version: ${{ needs.release-jvm.outputs.version }}
+          upload-url: ${{ needs.create-github-release.outputs.upload_url }}
+          os-type: Darwin
+          os-arch: x64
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  build-macos-arm64:
+    name: Build bundle for macOS ARM64
+    needs:
+      - release-jvm
+      - create-github-release
+    runs-on: macos-14
+    timeout-minutes: 5
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: release-js-workdir
+
+      - name: Build and upload bundle
+        uses: ./.github/actions/build-and-upload-bundle
+        with:
+          version: ${{ needs.release-jvm.outputs.version }}
+          upload-url: ${{ needs.create-github-release.outputs.upload_url }}
+          os-type: Darwin
+          os-arch: arm64
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  build-windows-x64:
+    name: Build bundle for Windows x64
+    needs:
+      - release-jvm
+      - create-github-release
+    runs-on: windows-latest
+    timeout-minutes: 5
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: release-js-workdir
+
+      - name: Build and upload bundle
+        uses: ./.github/actions/build-and-upload-bundle
+        with:
+          version: ${{ needs.release-jvm.outputs.version }}
+          upload-url: ${{ needs.create-github-release.outputs.upload_url }}
+          os-type: Windows_NT
+          os-arch: x64
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  publish-github-release:
+    name: Publish GitHub release
+    needs:
+      - create-github-release
+      - build-linux-x64
+      - build-linux-arm64
+      - build-macos-x64
+      - build-macos-arm64
+      - build-windows-x64
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    environment:
+      name: GitHub release
+      url: ${{ steps.release.outputs.html_url }}
+    steps:
+      - name: Publish GitHub release
+        id: release
+        run: |
+          prerelease="${{ needs.create-github-release.outputs.prerelease }}"
+          if [[ "$prerelease" = "true" ]]; then
+            make_latest=false
+          else
+            make_latest=true
+          fi
+          releases_url=$(echo "${{ github.event.repository.releases_url }}" | sed 's/{\/id}//')
+          response=$(curl \
+            --location \
+            --silent \
+            --show-error \
+            --request PATCH \
+            --header "Accept: application/vnd.github+json" \
+            --header "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            --header "X-GitHub-Api-Version: 2022-11-28" \
+            "$releases_url" \
+            --data @- <<EOF
+          {
+            "draft": false,
+            "make_latest": $make_latest
+          }
+          EOF
+          )
+          echo "response=$response"
+          html_url=$(echo "$response" | jq --raw-output ".html_url")
+          echo "html_url=$html_url"
+          echo "html_url=$html_url" >> $GITHUB_OUTPUT
