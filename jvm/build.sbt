@@ -14,13 +14,12 @@ Global / gatlingDevelopers := Seq(
 )
 
 val compilerRelease = 21
-val graalvmJdkVersion = "23.0.0"
+val graalvmJdkVersion = "23.0.1"
 val graalvmJsVersion = "24.1.1"
-val coursierVersion = "2.1.12"
 val gatlingVersion = "3.13.1"
 
 // bit weird cause this is not a dependency of this project
-val gatlingEnterpriseComponentPluginVersion = "1.9.8"
+val gatlingEnterpriseComponentPluginVersion = "1.11.0"
 
 lazy val root = (project in file("."))
   .aggregate(adapter, java2ts)
@@ -57,7 +56,6 @@ lazy val adapter = (project in file("adapter"))
            |  java: {
            |    compilerRelease: "$compilerRelease"
            |  },
-           |  coursier: "$coursierVersion",
            |  gatling: {
            |    core: "$gatlingVersion",
            |    enterprisePluginCommons: "$gatlingEnterpriseComponentPluginVersion",
