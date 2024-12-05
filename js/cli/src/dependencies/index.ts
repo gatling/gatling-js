@@ -1,10 +1,12 @@
+import * as fsSync from "node:fs";
 import fs from "node:fs/promises";
 import path from "node:path";
 
 import StreamZip from "node-stream-zip";
 
+import { downloadFile } from "./download";
 import { logger } from "../log";
-import { osType } from "./os";
+import { osArch, osType } from "./os";
 import { versions } from "./versions";
 
 export { versions } from "./versions";
@@ -67,11 +69,10 @@ export const resolveBundle = async (options: BundleOptions): Promise<ResolvedBun
     if (version !== versions.gatling.jsAdapter) {
       throw Error(`Inconsistent bundle content found at ${bundlePath}`);
     }
+    return getResolvedBundle(bundlePath);
   } else {
-    throw Error("TODO try to install the bundle automatically");
+    return await downloadAndInstallBundle(options);
   }
-
-  return getResolvedBundle(bundlePath);
 };
 
 const getBundlePath = (options: BundleOptions, version: string) =>
@@ -96,3 +97,34 @@ const getResolvedBundle = (bundlePath: string): ResolvedBundle => ({
   graalvmHome: path.join(bundlePath, "graalvm"),
   jvmClasspath: path.join(bundlePath, "lib", "java", "*")
 });
+
+const downloadAndInstallBundle = async (options: BundleOptions) => {
+  const tmpFolder = path.join(options.gatlingHome, "tmp");
+  if (!fsSync.existsSync(tmpFolder)) {
+    await fs.mkdir(tmpFolder);
+  }
+
+  const tmpFile = path.join(tmpFolder, "bundle-download.zip");
+  if (fsSync.existsSync(tmpFile)) {
+    await fs.rm(tmpFile);
+  }
+
+  const version = versions.gatling.jsAdapter;
+  const url = `https://github.com/gatling/gatling-js/releases/download/v${version}/gatling-js-bundle-${version}-${osType}-${osArch}.zip`;
+  try {
+    logger.info(`Downloading bundle file from ${url} to temporary file ${tmpFile}`);
+    await downloadFile(url, tmpFile);
+
+    const resolvedBundle = await installBundleFile({ ...options, bundleFilePath: tmpFile });
+
+    logger.info(`Deleting temporary file ${tmpFile}`);
+    await fs.rm(tmpFile);
+
+    return resolvedBundle;
+  } catch (e) {
+    logger.error(`Failed to automatically download and install the Gatling dependency bundle. You can try to:
+1. Make sure you have access to https://github.com/gatling/gatling-js/releases/; and if you connect to the Internet through a proxy, make sure it is configured in your NPM configuration file (.npmrc).
+2. Alternatively, you can try manually downloading the file from ${url}, and install it with the command 'npx gatling install <path-to-downloaded-file.zip>'.`);
+    throw e;
+  }
+};
