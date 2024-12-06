@@ -6,9 +6,9 @@
   "types": "target/index.d.ts",
   "dependencies": {
     "archiver": "7.0.1",
-    "axios": "1.7.7",
     "commander": "12.1.0",
-    "decompress": "4.2.1"
+    "decompress": "4.2.1",
+    "make-fetch-happen": "14.0.3"
   },
   "devDependencies": {
     "@types/archiver": "6.0.3",
