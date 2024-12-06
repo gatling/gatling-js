@@ -2,11 +2,14 @@ import fs from "node:fs";
 import stream from "node:stream";
 import util from "node:util";
 
-import axios from "axios";
+import fetch from "make-fetch-happen";
 
 const pipeline = util.promisify(stream.pipeline);
 
 export const downloadFile = async (url: string, targetFile: string): Promise<void> => {
-  const request = await axios.get(url, { responseType: "stream" });
-  await pipeline(request.data, fs.createWriteStream(targetFile));
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch: ${response.status} ${response.statusText}`);
+  }
+  await pipeline(response.body, fs.createWriteStream(targetFile));
 };
