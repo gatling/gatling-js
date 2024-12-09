@@ -30,8 +30,6 @@ runs:
       working-directory: ./js
       run: |
         echo "architecture: $(arch)"
-        npm ci
-        npm version "${{ inputs.version }}"
         npm run generate --workspace=bundle
         upload_url=$(echo "${{ inputs.upload_url }}" | sed 's/{[^}]*}//')
         echo "upload_url=$upload_url"
