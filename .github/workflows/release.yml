@@ -156,6 +156,9 @@ jobs:
           EOF
           )
           echo "response=$response"
+          url=$(echo "$response" | jq --raw-output ".url")
+          echo "url=$url"
+          echo "url=$url" >> $GITHUB_OUTPUT
           html_url=$(echo "$response" | jq --raw-output ".html_url")
           echo "html_url=$html_url"
           echo "html_url=$html_url" >> $GITHUB_OUTPUT
@@ -297,7 +300,6 @@ jobs:
           else
             make_latest=true
           fi
-          releases_url=$(echo "${{ github.event.repository.releases_url }}" | sed 's/{\/id}//')
           response=$(curl \
             --location \
             --silent \
@@ -306,7 +308,7 @@ jobs:
             --header "Accept: application/vnd.github+json" \
             --header "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
             --header "X-GitHub-Api-Version: 2022-11-28" \
-            "$releases_url" \
+            "${{ needs.create-github-release.outputs.url }}" \
             --data @- <<EOF
           {
             "draft": false,
