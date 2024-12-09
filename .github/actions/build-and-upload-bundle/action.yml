@@ -31,7 +31,7 @@ runs:
       run: |
         echo "architecture: $(arch)"
         npm run generate --workspace=bundle
-        upload_url=$(echo "${{ inputs.upload_url }}" | sed 's/{[^}]*}//')
+        upload_url=$(echo "${{ inputs.upload-url }}" | sed 's/{[^}]*}//')
         echo "upload_url=$upload_url"
         curl --location \
           --silent \
