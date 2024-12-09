@@ -163,6 +163,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
@@ -185,6 +188,9 @@ jobs:
     runs-on: ubuntu-24-arm-2-cores
     timeout-minutes: 5
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
@@ -207,6 +213,9 @@ jobs:
     runs-on: macos-13
     timeout-minutes: 5
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
@@ -229,6 +238,9 @@ jobs:
     runs-on: macos-14
     timeout-minutes: 5
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
@@ -251,6 +263,9 @@ jobs:
     runs-on: windows-latest
     timeout-minutes: 5
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
