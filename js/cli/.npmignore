@@ -2,3 +2,4 @@
 !/target/**
 !/polyfills/**
 !/package.json
+!/README.md
