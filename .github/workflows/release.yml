@@ -137,9 +137,10 @@ jobs:
           echo "prerelease=$prerelease" >> $GITHUB_OUTPUT
           releases_url=$(echo "${{ github.event.repository.releases_url }}" | sed 's/{\/id}//')
           response=$(curl \
+            --fail-with-body \
             --location \
-            --silent \
             --show-error \
+            --silent \
             --request POST \
             --header "Accept: application/vnd.github+json" \
             --header "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
@@ -301,9 +302,10 @@ jobs:
             make_latest=true
           fi
           response=$(curl \
+            --fail-with-body \
             --location \
-            --silent \
             --show-error \
+            --silent \
             --request PATCH \
             --header "Accept: application/vnd.github+json" \
             --header "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
