@@ -181,7 +181,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
   build-linux-arm64:
-    name: Build bundle for Linux x64
+    name: Build bundle for Linux ARM64
     needs:
       - release-jvm
       - create-github-release
