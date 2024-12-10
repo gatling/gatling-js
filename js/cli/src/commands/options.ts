@@ -258,12 +258,12 @@ export const bundleFileArgument = new Argument(
   "Specify the path to a Gatling JS bundle file to install; if not specified, bundle will be downloaded automatically"
 );
 
-export const apiUrlOption = new Option("--apiUrl <value>", "URL of the Gatling Enterprise API")
+export const apiUrlOption = new Option("--api-url <value>", "URL of the Gatling Enterprise API")
   .default("https://api.gatling.io")
   .hideHelp();
 export const apiUrlOptionValue = getStringValueMandatory(apiUrlOption);
 
-export const webAppUrlOption = new Option("--webAppUrl <value>", "URL of the Gatling Enterprise web app")
+export const webAppUrlOption = new Option("--web-app-url <value>", "URL of the Gatling Enterprise web app")
   .default("https://cloud.gatling.io")
   .hideHelp();
 export const webAppUrlOptionValue = getStringValueMandatory(webAppUrlOption);
