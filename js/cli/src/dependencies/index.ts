@@ -101,7 +101,7 @@ const getResolvedBundle = (bundlePath: string): ResolvedBundle => ({
 const downloadAndInstallBundle = async (options: BundleOptions) => {
   const tmpFolder = path.join(options.gatlingHome, "tmp");
   if (!fsSync.existsSync(tmpFolder)) {
-    await fs.mkdir(tmpFolder);
+    await fs.mkdir(tmpFolder, { recursive: true });
   }
 
   const tmpFile = path.join(tmpFolder, "bundle-download.zip");
