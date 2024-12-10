@@ -122,7 +122,7 @@ const downloadAndInstallBundle = async (options: BundleOptions) => {
 
     return resolvedBundle;
   } catch (e) {
-    logger.error(`Failed to automatically download and install the Gatling dependency bundle. You can try to:
+    logger.error(`Failed to automatically download and install the Gatling runtime bundle. You can try to:
 1. Make sure you have access to https://github.com/gatling/gatling-js/releases/; and if you connect to the Internet through a proxy, make sure it is configured in your NPM configuration file (.npmrc).
 2. Alternatively, you can try manually downloading the file from ${url}, and install it with the command 'npx gatling install <path-to-downloaded-file.zip>'.`);
     throw e;
