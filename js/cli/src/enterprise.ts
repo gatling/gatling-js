@@ -12,6 +12,7 @@ export interface EnterprisePackageOptions {
   bundleFile: string;
   resourcesFolder: string;
   packageFile: string;
+  postman: string | undefined;
   simulations: SimulationFile[];
 }
 
@@ -20,7 +21,7 @@ export const enterprisePackage = async (options: EnterprisePackageOptions): Prom
  - bundleFile: ${options.bundleFile}
  - packageFile: ${options.packageFile}`);
 
-  const manifest = generateManifest(options.simulations.map((s) => s.name));
+  const manifest = generateManifest(options);
 
   const output = fs.createWriteStream(options.packageFile);
 
@@ -42,7 +43,8 @@ export const enterprisePackage = async (options: EnterprisePackageOptions): Prom
   logger.info(`Package for Gatling Enterprise created at ${options.packageFile}`);
 };
 
-const generateManifest = (simulationNames: string[]) => {
+const generateManifest = (options: EnterprisePackageOptions) => {
+  const simulationNames: string[] = options.simulations.map((s) => s.name);
   const utf8Encoder = new TextEncoder();
   const eol = utf8Encoder.encode("\n");
   const continuation = utf8Encoder.encode("\n ");
@@ -56,6 +58,9 @@ const generateManifest = (simulationNames: string[]) => {
     `Gatling-Simulations: ${simulationNames.join(",")}`,
     `Java-Version: ${versions.java.compilerRelease}`
   ];
+  if (options.postman !== undefined) {
+    lines.push("Gatling-Extra-Protocols: postman");
+  }
   const pkg = getPackageNameAndVersion();
   lines.push(`Implementation-Title: ${pkg.name}`);
   if (pkg.version !== undefined) {

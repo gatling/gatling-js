@@ -40,6 +40,6 @@ export default (program: Command): void => {
 
       await bundle({ sourcesFolder, bundleFile, postman, typescript, simulations });
 
-      await enterprisePackage({ bundleFile, resourcesFolder, packageFile, simulations });
+      await enterprisePackage({ bundleFile, resourcesFolder, packageFile, postman, simulations });
     });
 };

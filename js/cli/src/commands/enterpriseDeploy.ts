@@ -78,7 +78,7 @@ export default (program: Command): void => {
 
       const { graalvmHome, jvmClasspath } = await resolveBundle({ gatlingHome });
       await bundle({ sourcesFolder, bundleFile, postman, typescript, simulations });
-      await enterprisePackage({ bundleFile, resourcesFolder, packageFile, simulations });
+      await enterprisePackage({ bundleFile, resourcesFolder, packageFile, postman, simulations });
       await enterpriseDeploy({
         graalvmHome,
         jvmClasspath,
