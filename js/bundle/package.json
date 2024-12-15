@@ -16,7 +16,7 @@
     "@types/node": "18.19.64",
     "prettier": "3.4.2",
     "rimraf": "6.0.1",
-    "typescript": "5.6.3"
+    "typescript": "5.7.2"
   },
   "scripts": {
     "clean": "rimraf target",
