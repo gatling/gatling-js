@@ -36,7 +36,7 @@
   "devDependencies": {
     "@types/archiver": "6.0.3",
     "@types/make-fetch-happen": "10.0.4",
-    "@types/node": "18.19.67",
+    "@types/node": "18.19.68",
     "@types/readline-sync": "1.4.8",
     "prettier": "3.4.2",
     "rimraf": "6.0.1",
