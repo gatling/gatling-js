@@ -6,7 +6,8 @@ updates:
       - "dependencies"
     schedule:
       interval: "weekly"
-      day: "sunday"
+      day: "monday" # explicit, even tough it's the weekly default
+      time: "07:00" # UTC
     ignore:
       - dependency-name: "@gatling.io/*"
       # the major version for Node should match the minimum version required in the documentation
@@ -18,7 +19,8 @@ updates:
       - "dependencies"
     schedule:
       interval: "weekly"
-      day: "sunday"
+      day: "monday" # explicit, even tough it's the weekly default
+      time: "07:00" # UTC
     ignore:
       - dependency-name: "@gatling.io/*"
   - package-ecosystem: "npm"
@@ -27,6 +29,7 @@ updates:
       - "dependencies"
     schedule:
       interval: "weekly"
-      day: "sunday"
+      day: "monday" # explicit, even tough it's the weekly default
+      time: "07:00" # UTC
     ignore:
       - dependency-name: "@gatling.io/*"
