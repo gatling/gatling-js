@@ -14,18 +14,22 @@
  * limitations under the License.
  */
 
-package io.gatling.js.polyfills
+package io.gatling.js.polyfills;
 
-import java.security.SecureRandom
-import java.util.UUID
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.util.UUID;
 
-object Crypto {
-  def randomBytes(size: Int): Array[Byte] = {
-    val bytes = new Array[Byte](size)
-    SecureRandom.getInstanceStrong.nextBytes(bytes)
-    bytes
+public class Crypto {
+  private Crypto() {}
+
+  public static byte[] randomBytes(int size) throws NoSuchAlgorithmException {
+    final byte[] bytes = new byte[size];
+    SecureRandom.getInstanceStrong().nextBytes(bytes);
+    return bytes;
   }
 
-  def randomUUID(): String =
-    UUID.randomUUID().toString
+  public static String randomUUID() {
+    return UUID.randomUUID().toString();
+  }
 }

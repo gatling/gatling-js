@@ -16,9 +16,12 @@
 
 package io.gatling.js.callbacks;
 
-import io.gatling.javaapi.core.Session;
 import java.util.function.Function;
+
 import javax.annotation.Nonnull;
+
+import io.gatling.javaapi.core.Session;
+
 import org.graalvm.polyglot.Value;
 
 public final class ByteArrays {

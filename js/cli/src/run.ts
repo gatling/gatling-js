@@ -32,6 +32,7 @@ export const runSimulation = async (options: RunSimulationOptions): Promise<void
     "--add-opens=java.base/java.lang=ALL-UNNAMED",
     `-Dgatling.js.bundle.filePath=${options.bundleFile}`,
     `-Dgatling.js.simulation=${options.simulation}`,
+    "-Dpolyglot.engine.WarnVirtualThreadSupport=false",
     ...jitTuningArgs,
     ...memoryArgs
   ];

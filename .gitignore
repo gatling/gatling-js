@@ -9,6 +9,7 @@ node_modules/
 target/
 tmp/
 /js/bundle/src/versions.ts
+/js/cli/src/bundle/polyfills.ts
 /js/cli/src/dependencies/versions.ts
 /js/jvm-types/index.js
 /js/jvm-types/index.d.ts
