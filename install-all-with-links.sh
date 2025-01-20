@@ -4,6 +4,9 @@ set -e
 
 root_dir="$(dirname "$(realpath -- "$0")")"
 
+# Install and build polyfills
+"$root_dir/build-polyfills.sh"
+
 # Publish JVM adapter
 "$root_dir/build-jvm.sh"
 

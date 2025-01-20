@@ -16,9 +16,11 @@
 
 package io.gatling.js;
 
-import com.oracle.truffle.js.lang.JavaScriptLanguageHack;
-import io.gatling.javaapi.core.Simulation;
 import java.io.IOException;
+
+import io.gatling.javaapi.core.Simulation;
+
+import com.oracle.truffle.js.lang.JavaScriptLanguageHack;
 
 public class JsSimulation extends Simulation {
 
