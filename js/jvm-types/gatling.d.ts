@@ -747,6 +747,18 @@ declare namespace io.gatling.javaapi.core {
   } // end CoreDsl
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
+  class DummyBuilder /* extends java.lang.Object implements ActionBuilder*/ {
+    asScala(): any /*io.gatling.core.action.builder.ActionBuilder*/;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toChainBuilder(): ChainBuilder;
+    toString(): string;
+    withSessionUpdate(arg0: Func<Session, Session>): DummyBuilder;
+    withSuccess(arg0: Func<Session, boolean | null>): DummyBuilder;
+    withSuccess(arg0: boolean): DummyBuilder;
+    withSuccess(arg0: string): DummyBuilder;
+  } // end DummyBuilder
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
   class Filter$AllowList /* extends Filter<any>*/ {
     asScala<W>(): W;
     equals(arg0: any /*java.lang.Object*/): boolean;
@@ -1384,7 +1396,8 @@ declare namespace io.gatling.javaapi.core {
     before(): void;
     equals(arg0: any /*java.lang.Object*/): boolean;
     params(
-      arg0: any /*io.gatling.core.config.GatlingConfiguration*/
+      arg0: any /*io.gatling.core.config.GatlingConfiguration*/,
+      arg1: string
     ): any /*io.gatling.core.scenario.SimulationParams*/;
     setUp(...arg0: PopulationBuilder[]): Simulation$SetUp;
     setUp(arg0: java.util.List<PopulationBuilder>): Simulation$SetUp;
@@ -3925,7 +3938,6 @@ declare namespace java.util.stream {
     flatMapToLong(arg0: Func<T, any /*java.util.stream.LongStream*/>): any /*java.util.stream.LongStream*/;
     forEach(arg0: Consumer<T>): void;
     forEachOrdered(arg0: Consumer<T>): void;
-    gather<R>(arg0: any /*java.util.stream.Gatherer*/): Stream<R>;
     isParallel(): boolean;
     iterator(): java.util.Iterator<T>;
     limit(arg0: long): Stream<T>;
