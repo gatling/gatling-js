@@ -588,6 +588,15 @@ interface CoreDslStatic {
   constantConcurrentUsers(arg0: int): io.gatling.javaapi.core.ClosedInjectionStep$Constant;
   rampConcurrentUsers(arg0: int): io.gatling.javaapi.core.ClosedInjectionStep$Ramp;
   incrementConcurrentUsers(arg0: int): io.gatling.javaapi.core.ClosedInjectionStep$Stairs;
+  dummy(arg0: string, arg1: int): io.gatling.javaapi.core.DummyBuilder;
+  dummy(arg0: string, arg1: string): io.gatling.javaapi.core.DummyBuilder;
+  dummy(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, int | null>): io.gatling.javaapi.core.DummyBuilder;
+  dummy(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: int): io.gatling.javaapi.core.DummyBuilder;
+  dummy(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): io.gatling.javaapi.core.DummyBuilder;
+  dummy(
+    arg0: Func<io.gatling.javaapi.core.Session, string>,
+    arg1: Func<io.gatling.javaapi.core.Session, int | null>
+  ): io.gatling.javaapi.core.DummyBuilder;
   csv(arg0: string): io.gatling.javaapi.core.FeederBuilder$Batchable<string>;
   csv(arg0: string, arg1: any /*char*/): io.gatling.javaapi.core.FeederBuilder$Batchable<string>;
   separatedValues(arg0: string, arg1: any /*char*/): io.gatling.javaapi.core.FeederBuilder$Batchable<string>;
@@ -1233,6 +1242,13 @@ interface DoWhileStatic {
 }
 
 export const DoWhile: DoWhileStatic = Java.type("io.gatling.javaapi.core.loop.DoWhile");
+
+interface DummyBuilderStatic {
+  readonly class: any;
+  new (arg0: any /*scala.Function1*/, arg1: any /*scala.Function1*/): io.gatling.javaapi.core.DummyBuilder;
+}
+
+export const DummyBuilder: DummyBuilderStatic = Java.type("io.gatling.javaapi.core.DummyBuilder");
 
 interface DurationStatic {
   readonly class: any;

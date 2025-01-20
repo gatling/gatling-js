@@ -54,6 +54,7 @@
         @Type(value = io.gatling.javaapi.core.ClosedInjectionStep.Stairs.class, export = true),
         @Type(value = io.gatling.javaapi.core.ClosedInjectionStep.StairsWithTime.class, export = true),
         @Type(value = io.gatling.javaapi.core.ClosedInjectionStep.Composite.class, export = true),
+        @Type(value = io.gatling.javaapi.core.DummyBuilder.class, export = true),
         @Type(value = io.gatling.javaapi.core.FeederBuilder.class, export = true),
         @Type(value = io.gatling.javaapi.core.FeederBuilder.FileBased.class, export = true),
         @Type(value = io.gatling.javaapi.core.FeederBuilder.Batchable.class, export = true),

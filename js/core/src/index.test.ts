@@ -38,7 +38,8 @@ import {
   stressPeakUsers,
   tsv,
   ProtocolBuilder,
-  GlobalStore
+  GlobalStore,
+  dummy
 } from "./index";
 
 const runSimulationMock = (_: Simulation): void => {};
@@ -453,7 +454,18 @@ const scn = scenario("scenario")
     (session) => true
   )
   .crashLoadGeneratorIf("#{message}", (session) => true)
-  .crashLoadGeneratorIf((session) => "message", "#{condition}");
+  .crashLoadGeneratorIf((session) => "message", "#{condition}")
+  .exec(
+    dummy("Dummy action 1", 500),
+    dummy("Dummy action 2", "#{dummy_response_time}"),
+    dummy("Dummy action 3", (session) => 500),
+    dummy((session) => "Dummy action 4", 500),
+    dummy((session) => "Dummy action 5", "#{dummy_response_time}"),
+    dummy(
+      (session) => "Dummy action 6",
+      (session) => 500
+    )
+  );
 
 //registerPebbleExtensions((io.pebbletemplates.pebble.extension.Extension) null);
 
