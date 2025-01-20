@@ -2,7 +2,7 @@ import scala.collection.Seq
 
 import net.moznion.sbt.spotless.config.{ GoogleJavaFormatConfig, JavaConfig, SpotlessConfig }
 
-ThisBuild / scalaVersion := "2.13.15"
+ThisBuild / scalaVersion := "2.13.16"
 ThisBuild / crossPaths := false
 
 ThisBuild / sonatypeCredentialHost := "s01.oss.sonatype.org"
