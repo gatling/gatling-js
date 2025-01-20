@@ -3938,6 +3938,7 @@ declare namespace java.util.stream {
     flatMapToLong(arg0: Func<T, any /*java.util.stream.LongStream*/>): any /*java.util.stream.LongStream*/;
     forEach(arg0: Consumer<T>): void;
     forEachOrdered(arg0: Consumer<T>): void;
+    gather<R>(arg0: any /*java.util.stream.Gatherer*/): Stream<R>;
     isParallel(): boolean;
     iterator(): java.util.Iterator<T>;
     limit(arg0: long): Stream<T>;

@@ -1,5 +1,6 @@
 import scala.collection.Seq
 
+import net.moznion.sbt.spotless.Target
 import net.moznion.sbt.spotless.config.{ GoogleJavaFormatConfig, JavaConfig, SpotlessConfig }
 
 ThisBuild / scalaVersion := "2.13.16"
@@ -27,6 +28,7 @@ lazy val root = (project in file("."))
 lazy val adapter = (project in file("adapter"))
   .withId("gatling-jvm-to-js-adapter")
   .enablePlugins(GatlingOssPlugin)
+  .settings(JsPolyfills.settings)
   .settings(
     name := "gatling-jvm-to-js-adapter",
     gatlingCompilerRelease := compilerRelease,
@@ -35,9 +37,16 @@ lazy val adapter = (project in file("adapter"))
     spotless := SpotlessConfig(
       applyOnCompile = !sys.env.getOrElse("CI", "false").toBoolean
     ),
-    spotlessJava := JavaConfig(
-      googleJavaFormat = GoogleJavaFormatConfig()
-    ),
+    spotlessJava := {
+      val targetExclude = sourceManaged.value.relativeTo(baseDirectory.value)
+        .map(target => Target.IsString(target + "/**/*"))
+        .toSeq
+      JavaConfig(
+        googleJavaFormat = GoogleJavaFormatConfig(),
+        importOrder = Seq("java", "javax", "scala", "io.gatling", "", "\\#"),
+        targetExclude = targetExclude
+      )
+    },
     libraryDependencies ++= Seq(
       "io.gatling.highcharts" % "gatling-charts-highcharts" % gatlingVersion,
       "org.graalvm.polyglot" % "js-community" % graalvmJsVersion,
@@ -78,7 +87,7 @@ lazy val java2ts = (project in file("java2ts"))
     name := "gatling-java2ts",
     libraryDependencies ++= Seq(
       "io.gatling" % "gatling-core-java" % gatlingVersion,
-      "io.gatling" % "gatling-http-java" % gatlingVersion,
+      "io.gatling" % "gatling-http-java" % gatlingVersion
     ),
     publish / skip := true
   )

@@ -1,4 +1,4 @@
-import { Buffer } from "buffer"
+import { Buffer } from "buffer";
 
 // limit of Crypto.getRandomValues()
 // https://developer.mozilla.org/en-US/docs/Web/API/Crypto/getRandomValues
@@ -14,13 +14,13 @@ export const randomBytes = (size, cb) => {
   // Node supports requesting up to this number of bytes
   // https://github.com/nodejs/node/blob/master/lib/internal/crypto/random.js#L48
   if (size > MAX_UINT32) {
-    throw new RangeError('requested too many random bytes');
+    throw new RangeError("requested too many random bytes");
   }
   const bytes = Buffer.from(JavaCrypto.randomBytes(size));
-  if (typeof cb === 'function') {
+  if (typeof cb === "function") {
     return process.nextTick(function () {
       cb(null, bytes);
-    })
+    });
   }
   return bytes;
 };
@@ -80,8 +80,7 @@ const crypto = {
   pseudoRandomBytes,
   prng,
   getRandomValues,
-  randomUUID,
+  randomUUID
 };
 crypto.webcrypto = crypto;
-globalThis.crypto = crypto;
 export default crypto;

@@ -4,6 +4,8 @@ set -e
 
 root_dir="$(dirname "$(realpath -- "$0")")"
 
+"$root_dir/build-polyfills.sh"
+
 "$root_dir/build-jvm.sh"
 
 "$root_dir/build-js.sh"
