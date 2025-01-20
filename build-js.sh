@@ -14,6 +14,7 @@ build_pkg() {
   mkdir -p "$target_dir"
 
   cd "$root_dir/js"
+  npm run clean "--workspace=$pkg"
   npm run build "--workspace=$pkg"
   npm pack "--workspace=$pkg"
   tar xzf "$pkg_archive" -C "$target_dir"
@@ -21,7 +22,9 @@ build_pkg() {
 
   cd "$target_dir/package"
   # Multiple packages MUST be linked all at once (executing 'npm link <pkg>' again will remove previous links...)
-  npm link "${linked_pkgs[@]}"
+  if [[ ${#linked_pkgs[@]} > 0 ]]; then
+    npm link "${linked_pkgs[@]}"
+  fi
   npm install
   npm link
 }

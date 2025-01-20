@@ -80,6 +80,13 @@ interface AssertionStatic {
 
 export const Assertion: AssertionStatic = Java.type("io.gatling.javaapi.core.Assertion");
 
+interface BlockingBuilderStatic {
+  readonly class: any;
+  new (arg0: any /*scala.Function1*/): io.gatling.javaapi.extra.BlockingBuilder;
+}
+
+export const BlockingBuilder: BlockingBuilderStatic = Java.type("io.gatling.javaapi.extra.BlockingBuilder");
+
 interface Body$WithBytesStatic {
   readonly class: any;
   new (arg0: any /*io.gatling.core.body.BodyWithBytesExpression*/): io.gatling.javaapi.core.Body$WithBytes;
@@ -1310,6 +1317,30 @@ interface ExecutableStatic {
 }
 
 export const Executable: ExecutableStatic = Java.type("io.gatling.javaapi.core.exec.Executable");
+
+interface ExtraDslStatic {
+  readonly class: any;
+  blocking(arg0: string): io.gatling.javaapi.extra.BlockingBuilder;
+  blocking(arg0: Func<io.gatling.javaapi.core.Session, string>): io.gatling.javaapi.extra.BlockingBuilder;
+  fake(arg0: string, arg1: int): io.gatling.javaapi.extra.FakeBuilder;
+  fake(arg0: string, arg1: string): io.gatling.javaapi.extra.FakeBuilder;
+  fake(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, int | null>): io.gatling.javaapi.extra.FakeBuilder;
+  fake(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: int): io.gatling.javaapi.extra.FakeBuilder;
+  fake(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): io.gatling.javaapi.extra.FakeBuilder;
+  fake(
+    arg0: Func<io.gatling.javaapi.core.Session, string>,
+    arg1: Func<io.gatling.javaapi.core.Session, int | null>
+  ): io.gatling.javaapi.extra.FakeBuilder;
+}
+
+export const ExtraDsl: ExtraDslStatic = Java.type("io.gatling.javaapi.extra.ExtraDsl");
+
+interface FakeBuilderStatic {
+  readonly class: any;
+  new (arg0: any /*scala.Function1*/, arg1: any /*scala.Function1*/): io.gatling.javaapi.extra.FakeBuilder;
+}
+
+export const FakeBuilder: FakeBuilderStatic = Java.type("io.gatling.javaapi.extra.FakeBuilder");
 
 interface FeederBuilder$BatchableStatic {
   readonly class: any;

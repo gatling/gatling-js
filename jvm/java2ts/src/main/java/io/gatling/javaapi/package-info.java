@@ -173,6 +173,10 @@
         @Type(value = io.gatling.javaapi.http.WsFrameCheck.class, export = true),
         @Type(value = io.gatling.javaapi.http.WsSendBinaryActionBuilder.class, export = true),
         @Type(value = io.gatling.javaapi.http.WsSendTextActionBuilder.class, export = true),
+        // ********** extra **********
+        @Type(value = io.gatling.javaapi.extra.BlockingBuilder.class, export = true),
+        @Type(value = io.gatling.javaapi.extra.ExtraDsl.class, export = true),
+        @Type(value = io.gatling.javaapi.extra.FakeBuilder.class, export = true),
     })
 package io.gatling.javaapi;
 

@@ -20,19 +20,28 @@ import com.oracle.truffle.js.runtime.JSContextOptions;
 import io.gatling.javaapi.core.PopulationBuilder;
 import io.gatling.javaapi.core.Simulation;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Source;
 import org.graalvm.polyglot.TypeLiteral;
 import org.graalvm.polyglot.Value;
+import org.graalvm.polyglot.io.FileSystem;
 
 public class JsSimulationHelper {
   private static final String JS = "js";
+
+  private static String makeReplacements(List<String> modules, String container) {
+    return modules.stream()
+        .map(module -> module + ":@gatling.io/" + container + "/target/" + module + ".js")
+        .collect(Collectors.joining(","));
+  }
 
   public static void loadSimulation(Function<List<PopulationBuilder>, Simulation.SetUp> setUp) {
     var simulationName =
@@ -53,10 +62,28 @@ public class JsSimulationHelper {
                     new NoSuchElementException(
                         "One of the system properties gatling.js.bundle.filePath or gatling.js.bundle.resourcePath must be defined"));
 
+    String replacements = makeReplacements(JsPolyfills.FILES, "polyfills");
+    try {
+      Class<?> dependencies = Class.forName("io.gatling.postman.PostmanDependencies");
+      Field field = dependencies.getField("FILES");
+      @SuppressWarnings("unchecked")
+      List<String> files = (List<String>) field.get(null);
+      replacements = replacements + "," + makeReplacements(files, "postman-dependencies");
+    } catch (ClassNotFoundException e) {
+      System.out.println("Failed to load postman dependencies: " + e.getMessage());
+    } catch (NoSuchFieldException e) {
+      System.out.println("Failed to get files from postman dependencies: " + e.getMessage());
+    } catch (IllegalAccessException e) {
+      System.out.println("Failed to get files value from postman dependencies: " + e.getMessage());
+    }
+
     // Context is never closed because it will live for the entire duration of the process
     var context =
         Context.newBuilder(JS)
             .allowAllAccess(true)
+            .fileSystem(new JsFileSystem(FileSystem.newDefaultFileSystem()))
+            .option(JSContextOptions.COMMONJS_REQUIRE_NAME, "true")
+            .option(JSContextOptions.COMMONJS_CORE_MODULES_REPLACEMENTS_NAME, replacements)
             .option(JSContextOptions.STRICT_NAME, "true")
             .build();
 
