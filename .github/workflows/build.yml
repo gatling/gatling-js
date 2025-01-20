@@ -25,23 +25,38 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up JDK
+      - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '21'
 
-      - name: Setup sbt
+      - name: Set up sbt
         uses: sbt/setup-sbt@v1
-
-      - name: Build JVM projects
-        working-directory: ./jvm
-        run: sbt gatling-jvm-to-js-adapter/spotlessCheck gatling-jvm-to-js-adapter/compile gatling-jvm-to-js-adapter/test
 
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
+
+      - name: Build JS polyfills
+        working-directory: ./polyfills
+        run: |
+          npm ci
+          npm run format-check
+          npm run build
+
+      - name: Build JVM projects
+        working-directory: ./jvm
+        run: |
+          sbt \
+            "project gatling-jvm-to-js-adapter" \
+            headerCheckAll \
+            spotlessCheck \
+            scalafmtCheckAll \
+            "scalafixAll --check" \
+            compile \
+            test
 
       - name: Build JS projects
         working-directory: ./js

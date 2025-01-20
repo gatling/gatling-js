@@ -3,7 +3,7 @@ import { CoreDsl as JvmCoreDsl } from "@gatling.io/jvm-types";
 import JvmChainBuilder = io.gatling.javaapi.core.ChainBuilder;
 
 import { JvmStructureBuilderLike } from "./jvmStructureBuilder";
-import { ExecFunction, Execs, execImpl, Executable } from "./execs";
+import { ExecFunction, Execs, Executable, execImpl } from "./execs";
 import { GroupFunction, Groups, groupImpl } from "./groups";
 import { FeedFunction, Feeds, feedImpl } from "./feeds";
 import { PauseFunction, Pauses, pauseImpl } from "./pauses";
