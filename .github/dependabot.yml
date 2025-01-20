@@ -1,7 +1,9 @@
 version: 2
 updates:
   - package-ecosystem: "npm"
-    directory: "/js"
+    directories:
+      - "/js"
+      - "/polyfills"
     labels:
       - "dependencies"
     schedule:
@@ -14,17 +16,9 @@ updates:
       - dependency-name: "@types/node"
         update-types: [ "version-update:semver-major" ]
   - package-ecosystem: "npm"
-    directory: "/js-simulation"
-    labels:
-      - "dependencies"
-    schedule:
-      interval: "weekly"
-      day: "monday" # explicit, even tough it's the weekly default
-      time: "07:00" # UTC
-    ignore:
-      - dependency-name: "@gatling.io/*"
-  - package-ecosystem: "npm"
-    directory: "/ts-simulation"
+    directories:
+      - "/js-simulation"
+      - "/ts-simulation"
     labels:
       - "dependencies"
     schedule:
