@@ -14,6 +14,7 @@ export const polyfill = (): Plugin => ({
       const resolved = customPolyfills.find((name) => name === moduleName)
         ? resolve(dirname(__filename), `../../polyfills/${moduleName}.js`)
         : resolve(jspmResolved, `../../browser/${moduleName}.js`);
+      console.log("resolved", resolved);
       return { path: resolved };
     });
 
@@ -21,19 +22,27 @@ export const polyfill = (): Plugin => ({
     build.initialOptions.inject = build.initialOptions.inject || [];
     const injectGlobal = (name: string) =>
       (build.initialOptions.inject as string[]).push(resolve(dirname(__filename), `../../polyfills/${name}.js`));
+    injectGlobal("navigator");
     injectGlobal("global");
+    injectGlobal("window");
   }
 });
 
-const customPolyfills = ["crypto"];
+const customPolyfills = ["crypto", "uuid"];
 
-const jspmPolyfills = ["buffer", "path", "string_decoder"];
+const jspmPolyfills = [
+  "_stream_transform",
+  "buffer",
+  "path",
+  "stream",
+  "string_decoder",
+  "util"
+];
 
 // Other available jspm-core modules:
 // "_stream_duplex"
 // "_stream_passthrough"
 // "_stream_readable"
-// "_stream_transform"
 // "_stream_writable"
 // "assert"
 // "assert/strict"
@@ -62,14 +71,12 @@ const jspmPolyfills = ["buffer", "path", "string_decoder"];
 // "querystring"
 // "readline"
 // "repl"
-// "stream"
 // "sys"
 // "timers"
 // "timers/promises"
 // "tls"
 // "tty"
 // "url"
-// "util"
 // "v8"
 // "vm"
 // "wasi"

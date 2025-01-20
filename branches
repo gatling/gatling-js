@@ -1,0 +1,17 @@
+gatling:
+- node-js-launcher (à tej)
+  - async-tests (version avec callback, à tej)
+
+js:
+
+commit inversion node.js
+ - postman-compat -> delete
+  - exec-async -> delete
+  - require -> ???
+  - worker-threads -> delete
+
+require-polyfills -> ???
+
+good:
+- gatling-private: exec-async
+- gatling-js: postman-require

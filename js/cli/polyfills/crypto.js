@@ -83,5 +83,4 @@ const crypto = {
   randomUUID,
 };
 crypto.webcrypto = crypto;
-globalThis.crypto = crypto;
 export default crypto;

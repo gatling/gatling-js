@@ -2921,6 +2921,33 @@ declare namespace io.gatling.javaapi.core.pause {
     rendezVous(arg0: int): T;
   } // end RendezVous
 } // end namespace io.gatling.javaapi.core.pause
+declare namespace io.gatling.javaapi.extra {
+  class BlockingBuilder /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    on(
+      arg0: Func<io.gatling.javaapi.core.Session, io.gatling.javaapi.core.Session>
+    ): io.gatling.javaapi.core.ActionBuilder;
+    toString(): string;
+  } // end BlockingBuilder
+} // end namespace io.gatling.javaapi.extra
+declare namespace io.gatling.javaapi.extra {
+  class ExtraDsl /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toString(): string;
+  } // end ExtraDsl
+} // end namespace io.gatling.javaapi.extra
+declare namespace io.gatling.javaapi.extra {
+  class FakeBuilder /* extends java.lang.Object implements io.gatling.javaapi.core.ActionBuilder*/ {
+    asScala(): any /*io.gatling.core.action.builder.ActionBuilder*/;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
+    toString(): string;
+    withSessionUpdate(arg0: Func<io.gatling.javaapi.core.Session, io.gatling.javaapi.core.Session>): FakeBuilder;
+    withSuccess(arg0: Func<io.gatling.javaapi.core.Session, boolean | null>): FakeBuilder;
+    withSuccess(arg0: boolean): FakeBuilder;
+    withSuccess(arg0: string): FakeBuilder;
+  } // end FakeBuilder
+} // end namespace io.gatling.javaapi.extra
 declare namespace io.gatling.javaapi.http {
   class AddCookie /* extends java.lang.Object*/ {
     asScala(): any /*io.gatling.http.action.cookie.AddCookieDsl*/;

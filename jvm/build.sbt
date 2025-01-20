@@ -79,6 +79,7 @@ lazy val java2ts = (project in file("java2ts"))
     libraryDependencies ++= Seq(
       "io.gatling" % "gatling-core-java" % gatlingVersion,
       "io.gatling" % "gatling-http-java" % gatlingVersion,
+      "io.gatling" % "gatling-extra-java" % gatlingVersion
     ),
     publish / skip := true
   )

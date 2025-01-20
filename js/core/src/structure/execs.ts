@@ -1,3 +1,4 @@
+import { ExtraDsl as JvmExtraDsl } from "@gatling.io/jvm-types";
 import { Wrapper } from "../common";
 import { SessionTransform, underlyingSessionTransform } from "../session";
 
@@ -12,12 +13,6 @@ export interface ActionBuilder extends Executable<JvmActionBuilder> {}
 export const wrapActionBuilder = (_underlying: JvmActionBuilder): ActionBuilder => ({
   _underlying
 });
-
-// interface JvmExecs {
-//   exec<T>(arg0: JvmExecutable, ...arg1: JvmExecutable[]): T;
-//   exec<T>(arg0: JvmChainBuilder[]): T;
-//   exec<T>(arg0: Func<JvmSession, JvmSession>): T;
-// }
 
 export interface ExecFunction<T extends Execs<T>> {
   /**
@@ -54,6 +49,7 @@ export interface ExecFunction<T extends Execs<T>> {
 
 export interface Execs<T extends Execs<T>> {
   exec: ExecFunction<T>;
+  execScript: (script: string) => T;
 }
 
 export const execImpl =
@@ -63,4 +59,32 @@ export const execImpl =
       typeof arg0 === "function"
         ? jvmExecs.exec(underlyingSessionTransform(arg0)) // arg0: SessionTransform
         : jvmExecs.exec(arg0._underlying, ...arg1.map((e) => e._underlying)) // arg0: Executable, ...arg1: Executable[]
+    );
+
+// FIXME available in the script scope?
+const shouldNotBeAvailable = () => {
+  console.log("shouldNotBeAvailable: oops");
+};
+
+const evalInPostmanContext = (script: string) => {
+  const pm = {
+    response: {
+      json() {
+        return JSON.parse(`{"message":"salutations maximales","args":{"randomDate":1728487778769}}`);
+      }
+    }
+  };
+  eval(script);
+};
+
+export const execScriptImpl =
+  <J2, J1 extends JvmExecs<J2, any>, T extends Execs<T>>(jvmExecs: J1, wrap: (wrapped: J2) => T) =>
+  (script: string): T =>
+    wrap(
+      jvmExecs.exec(
+        JvmExtraDsl.blocking("execScript").on((session) => {
+          evalInPostmanContext(script);
+          return session;
+        })
+      )
     );

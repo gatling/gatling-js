@@ -26,6 +26,7 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Source;
 import org.graalvm.polyglot.TypeLiteral;
@@ -53,10 +54,18 @@ public class JsSimulationHelper {
                     new NoSuchElementException(
                         "One of the system properties gatling.js.bundle.filePath or gatling.js.bundle.resourcePath must be defined"));
 
+    List<String> modules = List.of("buffer", "crypto", "stream", "string_decoder", "util", "uuid");
+    String replacements =
+        modules.stream()
+            .map(replacement -> replacement + ":./polyfills/" + replacement + ".js")
+            .collect(Collectors.joining(","));
+
     // Context is never closed because it will live for the entire duration of the process
     var context =
         Context.newBuilder(JS)
             .allowAllAccess(true)
+            .option(JSContextOptions.COMMONJS_REQUIRE_NAME, "true")
+            .option(JSContextOptions.COMMONJS_CORE_MODULES_REPLACEMENTS_NAME, replacements)
             .option(JSContextOptions.STRICT_NAME, "true")
             .build();
 
