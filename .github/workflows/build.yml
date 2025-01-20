@@ -31,6 +31,9 @@ jobs:
           distribution: 'zulu'
           java-version: '21'
 
+      - name: Setup sbt
+        uses: sbt/setup-sbt@v1
+
       - name: Build JVM projects
         working-directory: ./jvm
         run: sbt gatling-jvm-to-js-adapter/spotlessCheck gatling-jvm-to-js-adapter/compile gatling-jvm-to-js-adapter/test
