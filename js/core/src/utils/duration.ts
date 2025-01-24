@@ -1,6 +1,6 @@
 import { Duration as JvmDuration } from "@gatling.io/jvm-types";
 
-export type TimeUnit = "milliseconds" | "seconds" | "minutes";
+export type TimeUnit = "milliseconds" | "seconds" | "minutes" | "hours" | "days";
 
 export type Duration =
   | number
@@ -22,7 +22,11 @@ export const toJvmDuration = (duration: Duration): java.time.Duration => {
       return JvmDuration.ofSeconds(amount);
     case "minutes":
       return JvmDuration.ofMinutes(amount);
+    case "hours":
+      return JvmDuration.ofHours(amount);
+    case "days":
+      return JvmDuration.ofDays(amount);
     default:
-      return JvmDuration.ofSeconds(amount);
+      throw Error(`Unknown duration unit ${unit}`);
   }
 };
