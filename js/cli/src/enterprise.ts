@@ -134,6 +134,8 @@ export interface EnterprisePluginOptions extends RunJavaProcessOptions {
   apiToken?: string;
   // Plugin configuration
   controlPlaneUrl?: string;
+  trustStore?: string;
+  trustStorePassword?: string;
   nonInteractive: boolean;
 }
 
@@ -150,6 +152,12 @@ const javaArgsFromPluginOptions = (options: EnterprisePluginOptions) => {
   // Plugin configuration
   if (options.controlPlaneUrl !== undefined) {
     javaArgs.push(`-Dgatling.enterprise.controlPlaneUrl=${options.controlPlaneUrl}`);
+  }
+  if (options.trustStore !== undefined) {
+    javaArgs.push(`-Djavax.net.ssl.trustStore=${options.trustStore}`);
+  }
+  if (options.trustStore !== undefined && options.trustStorePassword !== undefined) {
+    javaArgs.push(`-Djavax.net.ssl.trustStorePassword=${options.trustStorePassword}`);
   }
   javaArgs.push("-Dgatling.enterprise.buildTool=js-cli");
   javaArgs.push(`-Dgatling.enterprise.pluginVersion=${versions.gatling.jsAdapter}`);
