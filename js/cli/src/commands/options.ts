@@ -282,6 +282,18 @@ export const controlPlaneUrlOption = new Option(
 );
 export const controlPlaneUrlOptionValue = getStringValueOptional(controlPlaneUrlOption);
 
+export const trustStoreOption = new Option(
+  "--trust-store <value>",
+  `Path to a trust store (in PKCS#12 or JKS format) used when calling remote APIs over HTTPS. Useful with the ${controlPlaneUrlOption.long} option, if your control plane uses a certificate signed by an internal CA.`
+);
+export const trustStoreOptionValue = getStringValueOptional(trustStoreOption);
+
+export const trustStorePasswordOption = new Option(
+  "--trust-store-password <value>",
+  `Use with the ${trustStoreOption.long} option, if your trust store is protected by a password.`
+);
+export const trustStorePasswordOptionValue = getStringValueOptional(trustStorePasswordOption);
+
 // Descriptor file
 
 export const packageDescriptorFilenameOption = new Option(

@@ -23,6 +23,10 @@ import {
   resultsFolderOptionValue,
   sourcesFolderOption,
   sourcesFolderOptionValue,
+  trustStoreOption,
+  trustStoreOptionValue,
+  trustStorePasswordOption,
+  trustStorePasswordOptionValue,
   typescriptOption,
   typescriptOptionValueWithDefaults,
   apiUrlOption,
@@ -52,6 +56,8 @@ export default (program: Command): void => {
     .addOption(apiTokenOption)
     // Plugin configuration
     .addOption(controlPlaneUrlOption)
+    .addOption(trustStoreOption)
+    .addOption(trustStorePasswordOption)
     .addOption(nonInteractiveOption)
     // Descriptor file
     .addOption(packageDescriptorFilenameOption)
@@ -72,6 +78,8 @@ export default (program: Command): void => {
       const webAppUrl = webAppUrlOptionValue(options);
       const apiToken = apiTokenOptionValue(options);
       const controlPlaneUrl = controlPlaneUrlOptionValue(options);
+      const trustStore = trustStoreOptionValue(options);
+      const trustStorePassword = trustStorePasswordOptionValue(options);
       const nonInteractive = nonInteractiveOptionValue(options);
       const packageDescriptorFilename = packageDescriptorFilenameOptionValue(options);
       const packageFile = packageFileOptionValue(options);
@@ -89,6 +97,8 @@ export default (program: Command): void => {
         webAppUrl,
         apiToken,
         controlPlaneUrl,
+        trustStore,
+        trustStorePassword,
         nonInteractive,
         packageDescriptorFilename,
         packageFile
