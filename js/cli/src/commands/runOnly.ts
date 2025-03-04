@@ -1,46 +1,29 @@
 import { Command } from "commander";
 
-import {
-  bundleFileOption,
-  bundleFileOptionValue,
-  graalvmHomeMandatoryOption,
-  graalvmHomeMandatoryOptionValue,
-  jvmClasspathMandatoryOption,
-  jvmClasspathMandatoryOptionValue,
-  memoryOption,
-  memoryOptionValue,
-  parseRunParametersArgument,
-  resourcesFolderOption,
-  resourcesFolderOptionValue,
-  resultsFolderOption,
-  resultsFolderOptionValue,
-  runParametersArgument,
-  simulationMandatoryOption,
-  simulationMandatoryOptionValue
-} from "./options";
+import { ResolvedOptions } from "./resolveOptions";
 import { runSimulation } from "../run";
 
-export default (program: Command): void => {
+export default (opts: ResolvedOptions, program: Command): void => {
   program
     .command("run-only")
     .description("Run a Gatling simulation from an already built bundle")
-    .addOption(graalvmHomeMandatoryOption)
-    .addOption(jvmClasspathMandatoryOption)
-    .addOption(simulationMandatoryOption)
-    .addOption(bundleFileOption)
-    .addOption(resourcesFolderOption)
-    .addOption(resultsFolderOption)
-    .addOption(memoryOption)
-    .addArgument(runParametersArgument)
+    .addOption(opts.graalvmHomeMandatoryOption)
+    .addOption(opts.jvmClasspathMandatoryOption)
+    .addOption(opts.simulationMandatoryOption)
+    .addOption(opts.bundleFileOption)
+    .addOption(opts.resourcesFolderOption)
+    .addOption(opts.resultsFolderOption)
+    .addOption(opts.memoryOption)
+    .addArgument(opts.runParametersArgument)
     .action(async (args: string[], options) => {
-      const graalvmHome: string = graalvmHomeMandatoryOptionValue(options);
-      const jvmClasspath: string = jvmClasspathMandatoryOptionValue(options);
-      const simulation: string = simulationMandatoryOptionValue(options);
-      const bundleFile = bundleFileOptionValue(options);
-      const resourcesFolder: string = resourcesFolderOptionValue(options);
-      const resultsFolder: string = resultsFolderOptionValue(options);
-      const memory: number | undefined = memoryOptionValue(options);
-      const runParameters = parseRunParametersArgument(args);
+      const graalvmHome = opts.graalvmHomeMandatoryOptionValue(options);
+      const jvmClasspath = opts.jvmClasspathMandatoryOptionValue(options);
+      const simulation = opts.simulationMandatoryOptionValue(options);
+      const bundleFile = opts.bundleFileOptionValue(options);
+      const resourcesFolder = opts.resourcesFolderOptionValue(options);
+      const resultsFolder = opts.resultsFolderOptionValue(options);
+      const memory = opts.memoryOptionValue(options);
+      const runParameters = opts.parseRunParametersArgument(args);
 
       await runSimulation({
         graalvmHome,
