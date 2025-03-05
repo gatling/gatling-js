@@ -27,6 +27,7 @@ lazy val root = (project in file("."))
 lazy val adapter = (project in file("adapter"))
   .withId("gatling-jvm-to-js-adapter")
   .enablePlugins(GatlingOssPlugin)
+  .settings(JsPolyfills.settings)
   .settings(
     name := "gatling-jvm-to-js-adapter",
     gatlingCompilerRelease := compilerRelease,
@@ -78,7 +79,7 @@ lazy val java2ts = (project in file("java2ts"))
     name := "gatling-java2ts",
     libraryDependencies ++= Seq(
       "io.gatling" % "gatling-core-java" % gatlingVersion,
-      "io.gatling" % "gatling-http-java" % gatlingVersion,
+      "io.gatling" % "gatling-http-java" % gatlingVersion
     ),
     publish / skip := true
   )

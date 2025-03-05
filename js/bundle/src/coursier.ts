@@ -52,5 +52,7 @@ const dependencies = [
   `"org.graalvm.polyglot:js-community:${versions.graalvm.js}"`,
   `"io.gatling:gatling-recorder:${versions.gatling.core}"`, // For the recorder
   // TODO handle Gatling Postman version if different from Gatling JS version
-  `"io.gatling:gatling-postman-jvm-to-js-adapter:${versions.gatling.jsAdapter}"` // For Gatling Postman
+  `"io.gatling:gatling-postman-jvm-to-js-adapter:${versions.gatling.jsAdapter}"`, // For Gatling Postman
+  // TODO ???
+  `"io.gatling:gatling-extra-java:${versions.gatling.core}"`,
 ];

@@ -172,7 +172,7 @@
         @Type(value = io.gatling.javaapi.http.WsAwaitActionBuilder.class, export = true),
         @Type(value = io.gatling.javaapi.http.WsFrameCheck.class, export = true),
         @Type(value = io.gatling.javaapi.http.WsSendBinaryActionBuilder.class, export = true),
-        @Type(value = io.gatling.javaapi.http.WsSendTextActionBuilder.class, export = true),
+        @Type(value = io.gatling.javaapi.http.WsSendTextActionBuilder.class, export = true)
     })
 package io.gatling.javaapi;
 
