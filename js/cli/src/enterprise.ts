@@ -6,6 +6,7 @@ import { constants as zConstants } from "zlib";
 import { versions } from "./dependencies";
 import { RunJavaProcessOptions, runJavaProcess } from "./java";
 import { logger } from "./log";
+import { proxyConfiguration } from "./proxy";
 import { SimulationFile } from "./simulations";
 
 export interface EnterprisePackageOptions {
@@ -201,7 +202,14 @@ export const enterpriseDeploy = async (options: EnterpriseDeployOptions): Promis
     }
   }
 
-  return runJavaProcess(options, "io.gatling.plugin.cli.EnterpriseDeploy", additionalClasspathElements, javaArgs, []);
+  return runJavaProcess(
+    options,
+    "io.gatling.plugin.cli.EnterpriseDeploy",
+    additionalClasspathElements,
+    javaArgs,
+    [],
+    proxyConfiguration
+  );
 };
 
 export interface EnterpriseStartOptions extends EnterpriseDeployOptions {
@@ -236,5 +244,12 @@ export const enterpriseStart = async (options: EnterpriseStartOptions): Promise<
     }
   }
 
-  return runJavaProcess(options, "io.gatling.plugin.cli.EnterpriseStart", additionalClasspathElements, javaArgs, []);
+  return runJavaProcess(
+    options,
+    "io.gatling.plugin.cli.EnterpriseStart",
+    additionalClasspathElements,
+    javaArgs,
+    [],
+    proxyConfiguration
+  );
 };
