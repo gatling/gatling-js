@@ -16,23 +16,24 @@
 
 package io.gatling.js;
 
-import com.oracle.truffle.js.runtime.JSContextOptions;
-import io.gatling.javaapi.core.PopulationBuilder;
-import io.gatling.javaapi.core.Simulation;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import org.graalvm.polyglot.Context;
+
+import io.gatling.javaapi.core.PopulationBuilder;
+import io.gatling.javaapi.core.Simulation;
+
 import org.graalvm.polyglot.Source;
 import org.graalvm.polyglot.TypeLiteral;
 import org.graalvm.polyglot.Value;
 
 public class JsSimulationHelper {
-  private static final String JS = "js";
 
   public static void loadSimulation(Function<List<PopulationBuilder>, Simulation.SetUp> setUp) {
     var simulationName =
@@ -54,18 +55,16 @@ public class JsSimulationHelper {
                         "One of the system properties gatling.js.bundle.filePath or gatling.js.bundle.resourcePath must be defined"));
 
     // Context is never closed because it will live for the entire duration of the process
-    var context =
-        Context.newBuilder(JS)
-            .allowAllAccess(true)
-            .option(JSContextOptions.STRICT_NAME, "true")
-            .build();
-
+    var context = JsContext.newContext();
     try {
-      context.eval(Source.newBuilder(JS, bundleUrl).mimeType("application/javascript").build());
+      context.eval(
+          Source.newBuilder(JsContext.LANGUAGE, bundleUrl)
+              .mimeType("application/javascript")
+              .build());
     } catch (IOException e) {
       throw new IllegalStateException("Cannot load Javascript bundle file at " + bundleUrl, e);
     }
-    Value jsIifeWrapper = context.getBindings(JS).getMember("gatling");
+    Value jsIifeWrapper = context.getBindings(JsContext.LANGUAGE).getMember("gatling");
     Value jsSimulationValue = jsIifeWrapper.getMember(simulationName);
     if (jsSimulationValue == null) {
       throw new NoSuchElementException(
