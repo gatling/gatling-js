@@ -15,7 +15,7 @@ Global / gatlingDevelopers := Seq(
 
 val compilerRelease = 21
 val graalvmJdkVersion = "23.0.2"
-val graalvmJsVersion = "24.1.2"
+val graalvmJsVersion = "24.2.0"
 val gatlingVersion = "3.13.5"
 
 // bit weird cause this is not a dependency of this project
