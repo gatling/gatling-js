@@ -13,12 +13,6 @@ export const wrapActionBuilder = (_underlying: JvmActionBuilder): ActionBuilder 
   _underlying
 });
 
-// interface JvmExecs {
-//   exec<T>(arg0: JvmExecutable, ...arg1: JvmExecutable[]): T;
-//   exec<T>(arg0: JvmChainBuilder[]): T;
-//   exec<T>(arg0: Func<JvmSession, JvmSession>): T;
-// }
-
 export interface ExecFunction<T extends Execs<T>> {
   /**
    * Attach some `Executable`s. Chains will be attached sequentially.

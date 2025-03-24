@@ -19,7 +19,7 @@
     "typescript": "5.8.2"
   },
   "scripts": {
-    "clean": "rimraf target",
+    "clean": "rimraf target tmp",
     "format": "prettier --write '**/*.ts'",
     "format-check": "prettier --check '**/*.ts'",
     "build": "tsc -p .",

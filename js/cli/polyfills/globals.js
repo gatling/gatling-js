@@ -1,5 +1,5 @@
-const global = globalThis;
-export { global };
+const globals = globalThis;
+export { globals };
 
 export { Buffer } from "buffer";
 
@@ -10,4 +10,4 @@ export const navigator = {
   language: "en-US", // Most common default
 };
 
-export * as crypto from "crypto"
+export * as crypto from "crypto";
