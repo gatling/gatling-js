@@ -41,7 +41,7 @@ lazy val adapter = (project in file("adapter"))
     libraryDependencies ++= Seq(
       "io.gatling.highcharts" % "gatling-charts-highcharts" % gatlingVersion,
       "org.graalvm.polyglot" % "js-community" % graalvmJsVersion,
-      "io.gatling" % "gatling-asm-shaded" % "9.7.1"
+      "io.gatling" % "gatling-asm-shaded" % "9.8.0"
     ),
     Compile / sourceGenerators += Def.task {
       // Generate a file directly into the CLI project and bundle project to share version numbers
