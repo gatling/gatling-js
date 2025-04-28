@@ -27,7 +27,7 @@
     "archiver": "7.0.1",
     "node-stream-zip": "1.15.0",
     "commander": "13.1.0",
-    "esbuild": "0.25.2",
+    "esbuild": "0.25.3",
     "esbuild-plugin-tsc": "0.5.0",
     "import-meta-resolve": "4.1.0",
     "make-fetch-happen": "14.0.3",
