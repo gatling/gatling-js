@@ -1,0 +1,4 @@
+-Xss4m
+-Xmx6g
+--enable-native-access=ALL-UNNAMED
+--sun-misc-unsafe-memory-access=allow
