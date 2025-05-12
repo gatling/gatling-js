@@ -153,6 +153,8 @@ const httpProtocol = http
   .proxy(Proxy("172.31.76.106", 8080).http())
   .proxy(Proxy("172.31.76.106", 8080).socks4())
   .proxy(Proxy("172.31.76.106", 8080).socks5())
+  .proxy(Proxy("172.31.76.106", 8080).connectHeader("foo", "#{bar}"))
+  .proxy(Proxy("172.31.76.106", 8080).connectHeaders({ foo: "#{bar}" }))
   .asyncNameResolution("dnsServer1", "dnsServer2")
   .hostNameAliases({ "gatling.io": ["192.168.0.1", "192.168.0.2"] })
   .perUserNameResolution()

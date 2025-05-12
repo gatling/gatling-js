@@ -3311,6 +3311,15 @@ declare namespace io.gatling.javaapi.http {
 declare namespace io.gatling.javaapi.http {
   class Proxy /* extends java.lang.Object*/ {
     asScala(): any /*io.gatling.http.protocol.Proxy*/;
+    connectHeader(arg0: any /*java.lang.CharSequence*/, arg1: Func<io.gatling.javaapi.core.Session, string>): Proxy;
+    connectHeader(arg0: any /*java.lang.CharSequence*/, arg1: string): Proxy;
+    connectHeaders(arg0: java.util.Map<any /*java.lang.CharSequence*/, string>): Proxy;
+    credentials(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: Func<io.gatling.javaapi.core.Session, string>
+    ): Proxy;
+    credentials(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): Proxy;
+    credentials(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, string>): Proxy;
     credentials(arg0: string, arg1: string): Proxy;
     equals(arg0: any /*java.lang.Object*/): boolean;
     http(): Proxy;
