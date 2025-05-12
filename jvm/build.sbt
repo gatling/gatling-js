@@ -6,7 +6,6 @@ import net.moznion.sbt.spotless.config.{ GoogleJavaFormatConfig, JavaConfig, Spo
 ThisBuild / scalaVersion := "2.13.16"
 ThisBuild / crossPaths := false
 
-ThisBuild / sonatypeCredentialHost := "s01.oss.sonatype.org"
 Global / githubPath := "gatling/gatling-js"
 Global / gatlingDevelopers := Seq(
   GatlingDeveloper("slandelle@gatling.io", "Stephane Landelle", isGatlingCorp = true),
