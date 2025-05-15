@@ -47,21 +47,32 @@ object JsPolyfills {
         .partition(_.contains("chunk"))
       val content =
         s"""package io.gatling.js;
+           |
            |import java.util.List;
-           |import java.util.Set;
+           |import java.util.Map;
+           |import java.util.function.Function;
+           |import java.util.stream.Collector;
            |import java.util.stream.Collectors;
            |import java.util.stream.Stream;
+           |
            |public class JsPolyfills {
            |  private JsPolyfills() {}
+           |  private static final String TARGET = "@gatling.io/polyfills/target";
+           |  private static final boolean IS_WINDOWS = System.getProperty("os.name").startsWith("Windows");
            |  public static final String REPLACEMENTS;
-           |  public static final Set<String> RESOLUTION_PATHS;
+           |  public static final Map<String, String> RESOLUTION_PATHS;
+           |
            |  static {
            |    final List<String> polyfills = List.of(${escape(polyfills)});
            |    final List<String> chunks = List.of(${escape(chunks)});
-           |    REPLACEMENTS = JsContext.replacements(polyfills, "@gatling.io/polyfills/target");
+           |
+           |    final String prefix = IS_WINDOWS ? TARGET.replaceAll("/", "\\\\\\\\") : TARGET;
+           |    REPLACEMENTS = JsContext.replacements(polyfills, prefix);
+           |
+           |    final Function<String, String> keyMapper = IS_WINDOWS ? k -> k.replaceAll("/", "\\\\\\\\") : k -> k;
            |    RESOLUTION_PATHS = Stream.concat(polyfills.stream(), chunks.stream())
-           |        .map(module -> "@gatling.io/polyfills/target/" + module + ".js")
-           |        .collect(Collectors.toSet());
+           |        .map(module -> TARGET + "/" + module + ".js")
+           |        .collect(Collectors.toMap(keyMapper, v -> v));
            |  }
            |}
            |""".stripMargin

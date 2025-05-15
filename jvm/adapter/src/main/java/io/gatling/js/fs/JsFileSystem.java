@@ -40,20 +40,22 @@ public class JsFileSystem implements FileSystem {
     return new JsFileSystem(delegate, JsPolyfills.RESOLUTION_PATHS);
   }
 
-  public static JsFileSystem newFileSystem(Set<String> additionalResolutionPaths) {
+  public static JsFileSystem newFileSystem(Map<String, String> additionalResolutionPaths) {
     var delegate = FileSystem.newDefaultFileSystem();
     var resolutionPaths =
-        Stream.concat(JsPolyfills.RESOLUTION_PATHS.stream(), additionalResolutionPaths.stream())
-            .collect(Collectors.toSet());
+        Stream.concat(
+                JsPolyfills.RESOLUTION_PATHS.entrySet().stream(),
+                additionalResolutionPaths.entrySet().stream())
+            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     return new JsFileSystem(delegate, resolutionPaths);
   }
 
   private final FileSystem delegate;
-  private final Set<String> replacementsResolutionPaths;
+  private final Map<String, String> replacementsResolutionPaths;
 
-  private JsFileSystem(FileSystem delegate, Set<String> additionalReplacements) {
+  private JsFileSystem(FileSystem delegate, Map<String, String> additionalReplacements) {
     this.delegate = delegate;
-    this.replacementsResolutionPaths = new HashSet<>(additionalReplacements);
+    this.replacementsResolutionPaths = new HashMap<>(additionalReplacements);
   }
 
   private String getReplacement(Path path) {
@@ -63,8 +65,8 @@ public class JsFileSystem implements FileSystem {
     if (index >= 0) {
       String replacementPath = p.substring(index);
       LOGGER.trace("=> checking for replacement '{}'", replacementPath);
-      if (replacementsResolutionPaths.contains(replacementPath)) {
-        return replacementPath;
+      if (replacementsResolutionPaths.containsKey(replacementPath)) {
+        return replacementsResolutionPaths.get(replacementPath);
       }
     }
     return null;
@@ -72,6 +74,9 @@ public class JsFileSystem implements FileSystem {
 
   @Override
   public Path parsePath(URI uri) {
+    if (LOGGER.isTraceEnabled()) {
+      LOGGER.trace("parsePath({})", uri.toString());
+    }
     Path result = this.delegate.parsePath(uri);
     if (LOGGER.isTraceEnabled()) {
       LOGGER.trace("parsePath({}): {}", uri.toString(), result.toString());
@@ -81,6 +86,9 @@ public class JsFileSystem implements FileSystem {
 
   @Override
   public Path parsePath(String path) {
+    if (LOGGER.isTraceEnabled()) {
+      LOGGER.trace("parsePath({})", path);
+    }
     Path result = this.delegate.parsePath(path);
     if (LOGGER.isTraceEnabled()) {
       LOGGER.trace("parsePath({}): {}", path, result.toString());
