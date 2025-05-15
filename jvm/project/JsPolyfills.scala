@@ -57,21 +57,24 @@ object JsPolyfills {
            |
            |public class JsPolyfills {
            |  private JsPolyfills() {}
-           |  private static final String TARGET = "@gatling.io/polyfills/target";
+           |
            |  private static final boolean IS_WINDOWS = System.getProperty("os.name").startsWith("Windows");
+           |
            |  public static final String REPLACEMENTS;
+           |
+           |  private static final String RESOLUTION_PATH = "@gatling.io/polyfills/target";
            |  public static final Map<String, String> RESOLUTION_PATHS;
            |
            |  static {
            |    final List<String> polyfills = List.of(${escape(polyfills)});
            |    final List<String> chunks = List.of(${escape(chunks)});
            |
-           |    final String prefix = IS_WINDOWS ? TARGET.replaceAll("/", "\\\\\\\\") : TARGET;
+           |    final String prefix = IS_WINDOWS ? RESOLUTION_PATH.replaceAll("/", "\\\\\\\\") : RESOLUTION_PATH;
            |    REPLACEMENTS = JsContext.replacements(polyfills, prefix);
            |
            |    final Function<String, String> keyMapper = IS_WINDOWS ? k -> k.replaceAll("/", "\\\\\\\\") : k -> k;
            |    RESOLUTION_PATHS = Stream.concat(polyfills.stream(), chunks.stream())
-           |        .map(module -> TARGET + "/" + module + ".js")
+           |        .map(module -> RESOLUTION_PATH + "/" + module + ".js")
            |        .collect(Collectors.toMap(keyMapper, v -> v));
            |  }
            |}
