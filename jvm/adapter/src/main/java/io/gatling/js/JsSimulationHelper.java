@@ -18,7 +18,9 @@ package io.gatling.js;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -78,7 +80,8 @@ public class JsSimulationHelper {
 
   private static URL filePathToUrl(String filePath) {
     try {
-      return Paths.get(filePath).toUri().toURL();
+      Path path = Paths.get(filePath);
+      return URI.create("file:" + path.toString().replaceAll("\\\\", "/")).toURL();
     } catch (MalformedURLException e) {
       throw new IllegalArgumentException("Not a valid file path: " + filePath, e);
     }
