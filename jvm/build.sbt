@@ -24,6 +24,7 @@ val gatlingEnterpriseComponentPluginVersion = "1.17.0"
 lazy val root = (project in file("."))
   .aggregate(adapter, java2ts)
 
+// FIXME unused loggers
 lazy val adapter = (project in file("adapter"))
   .withId("gatling-jvm-to-js-adapter")
   .enablePlugins(GatlingOssPlugin)
