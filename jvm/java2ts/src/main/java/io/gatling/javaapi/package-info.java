@@ -147,6 +147,7 @@
         // ********** http **********
         @Type(value = io.netty.handler.codec.http.HttpHeaders.class, export = true),
         @Type(value = io.netty.handler.codec.http.HttpResponseStatus.class, export = true),
+        @Type(value = io.netty.handler.codec.http.cookie.Cookie.class, export = true),
         @Type(value = io.gatling.http.client.Request.class, export = true),
         @Type(value = io.gatling.http.client.body.RequestBody.class, export = true),
         @Type(value = io.gatling.http.response.Response.class, export = true),
