@@ -64,7 +64,7 @@ declare namespace io.gatling.http.client {
     copyWithNewUri(arg0: any /*io.gatling.http.client.uri.Uri*/): Request;
     equals(arg0: any /*java.lang.Object*/): boolean;
     getBody(): io.gatling.http.client.body.RequestBody;
-    getCookies(): java.util.List<any /*io.netty.handler.codec.http.cookie.Cookie*/>;
+    getCookies(): java.util.List<io.netty.handler.codec.http.cookie.Cookie>;
     getHeaders(): io.netty.handler.codec.http.HttpHeaders;
     getHttp2PriorKnowledge(): any /*io.gatling.http.client.Http2PriorKnowledge*/;
     getLocalAddresses(): any /*io.gatling.http.client.LocalAddresses*/;
@@ -3638,6 +3638,26 @@ declare namespace io.netty.handler.codec.http {
     toString(): string;
   } // end HttpResponseStatus
 } // end namespace io.netty.handler.codec.http
+declare namespace io.netty.handler.codec.http.cookie {
+  interface Cookie /* extends java.lang.Comparable<any>*/ {
+    compareTo<T>(arg0: T): int;
+    domain(): string;
+    isHttpOnly(): boolean;
+    isSecure(): boolean;
+    maxAge(): long;
+    name(): string;
+    path(): string;
+    setDomain(arg0: string): void;
+    setHttpOnly(arg0: boolean): void;
+    setMaxAge(arg0: long): void;
+    setPath(arg0: string): void;
+    setSecure(arg0: boolean): void;
+    setValue(arg0: string): void;
+    setWrap(arg0: boolean): void;
+    value(): string;
+    wrap(): boolean;
+  } // end Cookie
+} // end namespace io.netty.handler.codec.http.cookie
 declare namespace java.lang {
   class String /* extends Object implements java.io.Serializable, Comparable<any>, CharSequence, java.lang.constant.Constable, java.lang.constant.ConstantDesc*/ {
     charAt(arg0: int): any /*char*/;

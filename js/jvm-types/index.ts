@@ -375,6 +375,12 @@ export const ConstantRate$ConstantRateOpenInjectionStep: ConstantRate$ConstantRa
   "io.gatling.javaapi.core.OpenInjectionStep$ConstantRate$ConstantRateOpenInjectionStep"
 );
 
+interface CookieStatic {
+  readonly class: any;
+}
+
+export const Cookie: CookieStatic = Java.type("io.netty.handler.codec.http.cookie.Cookie");
+
 interface CoreDslStatic {
   readonly class: any;
   details(...arg0: string[]): io.gatling.javaapi.core.Assertion$WithPath;
@@ -1960,7 +1966,7 @@ interface RequestStatic {
     arg1: any /*io.netty.handler.codec.http.HttpMethod*/,
     arg2: any /*io.gatling.http.client.uri.Uri*/,
     arg3: io.netty.handler.codec.http.HttpHeaders,
-    arg4: java.util.List<any /*io.netty.handler.codec.http.cookie.Cookie*/>,
+    arg4: java.util.List<io.netty.handler.codec.http.cookie.Cookie>,
     arg5: io.gatling.http.client.body.RequestBody,
     arg6: long,
     arg7: boolean,
