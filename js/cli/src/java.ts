@@ -42,6 +42,7 @@ export const runJavaProcess = (
   return new Promise((resolve, reject) => {
     spawned.on("error", (error) => logger.error("Failed to run Gatling process: " + error.toString()));
     spawned.on("close", (code) => {
+      // exit code 2
       if (code === 0) {
         resolve();
       } else {
