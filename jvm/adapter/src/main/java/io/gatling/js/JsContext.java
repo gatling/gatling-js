@@ -22,10 +22,7 @@ import java.util.stream.Collectors;
 import io.gatling.js.fs.JsFileSystem;
 
 import com.oracle.truffle.js.runtime.JSContextOptions;
-import org.graalvm.polyglot.Context;
-import org.graalvm.polyglot.EnvironmentAccess;
-import org.graalvm.polyglot.HostAccess;
-import org.graalvm.polyglot.PolyglotAccess;
+import org.graalvm.polyglot.*;
 import org.graalvm.polyglot.io.FileSystem;
 import org.graalvm.polyglot.io.IOAccess;
 
@@ -38,9 +35,17 @@ public class JsContext {
         .collect(Collectors.joining(","));
   }
 
+  private static final Engine ENGINE =
+      Engine.newBuilder(LANGUAGE)
+          .allowExperimentalOptions(true)
+          //.option("engine.DebugCacheStore", "true")
+          // .option("engine.CompileImmediately", "false")
+          .build();
+
   private static Context newContext0(FileSystem fileSystem, String replacements) {
     IOAccess ioAccess = IOAccess.newBuilder().fileSystem(fileSystem).build();
     return Context.newBuilder(LANGUAGE)
+        .engine(ENGINE)
         .allowCreateProcess(true)
         .allowCreateThread(true)
         .allowInnerContextOptions(true)
