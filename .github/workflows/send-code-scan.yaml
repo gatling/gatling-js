@@ -1,0 +1,32 @@
+name: Send last commit as code-scan
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 8 * * 1'  # Every Monday at 08:00 UTC
+
+permissions:
+  contents: none # As we'll use another token anyway
+
+jobs:
+  send-code-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: '${{ secrets.GATLING_CI_TOKEN }}'
+
+      - name: Git commit and push
+        env:
+          COMMIT_AUTHOR_EMAIL: ${{ secrets.GATLING_CI_EMAIL }}
+          COMMIT_AUTHOR_NAME: ${{ secrets.GATLING_CI_NAME }}
+          GITHUB_REPO: gatling/gatling-js-code-scan
+        run: |
+          git config user.name "${COMMIT_AUTHOR_NAME}"
+          git config user.email "${COMMIT_AUTHOR_EMAIL}"
+
+          git remote add code-scan "https://github.com/${GITHUB_REPO}"
+
+          TREE_SHA1="$(git rev-parse HEAD^{tree})"
+          ORPHAN_COMMIT_SHA1="$(git commit-tree "$TREE_SHA1" -m "No history")"
+          git push --verbose --force code-scan "$ORPHAN_COMMIT_SHA1":refs/heads/main
