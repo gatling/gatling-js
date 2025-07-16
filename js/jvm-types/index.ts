@@ -80,6 +80,28 @@ interface AssertionStatic {
 
 export const Assertion: AssertionStatic = Java.type("io.gatling.javaapi.core.Assertion");
 
+interface Binary$TypedConditionStatic {
+  readonly class: any;
+  new (
+    arg0: any /*io.gatling.javaapi.http.internal.ScalaWsFrameCheckBinaryConditions$Typed*/
+  ): io.gatling.javaapi.http.Binary$TypedCondition;
+}
+
+export const Binary$TypedCondition: Binary$TypedConditionStatic = Java.type(
+  "io.gatling.javaapi.http.WsFrameCheck$Binary$TypedCondition"
+);
+
+interface Binary$UntypedConditionStatic {
+  readonly class: any;
+  new (
+    arg0: any /*io.gatling.javaapi.http.internal.ScalaWsFrameCheckBinaryConditions$Untyped*/
+  ): io.gatling.javaapi.http.Binary$UntypedCondition;
+}
+
+export const Binary$UntypedCondition: Binary$UntypedConditionStatic = Java.type(
+  "io.gatling.javaapi.http.WsFrameCheck$Binary$UntypedCondition"
+);
+
 interface Body$WithBytesStatic {
   readonly class: any;
   new (arg0: any /*io.gatling.core.body.BodyWithBytesExpression*/): io.gatling.javaapi.core.Body$WithBytes;
@@ -1953,6 +1975,14 @@ interface RepeatStatic {
 
 export const Repeat: RepeatStatic = Java.type("io.gatling.javaapi.core.loop.Repeat");
 
+interface RequestActionBuilderStatic {
+  readonly class: any;
+}
+
+export const RequestActionBuilder: RequestActionBuilderStatic = Java.type(
+  "io.gatling.javaapi.http.RequestActionBuilder"
+);
+
 interface RequestBodyStatic {
   readonly class: any;
 }
@@ -1984,6 +2014,14 @@ interface RequestStatic {
 }
 
 export const Request: RequestStatic = Java.type("io.gatling.http.client.Request");
+
+interface RequestWithBodyActionBuilderStatic {
+  readonly class: any;
+}
+
+export const RequestWithBodyActionBuilder: RequestWithBodyActionBuilderStatic = Java.type(
+  "io.gatling.javaapi.http.RequestWithBodyActionBuilder"
+);
 
 interface ResponseBodyStatic {
   readonly class: any;
@@ -2215,6 +2253,28 @@ interface TemporalUnitStatic {
 
 export const TemporalUnit: TemporalUnitStatic = Java.type("java.time.temporal.TemporalUnit");
 
+interface Text$TypedConditionStatic {
+  readonly class: any;
+  new (
+    arg0: any /*io.gatling.javaapi.http.internal.ScalaWsFrameCheckTextConditions$Typed*/
+  ): io.gatling.javaapi.http.Text$TypedCondition;
+}
+
+export const Text$TypedCondition: Text$TypedConditionStatic = Java.type(
+  "io.gatling.javaapi.http.WsFrameCheck$Text$TypedCondition"
+);
+
+interface Text$UntypedConditionStatic {
+  readonly class: any;
+  new (
+    arg0: any /*io.gatling.javaapi.http.internal.ScalaWsFrameCheckTextConditions$Untyped*/
+  ): io.gatling.javaapi.http.Text$UntypedCondition;
+}
+
+export const Text$UntypedCondition: Text$UntypedConditionStatic = Java.type(
+  "io.gatling.javaapi.http.WsFrameCheck$Text$UntypedCondition"
+);
+
 interface ThrottleStep$ReachIntermediateStatic {
   readonly class: any;
 }
@@ -2259,6 +2319,24 @@ interface WithWeight$ThenStatic {
 
 export const WithWeight$Then: WithWeight$ThenStatic = Java.type("io.gatling.javaapi.core.Choice$WithWeight$Then");
 
+interface Ws$PrefixStatic {
+  readonly class: any;
+}
+
+export const Ws$Prefix: Ws$PrefixStatic = Java.type("io.gatling.javaapi.http.Ws$Prefix");
+
+interface WsAwaitActionBuilder$OnStatic {
+  readonly class: any;
+  new <T>(
+    arg0: io.gatling.javaapi.http.WsAwaitActionBuilder<T, any /*java.lang.Object*/>,
+    arg1: any /*scala.Function1*/
+  ): io.gatling.javaapi.http.WsAwaitActionBuilder$On<T>;
+}
+
+export const WsAwaitActionBuilder$On: WsAwaitActionBuilder$OnStatic = Java.type(
+  "io.gatling.javaapi.http.WsAwaitActionBuilder$On"
+);
+
 interface WsAwaitActionBuilderStatic {
   readonly class: any;
 }
@@ -2266,6 +2344,28 @@ interface WsAwaitActionBuilderStatic {
 export const WsAwaitActionBuilder: WsAwaitActionBuilderStatic = Java.type(
   "io.gatling.javaapi.http.WsAwaitActionBuilder"
 );
+
+interface WsConnectActionBuilderStatic {
+  readonly class: any;
+}
+
+export const WsConnectActionBuilder: WsConnectActionBuilderStatic = Java.type(
+  "io.gatling.javaapi.http.WsConnectActionBuilder"
+);
+
+interface WsFrameCheck$BinaryStatic {
+  readonly class: any;
+  new (arg0: any /*io.gatling.http.check.ws.WsFrameCheck$Binary*/): io.gatling.javaapi.http.WsFrameCheck$Binary;
+}
+
+export const WsFrameCheck$Binary: WsFrameCheck$BinaryStatic = Java.type("io.gatling.javaapi.http.WsFrameCheck$Binary");
+
+interface WsFrameCheck$TextStatic {
+  readonly class: any;
+  new (arg0: any /*io.gatling.http.check.ws.WsFrameCheck$Text*/): io.gatling.javaapi.http.WsFrameCheck$Text;
+}
+
+export const WsFrameCheck$Text: WsFrameCheck$TextStatic = Java.type("io.gatling.javaapi.http.WsFrameCheck$Text");
 
 interface WsFrameCheckStatic {
   readonly class: any;

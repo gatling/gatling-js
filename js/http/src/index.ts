@@ -17,6 +17,7 @@ export * from "./protocol";
 export * from "./proxy";
 export * from "./request";
 export * from "./response";
+export * from "./ws";
 
 import JvmHttp = io.gatling.javaapi.http.Http;
 import JvmRequest = io.gatling.http.client.Request;

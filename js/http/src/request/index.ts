@@ -17,12 +17,14 @@ import {
 import { BodyPart } from "../bodyPart";
 import { Proxy } from "../proxy";
 
+import JvmRequestActionBuilder = io.gatling.javaapi.http.RequestActionBuilder;
+import JvmRequestWithBodyActionBuilder = io.gatling.javaapi.http.RequestWithBodyActionBuilder;
 import JvmHttpRequestActionBuilder = io.gatling.javaapi.http.HttpRequestActionBuilder;
 
 export * from "./body";
 export * from "./request";
 
-export interface RequestWithParamsActionBuilder<T> {
+export interface RequestActionBuilder<T> {
   /**
    * Set some query parameter
    *
@@ -309,10 +311,10 @@ export interface RequestWithParamsActionBuilder<T> {
   ): T;
 }
 
-const requestWithParamsActionBuilderImpl = <T>(
-  jvmBuilder: JvmHttpRequestActionBuilder,
-  wrap: (_underlying: JvmHttpRequestActionBuilder) => T
-): RequestWithParamsActionBuilder<T> => ({
+export const requestActionBuilderImpl = <T, J extends JvmRequestActionBuilder<J, any>>(
+  jvmBuilder: J,
+  wrap: (_underlying: J) => T
+): RequestActionBuilder<T> => ({
   queryParam: (name: Expression<string>, value: string | Expression<any>): T => {
     if (typeof name === "function") {
       if (typeof value === "function") {
@@ -649,9 +651,9 @@ export interface RequestWithBodyActionBuilder<T> {
   asXml(): T;
 }
 
-const requestWithBodyActionBuilderImpl = <T>(
-  jvmBuilder: JvmHttpRequestActionBuilder,
-  wrap: (_underlying: JvmHttpRequestActionBuilder) => T
+const requestWithBodyActionBuilderImpl = <T, J extends JvmRequestWithBodyActionBuilder<J, any>>(
+  jvmBuilder: J,
+  wrap: (_underlying: J) => T
 ): RequestWithBodyActionBuilder<T> => ({
   body: (body: Body): T => wrap(jvmBuilder.body(body._underlying)),
   bodyPart: (part: BodyPart): T => wrap(jvmBuilder.bodyPart(part._underlying)),
@@ -722,14 +724,20 @@ const requestWithBodyActionBuilderImpl = <T>(
   asXml: (): T => wrap(jvmBuilder.asXml())
 });
 
-export interface RequestActionBuilder<T> {
+export interface HttpRequestActionBuilder
+  extends RequestWithBodyActionBuilder<HttpRequestActionBuilder>,
+    RequestActionBuilder<HttpRequestActionBuilder>,
+    ActionBuilder {
+  // Assembling all original subtypes
+  _underlying: JvmHttpRequestActionBuilder;
+
   /**
    * Apply some checks
    *
    * @param checks - the checks
    * @returns a new HttpRequestActionBuilder instance
    */
-  check(...checks: CheckBuilder[]): T;
+  check(...checks: CheckBuilder[]): HttpRequestActionBuilder;
 
   /**
    * Apply some checks if some condition holds true
@@ -737,7 +745,7 @@ export interface RequestActionBuilder<T> {
    * @param condition - the condition, expressed as a function
    * @returns the next DSL step
    */
-  checkIf(condition: string): Condition<T>;
+  checkIf(condition: string): Condition<HttpRequestActionBuilder>;
 
   /**
    * Apply some checks if some condition holds true
@@ -745,7 +753,7 @@ export interface RequestActionBuilder<T> {
    * @param condition - the condition, expressed as a function
    * @returns the next DSL step
    */
-  checkIf(condition: (session: Session) => boolean): Condition<T>;
+  checkIf(condition: (session: Session) => boolean): Condition<HttpRequestActionBuilder>;
 
   // TODO checkIf response
 
@@ -754,14 +762,14 @@ export interface RequestActionBuilder<T> {
    *
    * @returns a new HttpRequestActionBuilder instance
    */
-  ignoreProtocolChecks(): T;
+  ignoreProtocolChecks(): HttpRequestActionBuilder;
 
   /**
    * Have this request ignore the common checks defined on the HTTP protocol configuration
    *
    * @returns a new HttpRequestActionBuilder instance
    */
-  silent(): T;
+  silent(): HttpRequestActionBuilder;
 
   /**
    * Instruct the reporting engine to forcefully report stats about this request, ignoring HTTP
@@ -769,14 +777,14 @@ export interface RequestActionBuilder<T> {
    *
    * @returns a new HttpRequestActionBuilder instance
    */
-  notSilent(): T;
+  notSilent(): HttpRequestActionBuilder;
 
   /**
    * Disable automatic redirect following
    *
    * @returns a new HttpRequestActionBuilder instance
    */
-  disableFollowRedirect(): T;
+  disableFollowRedirect(): HttpRequestActionBuilder;
 
   // TODO transformResponse(f: (response: Response, session: Session) => Response): T;
 
@@ -787,7 +795,7 @@ export interface RequestActionBuilder<T> {
    * @param res - the resources
    * @returns a new HttpRequestActionBuilder instance
    */
-  resources(...res: HttpRequestActionBuilder[]): T;
+  resources(...res: HttpRequestActionBuilder[]): HttpRequestActionBuilder;
 
   /**
    * Override the default request timeout defined in gatling.conf
@@ -795,44 +803,28 @@ export interface RequestActionBuilder<T> {
    * @param timeout - timeout the timeout
    * @returns a new HttpRequestActionBuilder instance
    */
-  requestTimeout(timeout: Duration): T;
-}
-
-const requestActionBuilderImpl = <T>(
-  jvmBuilder: JvmHttpRequestActionBuilder,
-  wrap: (_underlying: JvmHttpRequestActionBuilder) => T
-): RequestActionBuilder<T> => ({
-  check: (...checks: CheckBuilder[]): T => wrap(jvmBuilder.check(checks.map((c: CheckBuilder) => c._underlying))),
-  checkIf: (condition: string | SessionTo<boolean>): Condition<T> =>
-    wrapCondition(
-      typeof condition === "string"
-        ? jvmBuilder.checkIf(condition)
-        : jvmBuilder.checkIf(underlyingSessionTo(condition)),
-      wrap
-    ),
-  ignoreProtocolChecks: (): T => wrap(jvmBuilder.ignoreProtocolChecks()),
-  silent: (): T => wrap(jvmBuilder.silent()),
-  notSilent: (): T => wrap(jvmBuilder.notSilent()),
-  disableFollowRedirect: (): T => wrap(jvmBuilder.disableFollowRedirect()),
-  // TODO transformResponse: (f: (response: Response, session: Session) => Response): T =>
-  //  wrap(jvmBuilder.transformResponse(wrapBiCallback(underlyingResponseTransform(f))))
-  resources: (...res: HttpRequestActionBuilder[]): T =>
-    wrap(jvmBuilder.resources(res.map((r) => r._underlying as JvmHttpRequestActionBuilder))),
-  requestTimeout: (duration: Duration): T => wrap(jvmBuilder.requestTimeout(toJvmDuration(duration)))
-});
-
-export interface HttpRequestActionBuilder
-  extends RequestWithParamsActionBuilder<HttpRequestActionBuilder>,
-    RequestWithBodyActionBuilder<HttpRequestActionBuilder>,
-    RequestActionBuilder<HttpRequestActionBuilder>,
-    ActionBuilder {
-  // Assembling all original subtypes
-  _underlying: JvmHttpRequestActionBuilder;
+  requestTimeout(timeout: Duration): HttpRequestActionBuilder;
 }
 
 export const wrapHttpRequestActionBuilder = (_underlying: JvmHttpRequestActionBuilder): HttpRequestActionBuilder => ({
   _underlying,
-  ...requestWithParamsActionBuilderImpl(_underlying, wrapHttpRequestActionBuilder),
+  ...requestActionBuilderImpl(_underlying, wrapHttpRequestActionBuilder),
   ...requestWithBodyActionBuilderImpl(_underlying, wrapHttpRequestActionBuilder),
-  ...requestActionBuilderImpl(_underlying, wrapHttpRequestActionBuilder)
+  check: (...checks) => wrapHttpRequestActionBuilder(_underlying.check(checks.map((c: CheckBuilder) => c._underlying))),
+  checkIf: (condition) =>
+    wrapCondition(
+      typeof condition === "string"
+        ? _underlying.checkIf(condition)
+        : _underlying.checkIf(underlyingSessionTo(condition)),
+      wrapHttpRequestActionBuilder
+    ),
+  ignoreProtocolChecks: () => wrapHttpRequestActionBuilder(_underlying.ignoreProtocolChecks()),
+  silent: () => wrapHttpRequestActionBuilder(_underlying.silent()),
+  notSilent: () => wrapHttpRequestActionBuilder(_underlying.notSilent()),
+  disableFollowRedirect: () => wrapHttpRequestActionBuilder(_underlying.disableFollowRedirect()),
+  // TODO transformResponse: (f: (response: Response, session: Session) => Response): T =>
+  //  wrap(jvmBuilder.transformResponse(wrapBiCallback(underlyingResponseTransform(f))))
+  resources: (...res) =>
+    wrapHttpRequestActionBuilder(_underlying.resources(res.map((r) => r._underlying as JvmHttpRequestActionBuilder))),
+  requestTimeout: (duration) => wrapHttpRequestActionBuilder(_underlying.requestTimeout(toJvmDuration(duration)))
 });

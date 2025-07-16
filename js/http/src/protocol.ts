@@ -672,28 +672,61 @@ export interface HttpProtocolBuilder extends ProtocolBuilder {
 
   // WebSockets part
 
-  // TODO
-  //wsBaseUrl(arg0: string): HttpProtocolBuilder;
+  /**
+   * Define a baseUrl that will be used as a prefix for all relative WebSocket urls.
+   *
+   * @param url - the base url
+   * @returns a new HttpProtocolBuilder instance
+   */
+  wsBaseUrl(url: string): HttpProtocolBuilder;
 
-  // TODO
-  //wsBaseUrls(...arg0: string[]): HttpProtocolBuilder;
+  /**
+   * Define multiple baseUrls that will be used as a prefix for all relative WebSocket urls.
+   * Assigned once per virtual user based on a round-robin strategy.
+   *
+   * @param urls - the base urls
+   * @returns a new HttpProtocolBuilder instance
+   */
+  wsBaseUrls(...urls: string[]): HttpProtocolBuilder;
 
-  // TODO
-  //wsBaseUrls(arg0: java.util.List<string>): HttpProtocolBuilder;
+  /**
+   * Automatically reconnect disconnected WebSockets
+   *
+   * @returns a new HttpProtocolBuilder instance
+   */
+  wsReconnect(): HttpProtocolBuilder;
 
-  // TODO
-  //wsReconnect(): HttpProtocolBuilder;
+  /**
+   * Define a maximum number of times a WebSocket can be automatically reconnected
+   *
+   * @param max - the limit
+   * @returns a new HttpProtocolBuilder instance
+   */
+  wsMaxReconnects(max: number): HttpProtocolBuilder;
 
-  // TODO
-  //wsMaxReconnects(arg0: int): HttpProtocolBuilder;
+  /**
+   * Automatically reply to a TEXT frame with another TEXT frame.
+   *
+   * @param f - the function
+   * @returns a new HttpProtocolBuilder instance
+   */
+  wsAutoReplyTextFrame(f: (frame: string) => string): HttpProtocolBuilder;
 
-  // TODO
-  //wsAutoReplyTextFrame(arg0: Func<string, string>): HttpProtocolBuilder;
+  /**
+   * Automatically reply to a SocketIo4 ping TEXT frame with the corresponding pong TEXT frame.
+   *
+   * @returns a new HttpProtocolBuilder instance
+   */
+  wsAutoReplySocketIo4(): HttpProtocolBuilder;
 
-  // TODO
-  //wsAutoReplySocketIo4(): HttpProtocolBuilder;
-
-  // FIXME missing wsUnmatchedInboundMessageBufferSize
+  /**
+   * Set the max size of the buffer for unmatched/unchecked inbound WebSocket messages. 0 by
+   * default, meaning such messages are not buffered.
+   *
+   * @param max - the max size
+   * @returns a new HttpProtocolBuilder instance
+   */
+  wsUnmatchedInboundMessageBufferSize(max: number): HttpProtocolBuilder;
 
   // SSE part
 
@@ -762,8 +795,8 @@ export interface HttpProtocolBuilder extends ProtocolBuilder {
   /**
    * Define some aliases to bypass DNS name resolution
    *
-   * @param aliases the aliases
-   * @return a new HttpProtocolBuilder instance
+   * @param aliases - the aliases
+   * @returns a new HttpProtocolBuilder instance
    */
   hostNameAliases(aliases: Record<string, string[]>): HttpProtocolBuilder;
 
@@ -984,6 +1017,17 @@ export const wrapHttpProtocolBuilder = (_underlying: JvmHttpProtocolBuilder): Ht
     wrapHttpProtocolBuilder(_underlying.nameInferredHtmlResourcesAfterPath()),
   nameInferredHtmlResourcesAfterLastPathElement: (): HttpProtocolBuilder =>
     wrapHttpProtocolBuilder(_underlying.nameInferredHtmlResourcesAfterLastPathElement()),
+
+  // WebSockets part
+
+  wsBaseUrl: (url) => wrapHttpProtocolBuilder(_underlying.wsBaseUrl(url)),
+  wsBaseUrls: (...urls) => wrapHttpProtocolBuilder(_underlying.wsBaseUrls(urls)),
+  wsReconnect: () => wrapHttpProtocolBuilder(_underlying.wsReconnect()),
+  wsMaxReconnects: (max) => wrapHttpProtocolBuilder(_underlying.wsMaxReconnects(max)),
+  wsAutoReplyTextFrame: (f) => wrapHttpProtocolBuilder(_underlying.wsAutoReplyTextFrame(f)),
+  wsAutoReplySocketIo4: () => wrapHttpProtocolBuilder(_underlying.wsAutoReplySocketIo4()),
+  wsUnmatchedInboundMessageBufferSize: (max) =>
+    wrapHttpProtocolBuilder(_underlying.wsUnmatchedInboundMessageBufferSize(max)),
 
   // Proxy part
 
