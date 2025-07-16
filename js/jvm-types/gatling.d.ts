@@ -2933,6 +2933,22 @@ declare namespace io.gatling.javaapi.http {
   } // end AddCookie
 } // end namespace io.gatling.javaapi.http
 declare namespace io.gatling.javaapi.http {
+  class Binary$TypedCondition /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    then(...arg0: io.gatling.javaapi.core.CheckBuilder[]): WsFrameCheck$Binary;
+    then(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): WsFrameCheck$Binary;
+    toString(): string;
+  } // end Binary$TypedCondition
+} // end namespace io.gatling.javaapi.http
+declare namespace io.gatling.javaapi.http {
+  class Binary$UntypedCondition /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    then(...arg0: io.gatling.javaapi.core.CheckBuilder[]): WsFrameCheck$Binary;
+    then(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): WsFrameCheck$Binary;
+    toString(): string;
+  } // end Binary$UntypedCondition
+} // end namespace io.gatling.javaapi.http
+declare namespace io.gatling.javaapi.http {
   class BodyPart /* extends java.lang.Object*/ {
     asScala(): any /*io.gatling.http.request.BodyPart*/;
     charset(arg0: string): BodyPart;
@@ -3330,6 +3346,189 @@ declare namespace io.gatling.javaapi.http {
   } // end Proxy
 } // end namespace io.gatling.javaapi.http
 declare namespace io.gatling.javaapi.http {
+  class RequestActionBuilder<T, W> /* extends java.lang.Object implements io.gatling.javaapi.core.ActionBuilder*/ {
+    asScala(): any /*io.gatling.core.action.builder.ActionBuilder*/;
+    basicAuth(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: Func<io.gatling.javaapi.core.Session, string>
+    ): T;
+    basicAuth(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): T;
+    basicAuth(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, string>): T;
+    basicAuth(arg0: string, arg1: string): T;
+    digestAuth(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: Func<io.gatling.javaapi.core.Session, string>
+    ): T;
+    digestAuth(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): T;
+    digestAuth(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, string>): T;
+    digestAuth(arg0: string, arg1: string): T;
+    disableUrlEncoding(): T;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    header(arg0: any /*java.lang.CharSequence*/, arg1: Func<io.gatling.javaapi.core.Session, string>): T;
+    header(arg0: any /*java.lang.CharSequence*/, arg1: string): T;
+    headers(arg0: java.util.Map<any /*java.lang.CharSequence*/, string>): T;
+    ignoreProtocolHeaders(): T;
+    multivaluedQueryParam(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: Func<io.gatling.javaapi.core.Session, java.util.List<any /*java.lang.Object*/>>
+    ): T;
+    multivaluedQueryParam(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: java.util.List<any /*java.lang.Object*/>
+    ): T;
+    multivaluedQueryParam(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): T;
+    multivaluedQueryParam(
+      arg0: string,
+      arg1: Func<io.gatling.javaapi.core.Session, java.util.List<any /*java.lang.Object*/>>
+    ): T;
+    multivaluedQueryParam(arg0: string, arg1: java.util.List<any /*java.lang.Object*/>): T;
+    multivaluedQueryParam(arg0: string, arg1: string): T;
+    proxy(arg0: Proxy): T;
+    queryParam(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: Func<io.gatling.javaapi.core.Session, any /*java.lang.Object*/>
+    ): T;
+    queryParam(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: any /*java.lang.Object*/): T;
+    queryParam(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): T;
+    queryParam(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, any /*java.lang.Object*/>): T;
+    queryParam(arg0: string, arg1: any /*java.lang.Object*/): T;
+    queryParam(arg0: string, arg1: string): T;
+    queryParamMap(arg0: Func<io.gatling.javaapi.core.Session, java.util.Map<string, any /*java.lang.Object*/>>): T;
+    queryParamMap(arg0: java.util.Map<string, any /*java.lang.Object*/>): T;
+    queryParamMap(arg0: string): T;
+    queryParamSeq(arg0: Func<io.gatling.javaapi.core.Session, java.util.List<any /*java.util.Map$Entry*/>>): T;
+    queryParamSeq(arg0: java.util.List<any /*java.util.Map$Entry*/>): T;
+    queryParamSeq(arg0: string): T;
+    sign(
+      arg0: BiFunction<io.gatling.http.client.Request, io.gatling.javaapi.core.Session, io.gatling.http.client.Request>
+    ): T;
+    sign(arg0: Func<io.gatling.http.client.Request, io.gatling.http.client.Request>): T;
+    signWithOAuth1(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: Func<io.gatling.javaapi.core.Session, string>,
+      arg2: Func<io.gatling.javaapi.core.Session, string>,
+      arg3: Func<io.gatling.javaapi.core.Session, string>
+    ): T;
+    signWithOAuth1(arg0: string, arg1: string, arg2: string, arg3: string): T;
+    toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
+    toString(): string;
+  } // end RequestActionBuilder
+} // end namespace io.gatling.javaapi.http
+declare namespace io.gatling.javaapi.http {
+  class RequestWithBodyActionBuilder<T, W> /* extends RequestActionBuilder<T, W>*/ {
+    asFormUrlEncoded(): T;
+    asJson(): T;
+    asMultipartForm(): T;
+    asScala(): any /*io.gatling.core.action.builder.ActionBuilder*/;
+    asXml(): T;
+    basicAuth(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: Func<io.gatling.javaapi.core.Session, string>
+    ): T;
+    basicAuth(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): T;
+    basicAuth(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, string>): T;
+    basicAuth(arg0: string, arg1: string): T;
+    body(arg0: io.gatling.javaapi.core.Body): T;
+    bodyPart(arg0: BodyPart): T;
+    bodyParts(...arg0: BodyPart[]): T;
+    bodyParts(arg0: java.util.List<BodyPart>): T;
+    digestAuth(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: Func<io.gatling.javaapi.core.Session, string>
+    ): T;
+    digestAuth(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): T;
+    digestAuth(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, string>): T;
+    digestAuth(arg0: string, arg1: string): T;
+    disableUrlEncoding(): T;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    form(arg0: Func<io.gatling.javaapi.core.Session, java.util.Map<string, any /*java.lang.Object*/>>): T;
+    form(arg0: string): T;
+    formParam(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: Func<io.gatling.javaapi.core.Session, any /*java.lang.Object*/>
+    ): T;
+    formParam(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: any /*java.lang.Object*/): T;
+    formParam(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): T;
+    formParam(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, any /*java.lang.Object*/>): T;
+    formParam(arg0: string, arg1: any /*java.lang.Object*/): T;
+    formParam(arg0: string, arg1: string): T;
+    formParamMap(arg0: Func<io.gatling.javaapi.core.Session, java.util.Map<string, any /*java.lang.Object*/>>): T;
+    formParamMap(arg0: java.util.Map<string, any /*java.lang.Object*/>): T;
+    formParamSeq(arg0: Func<io.gatling.javaapi.core.Session, java.util.List<any /*java.util.Map$Entry*/>>): T;
+    formParamSeq(arg0: java.util.List<any /*java.util.Map$Entry*/>): T;
+    formUpload(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: Func<io.gatling.javaapi.core.Session, string>
+    ): T;
+    formUpload(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): T;
+    formUpload(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, string>): T;
+    formUpload(arg0: string, arg1: string): T;
+    header(arg0: any /*java.lang.CharSequence*/, arg1: Func<io.gatling.javaapi.core.Session, string>): T;
+    header(arg0: any /*java.lang.CharSequence*/, arg1: string): T;
+    headers(arg0: java.util.Map<any /*java.lang.CharSequence*/, string>): T;
+    ignoreProtocolHeaders(): T;
+    multivaluedFormParam(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: Func<io.gatling.javaapi.core.Session, java.util.List<any /*java.lang.Object*/>>
+    ): T;
+    multivaluedFormParam(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: java.util.List<any /*java.lang.Object*/>
+    ): T;
+    multivaluedFormParam(
+      arg0: string,
+      arg1: Func<io.gatling.javaapi.core.Session, java.util.List<any /*java.lang.Object*/>>
+    ): T;
+    multivaluedFormParam(arg0: string, arg1: java.util.List<any /*java.lang.Object*/>): T;
+    multivaluedFormParam(arg0: string, arg1: string): T;
+    multivaluedQueryParam(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: Func<io.gatling.javaapi.core.Session, java.util.List<any /*java.lang.Object*/>>
+    ): T;
+    multivaluedQueryParam(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: java.util.List<any /*java.lang.Object*/>
+    ): T;
+    multivaluedQueryParam(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): T;
+    multivaluedQueryParam(
+      arg0: string,
+      arg1: Func<io.gatling.javaapi.core.Session, java.util.List<any /*java.lang.Object*/>>
+    ): T;
+    multivaluedQueryParam(arg0: string, arg1: java.util.List<any /*java.lang.Object*/>): T;
+    multivaluedQueryParam(arg0: string, arg1: string): T;
+    processRequestBody(arg0: Func<io.gatling.javaapi.core.Body, io.gatling.javaapi.core.Body>): T;
+    proxy(arg0: Proxy): T;
+    queryParam(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: Func<io.gatling.javaapi.core.Session, any /*java.lang.Object*/>
+    ): T;
+    queryParam(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: any /*java.lang.Object*/): T;
+    queryParam(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): T;
+    queryParam(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, any /*java.lang.Object*/>): T;
+    queryParam(arg0: string, arg1: any /*java.lang.Object*/): T;
+    queryParam(arg0: string, arg1: string): T;
+    queryParamMap(arg0: Func<io.gatling.javaapi.core.Session, java.util.Map<string, any /*java.lang.Object*/>>): T;
+    queryParamMap(arg0: java.util.Map<string, any /*java.lang.Object*/>): T;
+    queryParamMap(arg0: string): T;
+    queryParamSeq(arg0: Func<io.gatling.javaapi.core.Session, java.util.List<any /*java.util.Map$Entry*/>>): T;
+    queryParamSeq(arg0: java.util.List<any /*java.util.Map$Entry*/>): T;
+    queryParamSeq(arg0: string): T;
+    sign(
+      arg0: BiFunction<io.gatling.http.client.Request, io.gatling.javaapi.core.Session, io.gatling.http.client.Request>
+    ): T;
+    sign(arg0: Func<io.gatling.http.client.Request, io.gatling.http.client.Request>): T;
+    signWithOAuth1(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: Func<io.gatling.javaapi.core.Session, string>,
+      arg2: Func<io.gatling.javaapi.core.Session, string>,
+      arg3: Func<io.gatling.javaapi.core.Session, string>
+    ): T;
+    signWithOAuth1(arg0: string, arg1: string, arg2: string, arg3: string): T;
+    toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
+    toString(): string;
+  } // end RequestWithBodyActionBuilder
+} // end namespace io.gatling.javaapi.http
+declare namespace io.gatling.javaapi.http {
   class Sse /* extends java.lang.Object*/ {
     close(): io.gatling.javaapi.core.ActionBuilder;
     equals(arg0: any /*java.lang.Object*/): boolean;
@@ -3496,13 +3695,60 @@ declare namespace io.gatling.javaapi.http {
   } // end SseSetCheckActionBuilder
 } // end namespace io.gatling.javaapi.http
 declare namespace io.gatling.javaapi.http {
+  class Text$TypedCondition /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    then(...arg0: io.gatling.javaapi.core.CheckBuilder[]): WsFrameCheck$Text;
+    then(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): WsFrameCheck$Text;
+    toString(): string;
+  } // end Text$TypedCondition
+} // end namespace io.gatling.javaapi.http
+declare namespace io.gatling.javaapi.http {
+  class Text$UntypedCondition /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    then(...arg0: io.gatling.javaapi.core.CheckBuilder[]): WsFrameCheck$Text;
+    then(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): WsFrameCheck$Text;
+    toString(): string;
+  } // end Text$UntypedCondition
+} // end namespace io.gatling.javaapi.http
+declare namespace io.gatling.javaapi.http {
+  class Ws$Prefix /* extends java.lang.Object*/ {
+    checkBinaryMessage(arg0: Func<io.gatling.javaapi.core.Session, string>): WsFrameCheck$Binary;
+    checkBinaryMessage(arg0: string): WsFrameCheck$Binary;
+    checkTextMessage(arg0: Func<io.gatling.javaapi.core.Session, string>): WsFrameCheck$Text;
+    checkTextMessage(arg0: string): WsFrameCheck$Text;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    processUnmatchedMessages(
+      arg0: BiFunction<
+        java.util.List<any /*io.gatling.http.action.ws.WsInboundMessage*/>,
+        io.gatling.javaapi.core.Session,
+        io.gatling.javaapi.core.Session
+      >
+    ): io.gatling.javaapi.core.ActionBuilder;
+    processUnmatchedMessages(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: BiFunction<
+        java.util.List<any /*io.gatling.http.action.ws.WsInboundMessage*/>,
+        io.gatling.javaapi.core.Session,
+        io.gatling.javaapi.core.Session
+      >
+    ): io.gatling.javaapi.core.ActionBuilder;
+    processUnmatchedMessages(
+      arg0: string,
+      arg1: BiFunction<
+        java.util.List<any /*io.gatling.http.action.ws.WsInboundMessage*/>,
+        io.gatling.javaapi.core.Session,
+        io.gatling.javaapi.core.Session
+      >
+    ): io.gatling.javaapi.core.ActionBuilder;
+    toString(): string;
+  } // end Ws$Prefix
+} // end namespace io.gatling.javaapi.http
+declare namespace io.gatling.javaapi.http {
   class Ws /* extends java.lang.Object*/ {
     close(): io.gatling.javaapi.core.ActionBuilder;
     close(arg0: int, arg1: string): io.gatling.javaapi.core.ActionBuilder;
-    connect(
-      arg0: Func<io.gatling.javaapi.core.Session, string>
-    ): any /*io.gatling.javaapi.http.WsConnectActionBuilder*/;
-    connect(arg0: string): any /*io.gatling.javaapi.http.WsConnectActionBuilder*/;
+    connect(arg0: Func<io.gatling.javaapi.core.Session, string>): WsConnectActionBuilder;
+    connect(arg0: string): WsConnectActionBuilder;
     equals(arg0: any /*java.lang.Object*/): boolean;
     sendBytes(arg0: Func<io.gatling.javaapi.core.Session, bytearray>): WsSendBinaryActionBuilder;
     sendBytes(arg0: bytearray): WsSendBinaryActionBuilder;
@@ -3515,6 +3761,120 @@ declare namespace io.gatling.javaapi.http {
   } // end Ws
 } // end namespace io.gatling.javaapi.http
 declare namespace io.gatling.javaapi.http {
+  class WsAwaitActionBuilder$On<T> /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    on(...arg0: WsFrameCheck[]): T;
+    on(arg0: java.util.List<WsFrameCheck>): T;
+    toString(): string;
+  } // end WsAwaitActionBuilder$On
+} // end namespace io.gatling.javaapi.http
+declare namespace io.gatling.javaapi.http {
+  class WsConnectActionBuilder /* extends RequestActionBuilder<any, any> implements WsAwaitActionBuilder<any, any>*/ {
+    asScala(): any /*io.gatling.core.action.builder.ActionBuilder*/;
+    await<T>(arg0: Func<io.gatling.javaapi.core.Session, java.time.Duration>): WsAwaitActionBuilder$On<T>;
+    await<T>(arg0: java.time.Duration): WsAwaitActionBuilder$On<T>;
+    await<T>(arg0: long): WsAwaitActionBuilder$On<T>;
+    await<T>(arg0: string): WsAwaitActionBuilder$On<T>;
+    basicAuth<T>(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: Func<io.gatling.javaapi.core.Session, string>
+    ): T;
+    basicAuth<T>(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): T;
+    basicAuth<T>(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, string>): T;
+    basicAuth<T>(arg0: string, arg1: string): T;
+    digestAuth<T>(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: Func<io.gatling.javaapi.core.Session, string>
+    ): T;
+    digestAuth<T>(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): T;
+    digestAuth<T>(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, string>): T;
+    digestAuth<T>(arg0: string, arg1: string): T;
+    disableUrlEncoding<T>(): T;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    header<T>(arg0: any /*java.lang.CharSequence*/, arg1: Func<io.gatling.javaapi.core.Session, string>): T;
+    header<T>(arg0: any /*java.lang.CharSequence*/, arg1: string): T;
+    headers<T>(arg0: java.util.Map<any /*java.lang.CharSequence*/, string>): T;
+    ignoreProtocolHeaders<T>(): T;
+    multivaluedQueryParam<T>(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: Func<io.gatling.javaapi.core.Session, java.util.List<any /*java.lang.Object*/>>
+    ): T;
+    multivaluedQueryParam<T>(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: java.util.List<any /*java.lang.Object*/>
+    ): T;
+    multivaluedQueryParam<T>(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): T;
+    multivaluedQueryParam<T>(
+      arg0: string,
+      arg1: Func<io.gatling.javaapi.core.Session, java.util.List<any /*java.lang.Object*/>>
+    ): T;
+    multivaluedQueryParam<T>(arg0: string, arg1: java.util.List<any /*java.lang.Object*/>): T;
+    multivaluedQueryParam<T>(arg0: string, arg1: string): T;
+    onConnected(arg0: io.gatling.javaapi.core.ChainBuilder): WsConnectActionBuilder;
+    proxy<T>(arg0: Proxy): T;
+    queryParam<T>(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: Func<io.gatling.javaapi.core.Session, any /*java.lang.Object*/>
+    ): T;
+    queryParam<T>(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: any /*java.lang.Object*/): T;
+    queryParam<T>(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): T;
+    queryParam<T>(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, any /*java.lang.Object*/>): T;
+    queryParam<T>(arg0: string, arg1: any /*java.lang.Object*/): T;
+    queryParam<T>(arg0: string, arg1: string): T;
+    queryParamMap<T>(arg0: Func<io.gatling.javaapi.core.Session, java.util.Map<string, any /*java.lang.Object*/>>): T;
+    queryParamMap<T>(arg0: java.util.Map<string, any /*java.lang.Object*/>): T;
+    queryParamMap<T>(arg0: string): T;
+    queryParamSeq<T>(arg0: Func<io.gatling.javaapi.core.Session, java.util.List<any /*java.util.Map$Entry*/>>): T;
+    queryParamSeq<T>(arg0: java.util.List<any /*java.util.Map$Entry*/>): T;
+    queryParamSeq<T>(arg0: string): T;
+    sign<T>(
+      arg0: BiFunction<io.gatling.http.client.Request, io.gatling.javaapi.core.Session, io.gatling.http.client.Request>
+    ): T;
+    sign<T>(arg0: Func<io.gatling.http.client.Request, io.gatling.http.client.Request>): T;
+    signWithOAuth1<T>(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: Func<io.gatling.javaapi.core.Session, string>,
+      arg2: Func<io.gatling.javaapi.core.Session, string>,
+      arg3: Func<io.gatling.javaapi.core.Session, string>
+    ): T;
+    signWithOAuth1<T>(arg0: string, arg1: string, arg2: string, arg3: string): T;
+    subprotocol(arg0: Func<io.gatling.javaapi.core.Session, string>): WsConnectActionBuilder;
+    subprotocol(arg0: string): WsConnectActionBuilder;
+    toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
+    toString(): string;
+  } // end WsConnectActionBuilder
+} // end namespace io.gatling.javaapi.http
+declare namespace io.gatling.javaapi.http {
+  class WsFrameCheck$Binary /* extends WsFrameCheck*/ {
+    asScala(): any /*io.gatling.http.check.ws.WsFrameCheck*/;
+    check(...arg0: io.gatling.javaapi.core.CheckBuilder[]): WsFrameCheck$Binary;
+    check(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): WsFrameCheck$Binary;
+    checkIf(arg0: BiFunction<bytearray, io.gatling.javaapi.core.Session, boolean | null>): Binary$TypedCondition;
+    checkIf(arg0: Func<io.gatling.javaapi.core.Session, boolean | null>): Binary$UntypedCondition;
+    checkIf(arg0: string): Binary$UntypedCondition;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    matching(...arg0: io.gatling.javaapi.core.CheckBuilder[]): WsFrameCheck$Binary;
+    matching(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): WsFrameCheck$Binary;
+    silent(): WsFrameCheck$Binary;
+    toString(): string;
+  } // end WsFrameCheck$Binary
+} // end namespace io.gatling.javaapi.http
+declare namespace io.gatling.javaapi.http {
+  class WsFrameCheck$Text /* extends WsFrameCheck*/ {
+    asScala(): any /*io.gatling.http.check.ws.WsFrameCheck*/;
+    check(...arg0: io.gatling.javaapi.core.CheckBuilder[]): WsFrameCheck$Text;
+    check(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): WsFrameCheck$Text;
+    checkIf(arg0: BiFunction<string, io.gatling.javaapi.core.Session, boolean | null>): Text$TypedCondition;
+    checkIf(arg0: Func<io.gatling.javaapi.core.Session, boolean | null>): Text$UntypedCondition;
+    checkIf(arg0: string): Text$UntypedCondition;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    matching(...arg0: io.gatling.javaapi.core.CheckBuilder[]): WsFrameCheck$Text;
+    matching(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): WsFrameCheck$Text;
+    silent(): WsFrameCheck$Text;
+    toString(): string;
+  } // end WsFrameCheck$Text
+} // end namespace io.gatling.javaapi.http
+declare namespace io.gatling.javaapi.http {
   class WsFrameCheck /* extends java.lang.Object*/ {
     asScala(): any /*io.gatling.http.check.ws.WsFrameCheck*/;
     equals(arg0: any /*java.lang.Object*/): boolean;
@@ -3524,12 +3884,10 @@ declare namespace io.gatling.javaapi.http {
 declare namespace io.gatling.javaapi.http {
   class WsSendBinaryActionBuilder /* extends java.lang.Object implements WsAwaitActionBuilder<any, any>*/ {
     asScala(): any /*io.gatling.core.action.builder.ActionBuilder*/;
-    await(
-      arg0: Func<io.gatling.javaapi.core.Session, java.time.Duration>
-    ): any /*io.gatling.javaapi.http.WsAwaitActionBuilder$On*/;
-    await(arg0: java.time.Duration): any /*io.gatling.javaapi.http.WsAwaitActionBuilder$On*/;
-    await(arg0: long): any /*io.gatling.javaapi.http.WsAwaitActionBuilder$On*/;
-    await(arg0: string): any /*io.gatling.javaapi.http.WsAwaitActionBuilder$On*/;
+    await<T>(arg0: Func<io.gatling.javaapi.core.Session, java.time.Duration>): WsAwaitActionBuilder$On<T>;
+    await<T>(arg0: java.time.Duration): WsAwaitActionBuilder$On<T>;
+    await<T>(arg0: long): WsAwaitActionBuilder$On<T>;
+    await<T>(arg0: string): WsAwaitActionBuilder$On<T>;
     equals(arg0: any /*java.lang.Object*/): boolean;
     toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
     toString(): string;
@@ -3538,12 +3896,10 @@ declare namespace io.gatling.javaapi.http {
 declare namespace io.gatling.javaapi.http {
   class WsSendTextActionBuilder /* extends java.lang.Object implements WsAwaitActionBuilder<any, any>*/ {
     asScala(): any /*io.gatling.core.action.builder.ActionBuilder*/;
-    await(
-      arg0: Func<io.gatling.javaapi.core.Session, java.time.Duration>
-    ): any /*io.gatling.javaapi.http.WsAwaitActionBuilder$On*/;
-    await(arg0: java.time.Duration): any /*io.gatling.javaapi.http.WsAwaitActionBuilder$On*/;
-    await(arg0: long): any /*io.gatling.javaapi.http.WsAwaitActionBuilder$On*/;
-    await(arg0: string): any /*io.gatling.javaapi.http.WsAwaitActionBuilder$On*/;
+    await<T>(arg0: Func<io.gatling.javaapi.core.Session, java.time.Duration>): WsAwaitActionBuilder$On<T>;
+    await<T>(arg0: java.time.Duration): WsAwaitActionBuilder$On<T>;
+    await<T>(arg0: long): WsAwaitActionBuilder$On<T>;
+    await<T>(arg0: string): WsAwaitActionBuilder$On<T>;
     equals(arg0: any /*java.lang.Object*/): boolean;
     toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
     toString(): string;
@@ -3564,12 +3920,10 @@ declare namespace io.gatling.javaapi.http {
 declare namespace io.gatling.javaapi.http {
   interface WsAwaitActionBuilder<T, W> /* extends io.gatling.javaapi.core.ActionBuilder*/ {
     asScala(): any /*io.gatling.core.action.builder.ActionBuilder*/;
-    await(
-      arg0: Func<io.gatling.javaapi.core.Session, java.time.Duration>
-    ): any /*io.gatling.javaapi.http.WsAwaitActionBuilder$On*/;
-    await(arg0: java.time.Duration): any /*io.gatling.javaapi.http.WsAwaitActionBuilder$On*/;
-    await(arg0: long): any /*io.gatling.javaapi.http.WsAwaitActionBuilder$On*/;
-    await(arg0: string): any /*io.gatling.javaapi.http.WsAwaitActionBuilder$On*/;
+    await(arg0: Func<io.gatling.javaapi.core.Session, java.time.Duration>): WsAwaitActionBuilder$On<T>;
+    await(arg0: java.time.Duration): WsAwaitActionBuilder$On<T>;
+    await(arg0: long): WsAwaitActionBuilder$On<T>;
+    await(arg0: string): WsAwaitActionBuilder$On<T>;
     toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
   } // end WsAwaitActionBuilder
 } // end namespace io.gatling.javaapi.http

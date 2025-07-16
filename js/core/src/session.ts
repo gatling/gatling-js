@@ -180,3 +180,8 @@ export const underlyingXWithSessionTo =
   <X, X2>(f: (x: X, session: Session) => X2): ((x: X, jvmSession: JvmSession) => X2) =>
   (x: X, jvmSession: JvmSession) =>
     f(x, wrapSession(jvmSession));
+
+export const underlyingXWithSessionToSession =
+  <X>(f: (x: X, session: Session) => Session): ((x: X, jvmSession: JvmSession) => JvmSession) =>
+  (x: X, jvmSession: JvmSession) =>
+    f(x, wrapSession(jvmSession))._underlying;
