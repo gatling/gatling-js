@@ -651,7 +651,7 @@ export interface RequestWithBodyActionBuilder<T> {
   asXml(): T;
 }
 
-const requestWithBodyActionBuilderImpl = <T, J extends JvmRequestWithBodyActionBuilder<J, any>>(
+export const requestWithBodyActionBuilderImpl = <T, J extends JvmRequestWithBodyActionBuilder<J, any>>(
   jvmBuilder: J,
   wrap: (_underlying: J) => T
 ): RequestWithBodyActionBuilder<T> => ({

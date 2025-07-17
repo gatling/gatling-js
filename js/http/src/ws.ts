@@ -6,6 +6,7 @@ import {
   Session,
   SessionTo,
   Wrapper,
+  XWithSessionTo,
   isDuration,
   toJvmDuration,
   underlyingSessionTo,
@@ -282,7 +283,7 @@ const wrapWsAwaitActionBuilderOn = <J, T>(
   jvmOn: JvmWsAwaitActionBuilderOn<J>,
   wrap: (underlying: J) => T
 ): WsAwaitActionBuilderOn<T> => ({
-  on: (...checks: WsFrameCheck[]): T => wrap(jvmOn.on(...checks.map((e) => e._underlying)))
+  on: (...checks: WsFrameCheck[]): T => wrap(jvmOn.on(checks.map((c) => c._underlying)))
 });
 
 /**
@@ -421,11 +422,11 @@ const wrapWsFrameCheckBinary = (_underlying: JvmWsFrameCheckBinary): WsFrameChec
     if (typeof condition === "function") {
       if (condition.length === 1) {
         return wrapWsFrameCheckBinaryUntypedCondition(
-          _underlying.checkIf(underlyingSessionTo(condition as (session: Session) => boolean))
+          _underlying.checkIf(underlyingSessionTo(condition as SessionTo<boolean>))
         );
       } else {
         return wrapWsFrameCheckBinaryTypedCondition(
-          _underlying.checkIf(underlyingXWithSessionTo(condition as (response: number[], session: Session) => boolean))
+          _underlying.checkIf(underlyingXWithSessionTo(condition as XWithSessionTo<number[], boolean>))
         );
       }
     } else {
@@ -532,11 +533,11 @@ const wrapWsFrameCheckText = (_underlying: JvmWsFrameCheckText): WsFrameCheckTex
     if (typeof condition === "function") {
       if (condition.length === 1) {
         return wrapWsFrameCheckTextUntypedCondition(
-          _underlying.checkIf(underlyingSessionTo(condition as (session: Session) => boolean))
+          _underlying.checkIf(underlyingSessionTo(condition as SessionTo<boolean>))
         );
       } else {
         return wrapWsFrameCheckTextTypedCondition(
-          _underlying.checkIf(underlyingXWithSessionTo(condition as (response: string, session: Session) => boolean))
+          _underlying.checkIf(underlyingXWithSessionTo(condition as XWithSessionTo<string, boolean>))
         );
       }
     } else {

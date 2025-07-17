@@ -2103,6 +2103,24 @@ interface SimulationStatic {
 
 export const Simulation: SimulationStatic = Java.type("io.gatling.javaapi.core.Simulation");
 
+interface Sse$PrefixStatic {
+  readonly class: any;
+}
+
+export const Sse$Prefix: Sse$PrefixStatic = Java.type("io.gatling.javaapi.http.Sse$Prefix");
+
+interface SseAwaitActionBuilder$OnStatic {
+  readonly class: any;
+  new <T>(
+    arg0: io.gatling.javaapi.http.SseAwaitActionBuilder<T, any /*java.lang.Object*/>,
+    arg1: any /*scala.Function1*/
+  ): io.gatling.javaapi.http.SseAwaitActionBuilder$On<T>;
+}
+
+export const SseAwaitActionBuilder$On: SseAwaitActionBuilder$OnStatic = Java.type(
+  "io.gatling.javaapi.http.SseAwaitActionBuilder$On"
+);
+
 interface SseAwaitActionBuilderStatic {
   readonly class: any;
 }
@@ -2117,6 +2135,28 @@ interface SseConnectActionBuilderStatic {
 
 export const SseConnectActionBuilder: SseConnectActionBuilderStatic = Java.type(
   "io.gatling.javaapi.http.SseConnectActionBuilder"
+);
+
+interface SseMessageCheck$TypedConditionStatic {
+  readonly class: any;
+  new (
+    arg0: any /*io.gatling.javaapi.http.internal.ScalaSseCheckConditions$Typed*/
+  ): io.gatling.javaapi.http.SseMessageCheck$TypedCondition;
+}
+
+export const SseMessageCheck$TypedCondition: SseMessageCheck$TypedConditionStatic = Java.type(
+  "io.gatling.javaapi.http.SseMessageCheck$TypedCondition"
+);
+
+interface SseMessageCheck$UntypedConditionStatic {
+  readonly class: any;
+  new (
+    arg0: any /*io.gatling.javaapi.http.internal.ScalaSseCheckConditions$Untyped*/
+  ): io.gatling.javaapi.http.SseMessageCheck$UntypedCondition;
+}
+
+export const SseMessageCheck$UntypedCondition: SseMessageCheck$UntypedConditionStatic = Java.type(
+  "io.gatling.javaapi.http.SseMessageCheck$UntypedCondition"
 );
 
 interface SseMessageCheckStatic {

@@ -176,12 +176,13 @@ export const underlyingSessionToDuration =
   (jvmSession: JvmSession) =>
     toJvmDuration(f(wrapSession(jvmSession)));
 
+export type XWithSessionTo<X, X2> = (x: X, session: Session) => X2;
 export const underlyingXWithSessionTo =
-  <X, X2>(f: (x: X, session: Session) => X2): ((x: X, jvmSession: JvmSession) => X2) =>
+  <X, X2>(f: XWithSessionTo<X, X2>): ((x: X, jvmSession: JvmSession) => X2) =>
   (x: X, jvmSession: JvmSession) =>
     f(x, wrapSession(jvmSession));
 
 export const underlyingXWithSessionToSession =
-  <X>(f: (x: X, session: Session) => Session): ((x: X, jvmSession: JvmSession) => JvmSession) =>
+  <X>(f: XWithSessionTo<X, Session>): ((x: X, jvmSession: JvmSession) => JvmSession) =>
   (x: X, jvmSession: JvmSession) =>
     f(x, wrapSession(jvmSession))._underlying;

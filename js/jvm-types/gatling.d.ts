@@ -3529,6 +3529,36 @@ declare namespace io.gatling.javaapi.http {
   } // end RequestWithBodyActionBuilder
 } // end namespace io.gatling.javaapi.http
 declare namespace io.gatling.javaapi.http {
+  class Sse$Prefix /* extends java.lang.Object*/ {
+    checkMessage(arg0: string): SseMessageCheck;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    processUnmatchedMessages(
+      arg0: BiFunction<
+        java.util.List<any /*io.gatling.http.action.sse.SseInboundMessage*/>,
+        io.gatling.javaapi.core.Session,
+        io.gatling.javaapi.core.Session
+      >
+    ): io.gatling.javaapi.core.ActionBuilder;
+    processUnmatchedMessages(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: BiFunction<
+        java.util.List<any /*io.gatling.http.action.sse.SseInboundMessage*/>,
+        io.gatling.javaapi.core.Session,
+        io.gatling.javaapi.core.Session
+      >
+    ): io.gatling.javaapi.core.ActionBuilder;
+    processUnmatchedMessages(
+      arg0: string,
+      arg1: BiFunction<
+        java.util.List<any /*io.gatling.http.action.sse.SseInboundMessage*/>,
+        io.gatling.javaapi.core.Session,
+        io.gatling.javaapi.core.Session
+      >
+    ): io.gatling.javaapi.core.ActionBuilder;
+    toString(): string;
+  } // end Sse$Prefix
+} // end namespace io.gatling.javaapi.http
+declare namespace io.gatling.javaapi.http {
   class Sse /* extends java.lang.Object*/ {
     close(): io.gatling.javaapi.core.ActionBuilder;
     equals(arg0: any /*java.lang.Object*/): boolean;
@@ -3543,18 +3573,24 @@ declare namespace io.gatling.javaapi.http {
   } // end Sse
 } // end namespace io.gatling.javaapi.http
 declare namespace io.gatling.javaapi.http {
+  class SseAwaitActionBuilder$On<T> /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    on(...arg0: SseMessageCheck[]): T;
+    on(arg0: java.util.List<SseMessageCheck>): T;
+    toString(): string;
+  } // end SseAwaitActionBuilder$On
+} // end namespace io.gatling.javaapi.http
+declare namespace io.gatling.javaapi.http {
   class SseConnectActionBuilder /* extends RequestWithBodyActionBuilder<any, any> implements SseAwaitActionBuilder<any, any>*/ {
     asFormUrlEncoded<T>(): T;
     asJson<T>(): T;
     asMultipartForm<T>(): T;
     asScala(): any /*io.gatling.core.action.builder.ActionBuilder*/;
     asXml<T>(): T;
-    await(
-      arg0: Func<io.gatling.javaapi.core.Session, java.time.Duration>
-    ): any /*io.gatling.javaapi.http.SseAwaitActionBuilder$On*/;
-    await(arg0: java.time.Duration): any /*io.gatling.javaapi.http.SseAwaitActionBuilder$On*/;
-    await(arg0: long): any /*io.gatling.javaapi.http.SseAwaitActionBuilder$On*/;
-    await(arg0: string): any /*io.gatling.javaapi.http.SseAwaitActionBuilder$On*/;
+    await<T>(arg0: Func<io.gatling.javaapi.core.Session, java.time.Duration>): SseAwaitActionBuilder$On<T>;
+    await<T>(arg0: java.time.Duration): SseAwaitActionBuilder$On<T>;
+    await<T>(arg0: long): SseAwaitActionBuilder$On<T>;
+    await<T>(arg0: string): SseAwaitActionBuilder$On<T>;
     basicAuth<T>(
       arg0: Func<io.gatling.javaapi.core.Session, string>,
       arg1: Func<io.gatling.javaapi.core.Session, string>
@@ -3663,17 +3699,29 @@ declare namespace io.gatling.javaapi.http {
   } // end SseConnectActionBuilder
 } // end namespace io.gatling.javaapi.http
 declare namespace io.gatling.javaapi.http {
+  class SseMessageCheck$TypedCondition /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    then(...arg0: io.gatling.javaapi.core.CheckBuilder[]): SseMessageCheck;
+    then(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): SseMessageCheck;
+    toString(): string;
+  } // end SseMessageCheck$TypedCondition
+} // end namespace io.gatling.javaapi.http
+declare namespace io.gatling.javaapi.http {
+  class SseMessageCheck$UntypedCondition /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    then(...arg0: io.gatling.javaapi.core.CheckBuilder[]): SseMessageCheck;
+    then(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): SseMessageCheck;
+    toString(): string;
+  } // end SseMessageCheck$UntypedCondition
+} // end namespace io.gatling.javaapi.http
+declare namespace io.gatling.javaapi.http {
   class SseMessageCheck /* extends java.lang.Object*/ {
     asScala(): any /*io.gatling.http.check.sse.SseMessageCheck*/;
     check(...arg0: io.gatling.javaapi.core.CheckBuilder[]): SseMessageCheck;
     check(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): SseMessageCheck;
-    checkIf(
-      arg0: BiFunction<string, io.gatling.javaapi.core.Session, boolean | null>
-    ): any /*io.gatling.javaapi.http.SseMessageCheck$TypedCondition*/;
-    checkIf(
-      arg0: Func<io.gatling.javaapi.core.Session, boolean | null>
-    ): any /*io.gatling.javaapi.http.SseMessageCheck$UntypedCondition*/;
-    checkIf(arg0: string): any /*io.gatling.javaapi.http.SseMessageCheck$UntypedCondition*/;
+    checkIf(arg0: BiFunction<string, io.gatling.javaapi.core.Session, boolean | null>): SseMessageCheck$TypedCondition;
+    checkIf(arg0: Func<io.gatling.javaapi.core.Session, boolean | null>): SseMessageCheck$UntypedCondition;
+    checkIf(arg0: string): SseMessageCheck$UntypedCondition;
     equals(arg0: any /*java.lang.Object*/): boolean;
     matching(...arg0: io.gatling.javaapi.core.CheckBuilder[]): SseMessageCheck;
     matching(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): SseMessageCheck;
@@ -3683,12 +3731,10 @@ declare namespace io.gatling.javaapi.http {
 declare namespace io.gatling.javaapi.http {
   class SseSetCheckActionBuilder /* extends java.lang.Object implements SseAwaitActionBuilder<any, any>*/ {
     asScala(): any /*io.gatling.core.action.builder.ActionBuilder*/;
-    await(
-      arg0: Func<io.gatling.javaapi.core.Session, java.time.Duration>
-    ): any /*io.gatling.javaapi.http.SseAwaitActionBuilder$On*/;
-    await(arg0: java.time.Duration): any /*io.gatling.javaapi.http.SseAwaitActionBuilder$On*/;
-    await(arg0: long): any /*io.gatling.javaapi.http.SseAwaitActionBuilder$On*/;
-    await(arg0: string): any /*io.gatling.javaapi.http.SseAwaitActionBuilder$On*/;
+    await<T>(arg0: Func<io.gatling.javaapi.core.Session, java.time.Duration>): SseAwaitActionBuilder$On<T>;
+    await<T>(arg0: java.time.Duration): SseAwaitActionBuilder$On<T>;
+    await<T>(arg0: long): SseAwaitActionBuilder$On<T>;
+    await<T>(arg0: string): SseAwaitActionBuilder$On<T>;
     equals(arg0: any /*java.lang.Object*/): boolean;
     toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
     toString(): string;
@@ -3908,12 +3954,10 @@ declare namespace io.gatling.javaapi.http {
 declare namespace io.gatling.javaapi.http {
   interface SseAwaitActionBuilder<T, W> /* extends io.gatling.javaapi.core.ActionBuilder*/ {
     asScala(): any /*io.gatling.core.action.builder.ActionBuilder*/;
-    await(
-      arg0: Func<io.gatling.javaapi.core.Session, java.time.Duration>
-    ): any /*io.gatling.javaapi.http.SseAwaitActionBuilder$On*/;
-    await(arg0: java.time.Duration): any /*io.gatling.javaapi.http.SseAwaitActionBuilder$On*/;
-    await(arg0: long): any /*io.gatling.javaapi.http.SseAwaitActionBuilder$On*/;
-    await(arg0: string): any /*io.gatling.javaapi.http.SseAwaitActionBuilder$On*/;
+    await(arg0: Func<io.gatling.javaapi.core.Session, java.time.Duration>): SseAwaitActionBuilder$On<T>;
+    await(arg0: java.time.Duration): SseAwaitActionBuilder$On<T>;
+    await(arg0: long): SseAwaitActionBuilder$On<T>;
+    await(arg0: string): SseAwaitActionBuilder$On<T>;
     toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
   } // end SseAwaitActionBuilder
 } // end namespace io.gatling.javaapi.http
