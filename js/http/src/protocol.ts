@@ -730,7 +730,14 @@ export interface HttpProtocolBuilder extends ProtocolBuilder {
 
   // SSE part
 
-  // FIXME missing sseUnmatchedInboundMessageBufferSize
+  /**
+   * Set the max size of the buffer for unmatched/unchecked inbound SSE messages. 0 by default,
+   * meaning such messages are not buffered.
+   *
+   * @param max - the max size
+   * @returns a new HttpProtocolBuilder instance
+   */
+  sseUnmatchedInboundMessageBufferSize(max: number): HttpProtocolBuilder;
 
   // Proxy part
 
@@ -1028,6 +1035,11 @@ export const wrapHttpProtocolBuilder = (_underlying: JvmHttpProtocolBuilder): Ht
   wsAutoReplySocketIo4: () => wrapHttpProtocolBuilder(_underlying.wsAutoReplySocketIo4()),
   wsUnmatchedInboundMessageBufferSize: (max) =>
     wrapHttpProtocolBuilder(_underlying.wsUnmatchedInboundMessageBufferSize(max)),
+
+  // SSE Part
+
+  sseUnmatchedInboundMessageBufferSize: (max: number): HttpProtocolBuilder =>
+    wrapHttpProtocolBuilder(_underlying.sseUnmatchedInboundMessageBufferSize(max)),
 
   // Proxy part
 
