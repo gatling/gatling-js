@@ -710,7 +710,7 @@ export interface HttpProtocolBuilder extends ProtocolBuilder {
    * @param f - the function
    * @returns a new HttpProtocolBuilder instance
    */
-  wsAutoReplyTextFrame(f: (frame: string) => string): HttpProtocolBuilder;
+  wsAutoReplyTextFrame(f: (frame: string) => string | null): HttpProtocolBuilder;
 
   /**
    * Automatically reply to a SocketIo4 ping TEXT frame with the corresponding pong TEXT frame.
@@ -1031,7 +1031,7 @@ export const wrapHttpProtocolBuilder = (_underlying: JvmHttpProtocolBuilder): Ht
   wsBaseUrls: (...urls) => wrapHttpProtocolBuilder(_underlying.wsBaseUrls(urls)),
   wsReconnect: () => wrapHttpProtocolBuilder(_underlying.wsReconnect()),
   wsMaxReconnects: (max) => wrapHttpProtocolBuilder(_underlying.wsMaxReconnects(max)),
-  wsAutoReplyTextFrame: (f) => wrapHttpProtocolBuilder(_underlying.wsAutoReplyTextFrame(f)),
+  wsAutoReplyTextFrame: (f) => wrapHttpProtocolBuilder(_underlying.wsAutoReplyTextFrame(f as Func<string, string>)),
   wsAutoReplySocketIo4: () => wrapHttpProtocolBuilder(_underlying.wsAutoReplySocketIo4()),
   wsUnmatchedInboundMessageBufferSize: (max) =>
     wrapHttpProtocolBuilder(_underlying.wsUnmatchedInboundMessageBufferSize(max)),
