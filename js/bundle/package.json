@@ -8,7 +8,7 @@
     "archiver": "7.0.1",
     "commander": "14.0.0",
     "decompress": "4.2.1",
-    "make-fetch-happen": "14.0.3"
+    "make-fetch-happen": "15.0.0"
   },
   "devDependencies": {
     "@types/archiver": "6.0.3",
