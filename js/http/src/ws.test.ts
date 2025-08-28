@@ -116,10 +116,13 @@ const chain = exec(
   ws("SendBytesMessageWithByteArrayBody").sendBytes(ByteArrayBody("#{someByteArray}")),
   ws.processUnmatchedMessages((messages, session) => session.set("messages", messages)),
   ws.processUnmatchedMessages("wsName", (messages, session) => {
-    messages.reverse();
-    const lastTextMessage = messages.find((m) => isWsInboundMessageText(m));
-    const session1 = lastTextMessage != undefined ? session.set("lastTextMessage", lastTextMessage) : session;
-    const lastBinaryMessage = messages.find((m) => isWsInboundMessageBinary(m));
-    return lastBinaryMessage != undefined ? session1.set("lastBinaryMessage", lastBinaryMessage) : session1;
+    const copy = Array.from(messages);
+    copy.reverse();
+    const textMessages = copy.filter(isWsInboundMessageText).map((m) => m.message());
+    if (textMessages.length > 0) {
+      return session.set("lastTextMessage", textMessages[0]);
+    } else {
+      return session;
+    }
   })
 );

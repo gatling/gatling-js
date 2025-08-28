@@ -2,7 +2,6 @@ import {
   ActionBuilder,
   CheckBuilder,
   Duration,
-  Expression,
   Session,
   SessionTo,
   XWithSessionTo,
@@ -196,24 +195,19 @@ export interface SseConnectActionBuilder
   _underlying: JvmSseConnectActionBuilder;
 }
 
-export const wrapSseConnectActionBuilder = (_underlying: JvmSseConnectActionBuilder): SseConnectActionBuilder => ({
+const wrapSseConnectActionBuilder = (_underlying: JvmSseConnectActionBuilder): SseConnectActionBuilder => ({
   _underlying,
   ...requestActionBuilderImpl(_underlying, wrapSseConnectActionBuilder),
   ...requestWithBodyActionBuilderImpl(_underlying, wrapSseConnectActionBuilder),
   ...sseAwaitActionBuilderImpl(_underlying, wrapSseConnectActionBuilder)
 });
 
-export interface SseInboundMessage {
-  message(): string;
-  timestamp(): number;
-}
-
 export interface SseSetCheckActionBuilder extends SseAwaitActionBuilder<SseSetCheckActionBuilder>, ActionBuilder {
   // Assembling all original subtypes
   _underlying: JvmSseSetCheckActionBuilder;
 }
 
-export const wrapSseSetCheckActionBuilder = (_underlying: JvmSseSetCheckActionBuilder): SseSetCheckActionBuilder => ({
+const wrapSseSetCheckActionBuilder = (_underlying: JvmSseSetCheckActionBuilder): SseSetCheckActionBuilder => ({
   _underlying,
   ...sseAwaitActionBuilderImpl(_underlying, wrapSseSetCheckActionBuilder)
 });
@@ -320,6 +314,11 @@ const sseApply = (name: string, sseName?: string): Sse => {
   return wrapSse(jvmSse);
 };
 
+export interface SseInboundMessage {
+  message(): string;
+  timestamp(): number;
+}
+
 export interface SsePrefix {
   /**
    * Boostrap a SSE check
@@ -392,4 +391,5 @@ const ssePrefix: SsePrefix = {
   }
 };
 
+// FIXME Sse.Apply && Prefix?
 export const sse: SseApply & SsePrefix = Object.assign(sseApply, ssePrefix);

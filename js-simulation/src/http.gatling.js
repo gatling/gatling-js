@@ -1,4 +1,4 @@
-import { simulation, atOnceUsers, global, scenario, getParameter } from "@gatling.io/core";
+import { simulation, scenario, atOnceUsers, global, getParameter } from "@gatling.io/core";
 import { http } from "@gatling.io/http";
 
 export default simulation((setUp) => {
