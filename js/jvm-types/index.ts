@@ -387,6 +387,14 @@ interface CollectorsStatic {
 
 export const Collectors: CollectorsStatic = Java.type("java.util.stream.Collectors");
 
+interface ConnectActionBuilderStatic {
+  readonly class: any;
+}
+
+export const ConnectActionBuilder: ConnectActionBuilderStatic = Java.type(
+  "io.gatling.javaapi.mqtt.ConnectActionBuilder"
+);
+
 interface ConstantRate$ConstantRateOpenInjectionStepStatic {
   readonly class: any;
   atOnceUsers(arg0: int): io.gatling.javaapi.core.OpenInjectionStep;
@@ -1757,6 +1765,134 @@ interface IterableStatic {
 
 export const Iterable: IterableStatic = Java.type("java.lang.Iterable");
 
+interface LastWillBuilderStatic {
+  readonly class: any;
+}
+
+export const LastWillBuilder: LastWillBuilderStatic = Java.type("io.gatling.javaapi.mqtt.LastWillBuilder");
+
+interface MqttBuilderStatic {
+  readonly class: any;
+}
+
+export const MqttBuilder: MqttBuilderStatic = Java.type("io.gatling.javaapi.mqtt.MqttBuilder");
+
+interface MqttDslStatic {
+  readonly class: any;
+  LastWill(arg0: string, arg1: io.gatling.javaapi.core.Body): io.gatling.javaapi.mqtt.LastWillBuilder;
+  LastWill(
+    arg0: Func<io.gatling.javaapi.core.Session, string>,
+    arg1: io.gatling.javaapi.core.Body
+  ): io.gatling.javaapi.mqtt.LastWillBuilder;
+  mqtt(arg0: string): io.gatling.javaapi.mqtt.MqttBuilder;
+  mqtt(arg0: Func<io.gatling.javaapi.core.Session, string>): io.gatling.javaapi.mqtt.MqttBuilder;
+}
+
+export const MqttDsl: MqttDslStatic = Java.type("io.gatling.javaapi.mqtt.MqttDsl");
+
+interface MqttFixedHeaderStatic {
+  readonly class: any;
+  new (
+    arg0: io.netty.handler.codec.mqtt.MqttMessageType,
+    arg1: boolean,
+    arg2: io.netty.handler.codec.mqtt.MqttQoS,
+    arg3: boolean,
+    arg4: int
+  ): io.netty.handler.codec.mqtt.MqttFixedHeader;
+}
+
+export const MqttFixedHeader: MqttFixedHeaderStatic = Java.type("io.netty.handler.codec.mqtt.MqttFixedHeader");
+
+interface MqttInboundMessageStatic {
+  readonly class: any;
+  new (
+    timestamp: long,
+    fixedHeader: io.netty.handler.codec.mqtt.MqttFixedHeader,
+    variableHeader: io.netty.handler.codec.mqtt.MqttPublishVariableHeader,
+    payload: bytearray
+  ): io.gatling.mqtt.action.MqttInboundMessage;
+  of(
+    timestamp: long,
+    message: any /*io.netty.handler.codec.mqtt.MqttPublishMessage*/
+  ): io.gatling.mqtt.action.MqttInboundMessage;
+}
+
+export const MqttInboundMessage: MqttInboundMessageStatic = Java.type("io.gatling.mqtt.action.MqttInboundMessage");
+
+interface MqttMessageTypeStatic {
+  CONNECT: io.netty.handler.codec.mqtt.MqttMessageType;
+  CONNACK: io.netty.handler.codec.mqtt.MqttMessageType;
+  PUBLISH: io.netty.handler.codec.mqtt.MqttMessageType;
+  PUBACK: io.netty.handler.codec.mqtt.MqttMessageType;
+  PUBREC: io.netty.handler.codec.mqtt.MqttMessageType;
+  PUBREL: io.netty.handler.codec.mqtt.MqttMessageType;
+  PUBCOMP: io.netty.handler.codec.mqtt.MqttMessageType;
+  SUBSCRIBE: io.netty.handler.codec.mqtt.MqttMessageType;
+  SUBACK: io.netty.handler.codec.mqtt.MqttMessageType;
+  UNSUBSCRIBE: io.netty.handler.codec.mqtt.MqttMessageType;
+  UNSUBACK: io.netty.handler.codec.mqtt.MqttMessageType;
+  PINGREQ: io.netty.handler.codec.mqtt.MqttMessageType;
+  PINGRESP: io.netty.handler.codec.mqtt.MqttMessageType;
+  DISCONNECT: io.netty.handler.codec.mqtt.MqttMessageType;
+  AUTH: io.netty.handler.codec.mqtt.MqttMessageType;
+
+  readonly class: any;
+  valueOf<T>(arg0: java.lang.Class<T>, arg1: string): T;
+  valueOf(arg0: int): io.netty.handler.codec.mqtt.MqttMessageType;
+  valueOf(arg0: string): io.netty.handler.codec.mqtt.MqttMessageType;
+  values(): [io.netty.handler.codec.mqtt.MqttMessageType];
+}
+
+export const MqttMessageType: MqttMessageTypeStatic = Java.type("io.netty.handler.codec.mqtt.MqttMessageType");
+
+interface MqttPropertiesStatic {
+  readonly class: any;
+  new (): io.netty.handler.codec.mqtt.MqttProperties;
+}
+
+export const MqttProperties: MqttPropertiesStatic = Java.type("io.netty.handler.codec.mqtt.MqttProperties");
+
+interface MqttProtocolBuilderStatic {
+  readonly class: any;
+}
+
+export const MqttProtocolBuilder: MqttProtocolBuilderStatic = Java.type("io.gatling.javaapi.mqtt.MqttProtocolBuilder");
+
+interface MqttPublishVariableHeaderStatic {
+  readonly class: any;
+  new (arg0: string, arg1: int): io.netty.handler.codec.mqtt.MqttPublishVariableHeader;
+  new (
+    arg0: string,
+    arg1: int,
+    arg2: io.netty.handler.codec.mqtt.MqttProperties
+  ): io.netty.handler.codec.mqtt.MqttPublishVariableHeader;
+}
+
+export const MqttPublishVariableHeader: MqttPublishVariableHeaderStatic = Java.type(
+  "io.netty.handler.codec.mqtt.MqttPublishVariableHeader"
+);
+
+interface MqttQoSStatic {
+  AT_MOST_ONCE: io.netty.handler.codec.mqtt.MqttQoS;
+  AT_LEAST_ONCE: io.netty.handler.codec.mqtt.MqttQoS;
+  EXACTLY_ONCE: io.netty.handler.codec.mqtt.MqttQoS;
+  FAILURE: io.netty.handler.codec.mqtt.MqttQoS;
+
+  readonly class: any;
+  valueOf<T>(arg0: java.lang.Class<T>, arg1: string): T;
+  valueOf(arg0: int): io.netty.handler.codec.mqtt.MqttQoS;
+  valueOf(arg0: string): io.netty.handler.codec.mqtt.MqttQoS;
+  values(): [io.netty.handler.codec.mqtt.MqttQoS];
+}
+
+export const MqttQoS: MqttQoSStatic = Java.type("io.netty.handler.codec.mqtt.MqttQoS");
+
+interface MqttStatic {
+  readonly class: any;
+}
+
+export const Mqtt: MqttStatic = Java.type("io.gatling.javaapi.mqtt.Mqtt");
+
 interface OpenInjectionStep$ConstantRateStatic {
   readonly class: any;
 }
@@ -1902,6 +2038,31 @@ interface ProxyStatic {
 }
 
 export const Proxy: ProxyStatic = Java.type("io.gatling.javaapi.http.Proxy");
+
+interface PublishActionBuilder$BaseStatic {
+  readonly class: any;
+}
+
+export const PublishActionBuilder$Base: PublishActionBuilder$BaseStatic = Java.type(
+  "io.gatling.javaapi.mqtt.PublishActionBuilder$Base"
+);
+
+interface PublishActionBuilder$CheckableStatic {
+  readonly class: any;
+}
+
+export const PublishActionBuilder$Checkable: PublishActionBuilder$CheckableStatic = Java.type(
+  "io.gatling.javaapi.mqtt.PublishActionBuilder$Checkable"
+);
+
+interface PublishActionBuilderStatic {
+  readonly class: any;
+  new (arg0: any /*io.gatling.mqtt.action.builder.PublishBuilder*/): io.gatling.javaapi.mqtt.PublishActionBuilder;
+}
+
+export const PublishActionBuilder: PublishActionBuilderStatic = Java.type(
+  "io.gatling.javaapi.mqtt.PublishActionBuilder"
+);
 
 interface RampRate$DuringStatic {
   readonly class: any;
@@ -2253,6 +2414,22 @@ interface StructureBuilderStatic {
 
 export const StructureBuilder: StructureBuilderStatic = Java.type("io.gatling.javaapi.core.StructureBuilder");
 
+interface SubscribeActionBuilder$CheckableStatic {
+  readonly class: any;
+}
+
+export const SubscribeActionBuilder$Checkable: SubscribeActionBuilder$CheckableStatic = Java.type(
+  "io.gatling.javaapi.mqtt.SubscribeActionBuilder$Checkable"
+);
+
+interface SubscribeActionBuilderStatic {
+  readonly class: any;
+}
+
+export const SubscribeActionBuilder: SubscribeActionBuilderStatic = Java.type(
+  "io.gatling.javaapi.mqtt.SubscribeActionBuilder"
+);
+
 interface SystemStatic {
   readonly class: any;
   console(): any /*java.io.Console*/;
@@ -2343,6 +2520,14 @@ interface UniformRandomSwitchStatic {
 
 export const UniformRandomSwitch: UniformRandomSwitchStatic = Java.type(
   "io.gatling.javaapi.core.condition.UniformRandomSwitch"
+);
+
+interface WaitForMessagesActionBuilderStatic {
+  readonly class: any;
+}
+
+export const WaitForMessagesActionBuilder: WaitForMessagesActionBuilderStatic = Java.type(
+  "io.gatling.javaapi.mqtt.WaitForMessagesActionBuilder"
 );
 
 interface WithKey$ThenStatic {

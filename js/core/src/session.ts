@@ -186,3 +186,11 @@ export const underlyingXWithSessionToSession =
   <X>(f: XWithSessionTo<X, Session>): ((x: X, jvmSession: JvmSession) => JvmSession) =>
   (x: X, jvmSession: JvmSession) =>
     f(x, wrapSession(jvmSession))._underlying;
+
+export const underlyingJvmXToXWithSessionToSession =
+  <X, JvmX>(
+    f: XWithSessionTo<X[], Session>,
+    wrap: (jvmXs: JvmX[]) => X[]
+  ): ((jvmXs: JvmX[], jvmSession: JvmSession) => JvmSession) =>
+  (jvmXs: JvmX[], jvmSession: JvmSession) =>
+    f(wrap(jvmXs), wrapSession(jvmSession))._underlying;

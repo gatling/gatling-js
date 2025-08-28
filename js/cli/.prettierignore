@@ -2,4 +2,3 @@ node_modules/
 target/
 
 src/bundle/polyfills.ts
-src/dependencies/versions.ts

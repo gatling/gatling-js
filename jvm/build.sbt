@@ -18,6 +18,8 @@ val graalvmJdkVersion = "24.0.2"
 val graalvmJsVersion = "25.0.0"
 val gatlingVersion = "3.14.4"
 
+val gatlingMqttVersion = "3.14.4"
+
 // bit weird cause this is not a dependency of this project
 val gatlingEnterpriseComponentPluginVersion = "1.20.2"
 
@@ -47,10 +49,13 @@ lazy val adapter = (project in file("adapter"))
         targetExclude = targetExclude
       )
     },
+    autoScalaLibrary := false,
     libraryDependencies ++= Seq(
-      "io.gatling.highcharts" % "gatling-charts-highcharts" % gatlingVersion,
+      "io.gatling.highcharts" % "gatling-charts-highcharts" % gatlingVersion % "provided",
+      "io.gatling" % "gatling-asm-shaded" % "9.8.0",
+      "io.gatling" % "gatling-mqtt-java" % gatlingMqttVersion % "provided",
       "org.graalvm.polyglot" % "js" % graalvmJsVersion,
-      "io.gatling" % "gatling-asm-shaded" % "9.8.0"
+      "org.scala-lang" % "scala-library" % scalaVersion.value % "provided"
     ),
     Compile / sourceGenerators += Def.task {
       // Generate a file directly into the CLI project and bundle project to share version numbers
@@ -68,7 +73,8 @@ lazy val adapter = (project in file("adapter"))
            |  gatling: {
            |    core: "$gatlingVersion",
            |    enterprisePluginCommons: "$gatlingEnterpriseComponentPluginVersion",
-           |    jsAdapter: "$jsAdapterVersion"
+           |    jsAdapter: "$jsAdapterVersion",
+           |    mqtt: "$gatlingMqttVersion"
            |  }
            |};
            |""".stripMargin
@@ -87,7 +93,8 @@ lazy val java2ts = (project in file("java2ts"))
     name := "gatling-java2ts",
     libraryDependencies ++= Seq(
       "io.gatling" % "gatling-core-java" % gatlingVersion,
-      "io.gatling" % "gatling-http-java" % gatlingVersion
+      "io.gatling" % "gatling-http-java" % gatlingVersion,
+      "io.gatling" % "gatling-mqtt-java" % gatlingMqttVersion
     ),
     publish / skip := true
   )

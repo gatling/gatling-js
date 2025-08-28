@@ -3971,6 +3971,235 @@ declare namespace io.gatling.javaapi.http {
     toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
   } // end WsAwaitActionBuilder
 } // end namespace io.gatling.javaapi.http
+declare namespace io.gatling.javaapi.mqtt {
+  class ConnectActionBuilder /* extends java.lang.Object implements io.gatling.javaapi.core.ActionBuilder*/ {
+    asScala(): any /*io.gatling.core.action.builder.ActionBuilder*/;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
+    toString(): string;
+  } // end ConnectActionBuilder
+} // end namespace io.gatling.javaapi.mqtt
+declare namespace io.gatling.javaapi.mqtt {
+  class LastWillBuilder /* extends java.lang.Object*/ {
+    asScala(): any /*io.gatling.mqtt.protocol.LastWillBuilder*/;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    qosAtLeastOnce(): LastWillBuilder;
+    qosAtMostOnce(): LastWillBuilder;
+    qosExactlyOnce(): LastWillBuilder;
+    retain(arg0: boolean): LastWillBuilder;
+    toString(): string;
+  } // end LastWillBuilder
+} // end namespace io.gatling.javaapi.mqtt
+declare namespace io.gatling.javaapi.mqtt {
+  class Mqtt /* extends MqttProtocolBuilder*/ {
+    broker<T>(arg0: string, arg1: int): T;
+    cleanSession<T>(arg0: boolean): T;
+    clientId<T>(arg0: Func<io.gatling.javaapi.core.Session, string>): T;
+    clientId<T>(arg0: string): T;
+    connectTimeout<T>(arg0: java.time.Duration): T;
+    connectTimeout<T>(arg0: long): T;
+    correlateBy<T>(arg0: io.gatling.javaapi.core.CheckBuilder): T;
+    credentials<T>(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: Func<io.gatling.javaapi.core.Session, string>
+    ): T;
+    credentials<T>(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): T;
+    credentials<T>(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, string>): T;
+    credentials<T>(arg0: string, arg1: string): T;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    keepAlive<T>(arg0: java.time.Duration): T;
+    keepAlive<T>(arg0: long): T;
+    lastWill<T>(arg0: LastWillBuilder): T;
+    mqttVersion_3_1<T>(): T;
+    mqttVersion_3_1_1<T>(): T;
+    mqttVersion_5<T>(): T;
+    perUserKeyManagerFactory<T>(arg0: Func<long | null, any /*javax.net.ssl.KeyManagerFactory*/>): T;
+    processUnmatchedMessages(
+      arg0: string,
+      arg1: BiFunction<
+        java.util.List<io.gatling.mqtt.action.MqttInboundMessage>,
+        io.gatling.javaapi.core.Session,
+        io.gatling.javaapi.core.Session
+      >
+    ): io.gatling.javaapi.core.ActionBuilder;
+    protocol(): any /*io.gatling.core.protocol.Protocol*/;
+    qosAtLeastOnce<T>(): T;
+    qosAtMostOnce<T>(): T;
+    qosExactlyOnce<T>(): T;
+    reconnectAttemptsMax<T>(arg0: int): T;
+    reconnectBackoffMultiplier<T>(arg0: float): T;
+    reconnectDelay<T>(arg0: java.time.Duration): T;
+    reconnectDelay<T>(arg0: long): T;
+    resendBackoffMultiplier<T>(arg0: float): T;
+    resendDelay<T>(arg0: java.time.Duration): T;
+    resendDelay<T>(arg0: long): T;
+    retain<T>(arg0: boolean): T;
+    timeoutCheckInterval<T>(arg0: java.time.Duration): T;
+    timeoutCheckInterval<T>(arg0: long): T;
+    toString(): string;
+    unmatchedInboundMessageBufferSize<T>(arg0: int): T;
+    useTls<T>(arg0: boolean): T;
+    waitForMessages(): WaitForMessagesActionBuilder;
+  } // end Mqtt
+} // end namespace io.gatling.javaapi.mqtt
+declare namespace io.gatling.javaapi.mqtt {
+  class MqttBuilder /* extends java.lang.Object*/ {
+    connect(): ConnectActionBuilder;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    publish(arg0: Func<io.gatling.javaapi.core.Session, string>): PublishActionBuilder$Base;
+    publish(arg0: string): PublishActionBuilder$Base;
+    subscribe(arg0: Func<io.gatling.javaapi.core.Session, string>): SubscribeActionBuilder;
+    subscribe(arg0: string): SubscribeActionBuilder;
+    toString(): string;
+  } // end MqttBuilder
+} // end namespace io.gatling.javaapi.mqtt
+declare namespace io.gatling.javaapi.mqtt {
+  class MqttDsl /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toString(): string;
+  } // end MqttDsl
+} // end namespace io.gatling.javaapi.mqtt
+declare namespace io.gatling.javaapi.mqtt {
+  class MqttProtocolBuilder /* extends MqttProtocolBuilderBase<any, any> implements io.gatling.javaapi.core.ProtocolBuilder*/ {
+    broker<T>(arg0: string, arg1: int): T;
+    cleanSession<T>(arg0: boolean): T;
+    clientId<T>(arg0: Func<io.gatling.javaapi.core.Session, string>): T;
+    clientId<T>(arg0: string): T;
+    connectTimeout<T>(arg0: java.time.Duration): T;
+    connectTimeout<T>(arg0: long): T;
+    correlateBy<T>(arg0: io.gatling.javaapi.core.CheckBuilder): T;
+    credentials<T>(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: Func<io.gatling.javaapi.core.Session, string>
+    ): T;
+    credentials<T>(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): T;
+    credentials<T>(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, string>): T;
+    credentials<T>(arg0: string, arg1: string): T;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    keepAlive<T>(arg0: java.time.Duration): T;
+    keepAlive<T>(arg0: long): T;
+    lastWill<T>(arg0: LastWillBuilder): T;
+    mqttVersion_3_1<T>(): T;
+    mqttVersion_3_1_1<T>(): T;
+    mqttVersion_5<T>(): T;
+    perUserKeyManagerFactory<T>(arg0: Func<long | null, any /*javax.net.ssl.KeyManagerFactory*/>): T;
+    protocol(): any /*io.gatling.core.protocol.Protocol*/;
+    qosAtLeastOnce<T>(): T;
+    qosAtMostOnce<T>(): T;
+    qosExactlyOnce<T>(): T;
+    reconnectAttemptsMax<T>(arg0: int): T;
+    reconnectBackoffMultiplier<T>(arg0: float): T;
+    reconnectDelay<T>(arg0: java.time.Duration): T;
+    reconnectDelay<T>(arg0: long): T;
+    resendBackoffMultiplier<T>(arg0: float): T;
+    resendDelay<T>(arg0: java.time.Duration): T;
+    resendDelay<T>(arg0: long): T;
+    retain<T>(arg0: boolean): T;
+    timeoutCheckInterval<T>(arg0: java.time.Duration): T;
+    timeoutCheckInterval<T>(arg0: long): T;
+    toString(): string;
+    unmatchedInboundMessageBufferSize<T>(arg0: int): T;
+    useTls<T>(arg0: boolean): T;
+  } // end MqttProtocolBuilder
+} // end namespace io.gatling.javaapi.mqtt
+declare namespace io.gatling.javaapi.mqtt {
+  class PublishActionBuilder$Base /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    message(arg0: io.gatling.javaapi.core.Body): PublishActionBuilder;
+    toString(): string;
+  } // end PublishActionBuilder$Base
+} // end namespace io.gatling.javaapi.mqtt
+declare namespace io.gatling.javaapi.mqtt {
+  class PublishActionBuilder$Checkable /* extends java.lang.Object implements io.gatling.javaapi.core.ActionBuilder*/ {
+    asScala(): any /*io.gatling.core.action.builder.ActionBuilder*/;
+    check(...arg0: io.gatling.javaapi.core.CheckBuilder[]): PublishActionBuilder$Checkable;
+    check(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): PublishActionBuilder$Checkable;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    qosAtLeastOnce(): PublishActionBuilder;
+    qosAtMostOnce(): PublishActionBuilder;
+    qosExactlyOnce(): PublishActionBuilder;
+    toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
+    toString(): string;
+  } // end PublishActionBuilder$Checkable
+} // end namespace io.gatling.javaapi.mqtt
+declare namespace io.gatling.javaapi.mqtt {
+  class PublishActionBuilder /* extends java.lang.Object implements io.gatling.javaapi.core.ActionBuilder*/ {
+    asScala(): any /*io.gatling.core.action.builder.ActionBuilder*/;
+    await(arg0: java.time.Duration): PublishActionBuilder$Checkable;
+    await(
+      arg0: java.time.Duration,
+      arg1: Func<io.gatling.javaapi.core.Session, string>
+    ): PublishActionBuilder$Checkable;
+    await(arg0: java.time.Duration, arg1: string): PublishActionBuilder$Checkable;
+    await(arg0: long): PublishActionBuilder$Checkable;
+    await(arg0: long, arg1: Func<io.gatling.javaapi.core.Session, string>): PublishActionBuilder$Checkable;
+    await(arg0: long, arg1: string): PublishActionBuilder$Checkable;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    expect(arg0: java.time.Duration): PublishActionBuilder$Checkable;
+    expect(
+      arg0: java.time.Duration,
+      arg1: Func<io.gatling.javaapi.core.Session, string>
+    ): PublishActionBuilder$Checkable;
+    expect(arg0: java.time.Duration, arg1: string): PublishActionBuilder$Checkable;
+    expect(arg0: long): PublishActionBuilder$Checkable;
+    expect(arg0: long, arg1: Func<io.gatling.javaapi.core.Session, string>): PublishActionBuilder$Checkable;
+    expect(arg0: long, arg1: string): PublishActionBuilder$Checkable;
+    qosAtLeastOnce(): PublishActionBuilder;
+    qosAtMostOnce(): PublishActionBuilder;
+    qosExactlyOnce(): PublishActionBuilder;
+    toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
+    toString(): string;
+  } // end PublishActionBuilder
+} // end namespace io.gatling.javaapi.mqtt
+declare namespace io.gatling.javaapi.mqtt {
+  class SubscribeActionBuilder$Checkable /* extends java.lang.Object implements io.gatling.javaapi.core.ActionBuilder*/ {
+    asScala(): any /*io.gatling.core.action.builder.ActionBuilder*/;
+    check(...arg0: io.gatling.javaapi.core.CheckBuilder[]): SubscribeActionBuilder$Checkable;
+    check(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): SubscribeActionBuilder$Checkable;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    qosAtLeastOnce(): SubscribeActionBuilder;
+    qosAtMostOnce(): SubscribeActionBuilder;
+    qosExactlyOnce(): SubscribeActionBuilder;
+    toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
+    toString(): string;
+  } // end SubscribeActionBuilder$Checkable
+} // end namespace io.gatling.javaapi.mqtt
+declare namespace io.gatling.javaapi.mqtt {
+  class SubscribeActionBuilder /* extends java.lang.Object implements io.gatling.javaapi.core.ActionBuilder*/ {
+    asScala(): any /*io.gatling.core.action.builder.ActionBuilder*/;
+    await(arg0: java.time.Duration): SubscribeActionBuilder$Checkable;
+    await(arg0: long): SubscribeActionBuilder$Checkable;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    expect(arg0: java.time.Duration): SubscribeActionBuilder$Checkable;
+    expect(arg0: long): SubscribeActionBuilder$Checkable;
+    qosAtLeastOnce(): SubscribeActionBuilder;
+    qosAtMostOnce(): SubscribeActionBuilder;
+    qosExactlyOnce(): SubscribeActionBuilder;
+    toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
+    toString(): string;
+  } // end SubscribeActionBuilder
+} // end namespace io.gatling.javaapi.mqtt
+declare namespace io.gatling.javaapi.mqtt {
+  class WaitForMessagesActionBuilder /* extends java.lang.Object implements io.gatling.javaapi.core.ActionBuilder*/ {
+    asScala(): any /*io.gatling.core.action.builder.ActionBuilder*/;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    timeout(arg0: java.time.Duration): WaitForMessagesActionBuilder;
+    timeout(arg0: long): WaitForMessagesActionBuilder;
+    toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
+    toString(): string;
+  } // end WaitForMessagesActionBuilder
+} // end namespace io.gatling.javaapi.mqtt
+declare namespace io.gatling.mqtt.action {
+  class MqttInboundMessage /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    fixedHeader(): io.netty.handler.codec.mqtt.MqttFixedHeader;
+    payload(): bytearray;
+    payloadUtf8String(): string;
+    timestamp(): long;
+    toString(): string;
+    variableHeader(): io.netty.handler.codec.mqtt.MqttPublishVariableHeader;
+  } // end MqttInboundMessage
+} // end namespace io.gatling.mqtt.action
 declare namespace io.netty.handler.codec.http {
   class HttpHeaders /* extends java.lang.Object implements java.lang.Iterable<any>*/ {
     add(arg0: HttpHeaders): HttpHeaders;
@@ -4056,6 +4285,83 @@ declare namespace io.netty.handler.codec.http.cookie {
     wrap(): boolean;
   } // end Cookie
 } // end namespace io.netty.handler.codec.http.cookie
+declare namespace io.netty.handler.codec.mqtt {
+  /* enum */ class MqttMessageType /* extends java.lang.Enum<any>*/ {
+    // CONNECT:MqttMessageType;
+    // CONNACK:MqttMessageType;
+    // PUBLISH:MqttMessageType;
+    // PUBACK:MqttMessageType;
+    // PUBREC:MqttMessageType;
+    // PUBREL:MqttMessageType;
+    // PUBCOMP:MqttMessageType;
+    // SUBSCRIBE:MqttMessageType;
+    // SUBACK:MqttMessageType;
+    // UNSUBSCRIBE:MqttMessageType;
+    // UNSUBACK:MqttMessageType;
+    // PINGREQ:MqttMessageType;
+    // PINGRESP:MqttMessageType;
+    // DISCONNECT:MqttMessageType;
+    // AUTH:MqttMessageType;
+
+    compareTo<E>(arg0: E): int;
+    describeConstable(): java.util.Optional<any /*java.lang.Enum$EnumDesc*/>;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    getDeclaringClass<E>(): java.lang.Class<E>;
+    name(): string;
+    ordinal(): int;
+    toString(): string;
+    value(): int;
+  } // end MqttMessageType
+} // end namespace io.netty.handler.codec.mqtt
+declare namespace io.netty.handler.codec.mqtt {
+  /* enum */ class MqttQoS /* extends java.lang.Enum<any>*/ {
+    // AT_MOST_ONCE:MqttQoS;
+    // AT_LEAST_ONCE:MqttQoS;
+    // EXACTLY_ONCE:MqttQoS;
+    // FAILURE:MqttQoS;
+
+    compareTo<E>(arg0: E): int;
+    describeConstable(): java.util.Optional<any /*java.lang.Enum$EnumDesc*/>;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    getDeclaringClass<E>(): java.lang.Class<E>;
+    name(): string;
+    ordinal(): int;
+    toString(): string;
+    value(): int;
+  } // end MqttQoS
+} // end namespace io.netty.handler.codec.mqtt
+declare namespace io.netty.handler.codec.mqtt {
+  class MqttFixedHeader /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    isDup(): boolean;
+    isRetain(): boolean;
+    messageType(): MqttMessageType;
+    qosLevel(): MqttQoS;
+    remainingLength(): int;
+    toString(): string;
+  } // end MqttFixedHeader
+} // end namespace io.netty.handler.codec.mqtt
+declare namespace io.netty.handler.codec.mqtt {
+  class MqttProperties /* extends java.lang.Object*/ {
+    add(arg0: any /*io.netty.handler.codec.mqtt.MqttProperties$MqttProperty*/): void;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    getProperties(arg0: int): java.util.List<any /*io.netty.handler.codec.mqtt.MqttProperties$MqttProperty*/>;
+    getProperty(arg0: int): any /*io.netty.handler.codec.mqtt.MqttProperties$MqttProperty*/;
+    isEmpty(): boolean;
+    listAll(): java.util.Collection<any /*io.netty.handler.codec.mqtt.MqttProperties$MqttProperty*/>;
+    toString(): string;
+  } // end MqttProperties
+} // end namespace io.netty.handler.codec.mqtt
+declare namespace io.netty.handler.codec.mqtt {
+  class MqttPublishVariableHeader /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    messageId(): int;
+    packetId(): int;
+    properties(): MqttProperties;
+    toString(): string;
+    topicName(): string;
+  } // end MqttPublishVariableHeader
+} // end namespace io.netty.handler.codec.mqtt
 declare namespace java.lang {
   class String /* extends Object implements java.io.Serializable, Comparable<any>, CharSequence, java.lang.constant.Constable, java.lang.constant.ConstantDesc*/ {
     charAt(arg0: int): any /*char*/;

@@ -47,10 +47,11 @@ const windowsLauncherUrl = "https://github.com/coursier/launchers/raw/master/cou
 
 const dependencies = [
   `"io.gatling.highcharts:gatling-charts-highcharts:${versions.gatling.core}"`,
-  `"io.gatling:gatling-jvm-to-js-adapter:${versions.gatling.jsAdapter}"`,
   `"io.gatling:gatling-enterprise-plugin-commons:${versions.gatling.enterprisePluginCommons}"`,
-  `"org.graalvm.polyglot:js:${versions.graalvm.js}"`,
-  `"io.gatling:gatling-recorder:${versions.gatling.core}"`, // For the recorder
+  `"io.gatling:gatling-jvm-to-js-adapter:${versions.gatling.jsAdapter}"`,
+  `"io.gatling:gatling-mqtt-java:${versions.gatling.mqtt}"`,
   // TODO handle Gatling Postman version if different from Gatling JS version
-  `"io.gatling:gatling-postman-jvm-to-js-adapter:${versions.gatling.jsAdapter}"` // For Gatling Postman
+  `"io.gatling:gatling-postman-jvm-to-js-adapter:${versions.gatling.jsAdapter}"`, // For Gatling Postman
+  `"io.gatling:gatling-recorder:${versions.gatling.core}"`, // For the recorder
+  `"org.graalvm.polyglot:js:${versions.graalvm.js}"`
 ];

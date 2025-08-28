@@ -6,7 +6,8 @@
     "cli",
     "jvm-types",
     "core",
-    "http"
+    "http",
+    "mqtt"
   ],
   "devDependencies": {
     "workspace-version": "0.1.4"

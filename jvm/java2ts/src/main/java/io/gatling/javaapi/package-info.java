@@ -188,7 +188,26 @@
         @Type(value = io.gatling.javaapi.http.WsFrameCheck.Text.TypedCondition.class, export = true),
         @Type(value = io.gatling.javaapi.http.WsConnectActionBuilder.class, export = true),
         @Type(value = io.gatling.javaapi.http.WsSendBinaryActionBuilder.class, export = true),
-        @Type(value = io.gatling.javaapi.http.WsSendTextActionBuilder.class, export = true)
+        @Type(value = io.gatling.javaapi.http.WsSendTextActionBuilder.class, export = true),
+        // ********** mqtt **********
+        @Type(value = io.netty.handler.codec.mqtt.MqttFixedHeader.class, export = true),
+        @Type(value = io.netty.handler.codec.mqtt.MqttMessageType.class, export = true),
+        @Type(value = io.netty.handler.codec.mqtt.MqttPublishVariableHeader.class, export = true),
+        @Type(value = io.netty.handler.codec.mqtt.MqttProperties.class, export = true),
+        @Type(value = io.netty.handler.codec.mqtt.MqttQoS.class, export = true),
+        @Type(value = io.gatling.mqtt.action.MqttInboundMessage.class, export = true),
+        @Type(value = io.gatling.javaapi.mqtt.ConnectActionBuilder.class, export = true),
+        @Type(value = io.gatling.javaapi.mqtt.LastWillBuilder.class, export = true),
+        @Type(value = io.gatling.javaapi.mqtt.Mqtt.class, export = true),
+        @Type(value = io.gatling.javaapi.mqtt.MqttBuilder.class, export = true),
+        @Type(value = io.gatling.javaapi.mqtt.MqttDsl.class, export = true),
+        @Type(value = io.gatling.javaapi.mqtt.MqttProtocolBuilder.class, export = true),
+        @Type(value = io.gatling.javaapi.mqtt.PublishActionBuilder.class, export = true),
+        @Type(value = io.gatling.javaapi.mqtt.PublishActionBuilder.Base.class, export = true),
+        @Type(value = io.gatling.javaapi.mqtt.PublishActionBuilder.Checkable.class, export = true),
+        @Type(value = io.gatling.javaapi.mqtt.SubscribeActionBuilder.class, export = true),
+        @Type(value = io.gatling.javaapi.mqtt.SubscribeActionBuilder.Checkable.class, export = true),
+        @Type(value = io.gatling.javaapi.mqtt.WaitForMessagesActionBuilder.class, export = true)
     })
 package io.gatling.javaapi;
 
