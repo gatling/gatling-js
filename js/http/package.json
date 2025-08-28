@@ -20,8 +20,8 @@
   "main": "target/index.js",
   "types": "target/index.d.ts",
   "dependencies": {
-    "@gatling.io/jvm-types": "0.0.0",
-    "@gatling.io/core": "0.0.0"
+    "@gatling.io/core": "0.0.0",
+    "@gatling.io/jvm-types": "0.0.0"
   },
   "devDependencies": {
     "@types/jest": "30.0.0",

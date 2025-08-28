@@ -420,8 +420,5 @@ const scn = scenario("scenario")
   .feed(sitemap("file"));
 
 runSimulationMock((setUp) => {
-  setUp(
-    scn.injectOpen(atOnceUsers(1))
-    //.protocols(httpProtocol)
-  ).protocols(httpProtocol);
+  setUp(scn.injectOpen(atOnceUsers(1)).protocols(httpProtocol)).protocols(httpProtocol);
 });

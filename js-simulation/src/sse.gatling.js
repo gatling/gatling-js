@@ -1,4 +1,4 @@
-import { atOnceUsers, jmesPath, pause, simulation, scenario, substring } from "@gatling.io/core";
+import {atOnceUsers, jmesPath, pause, simulation, scenario, substring} from "@gatling.io/core";
 import { http, sse } from "@gatling.io/http";
 
 export default simulation((setUp) => {

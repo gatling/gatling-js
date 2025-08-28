@@ -18,6 +18,9 @@ val graalvmJdkVersion = "24.0.2"
 val graalvmJsVersion = "24.2.2"
 val gatlingVersion = "3.14.3"
 
+// FIXME should be the same version as gatling when released
+val gatlingMqttVersion = "0.0.0-SNAPSHOT"
+
 // bit weird cause this is not a dependency of this project
 val gatlingEnterpriseComponentPluginVersion = "1.19.0"
 
@@ -47,10 +50,13 @@ lazy val adapter = (project in file("adapter"))
         targetExclude = targetExclude
       )
     },
+    autoScalaLibrary := false,
     libraryDependencies ++= Seq(
-      "io.gatling.highcharts" % "gatling-charts-highcharts" % gatlingVersion,
-      "org.graalvm.polyglot" % "js-community" % graalvmJsVersion,
-      "io.gatling" % "gatling-asm-shaded" % "9.8.0"
+      "io.gatling" % "gatling-asm-shaded" % "9.8.0",
+      "io.gatling" % "gatling-mqtt-java" % gatlingMqttVersion % "provided",
+      "io.gatling.highcharts" % "gatling-charts-highcharts" % gatlingVersion % "provided",
+      "org.scala-lang" % "scala-library" % scalaVersion.value % "provided",
+      "org.graalvm.polyglot" % "js-community" % graalvmJsVersion
     ),
     Compile / sourceGenerators += Def.task {
       // Generate a file directly into the CLI project and bundle project to share version numbers
@@ -68,7 +74,8 @@ lazy val adapter = (project in file("adapter"))
            |  gatling: {
            |    core: "$gatlingVersion",
            |    enterprisePluginCommons: "$gatlingEnterpriseComponentPluginVersion",
-           |    jsAdapter: "$jsAdapterVersion"
+           |    jsAdapter: "$jsAdapterVersion",
+           |    mqtt: "$gatlingMqttVersion"
            |  }
            |};
            |""".stripMargin
@@ -87,7 +94,8 @@ lazy val java2ts = (project in file("java2ts"))
     name := "gatling-java2ts",
     libraryDependencies ++= Seq(
       "io.gatling" % "gatling-core-java" % gatlingVersion,
-      "io.gatling" % "gatling-http-java" % gatlingVersion
+      "io.gatling" % "gatling-http-java" % gatlingVersion,
+      "io.gatling" % "gatling-mqtt-java" % gatlingMqttVersion
     ),
     publish / skip := true
   )
