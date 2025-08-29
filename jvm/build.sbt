@@ -19,7 +19,7 @@ val graalvmJsVersion = "24.2.2"
 val gatlingVersion = "3.14.3"
 
 // bit weird cause this is not a dependency of this project
-val gatlingEnterpriseComponentPluginVersion = "1.18.1"
+val gatlingEnterpriseComponentPluginVersion = "1.19.0"
 
 lazy val root = (project in file("."))
   .aggregate(adapter, java2ts)
