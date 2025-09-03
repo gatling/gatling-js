@@ -1,107 +1,66 @@
 import { Command } from "commander";
 
-import {
-  apiTokenOption,
-  apiTokenOptionValue,
-  bundleFileOption,
-  bundleFileOptionValue,
-  controlPlaneUrlOption,
-  controlPlaneUrlOptionValue,
-  enterpriseSimulationOption,
-  enterpriseSimulationOptionValue,
-  gatlingHomeOption,
-  gatlingHomeOptionValueWithDefaults,
-  nonInteractiveOption,
-  nonInteractiveOptionValue,
-  packageDescriptorFilenameOption,
-  packageDescriptorFilenameOptionValue,
-  packageFileOption,
-  packageFileOptionValue,
-  postmanOption,
-  postmanOptionValueWithDefaults,
-  resourcesFolderOption,
-  resourcesFolderOptionValue,
-  resultsFolderOption,
-  resultsFolderOptionValue,
-  runDescriptionOption,
-  runDescriptionOptionValue,
-  runTitleOption,
-  runTitleOptionValue,
-  sourcesFolderOption,
-  sourcesFolderOptionValue,
-  trustStoreOption,
-  trustStoreOptionValue,
-  trustStorePasswordOption,
-  trustStorePasswordOptionValue,
-  typescriptOption,
-  typescriptOptionValueWithDefaults,
-  apiUrlOption,
-  apiUrlOptionValue,
-  webAppUrlOption,
-  webAppUrlOptionValue,
-  waitForRunEndOption,
-  waitForRunEndOptionValue
-} from "./options";
+import { ResolvedOptions } from "./resolveOptions";
 import { findSimulations } from "../simulations";
 import { resolveBundle } from "../dependencies";
 import { bundle } from "../bundle";
 import { enterprisePackage, enterpriseStart } from "../enterprise";
 
-export default (program: Command): void => {
+export default (opts: ResolvedOptions, program: Command): void => {
   program
     .command("enterprise-start")
     .description("Start a simulation deployed with `enterprise-deploy`")
-    .addOption(sourcesFolderOption)
-    .addOption(resourcesFolderOption)
-    .addOption(bundleFileOption)
-    .addOption(resultsFolderOption)
-    .addOption(postmanOption)
-    .addOption(typescriptOption)
-    .addOption(gatlingHomeOption)
+    .addOption(opts.sourcesFolderOption)
+    .addOption(opts.resourcesFolderOption)
+    .addOption(opts.bundleFileOption)
+    .addOption(opts.resultsFolderOption)
+    .addOption(opts.postmanOption)
+    .addOption(opts.typescriptOption)
+    .addOption(opts.gatlingHomeOption)
     // Base
-    .addOption(apiUrlOption)
-    .addOption(webAppUrlOption)
-    .addOption(apiTokenOption)
+    .addOption(opts.apiUrlOption)
+    .addOption(opts.webAppUrlOption)
+    .addOption(opts.apiTokenOption)
     // Plugin configuration
-    .addOption(controlPlaneUrlOption)
-    .addOption(trustStoreOption)
-    .addOption(trustStorePasswordOption)
-    .addOption(nonInteractiveOption)
+    .addOption(opts.controlPlaneUrlOption)
+    .addOption(opts.trustStoreOption)
+    .addOption(opts.trustStorePasswordOption)
+    .addOption(opts.nonInteractiveOption)
     // Descriptor file
-    .addOption(packageDescriptorFilenameOption)
+    .addOption(opts.packageDescriptorFilenameOption)
     // Deployment info
-    .addOption(packageFileOption)
+    .addOption(opts.packageFileOption)
     // Start
-    .addOption(enterpriseSimulationOption)
-    .addOption(runTitleOption)
-    .addOption(runDescriptionOption)
-    .addOption(waitForRunEndOption)
+    .addOption(opts.enterpriseSimulationOption)
+    .addOption(opts.runTitleOption)
+    .addOption(opts.runDescriptionOption)
+    .addOption(opts.waitForRunEndOption)
     .action(async (options) => {
-      const sourcesFolder: string = sourcesFolderOptionValue(options);
+      const sourcesFolder: string = opts.sourcesFolderOptionValue(options);
 
       const simulations = await findSimulations(sourcesFolder);
-      const postman = postmanOptionValueWithDefaults(options);
-      const typescript = typescriptOptionValueWithDefaults(options, simulations);
+      const postman = opts.postmanOptionValueWithDefaults(options);
+      const typescript = opts.typescriptOptionValueWithDefaults(options, simulations);
 
-      const resourcesFolder: string = resourcesFolderOptionValue(options);
-      const bundleFile = bundleFileOptionValue(options);
-      const resultsFolder: string = resultsFolderOptionValue(options);
-      const gatlingHome = gatlingHomeOptionValueWithDefaults(options);
-      const apiUrl = apiUrlOptionValue(options);
-      const webAppUrl = webAppUrlOptionValue(options);
-      const apiToken = apiTokenOptionValue(options);
-      const controlPlaneUrl = controlPlaneUrlOptionValue(options);
-      const trustStore = trustStoreOptionValue(options);
-      const trustStorePassword = trustStorePasswordOptionValue(options);
-      const nonInteractive = nonInteractiveOptionValue(options);
-      const packageDescriptorFilename = packageDescriptorFilenameOptionValue(options);
-      const packageFile = packageFileOptionValue(options);
-      const enterpriseSimulation = enterpriseSimulationOptionValue(options);
-      const runTitle = runTitleOptionValue(options);
-      const runDescription = runDescriptionOptionValue(options);
-      const waitForRunEnd = waitForRunEndOptionValue(options);
+      const resourcesFolder: string = opts.resourcesFolderOptionValue(options);
+      const bundleFile = opts.bundleFileOptionValue(options);
+      const resultsFolder: string = opts.resultsFolderOptionValue(options);
+      const gatlingHome = opts.gatlingHomeOptionValueWithDefaults(options);
+      const apiUrl = opts.apiUrlOptionValue(options);
+      const webAppUrl = opts.webAppUrlOptionValue(options);
+      const apiToken = opts.apiTokenOptionValue(options);
+      const controlPlaneUrl = opts.controlPlaneUrlOptionValue(options);
+      const trustStore = opts.trustStoreOptionValue(options);
+      const trustStorePassword = opts.trustStorePasswordOptionValue(options);
+      const nonInteractive = opts.nonInteractiveOptionValue(options);
+      const packageDescriptorFilename = opts.packageDescriptorFilenameOptionValue(options);
+      const packageFile = opts.packageFileOptionValue(options);
+      const enterpriseSimulation = opts.enterpriseSimulationOptionValue(options);
+      const runTitle = opts.runTitleOptionValue(options);
+      const runDescription = opts.runDescriptionOptionValue(options);
+      const waitForRunEnd = opts.waitForRunEndOptionValue(options);
 
-      if (nonInteractiveOptionValue(options) && enterpriseSimulation === undefined) {
+      if (nonInteractive && enterpriseSimulation === undefined) {
         throw new Error(`No simulation specified when using non-interactive mode`);
       }
 
