@@ -1,3 +1,4 @@
+import { resolveNativeBinaries } from "./binaries";
 import { bundle } from "./bundle";
 import { resolveJavaLibraries } from "./coursier";
 import { buildGraalVm } from "./graalvm";
@@ -36,6 +37,14 @@ GraalJS version: ${versions.graalvm.js}`);
   console.log("Resolving Java libraries...");
   await resolveJavaLibraries(tmpDir);
   console.log(`Java libraries resolved.`);
+
+  console.log(`
+********** Native binaries **********
+`);
+
+  console.log("Resolving native binaries...");
+  await resolveNativeBinaries(tmpDir);
+  console.log(`Native binaries resolved.`);
 
   console.log(`
 ********** Bundle **********
