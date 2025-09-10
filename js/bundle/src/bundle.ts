@@ -20,7 +20,8 @@ export const bundle = async (tmpDir: TmpDirStructure): Promise<void> => {
     })
     .append(metadata, { name: "gatling-bundle.json" })
     .directory(tmpDir.graalVm.homeDir + "/", "graalvm")
-    .directory(tmpDir.lib.dir + "/", "lib");
+    .directory(tmpDir.lib.dir + "/", "lib")
+    .directory(tmpDir.bin.dir + "/", "bin");
   archive.finalize();
 
   await pipeline(archive, output);

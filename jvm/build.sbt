@@ -17,6 +17,7 @@ val compilerRelease = 21
 val graalvmJdkVersion = "24.0.2"
 val graalvmJsVersion = "24.2.2"
 val gatlingVersion = "3.14.3"
+val protocVersion = "4.32.0"
 
 // FIXME should be the same version as gatling when released
 val gatlingMqttVersion = "0.0.0-SNAPSHOT"
@@ -76,6 +77,9 @@ lazy val adapter = (project in file("adapter"))
            |    enterprisePluginCommons: "$gatlingEnterpriseComponentPluginVersion",
            |    jsAdapter: "$jsAdapterVersion",
            |    mqtt: "$gatlingMqttVersion"
+           |  },
+           |  protobuf: {
+           |    protoc: "$protocVersion"
            |  }
            |};
            |""".stripMargin

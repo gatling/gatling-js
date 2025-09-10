@@ -24,6 +24,10 @@ export interface TmpDirStructure {
     dir: string;
     javaDir: string;
   };
+  bin: {
+    dir: string;
+    protocFile: string;
+  };
 }
 
 export const initTmpDir = (): TmpDirStructure => {
@@ -47,6 +51,9 @@ export const initTmpDir = (): TmpDirStructure => {
   const libJavaDir = path.join(libDir, "java");
   fs.mkdirSync(libJavaDir);
 
+  const binDir = path.join(tmpDir, "bin");
+  fs.mkdirSync(binDir);
+
   const result = {
     dir: tmpDir,
     bundleFile: path.join(tmpDir, `gatling-js-bundle-${versions.gatling.jsAdapter}-${osType}-${osArch}.zip`),
@@ -64,6 +71,10 @@ export const initTmpDir = (): TmpDirStructure => {
     lib: {
       dir: libDir,
       javaDir: libJavaDir
+    },
+    bin: {
+      dir: binDir,
+      protocFile: path.join(binDir, "protoc.exe")
     }
   };
 
