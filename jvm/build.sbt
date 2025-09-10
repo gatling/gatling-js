@@ -76,6 +76,7 @@ lazy val adapter = (project in file("adapter"))
            |    core: "$gatlingVersion",
            |    enterprisePluginCommons: "$gatlingEnterpriseComponentPluginVersion",
            |    jsAdapter: "$jsAdapterVersion",
+           |    grpc: "$gatlingGrpcVersion",
            |    mqtt: "$gatlingMqttVersion"
            |  },
            |  protobuf: {

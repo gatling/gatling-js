@@ -46,6 +46,7 @@ export const bodyString = (): CheckBuilderFind<string> => wrapCheckBuilderFind(J
  */
 export const bodyBytes = (): CheckBuilderFind<number[]> => ({
   ...wrapCheckBuilderFind(JvmCoreDsl.bodyBytes()),
+  // FIXME only is and not?
   is: (expected: number[] | SessionTo<number[]>) =>
     wrapCheckBuilderFinal(
       typeof expected === "function"

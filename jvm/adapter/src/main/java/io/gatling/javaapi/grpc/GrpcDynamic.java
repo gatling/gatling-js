@@ -30,14 +30,25 @@ import java.util.stream.Collectors;
 
 import com.google.protobuf.DescriptorProtos;
 import com.google.protobuf.Descriptors;
-import org.jspecify.annotations.Nullable;
+import com.google.protobuf.DynamicMessage;
 
 public class GrpcDynamic {
+  public static Map<String, Object> convert(DynamicMessage message) {
+    return message.getAllFields().entrySet().stream()
+        .collect(
+            Collectors.toMap(
+                entry -> entry.getKey().getName(),
+                entry ->
+                    entry.getValue() instanceof DynamicMessage
+                        ? convert((DynamicMessage) entry.getValue())
+                        : entry.getValue()));
+  }
+
   public static GrpcMethodDescriptorWrapper loadMethodDescriptor(
-      String compiledProtosListPath, @Nullable String pkg, String service, String method)
-      throws IOException {
+      String pkg, String service, String method)
+      throws IOException, Descriptors.DescriptorValidationException {
     // Retrieve the list of all binary files
-    final var allCompiledProtos = readCompiledProtosList(compiledProtosListPath);
+    final var allCompiledProtos = readCompiledProtosList("compiled-protobuf-files");
     // Load all the binary files
     final var fileDescriptorProtos = loadFileDescriptors(allCompiledProtos);
 
@@ -123,32 +134,35 @@ public class GrpcDynamic {
   private static Descriptors.FileDescriptor resolveFileDescriptor(
       Path protoPath,
       Map<Path, DescriptorProtos.FileDescriptorProto> fileDescriptorProtos,
-      Map<Path, Descriptors.FileDescriptor> cache) {
-    return cache.computeIfAbsent(
-        protoPath,
-        path -> {
-          final var proto = fileDescriptorProtos.get(protoPath);
-          if (proto == null) {
-            throw new IllegalArgumentException(
-                "Dependency " + protoPath + " not found in input proto file(s)");
-          }
-          try {
-            return Descriptors.FileDescriptor.buildFrom(
-                proto,
-                proto.getDependencyList().stream()
-                    .map(
-                        dependency -> {
-                          final var parent = protoPath.getParent();
-                          final var dependencyPath =
-                              parent != null ? parent.resolve(dependency) : Paths.get(dependency);
+      Map<Path, Descriptors.FileDescriptor> cache)
+      throws Descriptors.DescriptorValidationException {
+    // We cannot simply use cache.computeIfAbsent because the recursive call then leads to a
+    // ConcurrentModificationException
+    if (!cache.containsKey(protoPath)) {
+      final var proto = fileDescriptorProtos.get(protoPath);
+      if (proto == null) {
+        throw new IllegalArgumentException(
+            "Dependency " + protoPath + " not found in input proto file(s)");
+      }
+      final var fileDescriptor =
+          Descriptors.FileDescriptor.buildFrom(
+              proto,
+              proto.getDependencyList().stream()
+                  .map(
+                      dependency -> {
+                        final var parent = protoPath.getParent();
+                        final var dependencyPath =
+                            parent != null ? parent.resolve(dependency) : Paths.get(dependency);
+                        try {
                           return resolveFileDescriptor(dependencyPath, fileDescriptorProtos, cache);
-                        })
-                    .toArray(Descriptors.FileDescriptor[]::new));
-
-          } catch (Descriptors.DescriptorValidationException e) {
-            throw new RuntimeException(e);
-          }
-        });
+                        } catch (Descriptors.DescriptorValidationException e) {
+                          throw new RuntimeException(e);
+                        }
+                      })
+                  .toArray(Descriptors.FileDescriptor[]::new));
+      cache.put(protoPath, fileDescriptor);
+    }
+    return cache.get(protoPath);
   }
 
   private static final class Pair<K, V> {
