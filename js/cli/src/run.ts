@@ -6,6 +6,7 @@ export interface RunSimulationOptions extends RunJavaProcessOptions {
   simulation: string;
   bundleFile: string;
   resourcesFolder: string;
+  protoTargetFolder: string;
   resultsFolder: string;
   memory?: number;
   runParameters: Record<string, string>;
@@ -24,7 +25,7 @@ export const runSimulation = async (options: RunSimulationOptions): Promise<void
  - resourcesFolder: ${options.resourcesFolder}
  - resultsFolder: ${options.resultsFolder}`);
 
-  const additionalClasspathElements = [options.resourcesFolder];
+  const additionalClasspathElements = [options.resourcesFolder, options.protoTargetFolder];
   const jitTuningArgs = ["-XX:JVMCINativeLibraryThreadFraction=0.8", "-Djdk.graal.MethodInlineBailoutLimit=500"];
   const memoryArgs = options.memory !== undefined ? [`-Xms${options.memory}M`, `-Xmx${options.memory}M`] : [];
   const javaArgs = [

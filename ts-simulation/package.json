@@ -8,6 +8,7 @@
     "@gatling.io/core": "../tmp/core/package",
     "@gatling.io/http": "../tmp/http/package",
     "@gatling.io/mqtt": "../tmp/mqtt/package",
+    "@gatling.io/grpc": "../tmp/grpc/package",
     "uuid": "11.1.0"
   },
   "devDependencies": {

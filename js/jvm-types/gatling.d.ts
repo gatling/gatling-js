@@ -56,6 +56,120 @@ declare namespace Java {
 // Generated declarations
 //
 
+declare namespace com.google.protobuf {
+  class Descriptors$Descriptor /* extends Descriptors$GenericDescriptor*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    findEnumTypeByName(name: string): any /*com.google.protobuf.Descriptors$EnumDescriptor*/;
+    findFieldByName(name: string): any /*com.google.protobuf.Descriptors$FieldDescriptor*/;
+    findFieldByNumber(number: int): any /*com.google.protobuf.Descriptors$FieldDescriptor*/;
+    findNestedTypeByName(name: string): Descriptors$Descriptor;
+    getContainingType(): Descriptors$Descriptor;
+    getEnumTypes(): java.util.List<any /*com.google.protobuf.Descriptors$EnumDescriptor*/>;
+    getExtensions(): java.util.List<any /*com.google.protobuf.Descriptors$FieldDescriptor*/>;
+    getFields(): java.util.List<any /*com.google.protobuf.Descriptors$FieldDescriptor*/>;
+    getFile(): any /*com.google.protobuf.Descriptors$FileDescriptor*/;
+    getFullName(): string;
+    getIndex(): int;
+    getName(): string;
+    getNestedTypes(): java.util.List<Descriptors$Descriptor>;
+    getOneofs(): java.util.List<any /*com.google.protobuf.Descriptors$OneofDescriptor*/>;
+    getOptions(): any /*com.google.protobuf.DescriptorProtos$MessageOptions*/;
+    getRealOneofs(): java.util.List<any /*com.google.protobuf.Descriptors$OneofDescriptor*/>;
+    isExtendable(): boolean;
+    isExtensionNumber(number: int): boolean;
+    isReservedName(name: string): boolean;
+    isReservedNumber(number: int): boolean;
+    toProto(): any /*com.google.protobuf.DescriptorProtos$DescriptorProto*/;
+    toString(): string;
+  } // end Descriptors$Descriptor
+} // end namespace com.google.protobuf
+declare namespace com.google.protobuf {
+  class DynamicMessage$Builder /* extends AbstractMessage$Builder<any>*/ {
+    addRepeatedField(
+      field: any /*com.google.protobuf.Descriptors$FieldDescriptor*/,
+      value: any /*java.lang.Object*/
+    ): DynamicMessage$Builder;
+    build(): any /*com.google.protobuf.DynamicMessage*/;
+    buildPartial(): any /*com.google.protobuf.DynamicMessage*/;
+    clear(): DynamicMessage$Builder;
+    clearField(field: any /*com.google.protobuf.Descriptors$FieldDescriptor*/): DynamicMessage$Builder;
+    clearOneof(oneof: any /*com.google.protobuf.Descriptors$OneofDescriptor*/): DynamicMessage$Builder;
+    clone(): DynamicMessage$Builder;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    findInitializationErrors(): java.util.List<string>;
+    getAllFields(): java.util.Map<any /*com.google.protobuf.Descriptors$FieldDescriptor*/, any /*java.lang.Object*/>;
+    getDefaultInstanceForType(): any /*com.google.protobuf.DynamicMessage*/;
+    getDescriptorForType(): Descriptors$Descriptor;
+    getField(field: any /*com.google.protobuf.Descriptors$FieldDescriptor*/): any /*java.lang.Object*/;
+    getFieldBuilder(
+      field: any /*com.google.protobuf.Descriptors$FieldDescriptor*/
+    ): any /*com.google.protobuf.Message$Builder*/;
+    getInitializationErrorString(): string;
+    getOneofFieldDescriptor(
+      oneof: any /*com.google.protobuf.Descriptors$OneofDescriptor*/
+    ): any /*com.google.protobuf.Descriptors$FieldDescriptor*/;
+    getRepeatedField(
+      field: any /*com.google.protobuf.Descriptors$FieldDescriptor*/,
+      index: int
+    ): any /*java.lang.Object*/;
+    getRepeatedFieldBuilder(
+      field: any /*com.google.protobuf.Descriptors$FieldDescriptor*/,
+      index: int
+    ): any /*com.google.protobuf.Message$Builder*/;
+    getRepeatedFieldCount(field: any /*com.google.protobuf.Descriptors$FieldDescriptor*/): int;
+    getUnknownFields(): any /*com.google.protobuf.UnknownFieldSet*/;
+    hasField(field: any /*com.google.protobuf.Descriptors$FieldDescriptor*/): boolean;
+    hasOneof(oneof: any /*com.google.protobuf.Descriptors$OneofDescriptor*/): boolean;
+    isInitialized(): boolean;
+    mergeDelimitedFrom(input: any /*java.io.InputStream*/): boolean;
+    mergeDelimitedFrom(
+      input: any /*java.io.InputStream*/,
+      extensionRegistry: any /*com.google.protobuf.ExtensionRegistryLite*/
+    ): boolean;
+    mergeFrom(other: any /*com.google.protobuf.Message*/): DynamicMessage$Builder;
+    mergeFrom<BuilderType>(data: any /*com.google.protobuf.ByteString*/): BuilderType;
+    mergeFrom<BuilderType>(
+      data: any /*com.google.protobuf.ByteString*/,
+      extensionRegistry: any /*com.google.protobuf.ExtensionRegistryLite*/
+    ): BuilderType;
+    mergeFrom<BuilderType>(data: bytearray): BuilderType;
+    mergeFrom<BuilderType>(
+      data: bytearray,
+      extensionRegistry: any /*com.google.protobuf.ExtensionRegistryLite*/
+    ): BuilderType;
+    mergeFrom<BuilderType>(data: bytearray, off: int, len: int): BuilderType;
+    mergeFrom<BuilderType>(
+      data: bytearray,
+      off: int,
+      len: int,
+      extensionRegistry: any /*com.google.protobuf.ExtensionRegistryLite*/
+    ): BuilderType;
+    mergeFrom<BuilderType>(input: any /*com.google.protobuf.CodedInputStream*/): BuilderType;
+    mergeFrom<BuilderType>(
+      input: any /*com.google.protobuf.CodedInputStream*/,
+      extensionRegistry: any /*com.google.protobuf.ExtensionRegistryLite*/
+    ): BuilderType;
+    mergeFrom<BuilderType>(input: any /*java.io.InputStream*/): BuilderType;
+    mergeFrom<BuilderType>(
+      input: any /*java.io.InputStream*/,
+      extensionRegistry: any /*com.google.protobuf.ExtensionRegistryLite*/
+    ): BuilderType;
+    mergeFrom<BuilderType>(other: any /*com.google.protobuf.MessageLite*/): BuilderType;
+    mergeUnknownFields(unknownFields: any /*com.google.protobuf.UnknownFieldSet*/): DynamicMessage$Builder;
+    newBuilderForField(field: any /*com.google.protobuf.Descriptors$FieldDescriptor*/): DynamicMessage$Builder;
+    setField(
+      field: any /*com.google.protobuf.Descriptors$FieldDescriptor*/,
+      value: any /*java.lang.Object*/
+    ): DynamicMessage$Builder;
+    setRepeatedField(
+      field: any /*com.google.protobuf.Descriptors$FieldDescriptor*/,
+      index: int,
+      value: any /*java.lang.Object*/
+    ): DynamicMessage$Builder;
+    setUnknownFields(unknownFields: any /*com.google.protobuf.UnknownFieldSet*/): DynamicMessage$Builder;
+    toString(): string;
+  } // end DynamicMessage$Builder
+} // end namespace com.google.protobuf
 declare namespace io.gatling.http.client {
   class Request /* extends java.lang.Object*/ {
     copyWithCopiedHeaders(): Request;
@@ -2921,6 +3035,162 @@ declare namespace io.gatling.javaapi.core.pause {
     rendezVous(arg0: int): T;
   } // end RendezVous
 } // end namespace io.gatling.javaapi.core.pause
+declare namespace io.gatling.javaapi.grpc {
+  class Grpc /* extends java.lang.Object*/ {
+    bidiStream(
+      arg0: any /*io.grpc.MethodDescriptor*/
+    ): any /*io.gatling.javaapi.grpc.GrpcBidirectionalStreamingServiceBuilder*/;
+    bidiStream(
+      arg0: any /*io.grpc.MethodDescriptor*/,
+      arg1: string
+    ): any /*io.gatling.javaapi.grpc.GrpcBidirectionalStreamingServiceBuilder*/;
+    clientStream(
+      arg0: any /*io.grpc.MethodDescriptor*/
+    ): any /*io.gatling.javaapi.grpc.GrpcClientStreamingServiceBuilder*/;
+    clientStream(
+      arg0: any /*io.grpc.MethodDescriptor*/,
+      arg1: string
+    ): any /*io.gatling.javaapi.grpc.GrpcClientStreamingServiceBuilder*/;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    serverStream(
+      arg0: any /*io.grpc.MethodDescriptor*/
+    ): any /*io.gatling.javaapi.grpc.GrpcServerStreamingServiceBuilder*/;
+    serverStream(
+      arg0: any /*io.grpc.MethodDescriptor*/,
+      arg1: string
+    ): any /*io.gatling.javaapi.grpc.GrpcServerStreamingServiceBuilder*/;
+    toString(): string;
+    unary<ReqT, RespT>(arg0: any /*io.grpc.MethodDescriptor*/): GrpcUnaryServiceBuilder<ReqT, RespT>;
+  } // end Grpc
+} // end namespace io.gatling.javaapi.grpc
+declare namespace io.gatling.javaapi.grpc {
+  class GrpcDsl /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toString(): string;
+  } // end GrpcDsl
+} // end namespace io.gatling.javaapi.grpc
+declare namespace io.gatling.javaapi.grpc {
+  class GrpcDynamic$FileDescriptorWrapper /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    service(arg0: string): GrpcDynamic$ServiceDescriptorWrapper;
+    toString(): string;
+  } // end GrpcDynamic$FileDescriptorWrapper
+} // end namespace io.gatling.javaapi.grpc
+declare namespace io.gatling.javaapi.grpc {
+  class GrpcDynamic$MethodDescriptorWrapper /* extends java.lang.Object*/ {
+    descriptor(): any /*io.grpc.MethodDescriptor*/;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    inputDescriptor(): com.google.protobuf.Descriptors$Descriptor;
+    newInputBuilder(): com.google.protobuf.DynamicMessage$Builder;
+    outputDescriptor(): com.google.protobuf.Descriptors$Descriptor;
+    toString(): string;
+  } // end GrpcDynamic$MethodDescriptorWrapper
+} // end namespace io.gatling.javaapi.grpc
+declare namespace io.gatling.javaapi.grpc {
+  class GrpcDynamic$ServiceDescriptorWrapper /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    method(arg0: string): GrpcDynamic$MethodDescriptorWrapper;
+    toString(): string;
+  } // end GrpcDynamic$ServiceDescriptorWrapper
+} // end namespace io.gatling.javaapi.grpc
+declare namespace io.gatling.javaapi.grpc {
+  class GrpcDynamic /* extends java.lang.Object*/ {
+    convert(arg0: any /*com.google.protobuf.DynamicMessage*/): java.util.Map<string, any /*java.lang.Object*/>;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    loadBinaryDescriptorFile(arg0: any /*java.nio.file.Path*/, arg1: string): GrpcDynamic$FileDescriptorWrapper;
+    loadBinaryDescriptorResource(arg0: string, arg1: string): GrpcDynamic$FileDescriptorWrapper;
+    loadProtoFile(
+      arg0: any /*java.nio.file.Path*/,
+      arg1: java.util.List<any /*java.nio.file.Path*/>
+    ): GrpcDynamic$FileDescriptorWrapper;
+    loadProtoResource(arg0: string, arg1: java.util.List<string>): GrpcDynamic$FileDescriptorWrapper;
+    toString(): string;
+  } // end GrpcDynamic
+} // end namespace io.gatling.javaapi.grpc
+declare namespace io.gatling.javaapi.grpc {
+  class GrpcHeaders$Value<B, V> /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toString(): string;
+    value(arg0: Func<io.gatling.javaapi.core.Session, V>): B;
+    value(arg0: V): B;
+    valueEl(arg0: string): B;
+  } // end GrpcHeaders$Value
+} // end namespace io.gatling.javaapi.grpc
+declare namespace io.gatling.javaapi.grpc {
+  class GrpcProtocolBuilder /* extends java.lang.Object implements io.gatling.javaapi.core.ProtocolBuilder, GrpcHeaders<any, any>*/ {
+    asciiHeader<B>(arg0: string): GrpcHeaders$Value<B, string>;
+    asciiHeaders<B>(arg0: java.util.Map<string, string>): B;
+    binaryHeader<B>(arg0: string): GrpcHeaders$Value<B, bytearray>;
+    binaryHeaders<B>(arg0: java.util.Map<string, bytearray>): B;
+    callCredentials(arg0: Func<io.gatling.javaapi.core.Session, io.grpc.CallCredentials>): GrpcProtocolBuilder;
+    callCredentials(arg0: io.grpc.CallCredentials): GrpcProtocolBuilder;
+    callCredentials(arg0: string): GrpcProtocolBuilder;
+    channelCredentials(arg0: Func<io.gatling.javaapi.core.Session, io.grpc.ChannelCredentials>): GrpcProtocolBuilder;
+    channelCredentials(arg0: io.grpc.ChannelCredentials): GrpcProtocolBuilder;
+    channelCredentials(arg0: string): GrpcProtocolBuilder;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    forAddress(arg0: string, arg1: int): GrpcProtocolBuilder;
+    forTarget(arg0: string): GrpcProtocolBuilder;
+    header<B, T>(arg0: io.grpc.Metadata$Key<T>): GrpcHeaders$Value<B, T>;
+    overrideAuthority(arg0: string): GrpcProtocolBuilder;
+    protocol(): any /*io.gatling.core.protocol.Protocol*/;
+    shareChannel(): GrpcProtocolBuilder;
+    shareSslContext(): GrpcProtocolBuilder;
+    toString(): string;
+    useChannelPool(arg0: int): GrpcProtocolBuilder;
+    useCustomCertificateTrustManager(arg0: string): GrpcProtocolBuilder;
+    useCustomLoadBalancingPolicy(arg0: string): GrpcProtocolBuilder;
+    useCustomLoadBalancingPolicy(arg0: string, arg1: string): GrpcProtocolBuilder;
+    useInsecureTrustManager(): GrpcProtocolBuilder;
+    usePickFirstLoadBalancingPolicy(): GrpcProtocolBuilder;
+    usePickRandomLoadBalancingPolicy(): GrpcProtocolBuilder;
+    usePlaintext(): GrpcProtocolBuilder;
+    useRoundRobinLoadBalancingPolicy(): GrpcProtocolBuilder;
+    useStandardTrustManager(): GrpcProtocolBuilder;
+  } // end GrpcProtocolBuilder
+} // end namespace io.gatling.javaapi.grpc
+declare namespace io.gatling.javaapi.grpc {
+  class GrpcUnaryActionBuilder<
+    ReqT,
+    RespT
+  > /* extends java.lang.Object implements io.gatling.javaapi.core.ActionBuilder, GrpcHeaders<ReqT, RespT>*/ {
+    asScala(): any /*io.gatling.core.action.builder.ActionBuilder*/;
+    asciiHeader<B>(arg0: string): GrpcHeaders$Value<B, string>;
+    asciiHeaders<B>(arg0: java.util.Map<string, string>): B;
+    binaryHeader<B>(arg0: string): GrpcHeaders$Value<B, bytearray>;
+    binaryHeaders<B>(arg0: java.util.Map<string, bytearray>): B;
+    callCredentials(
+      arg0: Func<io.gatling.javaapi.core.Session, io.grpc.CallCredentials>
+    ): GrpcUnaryActionBuilder<ReqT, RespT>;
+    callCredentials(arg0: io.grpc.CallCredentials): GrpcUnaryActionBuilder<ReqT, RespT>;
+    callCredentials(arg0: string): GrpcUnaryActionBuilder<ReqT, RespT>;
+    check(...arg0: io.gatling.javaapi.core.CheckBuilder[]): GrpcUnaryActionBuilder<ReqT, RespT>;
+    check(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): GrpcUnaryActionBuilder<ReqT, RespT>;
+    deadlineAfter(arg0: java.time.Duration): GrpcUnaryActionBuilder<ReqT, RespT>;
+    deadlineAfter(arg0: long): GrpcUnaryActionBuilder<ReqT, RespT>;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    header<B, T>(arg0: io.grpc.Metadata$Key<T>): GrpcHeaders$Value<B, T>;
+    toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
+    toString(): string;
+  } // end GrpcUnaryActionBuilder
+} // end namespace io.gatling.javaapi.grpc
+declare namespace io.gatling.javaapi.grpc {
+  class GrpcUnaryServiceBuilder<ReqT, RespT> /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    send(arg0: Func<io.gatling.javaapi.core.Session, ReqT>): GrpcUnaryActionBuilder<ReqT, RespT>;
+    send(arg0: ReqT): GrpcUnaryActionBuilder<ReqT, RespT>;
+    toString(): string;
+  } // end GrpcUnaryServiceBuilder
+} // end namespace io.gatling.javaapi.grpc
+declare namespace io.gatling.javaapi.grpc {
+  interface GrpcHeaders<B, W> {
+    asciiHeader(arg0: string): GrpcHeaders$Value<B, string>;
+    asciiHeaders(arg0: java.util.Map<string, string>): B;
+    binaryHeader(arg0: string): GrpcHeaders$Value<B, bytearray>;
+    binaryHeaders(arg0: java.util.Map<string, bytearray>): B;
+    header<T>(arg0: io.grpc.Metadata$Key<T>): GrpcHeaders$Value<B, T>;
+  } // end GrpcHeaders
+} // end namespace io.gatling.javaapi.grpc
 declare namespace io.gatling.javaapi.http {
   class AddCookie /* extends java.lang.Object*/ {
     asScala(): any /*io.gatling.http.action.cookie.AddCookieDsl*/;
@@ -4200,6 +4470,141 @@ declare namespace io.gatling.mqtt.action {
     variableHeader(): io.netty.handler.codec.mqtt.MqttPublishVariableHeader;
   } // end MqttInboundMessage
 } // end namespace io.gatling.mqtt.action
+declare namespace io.grpc {
+  /* enum */ class Status$Code /* extends java.lang.Enum<any>*/ {
+    // OK:Status$Code;
+    // CANCELLED:Status$Code;
+    // UNKNOWN:Status$Code;
+    // INVALID_ARGUMENT:Status$Code;
+    // DEADLINE_EXCEEDED:Status$Code;
+    // NOT_FOUND:Status$Code;
+    // ALREADY_EXISTS:Status$Code;
+    // PERMISSION_DENIED:Status$Code;
+    // RESOURCE_EXHAUSTED:Status$Code;
+    // FAILED_PRECONDITION:Status$Code;
+    // ABORTED:Status$Code;
+    // OUT_OF_RANGE:Status$Code;
+    // UNIMPLEMENTED:Status$Code;
+    // INTERNAL:Status$Code;
+    // UNAVAILABLE:Status$Code;
+    // DATA_LOSS:Status$Code;
+    // UNAUTHENTICATED:Status$Code;
+
+    compareTo<E>(arg0: E): int;
+    describeConstable(): java.util.Optional<any /*java.lang.Enum$EnumDesc*/>;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    getDeclaringClass<E>(): java.lang.Class<E>;
+    name(): string;
+    ordinal(): int;
+    toStatus(): Status;
+    toString(): string;
+    value(): int;
+  } // end Status$Code
+} // end namespace io.grpc
+declare namespace io.grpc {
+  class CallCredentials /* extends java.lang.Object*/ {
+    applyRequestMetadata(
+      arg0: any /*io.grpc.CallCredentials$RequestInfo*/,
+      arg1: any /*java.util.concurrent.Executor*/,
+      arg2: any /*io.grpc.CallCredentials$MetadataApplier*/
+    ): void;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    thisUsesUnstableApi(): void;
+    toString(): string;
+  } // end CallCredentials
+} // end namespace io.grpc
+declare namespace io.grpc {
+  class CallOptions /* extends java.lang.Object*/ {
+    clearOnReadyThreshold(): CallOptions;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    getAuthority(): string;
+    getCompressor(): string;
+    getCredentials(): CallCredentials;
+    getDeadline(): any /*io.grpc.Deadline*/;
+    getExecutor(): any /*java.util.concurrent.Executor*/;
+    getMaxInboundMessageSize(): int | null;
+    getMaxOutboundMessageSize(): int | null;
+    getOnReadyThreshold(): int | null;
+    getOption<T>(arg0: any /*io.grpc.CallOptions$Key*/): T;
+    getStreamTracerFactories(): java.util.List<any /*io.grpc.ClientStreamTracer$Factory*/>;
+    isWaitForReady(): boolean;
+    toString(): string;
+    withAuthority(arg0: string): CallOptions;
+    withCallCredentials(arg0: CallCredentials): CallOptions;
+    withCompression(arg0: string): CallOptions;
+    withDeadline(arg0: any /*io.grpc.Deadline*/): CallOptions;
+    withDeadlineAfter(arg0: java.time.Duration): CallOptions;
+    withDeadlineAfter(arg0: long, arg1: any /*java.util.concurrent.TimeUnit*/): CallOptions;
+    withExecutor(arg0: any /*java.util.concurrent.Executor*/): CallOptions;
+    withMaxInboundMessageSize(arg0: int): CallOptions;
+    withMaxOutboundMessageSize(arg0: int): CallOptions;
+    withOnReadyThreshold(arg0: int): CallOptions;
+    withOption<T>(arg0: any /*io.grpc.CallOptions$Key*/, arg1: T): CallOptions;
+    withStreamTracerFactory(arg0: any /*io.grpc.ClientStreamTracer$Factory*/): CallOptions;
+    withWaitForReady(): CallOptions;
+    withoutWaitForReady(): CallOptions;
+  } // end CallOptions
+} // end namespace io.grpc
+declare namespace io.grpc {
+  class ChannelCredentials /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toString(): string;
+    withoutBearerTokens(): ChannelCredentials;
+  } // end ChannelCredentials
+} // end namespace io.grpc
+declare namespace io.grpc {
+  class Metadata$Key<T> /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    name(): string;
+    originalName(): string;
+    toString(): string;
+  } // end Metadata$Key
+} // end namespace io.grpc
+declare namespace io.grpc {
+  class Metadata /* extends java.lang.Object*/ {
+    containsKey(arg0: Metadata$Key<any /*java.lang.Object*/>): boolean;
+    discardAll<T>(arg0: Metadata$Key<T>): void;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    get<T>(arg0: Metadata$Key<T>): T;
+    getAll<T>(arg0: Metadata$Key<T>): java.lang.Iterable<T>;
+    keys(): java.util.Set<string>;
+    merge(arg0: Metadata): void;
+    merge(arg0: Metadata, arg1: java.util.Set<Metadata$Key<any /*java.lang.Object*/>>): void;
+    put<T>(arg0: Metadata$Key<T>, arg1: T): void;
+    remove<T>(arg0: Metadata$Key<T>, arg1: T): boolean;
+    removeAll<T>(arg0: Metadata$Key<T>): java.lang.Iterable<T>;
+    toString(): string;
+  } // end Metadata
+} // end namespace io.grpc
+declare namespace io.grpc {
+  class Status /* extends java.lang.Object*/ {
+    asException(): any /*io.grpc.StatusException*/;
+    asException(arg0: Metadata): any /*io.grpc.StatusException*/;
+    asRuntimeException(): any /*io.grpc.StatusRuntimeException*/;
+    asRuntimeException(arg0: Metadata): any /*io.grpc.StatusRuntimeException*/;
+    augmentDescription(arg0: string): Status;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    getCause(): any /*java.lang.Throwable*/;
+    getCode(): Status$Code;
+    getDescription(): string;
+    isOk(): boolean;
+    toString(): string;
+    withCause(arg0: any /*java.lang.Throwable*/): Status;
+    withDescription(arg0: string): Status;
+  } // end Status
+} // end namespace io.grpc
+declare namespace io.grpc {
+  interface Metadata$AsciiMarshaller<T> {
+    parseAsciiString(arg0: string): T;
+    toAsciiString(arg0: T): string;
+  } // end Metadata$AsciiMarshaller
+} // end namespace io.grpc
+declare namespace io.grpc {
+  interface Metadata$BinaryMarshaller<T> {
+    parseBytes(arg0: bytearray): T;
+    toBytes(arg0: T): bytearray;
+  } // end Metadata$BinaryMarshaller
+} // end namespace io.grpc
 declare namespace io.netty.handler.codec.http {
   class HttpHeaders /* extends java.lang.Object implements java.lang.Iterable<any>*/ {
     add(arg0: HttpHeaders): HttpHeaders;

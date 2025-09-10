@@ -20,6 +20,8 @@ val gatlingVersion = "3.14.3"
 val protocVersion = "4.32.0"
 
 // FIXME should be the same version as gatling when released
+val gatlingGrpcVersion = "0.0.0-SNAPSHOT"
+// FIXME should be the same version as gatling when released
 val gatlingMqttVersion = "0.0.0-SNAPSHOT"
 
 // bit weird cause this is not a dependency of this project
@@ -54,6 +56,7 @@ lazy val adapter = (project in file("adapter"))
     autoScalaLibrary := false,
     libraryDependencies ++= Seq(
       "io.gatling" % "gatling-asm-shaded" % "9.8.0",
+      "io.gatling" % "gatling-grpc-java" % gatlingGrpcVersion % "provided",
       "io.gatling" % "gatling-mqtt-java" % gatlingMqttVersion % "provided",
       "io.gatling.highcharts" % "gatling-charts-highcharts" % gatlingVersion % "provided",
       "org.scala-lang" % "scala-library" % scalaVersion.value % "provided",
@@ -76,6 +79,7 @@ lazy val adapter = (project in file("adapter"))
            |    core: "$gatlingVersion",
            |    enterprisePluginCommons: "$gatlingEnterpriseComponentPluginVersion",
            |    jsAdapter: "$jsAdapterVersion",
+           |    grpc: "$gatlingGrpcVersion",
            |    mqtt: "$gatlingMqttVersion"
            |  },
            |  protobuf: {
@@ -99,6 +103,7 @@ lazy val java2ts = (project in file("java2ts"))
     libraryDependencies ++= Seq(
       "io.gatling" % "gatling-core-java" % gatlingVersion,
       "io.gatling" % "gatling-http-java" % gatlingVersion,
+      "io.gatling" % "gatling-grpc-java" % gatlingGrpcVersion,
       "io.gatling" % "gatling-mqtt-java" % gatlingMqttVersion
     ),
     publish / skip := true
