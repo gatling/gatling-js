@@ -13,11 +13,10 @@ export default simulation((setUp) => {
   const topic = "gatling-mqtt-demo/" + uuid.v4();
 
   const scn = scenario("Publisher")
-    .exec(session => session.set("id", uuid.v4()))
+    .exec((session) => session.set("id", uuid.v4()))
     .exec(
       mqtt("Connecting").connect(),
-      mqtt("Subscribing")
-        .subscribe(topic),
+      mqtt("Subscribing").subscribe(topic),
       mqtt("Publishing")
         .publish(topic)
         .message(StringBody('{"id":"#{id}","message":"Hello from #{id}"}'))
@@ -25,6 +24,5 @@ export default simulation((setUp) => {
         .check(jmesPath("message").isEL("Hello from #{id}"))
     );
 
-  setUp(scn.injectOpen(atOnceUsers(5)))
-    .protocols(baseMqttProtocol);
+  setUp(scn.injectOpen(atOnceUsers(5))).protocols(baseMqttProtocol);
 });

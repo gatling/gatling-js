@@ -6,6 +6,7 @@
   "main": "target/bundle",
   "dependencies": {
     "@gatling.io/core": "../tmp/core/package",
+    "@gatling.io/grpc": "../tmp/grpc/package",
     "@gatling.io/http": "../tmp/http/package",
     "@gatling.io/mqtt": "../tmp/mqtt/package",
     "uuid": "11.1.0"

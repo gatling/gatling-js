@@ -12,7 +12,7 @@ import { ThrottleStep } from "./throttling";
 
 // FIXME no export *
 export { asJava } from "./gatlingJvm/collections";
-export { asByteArray, asByteArrayFunction } from "./gatlingJvm/byteArrays";
+export { asByteArray, asByteArrayFunction, asByteArrayMap } from "./gatlingJvm/byteArrays";
 export { readResourceAsBytes, readResourceAsString } from "./gatlingJvm/resources";
 export * from "./utils/duration";
 export * from "./assertions";

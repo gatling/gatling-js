@@ -1,4 +1,4 @@
-import { Session, SessionTo, underlyingSessionTo, underlyingXWithSessionTo } from "../session";
+import { Session, SessionTo, isSessionTo, underlyingSessionTo, underlyingXWithSessionTo } from "../session";
 import { CheckBuilderFinal, wrapCheckBuilderFinal } from "./final";
 
 import JvmCheckBuilderValidate = io.gatling.javaapi.core.CheckBuilder$Validate;
@@ -31,10 +31,10 @@ export interface CheckBuilderValidate<X> extends CheckBuilderFinal {
   /**
    * Provide a default value if the check wasn't able to extract anything
    *
-   * @param value - the default value
+   * @param value - the default value or a function returning the default value
    * @returns a new Validate
    */
-  withDefault(value: X): CheckBuilderValidate<X>;
+  withDefault(value: X | ((session: Session) => X)): CheckBuilderValidate<X>;
 
   /**
    * Provide a default Gatling Expression Language value if the check wasn't able to extract
@@ -44,14 +44,6 @@ export interface CheckBuilderValidate<X> extends CheckBuilderFinal {
    * @returns a new Validate
    */
   withDefaultEL(value: string): CheckBuilderValidate<X>;
-
-  /**
-   * Provide a default value if the check wasn't able to extract anything
-   *
-   * @param value - the default value as a function
-   * @returns a new Validate
-   */
-  withDefault(value: SessionTo<X>): CheckBuilderValidate<X>;
 
   /**
    * Provide a custom validation strategy
@@ -65,10 +57,10 @@ export interface CheckBuilderValidate<X> extends CheckBuilderFinal {
   /**
    * Validate the extracted value is equal to an expected value
    *
-   * @param expected - the expected value
+   * @param expected - the expected value or a function returning the expected value
    * @returns a new CheckBuilderFinal
    */
-  is(expected: X): CheckBuilderFinal;
+  is(expected: X | ((session: Session) => X)): CheckBuilderFinal;
 
   /**
    * Validate the extracted value is equal to an expected value, passed as a Gatling Expression
@@ -80,14 +72,6 @@ export interface CheckBuilderValidate<X> extends CheckBuilderFinal {
   isEL(expected: string): CheckBuilderFinal;
 
   /**
-   * Validate the extracted value is equal to an expected value, passed as a function
-   *
-   * @param expected - the expected value as a function
-   * @returns a new CheckBuilderFinal
-   */
-  is(expected: SessionTo<X>): CheckBuilderFinal;
-
-  /**
    * Validate the extracted value is null
    *
    * @returns a new CheckBuilderFinal
@@ -97,10 +81,10 @@ export interface CheckBuilderValidate<X> extends CheckBuilderFinal {
   /**
    * Validate the extracted value is not an expected value
    *
-   * @param expected - the unexpected value
+   * @param expected - the unexpected value or a function returning the unexpected value
    * @returns a new CheckBuilderFinal
    */
-  not(expected: X): CheckBuilderFinal;
+  not(expected: X | ((session: Session) => X)): CheckBuilderFinal;
 
   /**
    * Validate the extracted value is not an expected value, passed as a Gatling Expression
@@ -112,14 +96,6 @@ export interface CheckBuilderValidate<X> extends CheckBuilderFinal {
   notEL(expected: string): CheckBuilderFinal;
 
   /**
-   * Validate the extracted value is not an expected value, passed as a function
-   *
-   * @param expected - the unexpected value as a function
-   * @returns a new CheckBuilderFinal
-   */
-  not(expected: SessionTo<X>): CheckBuilderFinal;
-
-  /**
    * Validate the extracted value is not null
    *
    * @returns a new CheckBuilderFinal
@@ -129,10 +105,11 @@ export interface CheckBuilderValidate<X> extends CheckBuilderFinal {
   /**
    * Validate the extracted value belongs to an expected set
    *
-   * @param expected - the set of possible values
+   * @param expectedOrFunction - either a single expected value or a function returning an array of expected values
+   * @param additionalValues - additional expected values (ignored if expectedOrFunction is a function)
    * @returns a new Final
    */
-  in(...expected: X[]): CheckBuilderFinal;
+  in(expectedOrFunction: X | SessionTo<X[]>, ...additionalValues: X[]): CheckBuilderFinal;
 
   /**
    * Validate the extracted value belongs to an expected set, passed as a Gatling Expression
@@ -142,14 +119,6 @@ export interface CheckBuilderValidate<X> extends CheckBuilderFinal {
    * @returns a new CheckBuilderFinal
    */
   inEL(expected: string): CheckBuilderFinal;
-
-  /**
-   * Validate the extracted value belongs to an expected set, passed as a function
-   *
-   * @param expected - the set of possible values, as a function
-   * @returns a new CheckBuilderFinal
-   */
-  in(expected: SessionTo<X[]>): CheckBuilderFinal;
 
   /**
    * Validate the check was able to extract any value
@@ -175,10 +144,10 @@ export interface CheckBuilderValidate<X> extends CheckBuilderFinal {
   /**
    * Validate the extracted value is less than a given value
    *
-   * @param value - the value
+   * @param value - the value or a function returning the value
    * @returns a new CheckBuilderFinal
    */
-  lt(value: X): CheckBuilderFinal;
+  lt(value: X | ((session: Session) => X)): CheckBuilderFinal;
 
   /**
    * Validate the extracted value is less than a given value, passed as a Gatling Expression
@@ -190,20 +159,12 @@ export interface CheckBuilderValidate<X> extends CheckBuilderFinal {
   ltEL(value: string): CheckBuilderFinal;
 
   /**
-   * Validate the extracted value is less than a given value, passed as a function
-   *
-   * @param value - the value, as a function
-   * @returns a new CheckBuilderFinal
-   */
-  lt(value: SessionTo<X>): CheckBuilderFinal;
-
-  /**
    * Validate the extracted value is less than or equal to a given value
    *
-   * @param value - the value
+   * @param value - the value or a function returning the value
    * @returns a new CheckBuilderFinal
    */
-  lte(value: X): CheckBuilderFinal;
+  lte(value: X | ((session: Session) => X)): CheckBuilderFinal;
 
   /**
    * Validate the extracted value is less than or equal to a given value, passed as a Gatling
@@ -215,20 +176,12 @@ export interface CheckBuilderValidate<X> extends CheckBuilderFinal {
   lteEL(value: string): CheckBuilderFinal;
 
   /**
-   * Validate the extracted value is less than or equal to a given value, passed as a function
-   *
-   * @param value - the value, as a function
-   * @returns a new CheckBuilderFinal
-   */
-  lte(value: SessionTo<X>): CheckBuilderFinal;
-
-  /**
    * Validate the extracted value is greater than a given value
    *
-   * @param value - the value
+   * @param value - the value or a function returning the value
    * @returns a new CheckBuilderFinal
    */
-  gt(value: X): CheckBuilderFinal;
+  gt(value: X | ((session: Session) => X)): CheckBuilderFinal;
 
   /**
    * Validate the extracted value is greater than a given value, passed as a Gatling Expression
@@ -240,20 +193,12 @@ export interface CheckBuilderValidate<X> extends CheckBuilderFinal {
   gtEL(value: string): CheckBuilderFinal;
 
   /**
-   * Validate the extracted value is greater than a given value, passed as a function
-   *
-   * @param value - the value, as a function
-   * @returns a new CheckBuilderFinal
-   */
-  gt(value: SessionTo<X>): CheckBuilderFinal;
-
-  /**
    * Validate the extracted value is greater than or equal to a given value
    *
-   * @param value - the value
+   * @param value - the value or a function returning the value
    * @returns a new CheckBuilderFinal
    */
-  gte(value: X): CheckBuilderFinal;
+  gte(value: X | ((session: Session) => X)): CheckBuilderFinal;
 
   /**
    * Validate the extracted value is greater than or equal to a given value, passed as a Gatling
@@ -263,74 +208,50 @@ export interface CheckBuilderValidate<X> extends CheckBuilderFinal {
    * @returns a new CheckBuilderFinal
    */
   gteEL(value: string): CheckBuilderFinal;
-
-  /**
-   * Validate the extracted value is greater than or equal to a given value, passed as a function
-   *
-   * @param value - the value, as a function
-   * @returns a new CheckBuilderFinal
-   */
-  gte(value: SessionTo<X>): CheckBuilderFinal;
 }
 
 export const wrapCheckBuilderValidate = <X>(_underlying: JvmCheckBuilderValidate<X>): CheckBuilderValidate<X> => ({
   ...wrapCheckBuilderFinal(_underlying),
-  transform: <X2>(f: (x: X) => X2) => wrapCheckBuilderValidate(_underlying.transform(f)),
-  transformWithSession: <X2>(f: (x: X, session: Session) => X2) =>
-    wrapCheckBuilderValidate(_underlying.transformWithSession(underlyingXWithSessionTo(f))),
-  withDefault: (value: X | SessionTo<X>) =>
+  transform: (f) => wrapCheckBuilderValidate(_underlying.transform(f)),
+  transformWithSession: (f) => wrapCheckBuilderValidate(_underlying.transformWithSession(underlyingXWithSessionTo(f))),
+  withDefault: (value) =>
     wrapCheckBuilderValidate(
-      typeof value === "function"
-        ? _underlying.withDefault(underlyingSessionTo(value as SessionTo<X>))
-        : _underlying.withDefault(value)
+      isSessionTo(value) ? _underlying.withDefault(underlyingSessionTo(value)) : _underlying.withDefault(value)
     ),
-  withDefaultEL: (value: string) => wrapCheckBuilderValidate(_underlying.withDefaultEl(value)),
-  validate: (name: string, f: (x: X, session: Session) => X) =>
-    wrapCheckBuilderFinal(_underlying.validate(name, underlyingXWithSessionTo(f))),
-  is: (expected: X | SessionTo<X>) =>
+  withDefaultEL: (value) => wrapCheckBuilderValidate(_underlying.withDefaultEl(value)),
+  validate: (name, f) => wrapCheckBuilderFinal(_underlying.validate(name, underlyingXWithSessionTo(f))),
+  is: (expected) =>
     wrapCheckBuilderFinal(
-      typeof expected === "function"
-        ? _underlying.is(underlyingSessionTo(expected as SessionTo<X>))
-        : _underlying.is(expected)
+      isSessionTo(expected) ? _underlying.is(underlyingSessionTo(expected)) : _underlying.is(expected)
     ),
-  isEL: (expected: string) => wrapCheckBuilderFinal(_underlying.isEL(expected)),
-  isNull: (): CheckBuilderFinal => wrapCheckBuilderFinal(_underlying.isNull()),
-  not: (expected: X | SessionTo<X>) =>
+  isEL: (expected) => wrapCheckBuilderFinal(_underlying.isEL(expected)),
+  isNull: () => wrapCheckBuilderFinal(_underlying.isNull()),
+  not: (expected) =>
     wrapCheckBuilderFinal(
-      typeof expected === "function"
-        ? _underlying.not(underlyingSessionTo(expected as SessionTo<X>))
-        : _underlying.not(expected)
+      isSessionTo(expected) ? _underlying.not(underlyingSessionTo(expected)) : _underlying.not(expected)
     ),
-  notEL: (expected: string) => wrapCheckBuilderFinal(_underlying.notEL(expected)),
-  notNull: (): CheckBuilderFinal => wrapCheckBuilderFinal(_underlying.notNull()),
-  in: (expected: X | SessionTo<X[]>, ...rest: X[]) =>
+  notEL: (expected) => wrapCheckBuilderFinal(_underlying.notEL(expected)),
+  notNull: () => wrapCheckBuilderFinal(_underlying.notNull()),
+  in: (expectedOrFunction, ...additionalValues) =>
     wrapCheckBuilderFinal(
-      typeof expected === "function"
-        ? _underlying.in(underlyingSessionTo(expected as SessionTo<X[]>))
-        : _underlying.in([expected, ...rest])
+      typeof expectedOrFunction === "function"
+        ? _underlying.in(underlyingSessionTo(expectedOrFunction as SessionTo<X[]>))
+        : _underlying.in([expectedOrFunction, ...additionalValues])
     ),
-  inEL: (expected: string) => wrapCheckBuilderFinal(_underlying.inEL(expected)),
+  inEL: (expected) => wrapCheckBuilderFinal(_underlying.inEL(expected)),
   exists: () => wrapCheckBuilderFinal(_underlying.exists()),
   notExists: () => wrapCheckBuilderFinal(_underlying.notExists()),
   optional: () => wrapCheckBuilderFinal(_underlying.optional()),
-  lt: (value: X | SessionTo<X>) =>
-    wrapCheckBuilderFinal(
-      typeof value === "function" ? _underlying.lt(underlyingSessionTo(value as SessionTo<X>)) : _underlying.lt(value)
-    ),
-  ltEL: (value: string) => wrapCheckBuilderFinal(_underlying.ltEL(value)),
-  lte: (value: X | SessionTo<X>) =>
-    wrapCheckBuilderFinal(
-      typeof value === "function" ? _underlying.lte(underlyingSessionTo(value as SessionTo<X>)) : _underlying.lte(value)
-    ),
-  lteEL: (value: string) => wrapCheckBuilderFinal(_underlying.lteEL(value)),
-  gt: (value: X | SessionTo<X>) =>
-    wrapCheckBuilderFinal(
-      typeof value === "function" ? _underlying.gt(underlyingSessionTo(value as SessionTo<X>)) : _underlying.gt(value)
-    ),
-  gtEL: (value: string) => wrapCheckBuilderFinal(_underlying.gtEL(value)),
-  gte: (value: X | SessionTo<X>) =>
-    wrapCheckBuilderFinal(
-      typeof value === "function" ? _underlying.gte(underlyingSessionTo(value as SessionTo<X>)) : _underlying.gte(value)
-    ),
-  gteEL: (value: string) => wrapCheckBuilderFinal(_underlying.gteEL(value))
+  lt: (value) =>
+    wrapCheckBuilderFinal(isSessionTo(value) ? _underlying.lt(underlyingSessionTo(value)) : _underlying.lt(value)),
+  ltEL: (value) => wrapCheckBuilderFinal(_underlying.ltEL(value)),
+  lte: (value) =>
+    wrapCheckBuilderFinal(isSessionTo(value) ? _underlying.lte(underlyingSessionTo(value)) : _underlying.lte(value)),
+  lteEL: (value) => wrapCheckBuilderFinal(_underlying.lteEL(value)),
+  gt: (value) =>
+    wrapCheckBuilderFinal(isSessionTo(value) ? _underlying.gt(underlyingSessionTo(value)) : _underlying.gt(value)),
+  gtEL: (value) => wrapCheckBuilderFinal(_underlying.gtEL(value)),
+  gte: (value) =>
+    wrapCheckBuilderFinal(isSessionTo(value) ? _underlying.gte(underlyingSessionTo(value)) : _underlying.gte(value)),
+  gteEL: (value) => wrapCheckBuilderFinal(_underlying.gteEL(value))
 });

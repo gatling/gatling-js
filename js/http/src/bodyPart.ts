@@ -146,7 +146,7 @@ export const wrapBodyPart = (_underlying: JvmBodyPart): BodyPart => ({
     ),
   contentId: (contentId: Expression<string>): BodyPart =>
     wrapBodyPart(
-      typeof contentId == "function"
+      typeof contentId === "function"
         ? _underlying.contentId(underlyingSessionTo(contentId))
         : _underlying.contentId(contentId)
     ),

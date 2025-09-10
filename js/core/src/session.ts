@@ -128,9 +128,11 @@ export interface Session extends Wrapper<JvmSession> {
 export const wrapSession = (_underlying: JvmSession): Session => ({
   _underlying,
   get: <T>(key: string): T => _underlying.get(key),
+  // FIXME won't work on feeders
   set: (key: string, value: any): Session => {
     return wrapSession(_underlying.set(key, asJava(value)));
   },
+  // FIXME ???
   setByteArray: (key: string, value: number[]): Session => wrapSession(_underlying.set(key, asByteArray(value))),
   setAll: (newAttributes: Record<string, any>): Session => {
     let session = _underlying;
@@ -160,11 +162,19 @@ export const underlyingSessionTransform =
   (jvmSession: JvmSession) =>
     f(wrapSession(jvmSession))._underlying;
 
+export type BiSessionTransform = (main: Session, forked: Session) => Session;
+export const underlyingBiSessionTransform =
+  (f: BiSessionTransform): ((jvmMain: JvmSession, jvmForked: JvmSession) => JvmSession) =>
+    (jvmMain: JvmSession, jvmForked: JvmSession) =>
+      f(wrapSession(jvmMain), wrapSession(jvmForked))._underlying;
+
 export type SessionTo<T> = (session: Session) => T;
 export const underlyingSessionTo =
   <T>(f: SessionTo<T>): ((jvmSession: JvmSession) => T) =>
   (jvmSession: JvmSession) =>
     f(wrapSession(jvmSession));
+
+export const isSessionTo = <T>(value: Expression<T>): value is SessionTo<T> => typeof value === "function";
 
 export const underlyingSessionToJava =
   <T>(f: SessionTo<T>): ((jvmSession: JvmSession) => unknown) =>

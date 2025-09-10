@@ -62,6 +62,7 @@ const runProtoc = async (
   protoPath: string,
   targetFile: string
 ): Promise<void> => {
+  // FIXME can't build simulations without the bundle...
   const args = [`--proto_path=${protoPath}`, `--descriptor_set_out=${targetFile}`, sourceFile];
   const spawned = spawn(protocPath, args, {
     env: process.env,

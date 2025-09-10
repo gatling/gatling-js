@@ -27,8 +27,7 @@ public final class MqttDsl {
    * @param message the last will message
    * @return the next DSL step
    */
-  @NonNull
-  public static LastWillBuilder LastWill(@NonNull String topic, @NonNull Body message) {
+  public static @NonNull LastWillBuilder LastWill(@NonNull String topic, @NonNull Body message) {
     return new LastWillBuilder(
       io.gatling.mqtt.Predef.LastWill(toStringExpression(topic), message.asScala()));
   }
@@ -40,8 +39,7 @@ public final class MqttDsl {
    * @param message the last will message
    * @return the next DSL step
    */
-  @NonNull
-  public static LastWillBuilder LastWill(
+  public static @NonNull LastWillBuilder LastWill(
     @NonNull Function<Session, String> topic, @NonNull Body message) {
     return new LastWillBuilder(
       io.gatling.mqtt.Predef.LastWill(
@@ -60,8 +58,7 @@ public final class MqttDsl {
    * @param name the action name, expressed as a Gatling Expression Language String
    * @return the next DSL step
    */
-  @NonNull
-  public static MqttBuilder mqtt(@NonNull String name) {
+  public static @NonNull MqttBuilder mqtt(@NonNull String name) {
     return new MqttBuilder(toStringExpression(name));
   }
 
@@ -71,8 +68,7 @@ public final class MqttDsl {
    * @param name the action name, expressed as a function
    * @return the next DSL step
    */
-  @NonNull
-  public static MqttBuilder mqtt(@NonNull Function<Session, String> name) {
+  public static @NonNull MqttBuilder mqtt(@NonNull Function<Session, String> name) {
     return new MqttBuilder(javaFunctionToExpression(name));
   }
 }
