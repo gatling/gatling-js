@@ -64,6 +64,6 @@ export default (program: Command): void => {
         protocPath
       });
 
-      await enterprisePackage({ bundleFile, resourcesFolder, packageFile, postman, simulations });
+      await enterprisePackage({ bundleFile, resourcesFolder, protoTargetFolder, packageFile, postman, simulations });
     });
 };

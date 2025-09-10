@@ -128,11 +128,31 @@ interface BodyStatic {
 
 export const Body: BodyStatic = Java.type("io.gatling.javaapi.core.Body");
 
+interface CallCredentialsStatic {
+  readonly class: any;
+  new (): io.grpc.CallCredentials;
+}
+
+export const CallCredentials: CallCredentialsStatic = Java.type("io.grpc.CallCredentials");
+
+interface CallOptionsStatic {
+  readonly class: any;
+}
+
+export const CallOptions: CallOptionsStatic = Java.type("io.grpc.CallOptions");
+
 interface ChainBuilderStatic {
   readonly class: any;
 }
 
 export const ChainBuilder: ChainBuilderStatic = Java.type("io.gatling.javaapi.core.ChainBuilder");
+
+interface ChannelCredentialsStatic {
+  readonly class: any;
+  new (): io.grpc.ChannelCredentials;
+}
+
+export const ChannelCredentials: ChannelCredentialsStatic = Java.type("io.grpc.ChannelCredentials");
 
 interface CheckBuilder$CaptureGroupCheckBuilderStatic {
   readonly class: any;
@@ -1163,6 +1183,14 @@ interface CoreDslStatic {
 
 export const CoreDsl: CoreDslStatic = Java.type("io.gatling.javaapi.core.CoreDsl");
 
+interface Descriptors$DescriptorStatic {
+  readonly class: any;
+}
+
+export const Descriptors$Descriptor: Descriptors$DescriptorStatic = Java.type(
+  "com.google.protobuf.Descriptors$Descriptor"
+);
+
 interface DoIf$ThenStatic {
   readonly class: any;
 }
@@ -1315,6 +1343,14 @@ interface DuringStatic {
 
 export const During: DuringStatic = Java.type("io.gatling.javaapi.core.loop.During");
 
+interface DynamicMessage$BuilderStatic {
+  readonly class: any;
+}
+
+export const DynamicMessage$Builder: DynamicMessage$BuilderStatic = Java.type(
+  "com.google.protobuf.DynamicMessage$Builder"
+);
+
 interface Errors$ExitBlockOnFailStatic {
   readonly class: any;
 }
@@ -1436,6 +1472,94 @@ interface GroupsStatic {
 }
 
 export const Groups: GroupsStatic = Java.type("io.gatling.javaapi.core.group.Groups");
+
+interface GrpcDslStatic {
+  readonly class: any;
+  response<X, X2>(arg0: Func<X, X2>): io.gatling.javaapi.core.CheckBuilder$Find<X2>;
+  header<X>(arg0: io.grpc.Metadata$Key<X>): io.gatling.javaapi.core.CheckBuilder$MultipleFind<X>;
+  trailer<X>(arg0: io.grpc.Metadata$Key<X>): io.gatling.javaapi.core.CheckBuilder$MultipleFind<X>;
+  statusDescription(): io.gatling.javaapi.core.CheckBuilder$Find<string>;
+  statusCause(): io.gatling.javaapi.core.CheckBuilder$Find<any /*java.lang.Throwable*/>;
+  binaryHeader(arg0: string): io.gatling.javaapi.core.CheckBuilder$MultipleFind<bytearray>;
+  binaryTrailer(arg0: string): io.gatling.javaapi.core.CheckBuilder$MultipleFind<bytearray>;
+  asciiHeader(arg0: string): io.gatling.javaapi.core.CheckBuilder$MultipleFind<string>;
+  asciiTrailer(arg0: string): io.gatling.javaapi.core.CheckBuilder$MultipleFind<string>;
+  grpc(arg0: string): io.gatling.javaapi.grpc.Grpc;
+  grpc(arg0: Func<io.gatling.javaapi.core.Session, string>): io.gatling.javaapi.grpc.Grpc;
+  statusCode(): any /*io.gatling.javaapi.grpc.GrpcStatusCodeCheckBuilder*/;
+}
+
+export const GrpcDsl: GrpcDslStatic = Java.type("io.gatling.javaapi.grpc.GrpcDsl");
+
+interface GrpcDynamic$FileDescriptorWrapperStatic {
+  readonly class: any;
+}
+
+export const GrpcDynamic$FileDescriptorWrapper: GrpcDynamic$FileDescriptorWrapperStatic = Java.type(
+  "io.gatling.javaapi.grpc.GrpcDynamic$FileDescriptorWrapper"
+);
+
+interface GrpcDynamic$MethodDescriptorWrapperStatic {
+  readonly class: any;
+}
+
+export const GrpcDynamic$MethodDescriptorWrapper: GrpcDynamic$MethodDescriptorWrapperStatic = Java.type(
+  "io.gatling.javaapi.grpc.GrpcDynamic$MethodDescriptorWrapper"
+);
+
+interface GrpcDynamic$ServiceDescriptorWrapperStatic {
+  readonly class: any;
+}
+
+export const GrpcDynamic$ServiceDescriptorWrapper: GrpcDynamic$ServiceDescriptorWrapperStatic = Java.type(
+  "io.gatling.javaapi.grpc.GrpcDynamic$ServiceDescriptorWrapper"
+);
+
+interface GrpcDynamicStatic {
+  readonly class: any;
+}
+
+export const GrpcDynamic: GrpcDynamicStatic = Java.type("io.gatling.javaapi.grpc.GrpcDynamic");
+
+interface GrpcHeaders$ValueStatic {
+  readonly class: any;
+}
+
+export const GrpcHeaders$Value: GrpcHeaders$ValueStatic = Java.type("io.gatling.javaapi.grpc.GrpcHeaders$Value");
+
+interface GrpcHeadersStatic {
+  readonly class: any;
+}
+
+export const GrpcHeaders: GrpcHeadersStatic = Java.type("io.gatling.javaapi.grpc.GrpcHeaders");
+
+interface GrpcProtocolBuilderStatic {
+  readonly class: any;
+}
+
+export const GrpcProtocolBuilder: GrpcProtocolBuilderStatic = Java.type("io.gatling.javaapi.grpc.GrpcProtocolBuilder");
+
+interface GrpcStatic {
+  readonly class: any;
+}
+
+export const Grpc: GrpcStatic = Java.type("io.gatling.javaapi.grpc.Grpc");
+
+interface GrpcUnaryActionBuilderStatic {
+  readonly class: any;
+}
+
+export const GrpcUnaryActionBuilder: GrpcUnaryActionBuilderStatic = Java.type(
+  "io.gatling.javaapi.grpc.GrpcUnaryActionBuilder"
+);
+
+interface GrpcUnaryServiceBuilderStatic {
+  readonly class: any;
+}
+
+export const GrpcUnaryServiceBuilder: GrpcUnaryServiceBuilderStatic = Java.type(
+  "io.gatling.javaapi.grpc.GrpcUnaryServiceBuilder"
+);
 
 interface HttpDslStatic {
   readonly class: any;
@@ -1770,6 +1894,36 @@ interface LastWillBuilderStatic {
 }
 
 export const LastWillBuilder: LastWillBuilderStatic = Java.type("io.gatling.javaapi.mqtt.LastWillBuilder");
+
+interface Metadata$AsciiMarshallerStatic {
+  readonly class: any;
+}
+
+export const Metadata$AsciiMarshaller: Metadata$AsciiMarshallerStatic = Java.type("io.grpc.Metadata$AsciiMarshaller");
+
+interface Metadata$BinaryMarshallerStatic {
+  readonly class: any;
+}
+
+export const Metadata$BinaryMarshaller: Metadata$BinaryMarshallerStatic = Java.type(
+  "io.grpc.Metadata$BinaryMarshaller"
+);
+
+interface Metadata$KeyStatic {
+  readonly class: any;
+  of<T>(arg0: string, arg1: io.grpc.Metadata$AsciiMarshaller<T>): io.grpc.Metadata$Key<T>;
+  of<T>(arg0: string, arg1: io.grpc.Metadata$BinaryMarshaller<T>): io.grpc.Metadata$Key<T>;
+  of<T>(arg0: string, arg1: any /*io.grpc.Metadata$BinaryStreamMarshaller*/): io.grpc.Metadata$Key<T>;
+}
+
+export const Metadata$Key: Metadata$KeyStatic = Java.type("io.grpc.Metadata$Key");
+
+interface MetadataStatic {
+  readonly class: any;
+  new (): io.grpc.Metadata;
+}
+
+export const Metadata: MetadataStatic = Java.type("io.grpc.Metadata");
 
 interface MqttBuilderStatic {
   readonly class: any;
@@ -2356,6 +2510,43 @@ interface Stairs$TimesStatic {
 }
 
 export const Stairs$Times: Stairs$TimesStatic = Java.type("io.gatling.javaapi.core.OpenInjectionStep$Stairs$Times");
+
+interface Status$CodeStatic {
+  OK: io.grpc.Status$Code;
+  CANCELLED: io.grpc.Status$Code;
+  UNKNOWN: io.grpc.Status$Code;
+  INVALID_ARGUMENT: io.grpc.Status$Code;
+  DEADLINE_EXCEEDED: io.grpc.Status$Code;
+  NOT_FOUND: io.grpc.Status$Code;
+  ALREADY_EXISTS: io.grpc.Status$Code;
+  PERMISSION_DENIED: io.grpc.Status$Code;
+  RESOURCE_EXHAUSTED: io.grpc.Status$Code;
+  FAILED_PRECONDITION: io.grpc.Status$Code;
+  ABORTED: io.grpc.Status$Code;
+  OUT_OF_RANGE: io.grpc.Status$Code;
+  UNIMPLEMENTED: io.grpc.Status$Code;
+  INTERNAL: io.grpc.Status$Code;
+  UNAVAILABLE: io.grpc.Status$Code;
+  DATA_LOSS: io.grpc.Status$Code;
+  UNAUTHENTICATED: io.grpc.Status$Code;
+
+  readonly class: any;
+  valueOf<T>(arg0: java.lang.Class<T>, arg1: string): T;
+  valueOf(arg0: string): io.grpc.Status$Code;
+  values(): [io.grpc.Status$Code];
+}
+
+export const Status$Code: Status$CodeStatic = Java.type("io.grpc.Status$Code");
+
+interface StatusStatic {
+  readonly class: any;
+  trailersFromThrowable(arg0: any /*java.lang.Throwable*/): io.grpc.Metadata;
+  fromCode(arg0: io.grpc.Status$Code): io.grpc.Status;
+  fromCodeValue(arg0: int): io.grpc.Status;
+  fromThrowable(arg0: any /*java.lang.Throwable*/): io.grpc.Status;
+}
+
+export const Status: StatusStatic = Java.type("io.grpc.Status");
 
 interface StreamStatic {
   readonly class: any;

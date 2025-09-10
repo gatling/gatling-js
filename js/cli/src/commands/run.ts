@@ -90,6 +90,7 @@ export default (program: Command): void => {
         simulation,
         bundleFile,
         resourcesFolder,
+        protoTargetFolder,
         resultsFolder,
         memory,
         runParameters

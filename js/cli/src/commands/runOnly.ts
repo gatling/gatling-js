@@ -10,6 +10,8 @@ import {
   memoryOption,
   memoryOptionValue,
   parseRunParametersArgument,
+  protoTargetFolderOption,
+  protoTargetFolderOptionValue,
   resourcesFolderOption,
   resourcesFolderOptionValue,
   resultsFolderOption,
@@ -28,6 +30,7 @@ export default (program: Command): void => {
     .addOption(jvmClasspathMandatoryOption)
     .addOption(simulationMandatoryOption)
     .addOption(bundleFileOption)
+    .addOption(protoTargetFolderOption)
     .addOption(resourcesFolderOption)
     .addOption(resultsFolderOption)
     .addOption(memoryOption)
@@ -37,6 +40,7 @@ export default (program: Command): void => {
       const jvmClasspath: string = jvmClasspathMandatoryOptionValue(options);
       const simulation: string = simulationMandatoryOptionValue(options);
       const bundleFile = bundleFileOptionValue(options);
+      const protoTargetFolder = protoTargetFolderOptionValue(options);
       const resourcesFolder: string = resourcesFolderOptionValue(options);
       const resultsFolder: string = resultsFolderOptionValue(options);
       const memory: number | undefined = memoryOptionValue(options);
@@ -48,6 +52,7 @@ export default (program: Command): void => {
         simulation: simulation,
         bundleFile,
         resourcesFolder,
+        protoTargetFolder,
         resultsFolder,
         memory,
         runParameters

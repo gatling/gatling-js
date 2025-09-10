@@ -124,7 +124,7 @@ export default (program: Command): void => {
         simulations,
         protocPath
       });
-      await enterprisePackage({ bundleFile, resourcesFolder, packageFile, postman, simulations });
+      await enterprisePackage({ bundleFile, resourcesFolder, protoTargetFolder, packageFile, postman, simulations });
       await enterpriseStart({
         graalvmHome,
         jvmClasspath,
