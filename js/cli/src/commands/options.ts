@@ -6,7 +6,6 @@ import path from "path";
 import { SimulationFile } from "../simulations";
 import { keyInSelectPaginated } from "../readline";
 import { logger } from "../log";
-import stream from "stream";
 
 const getStringValueOptional =
   (option: Option) =>
@@ -78,6 +77,18 @@ export const gatlingHomeOptionValueWithDefaults = (options: any): string =>
 
 export const sourcesFolderOption = new Option("--sources-folder <value>", "The sources folder path").default("src");
 export const sourcesFolderOptionValue = getStringValueMandatory(sourcesFolderOption);
+
+export const protoFolderOption = new Option(
+  "--protobuf-folder <value>",
+  "The path of the protobuf definition files folder"
+).default("protobuf");
+export const protoFolderOptionValue = getStringValueMandatory(protoFolderOption);
+
+export const protoTargetFolderOption = new Option(
+  "--protobuf-target-folder <value>",
+  "The path of the protobuf compilation target folder"
+).default("target/protobuf");
+export const protoTargetFolderOptionValue = getStringValueMandatory(protoTargetFolderOption);
 
 export const simulationOption = new Option(
   "--simulation <value>",
