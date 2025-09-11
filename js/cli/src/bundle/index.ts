@@ -5,18 +5,23 @@ import { resolve } from "path";
 import { SimulationFile } from "../simulations";
 import { logger } from "../log";
 import { polyfills } from "./polyfills";
+import { compileProtoFiles } from "./protoc";
 
 export interface BundleOptions {
   sourcesFolder: string;
+  protoFolder: string;
   bundleFile: string;
+  protoTargetFolder: string;
   postman?: string;
   typescript: boolean;
   simulations: SimulationFile[];
+  protocPath: string;
 }
 
 export const bundle = async (options: BundleOptions): Promise<void> => {
   logger.info(`Bundling a Gatling simulation with options:
  - sourcesFolder: ${options.sourcesFolder}
+ - protoFolder: ${options.protoFolder}
  - bundleFile: ${options.bundleFile}
  - typescript: ${options.typescript}`);
 
@@ -40,4 +45,6 @@ export const bundle = async (options: BundleOptions): Promise<void> => {
     plugins,
     external: polyfills
   });
+
+  await compileProtoFiles(options.protocPath, options.protoFolder, options.protoTargetFolder);
 };

@@ -17,6 +17,7 @@ val compilerRelease = 21
 val graalvmJdkVersion = "25.0.0"
 val graalvmJsVersion = "25.0.0"
 val gatlingVersion = "3.14.6"
+val gatlingGrpcVersion = "3.14.6"
 val gatlingMqttVersion = "3.14.6"
 val protocVersion = "4.32.1"
 
@@ -53,6 +54,7 @@ lazy val adapter = (project in file("adapter"))
     libraryDependencies ++= Seq(
       "io.gatling.highcharts" % "gatling-charts-highcharts" % gatlingVersion % "provided",
       "io.gatling" % "gatling-asm-shaded" % "9.9.0",
+      "io.gatling" % "gatling-grpc-java" % gatlingGrpcVersion % "provided",
       "io.gatling" % "gatling-mqtt-java" % gatlingMqttVersion % "provided",
       "org.graalvm.polyglot" % "js" % graalvmJsVersion,
       "org.scala-lang" % "scala-library" % scalaVersion.value % "provided"
@@ -96,6 +98,7 @@ lazy val java2ts = (project in file("java2ts"))
     name := "gatling-java2ts",
     libraryDependencies ++= Seq(
       "io.gatling" % "gatling-core-java" % gatlingVersion,
+      "io.gatling" % "gatling-grpc-java" % gatlingGrpcVersion,
       "io.gatling" % "gatling-http-java" % gatlingVersion,
       "io.gatling" % "gatling-mqtt-java" % gatlingMqttVersion
     ),
