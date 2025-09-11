@@ -11,6 +11,10 @@ import {
   parseRunParametersArgument,
   postmanOption,
   postmanOptionValueWithDefaults,
+  protoFolderOption,
+  protoFolderOptionValue,
+  protoTargetFolderOption,
+  protoTargetFolderOptionValue,
   resourcesFolderOption,
   resourcesFolderOptionValue,
   resultsFolderOption,
@@ -36,9 +40,11 @@ export default (program: Command): void => {
       "Build and run a Gatling simulation, after installing all required components and dependencies for Gatling"
     )
     .addOption(sourcesFolderOption)
+    .addOption(protoFolderOption)
     .addOption(simulationOption)
     .addOption(typescriptOption)
     .addOption(bundleFileOption)
+    .addOption(protoTargetFolderOption)
     .addOption(resourcesFolderOption)
     .addOption(resultsFolderOption)
     .addOption(gatlingHomeOption)
@@ -49,7 +55,9 @@ export default (program: Command): void => {
     .action(async (args: string[], options) => {
       const gatlingHome = gatlingHomeOptionValueWithDefaults(options);
       const sourcesFolder: string = sourcesFolderOptionValue(options);
+      const protoFolder: string = protoFolderOptionValue(options);
       const bundleFile = bundleFileOptionValue(options);
+      const protoTargetFolder = protoTargetFolderOptionValue(options);
       const resourcesFolder: string = resourcesFolderOptionValue(options);
       const resultsFolder: string = resultsFolderOptionValue(options);
       const memory: number | undefined = memoryOptionValue(options);
@@ -61,11 +69,20 @@ export default (program: Command): void => {
       const typescript = typescriptOptionValueWithDefaults(options, simulations);
       const simulation = simulationOptionValueWithDefaults(options, simulations, !nonInteractive);
 
-      const { graalvmHome, jvmClasspath } = await resolveBundle({ gatlingHome });
+      const { graalvmHome, jvmClasspath, protocPath } = await resolveBundle({ gatlingHome });
       logger.debug(`graalvmHome=${graalvmHome}`);
       logger.debug(`jvmClasspath=${jvmClasspath}`);
 
-      await bundle({ sourcesFolder, bundleFile, postman, typescript, simulations });
+      await bundle({
+        sourcesFolder,
+        protoFolder,
+        bundleFile,
+        protoTargetFolder,
+        postman,
+        typescript,
+        simulations,
+        protocPath
+      });
 
       await runSimulation({
         graalvmHome,
