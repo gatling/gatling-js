@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+import "greeting/greeting_content.proto";
+
+package greeting;
+
+message GreetRequest {
+  Greeting greeting = 1;
+}
+
+message GreetResponse {
+  string result = 1;
+}

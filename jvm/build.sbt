@@ -19,6 +19,7 @@ val graalvmJsVersion = "25.0.0"
 val protocVersion = "4.32.0"
 val gatlingVersion = "3.14.5"
 val gatlingMqttVersion = "3.14.5"
+val gatlingGrpcVersion = "0.0.0-SNAPSHOT"
 
 // bit weird cause this is not a dependency of this project
 val gatlingEnterpriseComponentPluginVersion = "1.20.2"
@@ -54,6 +55,7 @@ lazy val adapter = (project in file("adapter"))
       "io.gatling.highcharts" % "gatling-charts-highcharts" % gatlingVersion % "provided",
       "io.gatling" % "gatling-asm-shaded" % "9.8.0",
       "io.gatling" % "gatling-mqtt-java" % gatlingMqttVersion % "provided",
+      "io.gatling" % "gatling-grpc-java" % gatlingGrpcVersion % "provided",
       "org.graalvm.polyglot" % "js" % graalvmJsVersion,
       "org.scala-lang" % "scala-library" % scalaVersion.value % "provided"
     ),
@@ -97,7 +99,8 @@ lazy val java2ts = (project in file("java2ts"))
     libraryDependencies ++= Seq(
       "io.gatling" % "gatling-core-java" % gatlingVersion,
       "io.gatling" % "gatling-http-java" % gatlingVersion,
-      "io.gatling" % "gatling-mqtt-java" % gatlingMqttVersion
+      "io.gatling" % "gatling-mqtt-java" % gatlingMqttVersion,
+      "io.gatling" % "gatling-grpc-java" % gatlingGrpcVersion
     ),
     publish / skip := true
   )

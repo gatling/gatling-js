@@ -12,6 +12,7 @@ import { SimulationFile } from "./simulations";
 export interface EnterprisePackageOptions {
   bundleFile: string;
   resourcesFolder: string;
+  protoTargetFolder: string;
   packageFile: string;
   postman: string | undefined;
   simulations: SimulationFile[];
@@ -37,6 +38,7 @@ export const enterprisePackage = async (options: EnterprisePackageOptions): Prom
   archive.file(options.bundleFile, { name: "bundle.js" });
   archive.append(Buffer.from(manifest), { name: "META-INF/MANIFEST.MF" });
   archive.directory(options.resourcesFolder + "/", false);
+  archive.directory(options.protoTargetFolder + "/", false);
   archive.finalize();
 
   await pipeline(archive, output);

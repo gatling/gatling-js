@@ -19,6 +19,10 @@ import {
   packageFileOptionValue,
   postmanOption,
   postmanOptionValueWithDefaults,
+  protoFolderOption,
+  protoFolderOptionValue,
+  protoTargetFolderOption,
+  protoTargetFolderOptionValue,
   resourcesFolderOption,
   resourcesFolderOptionValue,
   resultsFolderOption,
@@ -52,8 +56,10 @@ export default (program: Command): void => {
     .command("enterprise-start")
     .description("Start a simulation deployed with `enterprise-deploy`")
     .addOption(sourcesFolderOption)
+    .addOption(protoFolderOption)
     .addOption(resourcesFolderOption)
     .addOption(bundleFileOption)
+    .addOption(protoTargetFolderOption)
     .addOption(resultsFolderOption)
     .addOption(postmanOption)
     .addOption(typescriptOption)
@@ -78,6 +84,7 @@ export default (program: Command): void => {
     .addOption(waitForRunEndOption)
     .action(async (options) => {
       const sourcesFolder: string = sourcesFolderOptionValue(options);
+      const protoFolder: string = protoFolderOptionValue(options);
 
       const simulations = await findSimulations(sourcesFolder);
       const postman = postmanOptionValueWithDefaults(options);
@@ -85,6 +92,7 @@ export default (program: Command): void => {
 
       const resourcesFolder: string = resourcesFolderOptionValue(options);
       const bundleFile = bundleFileOptionValue(options);
+      const protoTargetFolder = protoTargetFolderOptionValue(options);
       const resultsFolder: string = resultsFolderOptionValue(options);
       const gatlingHome = gatlingHomeOptionValueWithDefaults(options);
       const apiUrl = apiUrlOptionValue(options);
@@ -105,9 +113,18 @@ export default (program: Command): void => {
         throw new Error(`No simulation specified when using non-interactive mode`);
       }
 
-      const { graalvmHome, jvmClasspath } = await resolveBundle({ gatlingHome });
-      await bundle({ sourcesFolder, bundleFile, postman, typescript, simulations });
-      await enterprisePackage({ bundleFile, resourcesFolder, packageFile, postman, simulations });
+      const { graalvmHome, jvmClasspath, protocPath } = await resolveBundle({ gatlingHome });
+      await bundle({
+        sourcesFolder,
+        protoFolder,
+        bundleFile,
+        protoTargetFolder,
+        postman,
+        typescript,
+        simulations,
+        protocPath
+      });
+      await enterprisePackage({ bundleFile, resourcesFolder, protoTargetFolder, packageFile, postman, simulations });
       await enterpriseStart({
         graalvmHome,
         jvmClasspath,

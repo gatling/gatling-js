@@ -11,7 +11,7 @@ import java.util.function.Function;
 import io.gatling.javaapi.core.Body;
 import io.gatling.javaapi.core.Session;
 
-import edu.umd.cs.findbugs.annotations.NonNull;
+import org.jspecify.annotations.NonNull;
 
 import static io.gatling.javaapi.core.internal.Expressions.*;
 

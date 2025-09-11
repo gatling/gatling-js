@@ -22,6 +22,7 @@ export interface BundleInstallOptions extends BundleOptions {
 export interface ResolvedBundle {
   graalvmHome: string;
   jvmClasspath: string;
+  protocPath: string;
 }
 
 export const installBundleFile = async (options: BundleInstallOptions): Promise<ResolvedBundle> => {
@@ -44,10 +45,16 @@ export const installBundleFile = async (options: BundleInstallOptions): Promise<
   await fs.mkdir(bundlePath, { recursive: true });
   await zip.extract(null, bundlePath);
   if (osType !== "Windows_NT") {
+    // FIXME permissions should be preserved from the zip file
     const graalVmBinDir = path.join(bundlePath, "graalvm", "bin");
-    const binFiles = await fs.readdir(graalVmBinDir);
+    const graalvmBinFiles = await fs.readdir(graalVmBinDir);
+    for (const graalvmBinFile of graalvmBinFiles) {
+      await fs.chmod(path.join(graalVmBinDir, graalvmBinFile), 0o744); // chmod +x
+    }
+    const binDir = path.join(bundlePath, "bin");
+    const binFiles = await fs.readdir(binDir);
     for (const binFile of binFiles) {
-      await fs.chmod(path.join(graalVmBinDir, binFile), 0o744); // chmod +x
+      await fs.chmod(path.join(binDir, binFile), 0o744); // chmod +x
     }
   }
   logger.info(`Gatling JS dependencies bundle installed in ${bundlePath}`);
@@ -95,7 +102,8 @@ const canReadPath = async (path: string) => {
 
 const getResolvedBundle = (bundlePath: string): ResolvedBundle => ({
   graalvmHome: path.join(bundlePath, "graalvm"),
-  jvmClasspath: path.join(bundlePath, "lib", "java", "*")
+  jvmClasspath: path.join(bundlePath, "lib", "java", "*"),
+  protocPath: path.join(bundlePath, "bin", "protoc.exe")
 });
 
 const downloadAndInstallBundle = async (options: BundleOptions) => {

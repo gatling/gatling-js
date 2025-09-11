@@ -18,7 +18,7 @@ package io.gatling.javaapi.http;
 
 import static io.gatling.javaapi.core.internal.Expressions.*;
 
-import edu.umd.cs.findbugs.annotations.NonNull;
+import org.jspecify.annotations.NonNull;
 import io.gatling.commons.validation.Validation;
 import io.gatling.core.action.builder.SessionHookBuilder;
 import io.gatling.javaapi.core.ActionBuilder;
@@ -139,8 +139,7 @@ public final class HttpDsl {
    *
    * @return the next step in the check DSL
    */
-  @NonNull
-  public static CheckBuilder.Find<Integer> status() {
+  public static CheckBuilder.@NonNull Find<Integer> status() {
     return HttpCheckBuilders.status();
   }
 
@@ -150,8 +149,7 @@ public final class HttpDsl {
    *
    * @return the next step in the check DSL
    */
-  @NonNull
-  public static CheckBuilder.Find<String> currentLocation() {
+  public static CheckBuilder.@NonNull Find<String> currentLocation() {
     return new CheckBuilder.Find.Default<>(
         io.gatling.http.Predef.currentLocation(),
         HttpCheckType.CurrentLocation,
@@ -168,8 +166,7 @@ public final class HttpDsl {
    * @param pattern the regular expression, expressed as a Gatling Expression Language String
    * @return the next step in the check DSL
    */
-  @NonNull
-  public static CheckBuilder.CaptureGroupCheckBuilder currentLocationRegex(
+  public static CheckBuilder.@NonNull CaptureGroupCheckBuilder currentLocationRegex(
       @NonNull String pattern) {
     return new HttpCheckBuilder.CurrentLocationRegex(
         io.gatling.http.Predef.currentLocationRegex(
@@ -185,8 +182,7 @@ public final class HttpDsl {
    * @param pattern the regular expression, expressed as a function
    * @return the next step in the check DSL
    */
-  @NonNull
-  public static HttpCheckBuilder.CurrentLocationRegex currentLocationRegex(
+  public static HttpCheckBuilder.@NonNull CurrentLocationRegex currentLocationRegex(
       @NonNull Function<Session, String> pattern) {
     return new HttpCheckBuilder.CurrentLocationRegex(
         io.gatling.http.Predef.currentLocationRegex(
@@ -199,8 +195,7 @@ public final class HttpDsl {
    * @param name the static name of the HTTP header
    * @return the next step in the check DSL
    */
-  @NonNull
-  public static CheckBuilder.MultipleFind<String> header(@NonNull CharSequence name) {
+  public static CheckBuilder.@NonNull MultipleFind<String> header(@NonNull CharSequence name) {
     return new CheckBuilder.MultipleFind.Default<>(
         io.gatling.http.Predef.header(toStaticValueExpression(name)),
         HttpCheckType.Header,
@@ -214,8 +209,7 @@ public final class HttpDsl {
    * @param name the name of the HTTP header, expressed as a Gatling Expression Language String
    * @return the next step in the check DSL
    */
-  @NonNull
-  public static CheckBuilder.MultipleFind<String> header(@NonNull String name) {
+  public static CheckBuilder.@NonNull MultipleFind<String> header(@NonNull String name) {
     return new CheckBuilder.MultipleFind.Default<>(
         io.gatling.http.Predef.header(toExpression(name, CharSequence.class)),
         HttpCheckType.Header,
@@ -229,8 +223,7 @@ public final class HttpDsl {
    * @param name the name of the HTTP header, expressed as a function
    * @return the next step in the check DSL
    */
-  @NonNull
-  public static CheckBuilder.MultipleFind<String> header(
+  public static CheckBuilder.@NonNull MultipleFind<String> header(
       @NonNull Function<Session, CharSequence> name) {
     return new CheckBuilder.MultipleFind.Default<>(
         io.gatling.http.Predef.header(javaFunctionToExpression(name)),
@@ -248,8 +241,7 @@ public final class HttpDsl {
    * @param pattern the regular expression, expressed as a Gatling Expression Language String
    * @return the next step in the check DSL
    */
-  @NonNull
-  public static CheckBuilder.CaptureGroupCheckBuilder headerRegex(
+  public static CheckBuilder.@NonNull CaptureGroupCheckBuilder headerRegex(
       CharSequence name, String pattern) {
     return new HttpCheckBuilder.HeaderRegexCheck(
         io.gatling.http.Predef.headerRegex(
@@ -267,8 +259,7 @@ public final class HttpDsl {
    * @param pattern the regular expression, expressed as a Gatling Expression Language String
    * @return the next step in the check DSL
    */
-  @NonNull
-  public static CheckBuilder.CaptureGroupCheckBuilder headerRegex(
+  public static CheckBuilder.@NonNull CaptureGroupCheckBuilder headerRegex(
       @NonNull String name, @NonNull String pattern) {
     return new HttpCheckBuilder.HeaderRegexCheck(
         io.gatling.http.Predef.headerRegex(
@@ -286,8 +277,7 @@ public final class HttpDsl {
    * @param pattern the regular expression, expressed as a Gatling Expression Language String
    * @return the next step in the check DSL
    */
-  @NonNull
-  public static CheckBuilder.CaptureGroupCheckBuilder headerRegex(
+  public static CheckBuilder.@NonNull CaptureGroupCheckBuilder headerRegex(
       @NonNull Function<Session, CharSequence> name, @NonNull String pattern) {
     return new HttpCheckBuilder.HeaderRegexCheck(
         io.gatling.http.Predef.headerRegex(
@@ -305,8 +295,7 @@ public final class HttpDsl {
    * @param pattern the regular expression, expressed as a function
    * @return the next step in the check DSL
    */
-  @NonNull
-  public static CheckBuilder.CaptureGroupCheckBuilder headerRegex(
+  public static CheckBuilder.@NonNull CaptureGroupCheckBuilder headerRegex(
       @NonNull CharSequence name, @NonNull Function<Session, String> pattern) {
     return new HttpCheckBuilder.HeaderRegexCheck(
         io.gatling.http.Predef.headerRegex(
@@ -324,8 +313,7 @@ public final class HttpDsl {
    * @param pattern the regular expression, expressed as a function
    * @return the next step in the check DSL
    */
-  @NonNull
-  public static CheckBuilder.CaptureGroupCheckBuilder headerRegex(
+  public static CheckBuilder.@NonNull CaptureGroupCheckBuilder headerRegex(
       @NonNull String name, @NonNull Function<Session, String> pattern) {
     return new HttpCheckBuilder.HeaderRegexCheck(
         io.gatling.http.Predef.headerRegex(
@@ -343,8 +331,7 @@ public final class HttpDsl {
    * @param pattern the regular expression, expressed as a function
    * @return the next step in the check DSL
    */
-  @NonNull
-  public static CheckBuilder.CaptureGroupCheckBuilder headerRegex(
+  public static CheckBuilder.@NonNull CaptureGroupCheckBuilder headerRegex(
       @NonNull Function<Session, CharSequence> name, @NonNull Function<Session, String> pattern) {
     return new HttpCheckBuilder.HeaderRegexCheck(
         io.gatling.http.Predef.headerRegex(
@@ -362,8 +349,7 @@ public final class HttpDsl {
    *     absolute, expressed as a Gatling Expression Language String
    * @return the next DSL step
    */
-  @NonNull
-  public static FeederBuilder.FileBased<String> sitemap(@NonNull String filePath) {
+  public static FeederBuilder.@NonNull FileBased<String> sitemap(@NonNull String filePath) {
     return new FeederBuilder.Impl<>(
         io.gatling.http.Predef.sitemap(filePath, io.gatling.core.Predef.configuration()));
   }
@@ -815,7 +801,7 @@ public final class HttpDsl {
    * @return the next DSL step
    */
   @NonNull
-  public static BodyPart ByteArrayBodyPart(@NonNull String name, @NonNull byte[] bytes) {
+  public static BodyPart ByteArrayBodyPart(@NonNull String name, byte @NonNull [] bytes) {
     return ByteArrayBodyPart(toStringExpression(name), toStaticValueExpression(bytes));
   }
 
@@ -828,7 +814,7 @@ public final class HttpDsl {
    */
   @NonNull
   public static BodyPart ByteArrayBodyPart(
-      @NonNull Function<Session, String> name, @NonNull byte[] bytes) {
+      @NonNull Function<Session, String> name, byte @NonNull [] bytes) {
     return ByteArrayBodyPart(javaFunctionToExpression(name), toStaticValueExpression(bytes));
   }
 
