@@ -49,7 +49,7 @@ const dependencies = [
   `"io.gatling.highcharts:gatling-charts-highcharts:${versions.gatling.core}"`,
   `"io.gatling:gatling-jvm-to-js-adapter:${versions.gatling.jsAdapter}"`,
   `"io.gatling:gatling-enterprise-plugin-commons:${versions.gatling.enterprisePluginCommons}"`,
-  `"org.graalvm.polyglot:js-community:${versions.graalvm.js}"`,
+  `"org.graalvm.polyglot:js:${versions.graalvm.js}"`,
   `"io.gatling:gatling-recorder:${versions.gatling.core}"`, // For the recorder
   // TODO handle Gatling Postman version if different from Gatling JS version
   `"io.gatling:gatling-postman-jvm-to-js-adapter:${versions.gatling.jsAdapter}"` // For Gatling Postman

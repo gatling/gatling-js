@@ -15,7 +15,7 @@ Global / gatlingDevelopers := Seq(
 
 val compilerRelease = 21
 val graalvmJdkVersion = "24.0.2"
-val graalvmJsVersion = "24.2.2"
+val graalvmJsVersion = "25.0.0"
 val gatlingVersion = "3.14.4"
 
 // bit weird cause this is not a dependency of this project
@@ -49,7 +49,7 @@ lazy val adapter = (project in file("adapter"))
     },
     libraryDependencies ++= Seq(
       "io.gatling.highcharts" % "gatling-charts-highcharts" % gatlingVersion,
-      "org.graalvm.polyglot" % "js-community" % graalvmJsVersion,
+      "org.graalvm.polyglot" % "js" % graalvmJsVersion,
       "io.gatling" % "gatling-asm-shaded" % "9.8.0"
     ),
     Compile / sourceGenerators += Def.task {
