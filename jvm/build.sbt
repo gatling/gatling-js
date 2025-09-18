@@ -14,7 +14,7 @@ Global / gatlingDevelopers := Seq(
 )
 
 val compilerRelease = 21
-val graalvmJdkVersion = "24.0.2"
+val graalvmJdkVersion = "25.0.0"
 val graalvmJsVersion = "25.0.0"
 val gatlingVersion = "3.14.4"
 
