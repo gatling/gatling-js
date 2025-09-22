@@ -29,7 +29,7 @@
     "esbuild": "0.25.9",
     "esbuild-plugin-tsc": "0.5.0",
     "import-meta-resolve": "4.2.0",
-    "make-fetch-happen": "15.0.1",
+    "make-fetch-happen": "15.0.2",
     "node-stream-zip": "1.15.0",
     "readline-sync": "1.4.10"
   },
