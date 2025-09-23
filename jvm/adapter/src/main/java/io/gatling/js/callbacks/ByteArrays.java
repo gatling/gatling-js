@@ -18,18 +18,17 @@ package io.gatling.js.callbacks;
 
 import java.util.function.Function;
 
-import javax.annotation.Nonnull;
-
 import io.gatling.javaapi.core.Session;
 
 import org.graalvm.polyglot.Value;
+import org.jspecify.annotations.NonNull;
 
 public final class ByteArrays {
   public static byte[] asByteArray(Value v) {
     return v.as(byte[].class);
   }
 
-  public static Function<Session, byte[]> asByteArrayFunction(@Nonnull Function<Session, Value> f) {
+  public static Function<Session, byte[]> asByteArrayFunction(@NonNull Function<Session, Value> f) {
     return session -> f.apply(session).as(byte[].class);
   }
 }
