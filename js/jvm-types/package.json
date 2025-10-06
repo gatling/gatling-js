@@ -18,7 +18,7 @@
     "performance testing"
   ],
   "devDependencies": {
-    "typescript": "5.9.2"
+    "typescript": "5.9.3"
   },
   "scripts": {
     "clean": "rm -f ./index.js ./index.d.ts",
