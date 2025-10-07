@@ -191,6 +191,8 @@
         @Type(value = io.gatling.javaapi.http.WsSendTextActionBuilder.class, export = true),
         // ********** grpc **********
         @Type(value = com.google.protobuf.Descriptors.Descriptor.class, export = true),
+//        @Type(value = com.google.protobuf.Descriptors.FieldDescriptor.class, export = true),
+//        @Type(value = com.google.protobuf.Descriptors.FieldDescriptor.JavaType.class, export = true),
         @Type(value = com.google.protobuf.DynamicMessage.Builder.class, export = true),
         @Type(value = io.grpc.CallCredentials.class, export = true),
         @Type(value = io.grpc.CallOptions.class, export = true),

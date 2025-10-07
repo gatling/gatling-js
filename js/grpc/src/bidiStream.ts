@@ -58,14 +58,13 @@ export interface GrpcBidirectionalStreamingServiceBuilder
 
 export const wrapGrpcBidirectionalStreamingServiceBuilder =
   (
-    builder: JvmDynamicMessageBuilder,
     inputDescriptor: JvmDescriptorsDescriptor
   ): ((
     _underlying: JvmGrpcBidirectionalStreamingServiceBuilder<any, any>
   ) => GrpcBidirectionalStreamingServiceBuilder) =>
   (_underlying) => {
-    const toJvmDynamicMessage = wrapToJvmDynamicMessage(builder, inputDescriptor);
-    const wrap = wrapGrpcBidirectionalStreamingServiceBuilder(builder, inputDescriptor);
+    const toJvmDynamicMessage = wrapToJvmDynamicMessage(inputDescriptor);
+    const wrap = wrapGrpcBidirectionalStreamingServiceBuilder(inputDescriptor);
     return {
       ...wrapGrpcHeaders(_underlying, wrap),
       // Chainable methods / global stream configuration

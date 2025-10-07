@@ -165,8 +165,8 @@ export const underlyingSessionTransform =
 export type BiSessionTransform = (main: Session, forked: Session) => Session;
 export const underlyingBiSessionTransform =
   (f: BiSessionTransform): ((jvmMain: JvmSession, jvmForked: JvmSession) => JvmSession) =>
-    (jvmMain: JvmSession, jvmForked: JvmSession) =>
-      f(wrapSession(jvmMain), wrapSession(jvmForked))._underlying;
+  (jvmMain: JvmSession, jvmForked: JvmSession) =>
+    f(wrapSession(jvmMain), wrapSession(jvmForked))._underlying;
 
 export type SessionTo<T> = (session: Session) => T;
 export const underlyingSessionTo =
