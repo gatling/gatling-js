@@ -65,15 +65,11 @@ const methodDescriptorWrapper = (fullMethodName: string): JvmGrpcMethodDescripto
 const wrapGrpc = (_underlying: JvmGrpc): Grpc => ({
   unary: (fullMethodName) => {
     const wrapper = methodDescriptorWrapper(fullMethodName);
-    return wrapGrpcUnaryServiceBuilder(
-      _underlying.unary(wrapper.descriptor()),
-      wrapper.newInputBuilder(),
-      wrapper.inputDescriptor()
-    );
+    return wrapGrpcUnaryServiceBuilder(_underlying.unary(wrapper.descriptor()), wrapper.inputDescriptor());
   },
   serverStream: (fullMethodName, streamName?: string) => {
     const wrapper = methodDescriptorWrapper(fullMethodName);
-    const wrap = wrapGrpcServerStreamingServiceBuilder(wrapper.newInputBuilder(), wrapper.inputDescriptor());
+    const wrap = wrapGrpcServerStreamingServiceBuilder(wrapper.inputDescriptor());
     return wrap(
       typeof streamName === "undefined"
         ? _underlying.serverStream(wrapper.descriptor())
@@ -82,7 +78,7 @@ const wrapGrpc = (_underlying: JvmGrpc): Grpc => ({
   },
   clientStream: (fullMethodName, streamName?: string) => {
     const wrapper = methodDescriptorWrapper(fullMethodName);
-    const wrap = wrapGrpcClientStreamingServiceBuilder(wrapper.newInputBuilder(), wrapper.inputDescriptor());
+    const wrap = wrapGrpcClientStreamingServiceBuilder(wrapper.inputDescriptor());
     return wrap(
       typeof streamName === "undefined"
         ? _underlying.clientStream(wrapper.descriptor())
@@ -91,7 +87,7 @@ const wrapGrpc = (_underlying: JvmGrpc): Grpc => ({
   },
   bidiStream: (fullMethodName, streamName?: string) => {
     const wrapper = methodDescriptorWrapper(fullMethodName);
-    const wrap = wrapGrpcBidirectionalStreamingServiceBuilder(wrapper.newInputBuilder(), wrapper.inputDescriptor());
+    const wrap = wrapGrpcBidirectionalStreamingServiceBuilder(wrapper.inputDescriptor());
     return wrap(
       typeof streamName === "undefined"
         ? _underlying.bidiStream(wrapper.descriptor())

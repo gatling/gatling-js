@@ -84,10 +84,6 @@ public final class GrpcMethodDescriptorWrapper {
     return descriptor;
   }
 
-  public DynamicMessage.Builder newInputBuilder() {
-    return DynamicMessage.newBuilder(inputDescriptor);
-  }
-
   private MethodDescriptor.Marshaller<DynamicMessage> dynamicMarshaller(
       Descriptors.Descriptor messageDescriptor) {
     return ProtoUtils.marshaller(DynamicMessage.newBuilder(messageDescriptor).buildPartial());

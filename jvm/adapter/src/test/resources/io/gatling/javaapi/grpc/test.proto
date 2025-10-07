@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+message TestMessage {
+  // Scalars
+  double field_double = 1; // Uses IEEE 754 double-precision format. Java type = double
+  float field_float = 2; // Uses IEEE 754 single-precision format. Java type = float
+  int32 field_int32 = 3; // Uses variable-length encoding. Inefficient for encoding negative numbers – if your field is likely to have negative values, use sint32 instead. Java type = int
+  int64 field_int64 = 4; // Uses variable-length encoding. Inefficient for encoding negative numbers – if your field is likely to have negative values, use sint64 instead. Java type = long
+  uint32 field_uint32 = 5; // Uses variable-length encoding. Java type = int
+  uint64 field_uint64 = 6; // Uses variable-length encoding. Java type = long
+  sint32 field_sint32 = 7; // Uses variable-length encoding. Signed int value. These more efficiently encode negative numbers than regular int32s. Java type = int
+  sint64 field_sint64 = 8; // Uses variable-length encoding. Signed int value. These more efficiently encode negative numbers than regular int64s. Java type = long
+  fixed32 field_fixed32 = 9; // Always four bytes. More efficient than uint32 if values are often greater than 2^28. Java type = int
+  fixed64 field_fixed64 = 10; // Always eight bytes. More efficient than uint64 if values are often greater than 2^56. Java type = long
+  sfixed32 field_sfixed32 = 11; // Always four bytes. Java type = int
+  sfixed64 field_sfixed64 = 12; // Always eight bytes. Java type = long
+  bool field_bool = 13; // Java type = boolean
+  string field_string = 14; // A string must always contain UTF-8 encoded or 7-bit ASCII text, and cannot be longer than 2^32. Java type = String
+  bytes field_bytes = 15; // May contain any arbitrary sequence of bytes no longer than 23^2. Java type = ByteString
+  // Enum
+  TestEnum field_enum = 16;
+  // Message
+  Name field_name = 17;
+  // Repeated fields
+  repeated double field_repeated_double = 101;
+  repeated float field_repeated_float = 102;
+  repeated int32 field_repeated_int32 = 103;
+  repeated int64 field_repeated_int64 = 104;
+  repeated uint32 field_repeated_uint32 = 105;
+  repeated uint64 field_repeated_uint64 = 106;
+  repeated sint32 field_repeated_sint32 = 107;
+  repeated sint64 field_repeated_sint64 = 108;
+  repeated fixed32 field_repeated_fixed32 = 109;
+  repeated fixed64 field_repeated_fixed64 = 110;
+  repeated sfixed32 field_repeated_sfixed32 = 111;
+  repeated sfixed64 field_repeated_sfixed64 = 112;
+  repeated bool field_repeated_bool = 113;
+  repeated string field_repeated_string = 114;
+  repeated bytes field_repeated_bytes = 115;
+  repeated TestEnum field_repeated_enum = 116;
+  repeated Name field_repeated_name = 117;
+}
+
+enum TestEnum {
+  CHOICE_0 = 0;
+  CHOICE_1 = 1;
+  CHOICE_2 = 2;
+}
+
+message Name {
+  string first_name = 1;
+  string last_name = 2;
+  uint32 age = 3;
+}

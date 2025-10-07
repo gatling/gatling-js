@@ -46,10 +46,9 @@ export interface GrpcUnaryServiceBuilder {
 
 export const wrapGrpcUnaryServiceBuilder = (
   _underlying: JvmGrpcUnaryServiceBuilder<any, any>,
-  builder: JvmDynamicMessageBuilder,
   inputDescriptor: JvmDescriptorsDescriptor
 ): GrpcUnaryServiceBuilder => {
-  const toJvmDynamicMessage = wrapToJvmDynamicMessage(builder, inputDescriptor);
+  const toJvmDynamicMessage = wrapToJvmDynamicMessage(inputDescriptor);
   return {
     send: (request) => {
       return wrapGrpcUnaryActionBuilder(
