@@ -62,12 +62,11 @@ export interface GrpcServerStreamingServiceBuilder extends GrpcHeaders<GrpcServe
 
 export const wrapGrpcServerStreamingServiceBuilder =
   (
-    builder: JvmDynamicMessageBuilder,
     inputDescriptor: JvmDescriptorsDescriptor
   ): ((_underlying: JvmGrpcServerStreamingServiceBuilder<any, any>) => GrpcServerStreamingServiceBuilder) =>
   (_underlying) => {
-    const toJvmDynamicMessage = wrapToJvmDynamicMessage(builder, inputDescriptor);
-    const wrap = wrapGrpcServerStreamingServiceBuilder(builder, inputDescriptor);
+    const toJvmDynamicMessage = wrapToJvmDynamicMessage(inputDescriptor);
+    const wrap = wrapGrpcServerStreamingServiceBuilder(inputDescriptor);
     return {
       ...wrapGrpcHeaders(_underlying, wrap),
       // Chainable methods / global stream configuration

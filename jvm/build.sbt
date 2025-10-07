@@ -57,8 +57,9 @@ lazy val adapter = (project in file("adapter"))
       "io.gatling" % "gatling-grpc-java" % gatlingGrpcVersion % "provided",
       "io.gatling" % "gatling-mqtt-java" % gatlingMqttVersion % "provided",
       "org.graalvm.polyglot" % "js" % graalvmJsVersion,
-      "org.scala-lang" % "scala-library" % scalaVersion.value % "provided"
-    ),
+      "org.scala-lang" % "scala-library" % scalaVersion.value % "provided",
+      "org.scalatest" %% "scalatest" % "3.2.19" % Test
+),
     Compile / sourceGenerators += Def.task {
       // Generate a file directly into the CLI project and bundle project to share version numbers
       val basePath = (ThisBuild / baseDirectory).value / ".."
