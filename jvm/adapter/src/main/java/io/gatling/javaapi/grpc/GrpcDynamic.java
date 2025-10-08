@@ -26,11 +26,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import com.google.protobuf.DescriptorProtos;
-import com.google.protobuf.Descriptors;
-import com.google.protobuf.DynamicMessage;
-import com.google.protobuf.Message;
-import org.graalvm.polyglot.TypeLiteral;
+import com.google.protobuf.*;
 import org.graalvm.polyglot.Value;
 
 public class GrpcDynamic {
@@ -45,15 +41,7 @@ public class GrpcDynamic {
                         : entry.getValue()));
   }
 
-  private static final TypeLiteral<List<Integer>> INT_LIST_TYPE_LITERAL = new TypeLiteral<>() {};
-  private static final TypeLiteral<List<Long>> LONG_LIST_TYPE_LITERAL = new TypeLiteral<>() {};
-  private static final TypeLiteral<List<Float>> FLOAT_LIST_TYPE_LITERAL = new TypeLiteral<>() {};
-  private static final TypeLiteral<List<Double>> DOUBLE_LIST_TYPE_LITERAL = new TypeLiteral<>() {};
-  private static final TypeLiteral<List<Boolean>> BOOLEAN_LIST_TYPE_LITERAL =
-      new TypeLiteral<>() {};
-  private static final TypeLiteral<List<String>> STRING_LIST_TYPE_LITERAL = new TypeLiteral<>() {};
-
-  public static Message convertToMessage(Value input, Descriptors.Descriptor descriptor) {
+  public static DynamicMessage convertToMessage(Value input, Descriptors.Descriptor descriptor) {
     final var builder = DynamicMessage.newBuilder(descriptor);
     writeMessage(input, builder, descriptor);
     return builder.build();
@@ -123,9 +111,20 @@ public class GrpcDynamic {
       case STRING:
         return convertMaybeRepeated(field, fieldValue, Value::asString);
       case BYTE_STRING:
-        // TODO
-        throw new UnsupportedOperationException("TODO support BYTE_STRING");
-        // break;
+        // Unnecessary copy with ByteString.copyFrom, but hard to avoid with the ByteString API...
+        if (field.isRepeated()) {
+          if (!fieldValue.hasArrayElements()) {
+            throw new ClassCastException("Value " + fieldValue + " should be an array");
+          }
+          final var length = fieldValue.getArraySize();
+          final List<Object> list = new ArrayList<>();
+          for (int i = 0; i < length; i++) {
+            list.add(ByteString.copyFrom(fieldValue.getArrayElement(i).as(byte[].class)));
+          }
+          return list;
+        } else {
+          return ByteString.copyFrom(fieldValue.as(byte[].class));
+        }
       case ENUM:
         final var enumType = field.getEnumType();
         return convertMaybeRepeated(field, fieldValue, value -> convertEnumValue(value, enumType));
