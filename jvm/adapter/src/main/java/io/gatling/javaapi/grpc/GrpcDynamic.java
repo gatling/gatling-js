@@ -35,10 +35,22 @@ public class GrpcDynamic {
         .collect(
             Collectors.toMap(
                 entry -> entry.getKey().getName(),
-                entry ->
-                    entry.getValue() instanceof DynamicMessage
-                        ? convertFromMessage((DynamicMessage) entry.getValue())
-                        : entry.getValue()));
+                entry -> convertFromFieldValue(entry.getValue())));
+  }
+
+  private static Object convertFromFieldValue(Object value) {
+    if (value instanceof DynamicMessage) {
+      return convertFromMessage((DynamicMessage) value);
+    } else if (value instanceof List) {
+      return ((List<?>) value).stream().map(GrpcDynamic::convertFromFieldValue).toList();
+    } else if (value instanceof ByteString) {
+      // Unnecessary copy with ByteString.toByteArray, but hard to avoid with the ByteString API...
+      return ((ByteString) value).toByteArray();
+    } else if (value instanceof Descriptors.EnumValueDescriptor) {
+      return ((Descriptors.EnumValueDescriptor) value).getName();
+    } else {
+      return value;
+    }
   }
 
   public static DynamicMessage convertToMessage(Value input, Descriptors.Descriptor descriptor) {
