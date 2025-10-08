@@ -47,13 +47,13 @@ export interface GrpcBidirectionalStreamingServiceBuilder
   // Terminal methods / specific actions
 
   start(): ActionBuilder; // FIXME return type
-  cancel(): ActionBuilder; // FIXME return type
   // FIXME ReqT
   send(request: any): ActionBuilder; // FIXME return type
   send(request: (session: Session) => any): ActionBuilder; // FIXME return type
   halfClose(): ActionBuilder; // FIXME return type
   awaitStreamEnd(): GrpcBidiStreamAwaitStreamEndActionBuilder;
   awaitStreamEnd(reconcile: (main: Session, forked: Session) => Session): GrpcBidiStreamAwaitStreamEndActionBuilder;
+  cancel(): ActionBuilder; // FIXME return type
 }
 
 export const wrapGrpcBidirectionalStreamingServiceBuilder =
@@ -88,7 +88,6 @@ export const wrapGrpcBidirectionalStreamingServiceBuilder =
       streamName: (streamName) => wrap(_underlying.streamName(streamName)),
       // Terminal methods / specific actions
       start: () => wrapActionBuilder(_underlying.start()),
-      cancel: () => wrapActionBuilder(_underlying.cancel()),
       send: (request) => {
         return wrapActionBuilder(
           typeof request === "function"
@@ -102,6 +101,7 @@ export const wrapGrpcBidirectionalStreamingServiceBuilder =
           typeof reconcile === "function"
             ? _underlying.awaitStreamEnd(underlyingBiSessionTransform(reconcile))
             : _underlying.awaitStreamEnd()
-        )
+        ),
+      cancel: () => wrapActionBuilder(_underlying.cancel())
     };
   };

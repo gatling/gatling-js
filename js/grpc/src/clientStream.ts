@@ -43,13 +43,13 @@ export interface GrpcClientStreamingServiceBuilder extends GrpcHeaders<GrpcClien
   // Terminal methods / specific actions
 
   start(): ActionBuilder; // FIXME return type
-  cancel(): ActionBuilder; // FIXME return type
   // FIXME ReqT
   send(request: any): ActionBuilder; // FIXME return type
   send(request: (session: Session) => any): ActionBuilder; // FIXME return type
   halfClose(): ActionBuilder; // FIXME return type
   awaitStreamEnd(): GrpcClientStreamAwaitStreamEndActionBuilder;
   awaitStreamEnd(reconcile: (main: Session, forked: Session) => Session): GrpcClientStreamAwaitStreamEndActionBuilder;
+  cancel(): ActionBuilder; // FIXME return type
 }
 
 export const wrapGrpcClientStreamingServiceBuilder =
@@ -82,7 +82,6 @@ export const wrapGrpcClientStreamingServiceBuilder =
       streamName: (streamName) => wrap(_underlying.streamName(streamName)),
       // Terminal methods / specific actions
       start: () => wrapActionBuilder(_underlying.start()),
-      cancel: () => wrapActionBuilder(_underlying.cancel()),
       send: (request) => {
         return wrapActionBuilder(
           typeof request === "function"
@@ -96,6 +95,7 @@ export const wrapGrpcClientStreamingServiceBuilder =
           typeof reconcile === "function"
             ? _underlying.awaitStreamEnd(underlyingBiSessionTransform(reconcile))
             : _underlying.awaitStreamEnd()
-        )
+        ),
+      cancel: () => wrapActionBuilder(_underlying.cancel())
     };
   };

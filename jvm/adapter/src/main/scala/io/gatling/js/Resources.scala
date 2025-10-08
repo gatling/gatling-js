@@ -16,7 +16,7 @@
 
 package io.gatling.js
 
-import java.io.FileNotFoundException
+import java.io.{ FileNotFoundException, InputStream }
 import java.nio.charset.Charset
 
 import io.gatling.commons.validation.{ Failure, Success }
@@ -25,6 +25,9 @@ import io.gatling.core.util.ResourceCache
 object Resources extends ResourceCache {
   def readResourceAsBytes(filePath: String): Array[Byte] =
     getResource(filePath).bytes
+
+  def readResourceAsInputStream(filePath: String): InputStream =
+    getResource(filePath).inputStream
 
   def readResourceAsString(filePath: String, charset: String): String =
     getResource(filePath).string(Charset.forName(charset))

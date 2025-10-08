@@ -18,6 +18,10 @@
   <!-- uncomment to log SSE events -->
   <!--<logger name="io.gatling.http.action.sse.fsm" level="DEBUG" />-->
 
+  <!-- uncomment and set to DEBUG to log all failing gRPC requests -->
+  <!-- uncomment and set to TRACE to log all gRPC requests -->
+  <!--<logger name="io.gatling.grpc.engine.response" level="TRACE" />-->
+
   <!-- uncomment and set to DEBUG to log all failing MQTT requests -->
   <!-- uncomment and set to TRACE to log all MQTT requests -->
   <!--<logger name="io.gatling.mqtt" level="TRACE" />-->

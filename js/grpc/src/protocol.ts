@@ -47,7 +47,7 @@ export const wrapGrpcProtocolBuilder = (_underlying: JvmGrpcProtocolBuilder): Gr
   channelCredentials: (credentials) =>
     wrapGrpcProtocolBuilder(
       typeof credentials === "string"
-        ? _underlying.channelCredentialsFromJavaMap(credentials)
+        ? GrpcDslAddons.channelCredentialsEL(_underlying, credentials)
         : typeof credentials === "function"
           ? _underlying.channelCredentials(underlyingSessionToCredentials(credentials))
           : _underlying.channelCredentials(toJvmCredentials(credentials))

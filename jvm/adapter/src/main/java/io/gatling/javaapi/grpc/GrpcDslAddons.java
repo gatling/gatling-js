@@ -20,39 +20,51 @@ import java.io.IOException;
 
 import io.gatling.javaapi.core.CheckBuilder;
 import io.gatling.javaapi.grpc.internal.GrpcCheckType;
+import io.gatling.js.Resources;
 
 import io.grpc.ChannelCredentials;
 import io.grpc.TlsChannelCredentials;
 
 public class GrpcDslAddons {
-  public static CheckBuilder.Find<String> statusCodeString() {
+
+  // Checks
+
+  public static CheckBuilder.Find<String> statusCodeAsString() {
     return new CheckBuilder.Find.Default<>(
-        io.gatling.grpc.GrpcDslAddons.statusCodeString(), GrpcCheckType.Status, String.class, null);
+        io.gatling.grpc.GrpcDslAddons.statusCodeAsString(),
+        GrpcCheckType.Status,
+        String.class,
+        null);
   }
 
-  public GrpcProtocolBuilder channelCredentials(GrpcProtocolBuilder builder, String credentials) {
-    // return io.gatling.grpc.GrpcDslAddons.channelCredentials(builder.a, credentials);
-    return builder;
+  // Protocol
+
+  public static GrpcProtocolBuilder channelCredentialsEL(
+      GrpcProtocolBuilder builder, String credentials) {
+    return new GrpcProtocolBuilder(
+        io.gatling.grpc.GrpcDslAddons.channelCredentialsEL(
+            new io.gatling.grpc.protocol.GrpcProtocolBuilder(
+                (io.gatling.grpc.protocol.GrpcProtocol) builder.protocol()),
+            credentials));
   }
 
-  public static ChannelCredentials tlsChannelCredentials(
+  public static ChannelCredentials channelCredentials(
       String rootCerts, String certChain, String privateKey) throws IOException {
     final var credentials = TlsChannelCredentials.newBuilder();
-    final var classLoader = GrpcDslAddons.class.getClassLoader();
     if (rootCerts != null) {
-      final var rootsCertsInputStream = classLoader.getResourceAsStream(rootCerts);
-      if (rootsCertsInputStream == null) {
+      final var rootCertsInputStream = Resources.readResourceAsInputStream(rootCerts);
+      if (rootCertsInputStream == null) {
         throw new IllegalArgumentException("resource not found: " + rootCerts);
       } else {
-        credentials.trustManager(rootsCertsInputStream);
+        credentials.trustManager(rootCertsInputStream);
       }
     }
     if (certChain != null && privateKey != null) {
-      final var certChainInputStream = classLoader.getResourceAsStream(certChain);
+      final var certChainInputStream = Resources.readResourceAsInputStream(certChain);
       if (certChainInputStream == null) {
         throw new IllegalArgumentException("resource not found: " + certChain);
       }
-      final var privateKeyInputStream = classLoader.getResourceAsStream(privateKey);
+      final var privateKeyInputStream = Resources.readResourceAsInputStream(privateKey);
       if (privateKeyInputStream == null) {
         throw new IllegalArgumentException("resource not found: " + privateKey);
       }

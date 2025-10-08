@@ -17,10 +17,10 @@ export interface JvmGrpcDynamicStatic {
 
 export const GrpcDynamic: JvmGrpcDynamicStatic = Java.type("io.gatling.javaapi.grpc.GrpcDynamic");
 
-export const dynamicMessageToX =
-  <X, X2>(f: (x: X) => X2): ((dynamicMessage: any) => X2) =>
+export const transformJvmDynamicMessage =
+  (f: (x: any) => any): ((dynamicMessage: any) => any) =>
   (dynamicMessage) =>
-    f(GrpcDynamic.convertFromMessage(dynamicMessage) as X);
+    f(GrpcDynamic.convertFromMessage(dynamicMessage));
 
 export const wrapToJvmDynamicMessage =
   (inputDescriptor: JvmDescriptorsDescriptor) =>
@@ -28,6 +28,6 @@ export const wrapToJvmDynamicMessage =
     GrpcDynamic.convertToMessage(request, inputDescriptor);
 
 export const underlyingSessionToJvmDynamicMessage =
-  <X>(f: SessionTo<X>, toJvmDynamicMessage: (request: any) => any): ((jvmSession: JvmSession) => any) =>
+  (f: SessionTo<any>, toJvmDynamicMessage: (request: any) => any): ((jvmSession: JvmSession) => any) =>
   (jvmSession: JvmSession) =>
     toJvmDynamicMessage(f(wrapSession(jvmSession)));
