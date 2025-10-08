@@ -4,11 +4,15 @@ import { GrpcDsl$MessageResponseTimePolicy as GrpcDslMessageResponseTimePolicySt
 import JvmChannelCredentials = io.grpc.ChannelCredentials;
 import JvmCheckBuilderFind = io.gatling.javaapi.core.CheckBuilder$Find;
 import JvmGrpcDslMessageResponseTimePolicy = io.gatling.javaapi.grpc.GrpcDsl$MessageResponseTimePolicy;
+import JvmGrpcProtocolBuilder = io.gatling.javaapi.grpc.GrpcProtocolBuilder;
 import JvmSession = io.gatling.javaapi.core.Session;
 
 export interface GrpcDslAddonsStatic {
-  statusCodeString(): JvmCheckBuilderFind<Status.Code>;
-  tlsChannelCredentials(rootCerts?: string, certChain?: string, privateKey?: string): JvmChannelCredentials;
+  // Checks
+  statusCodeAsString(): JvmCheckBuilderFind<Status.Code>;
+  // Protocol
+  channelCredentials(rootCerts?: string, certChain?: string, privateKey?: string): JvmChannelCredentials;
+  channelCredentialsEL(protocol: JvmGrpcProtocolBuilder, credentials: string): JvmGrpcProtocolBuilder;
 }
 
 export const GrpcDslAddons: GrpcDslAddonsStatic = Java.type("io.gatling.javaapi.grpc.GrpcDslAddons");
@@ -21,12 +25,12 @@ export interface CallCredentials {}
 
 export interface ChannelCredentials {
   rootCerts?: string;
-  privateKey?: string;
   certChain?: string;
+  privateKey?: string;
 }
 
 export const toJvmCredentials = (credentials: ChannelCredentials): JvmChannelCredentials =>
-  GrpcDslAddons.tlsChannelCredentials(credentials.rootCerts, credentials.certChain, credentials.privateKey);
+  GrpcDslAddons.channelCredentials(credentials.rootCerts, credentials.certChain, credentials.privateKey);
 
 export const underlyingSessionToCredentials =
   (f: SessionTo<ChannelCredentials>): ((jvmSession: JvmSession) => JvmChannelCredentials) =>

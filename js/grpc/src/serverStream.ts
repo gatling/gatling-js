@@ -55,9 +55,9 @@ export interface GrpcServerStreamingServiceBuilder extends GrpcHeaders<GrpcServe
   send(request: any): GrpcServerStreamStreamSendActionBuilder;
   send(request: (session: Session) => any): GrpcServerStreamStreamSendActionBuilder;
   // FIXME replace with real action builder
-  cancel(): ActionBuilder;
   awaitStreamEnd(): GrpcServerStreamAwaitStreamEndActionBuilder;
   awaitStreamEnd(reconcile: (main: Session, forked: Session) => Session): GrpcServerStreamAwaitStreamEndActionBuilder;
+  cancel(): ActionBuilder;
 }
 
 export const wrapGrpcServerStreamingServiceBuilder =
@@ -96,12 +96,12 @@ export const wrapGrpcServerStreamingServiceBuilder =
             : _underlying.send(toJvmDynamicMessage(request))
         );
       },
-      cancel: () => wrapActionBuilder(_underlying.cancel()),
       awaitStreamEnd: (reconcile?: (main: Session, forked: Session) => Session) =>
         wrapGrpcServerStreamAwaitStreamEndActionBuilder(
           typeof reconcile === "function"
             ? _underlying.awaitStreamEnd(underlyingBiSessionTransform(reconcile))
             : _underlying.awaitStreamEnd()
-        )
+        ),
+      cancel: () => wrapActionBuilder(_underlying.cancel())
     };
   };
