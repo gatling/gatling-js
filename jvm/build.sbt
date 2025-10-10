@@ -52,7 +52,7 @@ lazy val adapter = (project in file("adapter"))
     autoScalaLibrary := false,
     libraryDependencies ++= Seq(
       "io.gatling.highcharts" % "gatling-charts-highcharts" % gatlingVersion % "provided",
-      "io.gatling" % "gatling-asm-shaded" % "9.8.0",
+      "io.gatling" % "gatling-asm-shaded" % "9.9.0",
       "io.gatling" % "gatling-mqtt-java" % gatlingMqttVersion % "provided",
       "org.graalvm.polyglot" % "js" % graalvmJsVersion,
       "org.scala-lang" % "scala-library" % scalaVersion.value % "provided"
