@@ -14,7 +14,6 @@ import { underlyingSessionToJvmDynamicMessage, wrapToJvmDynamicMessage } from ".
 import { MessageResponseTimePolicy, toJvmMessageResponseTimePolicy } from "./grpc";
 import { GrpcHeaders, wrapGrpcHeaders } from "./headers";
 
-import JvmDynamicMessageBuilder = com.google.protobuf.DynamicMessage$Builder;
 import JvmDescriptorsDescriptor = com.google.protobuf.Descriptors$Descriptor;
 import JvmGrpcBidiStreamAwaitStreamEndActionBuilder = io.gatling.javaapi.grpc.GrpcBidiStreamAwaitStreamEndActionBuilder;
 import JvmGrpcBidirectionalStreamingServiceBuilder = io.gatling.javaapi.grpc.GrpcBidirectionalStreamingServiceBuilder;
