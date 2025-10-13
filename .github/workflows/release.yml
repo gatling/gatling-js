@@ -109,7 +109,7 @@ jobs:
           npm ci
           npm version "${{ needs.release-jvm.outputs.version }}"
           npm run build --workspaces
-          for pkg in "cli" "jvm-types" "core" "http" "mqtt"; do
+          for pkg in "cli" "jvm-types" "core" "http" "grpc" "mqtt"; do
             cp ../LICENSE "./$pkg/LICENSE"
             npm publish --access public "--workspace=@gatling.io/$pkg"
           done
