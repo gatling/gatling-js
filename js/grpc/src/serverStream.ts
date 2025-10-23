@@ -7,14 +7,14 @@ import {
   toJvmDuration,
   underlyingBiSessionTransform,
   underlyingSessionTo,
-  wrapActionBuilder
+  wrapActionBuilder,
+  underlyingJvmXToXWithSessionToSession
 } from "@gatling.io/core";
 
-import { underlyingSessionToJvmDynamicMessage, wrapToJvmDynamicMessage } from "./dynamic";
+import { transformJvmInboundMessages, underlyingSessionToJvmDynamicMessage, wrapToJvmDynamicMessage } from "./dynamic";
 import { GrpcHeaders, wrapGrpcHeaders } from "./headers";
-import { MessageResponseTimePolicy, toJvmMessageResponseTimePolicy } from "./grpc";
+import { GrpcInboundMessage, MessageResponseTimePolicy, toJvmMessageResponseTimePolicy } from "./grpc";
 
-import JvmDynamicMessageBuilder = com.google.protobuf.DynamicMessage$Builder;
 import JvmDescriptorsDescriptor = com.google.protobuf.Descriptors$Descriptor;
 import JvmGrpcServerStreamAwaitStreamEndActionBuilder = io.gatling.javaapi.grpc.GrpcServerStreamAwaitStreamEndActionBuilder;
 import JvmGrpcServerStreamStreamSendActionBuilder = io.gatling.javaapi.grpc.GrpcServerStreamStreamSendActionBuilder;
@@ -58,6 +58,7 @@ export interface GrpcServerStreamingServiceBuilder extends GrpcHeaders<GrpcServe
   awaitStreamEnd(): GrpcServerStreamAwaitStreamEndActionBuilder;
   awaitStreamEnd(reconcile: (main: Session, forked: Session) => Session): GrpcServerStreamAwaitStreamEndActionBuilder;
   cancel(): ActionBuilder;
+  processUnmatchedMessages(f: (messages: GrpcInboundMessage[], session: Session) => Session): ActionBuilder;
 }
 
 export const wrapGrpcServerStreamingServiceBuilder =
@@ -102,6 +103,10 @@ export const wrapGrpcServerStreamingServiceBuilder =
             ? _underlying.awaitStreamEnd(underlyingBiSessionTransform(reconcile))
             : _underlying.awaitStreamEnd()
         ),
-      cancel: () => wrapActionBuilder(_underlying.cancel())
+      cancel: () => wrapActionBuilder(_underlying.cancel()),
+      processUnmatchedMessages: (f) =>
+        wrapActionBuilder(
+          _underlying.processUnmatchedMessages(underlyingJvmXToXWithSessionToSession(f, transformJvmInboundMessages))
+        )
     };
   };
