@@ -7,11 +7,13 @@ import {
   toJvmDuration,
   underlyingBiSessionTransform,
   underlyingSessionTo,
-  wrapActionBuilder
+  wrapActionBuilder,
+  underlyingXWithSessionToSession,
+  underlyingJvmXToXWithSessionToSession
 } from "@gatling.io/core";
 
-import { underlyingSessionToJvmDynamicMessage, wrapToJvmDynamicMessage } from "./dynamic";
-import { MessageResponseTimePolicy, toJvmMessageResponseTimePolicy } from "./grpc";
+import { transformJvmInboundMessages, underlyingSessionToJvmDynamicMessage, wrapToJvmDynamicMessage } from "./dynamic";
+import { GrpcInboundMessage, MessageResponseTimePolicy, toJvmMessageResponseTimePolicy } from "./grpc";
 import { GrpcHeaders, wrapGrpcHeaders } from "./headers";
 
 import JvmDescriptorsDescriptor = com.google.protobuf.Descriptors$Descriptor;
@@ -53,6 +55,7 @@ export interface GrpcBidirectionalStreamingServiceBuilder
   awaitStreamEnd(): GrpcBidiStreamAwaitStreamEndActionBuilder;
   awaitStreamEnd(reconcile: (main: Session, forked: Session) => Session): GrpcBidiStreamAwaitStreamEndActionBuilder;
   cancel(): ActionBuilder; // FIXME return type
+  processUnmatchedMessages(f: (messages: GrpcInboundMessage[], session: Session) => Session): ActionBuilder;
 }
 
 export const wrapGrpcBidirectionalStreamingServiceBuilder =
@@ -101,6 +104,10 @@ export const wrapGrpcBidirectionalStreamingServiceBuilder =
             ? _underlying.awaitStreamEnd(underlyingBiSessionTransform(reconcile))
             : _underlying.awaitStreamEnd()
         ),
-      cancel: () => wrapActionBuilder(_underlying.cancel())
+      cancel: () => wrapActionBuilder(_underlying.cancel()),
+      processUnmatchedMessages: (f) =>
+        wrapActionBuilder(
+          _underlying.processUnmatchedMessages(underlyingJvmXToXWithSessionToSession(f, transformJvmInboundMessages))
+        )
     };
   };
