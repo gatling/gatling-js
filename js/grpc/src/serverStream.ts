@@ -7,14 +7,15 @@ import {
   toJvmDuration,
   underlyingBiSessionTransform,
   underlyingSessionTo,
-  wrapActionBuilder
+  wrapActionBuilder,
+  underlyingJvmXToXWithSessionToSession,
+  underlyingJvmXToXWithBiSessionToSession
 } from "@gatling.io/core";
 
-import { underlyingSessionToJvmDynamicMessage, wrapToJvmDynamicMessage } from "./dynamic";
+import { transformJvmInboundMessages, underlyingSessionToJvmDynamicMessage, wrapToJvmDynamicMessage } from "./dynamic";
 import { GrpcHeaders, wrapGrpcHeaders } from "./headers";
-import { MessageResponseTimePolicy, toJvmMessageResponseTimePolicy } from "./grpc";
+import { GrpcInboundMessage, MessageResponseTimePolicy, toJvmMessageResponseTimePolicy } from "./grpc";
 
-import JvmDynamicMessageBuilder = com.google.protobuf.DynamicMessage$Builder;
 import JvmDescriptorsDescriptor = com.google.protobuf.Descriptors$Descriptor;
 import JvmGrpcServerStreamAwaitStreamEndActionBuilder = io.gatling.javaapi.grpc.GrpcServerStreamAwaitStreamEndActionBuilder;
 import JvmGrpcServerStreamStreamSendActionBuilder = io.gatling.javaapi.grpc.GrpcServerStreamStreamSendActionBuilder;
@@ -54,9 +55,15 @@ export interface GrpcServerStreamingServiceBuilder extends GrpcHeaders<GrpcServe
   // FIXME ReqT
   send(request: any): GrpcServerStreamStreamSendActionBuilder;
   send(request: (session: Session) => any): GrpcServerStreamStreamSendActionBuilder;
-  // FIXME replace with real action builder
+  processUnmatchedMessages(f: (messages: GrpcInboundMessage[], session: Session) => Session): ActionBuilder;
   awaitStreamEnd(): GrpcServerStreamAwaitStreamEndActionBuilder;
   awaitStreamEnd(reconcile: (main: Session, forked: Session) => Session): GrpcServerStreamAwaitStreamEndActionBuilder;
+  awaitStreamEndAndProcessUnmatchedMessages(
+    processUnmatchedMessages: (messages: GrpcInboundMessage[], session: Session) => Session
+  ): GrpcServerStreamAwaitStreamEndActionBuilder;
+  awaitStreamEndAndProcessUnmatchedMessages(
+    f: (messages: GrpcInboundMessage[], main: Session, forked: Session) => Session
+  ): GrpcServerStreamAwaitStreamEndActionBuilder;
   cancel(): ActionBuilder;
 }
 
@@ -96,11 +103,31 @@ export const wrapGrpcServerStreamingServiceBuilder =
             : _underlying.send(toJvmDynamicMessage(request))
         );
       },
+      processUnmatchedMessages: (f) =>
+        wrapActionBuilder(
+          _underlying.processUnmatchedMessages(underlyingJvmXToXWithSessionToSession(f, transformJvmInboundMessages))
+        ),
       awaitStreamEnd: (reconcile?: (main: Session, forked: Session) => Session) =>
         wrapGrpcServerStreamAwaitStreamEndActionBuilder(
           typeof reconcile === "function"
             ? _underlying.awaitStreamEnd(underlyingBiSessionTransform(reconcile))
             : _underlying.awaitStreamEnd()
+        ),
+      awaitStreamEndAndProcessUnmatchedMessages: (f) =>
+        wrapGrpcServerStreamAwaitStreamEndActionBuilder(
+          f.length <= 2
+            ? _underlying.awaitStreamEndAndProcessUnmatchedMessages(
+                underlyingJvmXToXWithSessionToSession(
+                  f as (messages: GrpcInboundMessage[], session: Session) => Session,
+                  transformJvmInboundMessages
+                )
+              )
+            : _underlying.awaitStreamEndAndProcessUnmatchedMessages(
+                underlyingJvmXToXWithBiSessionToSession(
+                  f as (messages: GrpcInboundMessage[], main: Session, forked: Session) => Session,
+                  transformJvmInboundMessages
+                )
+              )
         ),
       cancel: () => wrapActionBuilder(_underlying.cancel())
     };

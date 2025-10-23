@@ -64,19 +64,32 @@ declare namespace com.google.protobuf {
     findFieldByNumber(number: int): any /*com.google.protobuf.Descriptors$FieldDescriptor*/;
     findNestedTypeByName(name: string): Descriptors$Descriptor;
     getContainingType(): Descriptors$Descriptor;
+    getEnumType(index: int): any /*com.google.protobuf.Descriptors$EnumDescriptor*/;
+    getEnumTypeCount(): int;
     getEnumTypes(): java.util.List<any /*com.google.protobuf.Descriptors$EnumDescriptor*/>;
+    getExtension(index: int): any /*com.google.protobuf.Descriptors$FieldDescriptor*/;
+    getExtensionCount(): int;
     getExtensions(): java.util.List<any /*com.google.protobuf.Descriptors$FieldDescriptor*/>;
+    getField(index: int): any /*com.google.protobuf.Descriptors$FieldDescriptor*/;
+    getFieldCount(): int;
     getFields(): java.util.List<any /*com.google.protobuf.Descriptors$FieldDescriptor*/>;
     getFile(): any /*com.google.protobuf.Descriptors$FileDescriptor*/;
     getFullName(): string;
     getIndex(): int;
     getName(): string;
+    getNestedType(index: int): Descriptors$Descriptor;
+    getNestedTypeCount(): int;
     getNestedTypes(): java.util.List<Descriptors$Descriptor>;
+    getOneof(index: int): any /*com.google.protobuf.Descriptors$OneofDescriptor*/;
+    getOneofCount(): int;
     getOneofs(): java.util.List<any /*com.google.protobuf.Descriptors$OneofDescriptor*/>;
     getOptions(): any /*com.google.protobuf.DescriptorProtos$MessageOptions*/;
+    getRealOneof(index: int): any /*com.google.protobuf.Descriptors$OneofDescriptor*/;
+    getRealOneofCount(): int;
     getRealOneofs(): java.util.List<any /*com.google.protobuf.Descriptors$OneofDescriptor*/>;
     isExtendable(): boolean;
     isExtensionNumber(number: int): boolean;
+    isPlaceholder(): boolean;
     isReservedName(name: string): boolean;
     isReservedNumber(number: int): boolean;
     toProto(): any /*com.google.protobuf.DescriptorProtos$DescriptorProto*/;
@@ -3100,6 +3113,16 @@ declare namespace io.gatling.javaapi.grpc {
         io.gatling.javaapi.core.Session
       >
     ): GrpcBidiStreamAwaitStreamEndActionBuilder<ReqT, RespT>;
+    awaitStreamEndAndProcessUnmatchedMessages(
+      arg0: BiFunction<
+        java.util.List<any /*io.gatling.grpc.action.GrpcInboundMessage*/>,
+        io.gatling.javaapi.core.Session,
+        io.gatling.javaapi.core.Session
+      >
+    ): GrpcBidiStreamAwaitStreamEndActionBuilder<ReqT, RespT>;
+    awaitStreamEndAndProcessUnmatchedMessages(
+      arg0: GrpcProcessMessagesAndReconcile<RespT>
+    ): GrpcBidiStreamAwaitStreamEndActionBuilder<ReqT, RespT>;
     binaryHeader<B>(arg0: string): GrpcHeaders$Value<B, bytearray>;
     binaryHeaders<B>(arg0: java.util.Map<string, bytearray>): B;
     callCredentials(
@@ -3124,6 +3147,13 @@ declare namespace io.gatling.javaapi.grpc {
     messageResponseTimePolicy(
       arg0: GrpcDsl$MessageResponseTimePolicy
     ): GrpcBidirectionalStreamingServiceBuilder<ReqT, RespT>;
+    processUnmatchedMessages(
+      arg0: BiFunction<
+        java.util.List<any /*io.gatling.grpc.action.GrpcInboundMessage*/>,
+        io.gatling.javaapi.core.Session,
+        io.gatling.javaapi.core.Session
+      >
+    ): io.gatling.javaapi.core.ActionBuilder;
     send(arg0: Func<io.gatling.javaapi.core.Session, ReqT>): io.gatling.javaapi.core.ActionBuilder;
     send(arg0: ReqT): io.gatling.javaapi.core.ActionBuilder;
     start(): io.gatling.javaapi.core.ActionBuilder;
@@ -3197,6 +3227,7 @@ declare namespace io.gatling.javaapi.grpc {
     value(arg0: Func<io.gatling.javaapi.core.Session, V>): B;
     value(arg0: V): B;
     valueEL(arg0: string): B;
+    valueEl(arg0: string): B;
   } // end GrpcHeaders$Value
 } // end namespace io.gatling.javaapi.grpc
 declare namespace io.gatling.javaapi.grpc {
@@ -3211,7 +3242,6 @@ declare namespace io.gatling.javaapi.grpc {
     channelCredentials(arg0: Func<io.gatling.javaapi.core.Session, io.grpc.ChannelCredentials>): GrpcProtocolBuilder;
     channelCredentials(arg0: io.grpc.ChannelCredentials): GrpcProtocolBuilder;
     channelCredentials(arg0: string): GrpcProtocolBuilder;
-    channelCredentialsFromJavaMap(arg0: string): GrpcProtocolBuilder;
     equals(arg0: any /*java.lang.Object*/): boolean;
     forAddress(arg0: string, arg1: int): GrpcProtocolBuilder;
     forTarget(arg0: string): GrpcProtocolBuilder;
@@ -3221,6 +3251,7 @@ declare namespace io.gatling.javaapi.grpc {
     shareChannel(): GrpcProtocolBuilder;
     shareSslContext(): GrpcProtocolBuilder;
     toString(): string;
+    unmatchedInboundMessageBufferSize(arg0: int): GrpcProtocolBuilder;
     useChannelPool(arg0: int): GrpcProtocolBuilder;
     useCustomCertificateTrustManager(arg0: string): GrpcProtocolBuilder;
     useCustomLoadBalancingPolicy(arg0: string): GrpcProtocolBuilder;
@@ -3270,6 +3301,16 @@ declare namespace io.gatling.javaapi.grpc {
         io.gatling.javaapi.core.Session
       >
     ): GrpcServerStreamAwaitStreamEndActionBuilder<ReqT, RespT>;
+    awaitStreamEndAndProcessUnmatchedMessages(
+      arg0: BiFunction<
+        java.util.List<any /*io.gatling.grpc.action.GrpcInboundMessage*/>,
+        io.gatling.javaapi.core.Session,
+        io.gatling.javaapi.core.Session
+      >
+    ): GrpcServerStreamAwaitStreamEndActionBuilder<ReqT, RespT>;
+    awaitStreamEndAndProcessUnmatchedMessages(
+      arg0: GrpcProcessMessagesAndReconcile<RespT>
+    ): GrpcServerStreamAwaitStreamEndActionBuilder<ReqT, RespT>;
     binaryHeader<B>(arg0: string): GrpcHeaders$Value<B, bytearray>;
     binaryHeaders<B>(arg0: java.util.Map<string, bytearray>): B;
     callCredentials(
@@ -3289,6 +3330,13 @@ declare namespace io.gatling.javaapi.grpc {
     ): GrpcServerStreamingServiceBuilder<ReqT, RespT>;
     messageRequestName(arg0: string): GrpcServerStreamingServiceBuilder<ReqT, RespT>;
     messageResponseTimePolicy(arg0: GrpcDsl$MessageResponseTimePolicy): GrpcServerStreamingServiceBuilder<ReqT, RespT>;
+    processUnmatchedMessages(
+      arg0: BiFunction<
+        java.util.List<any /*io.gatling.grpc.action.GrpcInboundMessage*/>,
+        io.gatling.javaapi.core.Session,
+        io.gatling.javaapi.core.Session
+      >
+    ): io.gatling.javaapi.core.ActionBuilder;
     send(arg0: Func<io.gatling.javaapi.core.Session, ReqT>): GrpcServerStreamStreamSendActionBuilder<ReqT, RespT>;
     send(arg0: ReqT): GrpcServerStreamStreamSendActionBuilder<ReqT, RespT>;
     streamName(arg0: string): GrpcServerStreamingServiceBuilder<ReqT, RespT>;
@@ -3336,6 +3384,15 @@ declare namespace io.gatling.javaapi.grpc {
     binaryHeaders(arg0: java.util.Map<string, bytearray>): B;
     header<T>(arg0: io.grpc.Metadata$Key<T>): GrpcHeaders$Value<B, T>;
   } // end GrpcHeaders
+} // end namespace io.gatling.javaapi.grpc
+declare namespace io.gatling.javaapi.grpc {
+  interface GrpcProcessMessagesAndReconcile<RespT> {
+    (
+      arg0: java.util.List<any /*io.gatling.grpc.action.GrpcInboundMessage*/>,
+      arg1: io.gatling.javaapi.core.Session,
+      arg2: io.gatling.javaapi.core.Session
+    ): io.gatling.javaapi.core.Session;
+  } // end GrpcProcessMessagesAndReconcile
 } // end namespace io.gatling.javaapi.grpc
 declare namespace io.gatling.javaapi.http {
   class AddCookie /* extends java.lang.Object*/ {

@@ -1550,6 +1550,17 @@ interface GrpcHeadersStatic {
 
 export const GrpcHeaders: GrpcHeadersStatic = Java.type("io.gatling.javaapi.grpc.GrpcHeaders");
 
+interface GrpcProcessMessagesAndReconcileStatic {
+  readonly class: any;
+  new <RespT>(
+    arg0: io.gatling.javaapi.grpc.GrpcProcessMessagesAndReconcile<RespT>
+  ): io.gatling.javaapi.grpc.GrpcProcessMessagesAndReconcile<RespT>;
+}
+
+export const GrpcProcessMessagesAndReconcile: GrpcProcessMessagesAndReconcileStatic = Java.type(
+  "io.gatling.javaapi.grpc.GrpcProcessMessagesAndReconcile"
+);
+
 interface GrpcProtocolBuilderStatic {
   readonly class: any;
 }

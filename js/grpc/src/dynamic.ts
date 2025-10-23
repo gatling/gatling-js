@@ -2,6 +2,7 @@ import { SessionTo, wrapSession } from "@gatling.io/core";
 
 import JvmDescriptorsDescriptor = com.google.protobuf.Descriptors$Descriptor;
 import JvmSession = io.gatling.javaapi.core.Session;
+import { GrpcInboundMessage } from "./grpc";
 
 export interface JvmGrpcMethodDescriptorWrapper {
   inputDescriptor(): JvmDescriptorsDescriptor;
@@ -17,10 +18,18 @@ export interface JvmGrpcDynamicStatic {
 
 export const GrpcDynamic: JvmGrpcDynamicStatic = Java.type("io.gatling.javaapi.grpc.GrpcDynamic");
 
+export interface JvmGrpcInboundMessage {
+  timestamp(): number;
+  message(): any;
+}
+
 export const transformJvmDynamicMessage =
   (f: (x: any) => any): ((dynamicMessage: any) => any) =>
   (dynamicMessage) =>
     f(GrpcDynamic.convertFromMessage(dynamicMessage));
+
+export const transformJvmInboundMessages = (jvmInboundMessages: JvmGrpcInboundMessage[]): GrpcInboundMessage[] =>
+  jvmInboundMessages.map((m) => ({ timestamp: m.timestamp(), message: GrpcDynamic.convertFromMessage(m.message()) }));
 
 export const wrapToJvmDynamicMessage =
   (inputDescriptor: JvmDescriptorsDescriptor) =>

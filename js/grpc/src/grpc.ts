@@ -181,3 +181,8 @@ export namespace Status {
      */
     | "UNAUTHENTICATED"; // 16
 }
+
+export interface GrpcInboundMessage {
+  timestamp: number;
+  message: any;
+}
