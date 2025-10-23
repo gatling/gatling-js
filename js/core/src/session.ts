@@ -204,3 +204,12 @@ export const underlyingJvmXToXWithSessionToSession =
   ): ((jvmXs: JvmX[], jvmSession: JvmSession) => JvmSession) =>
   (jvmXs: JvmX[], jvmSession: JvmSession) =>
     f(wrap(jvmXs), wrapSession(jvmSession))._underlying;
+
+export type XWithBiSessionTo<X, X2> = (x: X, main: Session, forked: Session) => X2;
+export const underlyingJvmXToXWithBiSessionToSession =
+  <X, JvmX>(
+    f: XWithBiSessionTo<X[], Session>,
+    wrap: (jvmXs: JvmX[]) => X[]
+  ): ((jvmXs: JvmX[], jvmMain: JvmSession, jvmForked: JvmSession) => JvmSession) =>
+  (jvmXs: JvmX[], jvmMain: JvmSession, jvmForked: JvmSession) =>
+    f(wrap(jvmXs), wrapSession(jvmMain), wrapSession(jvmForked))._underlying;

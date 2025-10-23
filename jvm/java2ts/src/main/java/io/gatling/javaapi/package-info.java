@@ -216,6 +216,7 @@
         @Type(value = io.gatling.javaapi.grpc.GrpcServerStreamingServiceBuilder.class, export = true),
         @Type(value = io.gatling.javaapi.grpc.GrpcUnaryActionBuilder.class, export = true),
         @Type(value = io.gatling.javaapi.grpc.GrpcUnaryServiceBuilder.class, export = true),
+        @Type(value = io.gatling.javaapi.grpc.GrpcProcessMessagesAndReconcile.class, export = true),
         // ********** mqtt **********
         @Type(value = io.netty.handler.codec.mqtt.MqttFixedHeader.class, export = true),
         @Type(value = io.netty.handler.codec.mqtt.MqttMessageType.class, export = true),

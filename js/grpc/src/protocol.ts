@@ -1,12 +1,4 @@
-import {
-  Duration,
-  ProtocolBuilder,
-  Session,
-  SessionTo,
-  toJvmDuration,
-  underlyingSessionTo,
-  wrapSession
-} from "@gatling.io/core";
+import { ProtocolBuilder, Session } from "@gatling.io/core";
 
 import { GrpcHeaders, wrapGrpcHeaders } from "./headers";
 
@@ -36,6 +28,7 @@ export interface GrpcProtocolBuilder extends GrpcHeaders<GrpcProtocolBuilder>, P
   usePickFirstLoadBalancingPolicy(): GrpcProtocolBuilder;
   usePickRandomLoadBalancingPolicy(): GrpcProtocolBuilder;
   useRoundRobinLoadBalancingPolicy(): GrpcProtocolBuilder;
+  unmatchedInboundMessageBufferSize(max: number): GrpcProtocolBuilder;
 }
 
 export const wrapGrpcProtocolBuilder = (_underlying: JvmGrpcProtocolBuilder): GrpcProtocolBuilder => ({
@@ -71,7 +64,9 @@ export const wrapGrpcProtocolBuilder = (_underlying: JvmGrpcProtocolBuilder): Gr
     ),
   usePickFirstLoadBalancingPolicy: () => wrapGrpcProtocolBuilder(_underlying.usePickFirstLoadBalancingPolicy()),
   usePickRandomLoadBalancingPolicy: () => wrapGrpcProtocolBuilder(_underlying.usePickRandomLoadBalancingPolicy()),
-  useRoundRobinLoadBalancingPolicy: () => wrapGrpcProtocolBuilder(_underlying.useRoundRobinLoadBalancingPolicy())
+  useRoundRobinLoadBalancingPolicy: () => wrapGrpcProtocolBuilder(_underlying.useRoundRobinLoadBalancingPolicy()),
+  unmatchedInboundMessageBufferSize: (max) =>
+    wrapGrpcProtocolBuilder(_underlying.unmatchedInboundMessageBufferSize(max))
 });
 
 export const grpcProtocolBuilder = wrapGrpcProtocolBuilder(
