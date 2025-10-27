@@ -17,7 +17,7 @@ val compilerRelease = 21
 val graalvmJdkVersion = "25.0.0"
 val graalvmJsVersion = "25.0.1"
 val gatlingVersion = "3.14.7"
-val gatlingGrpcVersion = "3.14.6.1"
+val gatlingGrpcVersion = "3.14.7"
 val gatlingMqttVersion = "3.14.7"
 val protocVersion = "4.32.1"
 
