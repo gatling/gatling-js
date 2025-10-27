@@ -22,7 +22,7 @@ val gatlingMqttVersion = "3.14.7"
 val protocVersion = "4.33.0"
 
 // bit weird cause this is not a dependency of this project
-val gatlingEnterpriseComponentPluginVersion = "1.20.6"
+val gatlingEnterprisePluginCommonsVersion = "1.20.7"
 
 lazy val root = (project in file("."))
   .aggregate(adapter, java2ts)
@@ -75,7 +75,7 @@ lazy val adapter = (project in file("adapter"))
            |  },
            |  gatling: {
            |    core: "$gatlingVersion",
-           |    enterprisePluginCommons: "$gatlingEnterpriseComponentPluginVersion",
+           |    enterprisePluginCommons: "$gatlingEnterprisePluginCommonsVersion",
            |    jsAdapter: "$jsAdapterVersion",
            |    grpc: "$gatlingGrpcVersion",
            |    mqtt: "$gatlingMqttVersion"
