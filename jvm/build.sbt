@@ -19,7 +19,7 @@ val graalvmJsVersion = "25.0.1"
 val gatlingVersion = "3.14.7"
 val gatlingGrpcVersion = "3.14.7"
 val gatlingMqttVersion = "3.14.7"
-val protocVersion = "4.32.1"
+val protocVersion = "4.33.0"
 
 // bit weird cause this is not a dependency of this project
 val gatlingEnterpriseComponentPluginVersion = "1.20.6"
