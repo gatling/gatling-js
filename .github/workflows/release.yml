@@ -99,13 +99,11 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: 20
+          registry-url: https://registry.npmjs.org
 
       - name: Deploy JS packages
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         working-directory: ./js
         run: |
-          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
           npm ci
           npm version "${{ needs.release-jvm.outputs.version }}"
           npm run build --workspaces
