@@ -108,7 +108,9 @@ const wrapGetCookie = (_underlying: JvmGetCookie): GetCookie => ({
   _underlying,
   withDomain: (domain: Expression<string>): GetCookie =>
     wrapGetCookie(
-      typeof domain === "function" ? _underlying.withDomain(underlyingSessionTo(domain)) : _underlying.withPath(domain)
+      typeof domain === "function"
+        ? _underlying.withDomain(underlyingSessionTo(domain))
+        : _underlying.withDomain(domain)
     ),
   withPath: (path: string): GetCookie => wrapGetCookie(_underlying.withPath(path)),
   withSecure: (secure: boolean): GetCookie => wrapGetCookie(_underlying.withSecure(secure)),
