@@ -34,7 +34,7 @@
     "readline-sync": "1.4.10"
   },
   "devDependencies": {
-    "@types/archiver": "6.0.4",
+    "@types/archiver": "7.0.0",
     "@types/make-fetch-happen": "10.0.4",
     "@types/node": "18.19.130",
     "@types/readline-sync": "1.4.8",
