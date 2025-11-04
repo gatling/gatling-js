@@ -38,6 +38,7 @@ export interface GrpcClientStreamingServiceBuilder extends GrpcHeaders<GrpcClien
   messageRequestName(messageRequestName: string): GrpcClientStreamingServiceBuilder;
   messageRequestName(messageRequestName: (session: Session) => string): GrpcClientStreamingServiceBuilder;
   messageResponseTimePolicy(messageResponseTimePolicy: MessageResponseTimePolicy): GrpcClientStreamingServiceBuilder;
+  serverConfiguration(serverConfigurationName: string): GrpcClientStreamingServiceBuilder;
   streamName(streamName: string): GrpcClientStreamingServiceBuilder;
 
   // Terminal methods / specific actions
@@ -79,6 +80,7 @@ export const wrapGrpcClientStreamingServiceBuilder =
         ),
       messageResponseTimePolicy: (messageResponseTimePolicy) =>
         wrap(_underlying.messageResponseTimePolicy(toJvmMessageResponseTimePolicy(messageResponseTimePolicy))),
+      serverConfiguration: (serverConfigurationName) => wrap(_underlying.serverConfiguration(serverConfigurationName)),
       streamName: (streamName) => wrap(_underlying.streamName(streamName)),
       // Terminal methods / specific actions
       start: () => wrapActionBuilder(_underlying.start()),

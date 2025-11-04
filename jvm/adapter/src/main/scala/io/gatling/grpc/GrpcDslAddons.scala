@@ -21,7 +21,7 @@ import java.{ util => ju }
 import io.gatling.core.check.CheckBuilder
 import io.gatling.core.session.el._
 import io.gatling.grpc.check.status.{ GrpcStatusCheckType, GrpcStatusCodeStringCheckBuilder }
-import io.gatling.grpc.protocol.GrpcProtocolBuilder
+import io.gatling.grpc.protocol.{ GrpcProtocolBuilder, GrpcServerConfigurationBuilder }
 
 import io.grpc.Status
 
@@ -30,6 +30,15 @@ object GrpcDslAddons {
   val statusCodeAsString: CheckBuilder.Find[GrpcStatusCheckType, Status, String] = GrpcStatusCodeStringCheckBuilder
   // Protocol
   def channelCredentialsEL(builder: GrpcProtocolBuilder, credentials: String): GrpcProtocolBuilder = {
+    val el = credentials.el[ju.Map[String, String]]
+    builder.channelCredentials { session =>
+      el(session).map { m =>
+        io.gatling.javaapi.grpc.GrpcDslAddons.channelCredentials(m.get("rootCerts"), m.get("certChain"), m.get("privateKey"))
+      }
+    }
+  }
+  // Server configuration
+  def channelCredentialsEL(builder: GrpcServerConfigurationBuilder, credentials: String): GrpcServerConfigurationBuilder = {
     val el = credentials.el[ju.Map[String, String]]
     builder.channelCredentials { session =>
       el(session).map { m =>

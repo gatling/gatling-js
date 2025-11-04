@@ -13,7 +13,14 @@ import {
 
 const runSimulationMock = (_: Simulation): void => {};
 
-const grpcProtocol = grpc
+const defaultServerConfiguration = grpc.serverConfiguration("defaultServerConfiguration").forTarget("target");
+
+const serverConfiguration1 = grpc.serverConfiguration("serverConfiguration1").forTarget("target");
+
+const serverConfiguration2 = grpc.serverConfiguration("serverConfiguration2").forTarget("target");
+
+const serverConfiguration3 = grpc
+  .serverConfiguration("serverConfiguration3")
   .forAddress("host", 1234)
   .forTarget("dns:///host:1234")
   .asciiHeader("key")
@@ -51,6 +58,45 @@ const grpcProtocol = grpc
   .useRoundRobinLoadBalancingPolicy()
   .useChannelPool(4);
 
+const grpcProtocol = grpc
+  .forAddress("host", 1234)
+  .forTarget("dns:///host:1234")
+  .asciiHeader("key")
+  .value("value")
+  .asciiHeader("key")
+  .valueEL("#{value}")
+  .asciiHeader("key")
+  .value((session: Session) => session.get<string>("value"))
+  .asciiHeaders({ key: "value" })
+  .binaryHeader("key")
+  .value([118, 97, 108, 117, 101]) // FIXME "value".getBytes(UTF_8))
+  .binaryHeader("key")
+  .valueEL("#{value}")
+  .binaryHeader("key")
+  .value((session: Session) => session.get<number[]>("value"))
+  .binaryHeaders({ key: [118, 97, 108, 117, 101] }) // FIXME "value".getBytes(UTF_8)))
+  /*.callCredentials((_: Session) => ({
+      requestInfo,
+      appExecutor,
+      applier
+  }))*/
+  //.channelCredentials(TlsChannelCredentials.create())
+  //.channelCredentials(session -> TlsChannelCredentials.create())
+  .overrideAuthority("io.gatling")
+  .shareChannel()
+  .shareSslContext()
+  .usePlaintext()
+  .useInsecureTrustManager()
+  .useStandardTrustManager()
+  .useCustomCertificateTrustManager("certificatePath")
+  .useCustomLoadBalancingPolicy("pick_first")
+  .useCustomLoadBalancingPolicy("pick_first", "{}") // FIXME
+  .usePickFirstLoadBalancingPolicy()
+  .usePickRandomLoadBalancingPolicy()
+  .useRoundRobinLoadBalancingPolicy()
+  .useChannelPool(4)
+  .serverConfigurations(serverConfiguration1, serverConfiguration2, serverConfiguration3);
+
 const sample = {
   param: "param"
 };
@@ -58,6 +104,7 @@ const sample = {
 // FIXME GrpcUnaryActionBuilder<SampleRequest, SampleResponse>
 const statusCodeChecks = grpc("requestName")
   .unary("sample.SampleService/SampleUnary")
+  .serverConfiguration("serverConfiguration")
   .send({ sample })
   .check(
     statusCode().saveAs("statusCode").name("statusCode"),
@@ -76,6 +123,7 @@ const unary = scenario("name")
   .exec(
     grpc("requestName")
       .unary("sample.SampleService/SampleUnary")
+      .serverConfiguration("serverConfiguration")
       .send({ sample })
       .deadlineAfter(1)
       .deadlineAfter({ amount: 1, unit: "seconds" })
@@ -118,6 +166,7 @@ const unary = scenario("name")
 
 const serverStream = grpc("streamRequestName")
   .serverStream("sample.SampleService/SampleServerStreaming")
+  .serverConfiguration("serverConfiguration")
   .streamName("streamName")
   .deadlineAfter(1)
   .deadlineAfter({ amount: 1, unit: "seconds" })
@@ -171,6 +220,7 @@ const serverStreaming = scenario("name")
 
 const clientStream = grpc("streamRequestName")
   .clientStream("sample.SampleService/SampleClientStreaming")
+  .serverConfiguration("serverConfiguration")
   .streamName("streamName")
   .deadlineAfter(1)
   .deadlineAfter({ amount: 1, unit: "seconds" })
@@ -218,6 +268,7 @@ const clientStreaming = scenario("name")
 
 const bidiStream = grpc("streamRequestName")
   .bidiStream("sample.SampleService/SampleBidirectionalStreaming")
+  .serverConfiguration("serverConfiguration")
   .streamName("streamName")
   .deadlineAfter(1)
   .deadlineAfter({ amount: 1, unit: "seconds" })

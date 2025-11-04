@@ -40,6 +40,7 @@ const wrapGrpcUnaryActionBuilder = (_underlying: JvmGrpcUnaryActionBuilder<any, 
 
 // FIXME ReqT
 export interface GrpcUnaryServiceBuilder {
+  serverConfiguration(serverConfigurationName: string): GrpcUnaryServiceBuilder;
   send(request: any): GrpcUnaryActionBuilder;
   send(request: (session: Session) => any): GrpcUnaryActionBuilder;
 }
@@ -50,6 +51,8 @@ export const wrapGrpcUnaryServiceBuilder = (
 ): GrpcUnaryServiceBuilder => {
   const toJvmDynamicMessage = wrapToJvmDynamicMessage(inputDescriptor);
   return {
+    serverConfiguration: (serverConfigurationName) =>
+      wrapGrpcUnaryServiceBuilder(_underlying.serverConfiguration(serverConfigurationName), inputDescriptor),
     send: (request) => {
       return wrapGrpcUnaryActionBuilder(
         typeof request === "function"

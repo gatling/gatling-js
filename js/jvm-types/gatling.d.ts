@@ -3156,6 +3156,7 @@ declare namespace io.gatling.javaapi.grpc {
     ): io.gatling.javaapi.core.ActionBuilder;
     send(arg0: Func<io.gatling.javaapi.core.Session, ReqT>): io.gatling.javaapi.core.ActionBuilder;
     send(arg0: ReqT): io.gatling.javaapi.core.ActionBuilder;
+    serverConfiguration(arg0: string): GrpcBidirectionalStreamingServiceBuilder<ReqT, RespT>;
     start(): io.gatling.javaapi.core.ActionBuilder;
     streamName(arg0: string): GrpcBidirectionalStreamingServiceBuilder<ReqT, RespT>;
     toString(): string;
@@ -3209,6 +3210,7 @@ declare namespace io.gatling.javaapi.grpc {
     messageResponseTimePolicy(arg0: GrpcDsl$MessageResponseTimePolicy): GrpcClientStreamingServiceBuilder<ReqT, RespT>;
     send(arg0: Func<io.gatling.javaapi.core.Session, ReqT>): io.gatling.javaapi.core.ActionBuilder;
     send(arg0: ReqT): io.gatling.javaapi.core.ActionBuilder;
+    serverConfiguration(arg0: string): GrpcClientStreamingServiceBuilder<ReqT, RespT>;
     start(): io.gatling.javaapi.core.ActionBuilder;
     streamName(arg0: string): GrpcClientStreamingServiceBuilder<ReqT, RespT>;
     toString(): string;
@@ -3232,6 +3234,7 @@ declare namespace io.gatling.javaapi.grpc {
 } // end namespace io.gatling.javaapi.grpc
 declare namespace io.gatling.javaapi.grpc {
   class GrpcProtocolBuilder /* extends java.lang.Object implements io.gatling.javaapi.core.ProtocolBuilder, GrpcHeaders<any, any>*/ {
+    asScala(): any /*io.gatling.grpc.protocol.GrpcProtocolBuilder*/;
     asciiHeader<B>(arg0: string): GrpcHeaders$Value<B, string>;
     asciiHeaders<B>(arg0: java.util.Map<string, string>): B;
     binaryHeader<B>(arg0: string): GrpcHeaders$Value<B, bytearray>;
@@ -3248,6 +3251,9 @@ declare namespace io.gatling.javaapi.grpc {
     header<B, T>(arg0: io.grpc.Metadata$Key<T>): GrpcHeaders$Value<B, T>;
     overrideAuthority(arg0: string): GrpcProtocolBuilder;
     protocol(): any /*io.gatling.core.protocol.Protocol*/;
+    serverConfiguration(arg0: string): GrpcServerConfigurationBuilder;
+    serverConfigurations(...arg0: GrpcServerConfigurationBuilder[]): GrpcProtocolBuilder;
+    serverConfigurations(arg0: java.util.List<GrpcServerConfigurationBuilder>): GrpcProtocolBuilder;
     shareChannel(): GrpcProtocolBuilder;
     shareSslContext(): GrpcProtocolBuilder;
     toString(): string;
@@ -3263,6 +3269,44 @@ declare namespace io.gatling.javaapi.grpc {
     useRoundRobinLoadBalancingPolicy(): GrpcProtocolBuilder;
     useStandardTrustManager(): GrpcProtocolBuilder;
   } // end GrpcProtocolBuilder
+} // end namespace io.gatling.javaapi.grpc
+declare namespace io.gatling.javaapi.grpc {
+  class GrpcServerConfigurationBuilder /* extends java.lang.Object implements GrpcHeaders<any, any>*/ {
+    asScala(): any /*io.gatling.grpc.protocol.GrpcServerConfigurationBuilder*/;
+    asciiHeader<B>(arg0: string): GrpcHeaders$Value<B, string>;
+    asciiHeaders<B>(arg0: java.util.Map<string, string>): B;
+    binaryHeader<B>(arg0: string): GrpcHeaders$Value<B, bytearray>;
+    binaryHeaders<B>(arg0: java.util.Map<string, bytearray>): B;
+    callCredentials(
+      arg0: Func<io.gatling.javaapi.core.Session, io.grpc.CallCredentials>
+    ): GrpcServerConfigurationBuilder;
+    callCredentials(arg0: io.grpc.CallCredentials): GrpcServerConfigurationBuilder;
+    callCredentials(arg0: string): GrpcServerConfigurationBuilder;
+    channelCredentials(
+      arg0: Func<io.gatling.javaapi.core.Session, io.grpc.ChannelCredentials>
+    ): GrpcServerConfigurationBuilder;
+    channelCredentials(arg0: io.grpc.ChannelCredentials): GrpcServerConfigurationBuilder;
+    channelCredentials(arg0: string): GrpcServerConfigurationBuilder;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    forAddress(arg0: string, arg1: int): GrpcServerConfigurationBuilder;
+    forTarget(arg0: string): GrpcServerConfigurationBuilder;
+    header<B, T>(arg0: io.grpc.Metadata$Key<T>): GrpcHeaders$Value<B, T>;
+    overrideAuthority(arg0: string): GrpcServerConfigurationBuilder;
+    shareChannel(): GrpcServerConfigurationBuilder;
+    shareSslContext(): GrpcServerConfigurationBuilder;
+    toString(): string;
+    unmatchedInboundMessageBufferSize(arg0: int): GrpcServerConfigurationBuilder;
+    useChannelPool(arg0: int): GrpcServerConfigurationBuilder;
+    useCustomCertificateTrustManager(arg0: string): GrpcServerConfigurationBuilder;
+    useCustomLoadBalancingPolicy(arg0: string): GrpcServerConfigurationBuilder;
+    useCustomLoadBalancingPolicy(arg0: string, arg1: string): GrpcServerConfigurationBuilder;
+    useInsecureTrustManager(): GrpcServerConfigurationBuilder;
+    usePickFirstLoadBalancingPolicy(): GrpcServerConfigurationBuilder;
+    usePickRandomLoadBalancingPolicy(): GrpcServerConfigurationBuilder;
+    usePlaintext(): GrpcServerConfigurationBuilder;
+    useRoundRobinLoadBalancingPolicy(): GrpcServerConfigurationBuilder;
+    useStandardTrustManager(): GrpcServerConfigurationBuilder;
+  } // end GrpcServerConfigurationBuilder
 } // end namespace io.gatling.javaapi.grpc
 declare namespace io.gatling.javaapi.grpc {
   class GrpcServerStreamAwaitStreamEndActionBuilder<
@@ -3339,6 +3383,7 @@ declare namespace io.gatling.javaapi.grpc {
     ): io.gatling.javaapi.core.ActionBuilder;
     send(arg0: Func<io.gatling.javaapi.core.Session, ReqT>): GrpcServerStreamStreamSendActionBuilder<ReqT, RespT>;
     send(arg0: ReqT): GrpcServerStreamStreamSendActionBuilder<ReqT, RespT>;
+    serverConfiguration(arg0: string): GrpcServerStreamingServiceBuilder<ReqT, RespT>;
     streamName(arg0: string): GrpcServerStreamingServiceBuilder<ReqT, RespT>;
     toString(): string;
   } // end GrpcServerStreamingServiceBuilder
@@ -3373,6 +3418,7 @@ declare namespace io.gatling.javaapi.grpc {
     equals(arg0: any /*java.lang.Object*/): boolean;
     send(arg0: Func<io.gatling.javaapi.core.Session, ReqT>): GrpcUnaryActionBuilder<ReqT, RespT>;
     send(arg0: ReqT): GrpcUnaryActionBuilder<ReqT, RespT>;
+    serverConfiguration(arg0: string): GrpcUnaryServiceBuilder<ReqT, RespT>;
     toString(): string;
   } // end GrpcUnaryServiceBuilder
 } // end namespace io.gatling.javaapi.grpc

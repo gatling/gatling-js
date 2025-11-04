@@ -1567,6 +1567,14 @@ interface GrpcProtocolBuilderStatic {
 
 export const GrpcProtocolBuilder: GrpcProtocolBuilderStatic = Java.type("io.gatling.javaapi.grpc.GrpcProtocolBuilder");
 
+interface GrpcServerConfigurationBuilderStatic {
+  readonly class: any;
+}
+
+export const GrpcServerConfigurationBuilder: GrpcServerConfigurationBuilderStatic = Java.type(
+  "io.gatling.javaapi.grpc.GrpcServerConfigurationBuilder"
+);
+
 interface GrpcServerStreamAwaitStreamEndActionBuilderStatic {
   readonly class: any;
 }
