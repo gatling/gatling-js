@@ -37,15 +37,18 @@ public class GrpcDslAddons {
         null);
   }
 
-  // Protocol
+  // Protocol & Server configurations
 
   public static GrpcProtocolBuilder channelCredentialsEL(
       GrpcProtocolBuilder builder, String credentials) {
     return new GrpcProtocolBuilder(
-        io.gatling.grpc.GrpcDslAddons.channelCredentialsEL(
-            new io.gatling.grpc.protocol.GrpcProtocolBuilder(
-                (io.gatling.grpc.protocol.GrpcProtocol) builder.protocol()),
-            credentials));
+        io.gatling.grpc.GrpcDslAddons.channelCredentialsEL(builder.asScala(), credentials));
+  }
+
+  public static GrpcServerConfigurationBuilder channelCredentialsEL(
+      GrpcServerConfigurationBuilder builder, String credentials) {
+    return new GrpcServerConfigurationBuilder(
+        io.gatling.grpc.GrpcDslAddons.channelCredentialsEL(builder.asScala(), credentials));
   }
 
   public static ChannelCredentials channelCredentials(

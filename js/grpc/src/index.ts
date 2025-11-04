@@ -8,6 +8,7 @@ export * from "./checks";
 export * from "./clientStream";
 export * from "./grpc";
 export * from "./protocol";
+export * from "./serverConfiguration";
 export * from "./serverStream";
 export * from "./unary";
 

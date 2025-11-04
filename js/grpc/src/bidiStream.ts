@@ -44,6 +44,7 @@ export interface GrpcBidirectionalStreamingServiceBuilder
   messageResponseTimePolicy(
     messageResponseTimePolicy: MessageResponseTimePolicy
   ): GrpcBidirectionalStreamingServiceBuilder;
+  serverConfiguration(serverConfigurationName: string): GrpcBidirectionalStreamingServiceBuilder;
   streamName(streamName: string): GrpcBidirectionalStreamingServiceBuilder;
 
   // Terminal methods / specific actions
@@ -94,6 +95,7 @@ export const wrapGrpcBidirectionalStreamingServiceBuilder =
         ),
       messageResponseTimePolicy: (messageResponseTimePolicy) =>
         wrap(_underlying.messageResponseTimePolicy(toJvmMessageResponseTimePolicy(messageResponseTimePolicy))),
+      serverConfiguration: (serverConfigurationName) => wrap(_underlying.serverConfiguration(serverConfigurationName)),
       streamName: (streamName) => wrap(_underlying.streamName(streamName)),
       // Terminal methods / specific actions
       start: () => wrapActionBuilder(_underlying.start()),

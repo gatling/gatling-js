@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+import "greeting_messages.proto";
+
+package greeting;
+
+service GreetingService {
+  rpc Greet(GreetRequest) returns (GreetResponse) {};
+  rpc GreetWithDeadline(GreetRequest) returns (GreetResponse) {};
+}
