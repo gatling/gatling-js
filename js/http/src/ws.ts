@@ -292,9 +292,7 @@ const wrapWsAwaitActionBuilderOn = <J, T>(
  * <p>Immutable, so all methods return a new occurrence and leave the original unmodified.
  */
 export interface WsConnectActionBuilder
-  extends RequestActionBuilder<WsConnectActionBuilder>,
-    WsAwaitActionBuilder<WsConnectActionBuilder>,
-    ActionBuilder {
+  extends RequestActionBuilder<WsConnectActionBuilder>, WsAwaitActionBuilder<WsConnectActionBuilder>, ActionBuilder {
   /**
    * Define a WebSocket subprotocol
    *

@@ -28,7 +28,8 @@ import { RoundRobinSwitch, roundRobinSwitchImpl } from "./roundRobinSwitch";
 import { Errors, errorsImpl } from "./errors";
 
 export interface StructureBuilder<T extends StructureBuilder<T>>
-  extends Execs<T>,
+  extends
+    Execs<T>,
     Groups<T>,
     Feeds<T>,
     Pauses<T>,
