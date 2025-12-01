@@ -29,8 +29,7 @@ const wrapGrpcBidiStreamAwaitStreamEndActionBuilder = (
 
 // FIXME ReqT, RespT
 // FIXME GrpcBidiStreamAwaitStreamEndActionBuilder but GrpcBidirectionalStreamingServiceBuilder?
-export interface GrpcBidirectionalStreamingServiceBuilder
-  extends GrpcHeaders<GrpcBidirectionalStreamingServiceBuilder> {
+export interface GrpcBidirectionalStreamingServiceBuilder extends GrpcHeaders<GrpcBidirectionalStreamingServiceBuilder> {
   // Chainable methods / global stream configuration
 
   //callCredentials(credentials: CallCredentials): GrpcBidirectionalStreamingServiceBuilder;

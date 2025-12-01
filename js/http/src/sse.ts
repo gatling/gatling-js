@@ -187,7 +187,8 @@ const sseAwaitActionBuilderImpl = <T, J extends JvmSseAwaitActionBuilder<J, any>
 });
 
 export interface SseConnectActionBuilder
-  extends SseAwaitActionBuilder<SseConnectActionBuilder>,
+  extends
+    SseAwaitActionBuilder<SseConnectActionBuilder>,
     RequestWithBodyActionBuilder<SseConnectActionBuilder>,
     RequestActionBuilder<SseConnectActionBuilder>,
     ActionBuilder {

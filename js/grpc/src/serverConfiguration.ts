@@ -6,8 +6,7 @@ import { GrpcHeaders, wrapGrpcHeaders } from "./headers";
 import JvmGrpcServerConfigurationBuilder = io.gatling.javaapi.grpc.GrpcServerConfigurationBuilder;
 
 export interface GrpcServerConfigurationBuilder
-  extends GrpcHeaders<GrpcServerConfigurationBuilder>,
-    Wrapper<JvmGrpcServerConfigurationBuilder> {
+  extends GrpcHeaders<GrpcServerConfigurationBuilder>, Wrapper<JvmGrpcServerConfigurationBuilder> {
   //public GrpcServerConfigurationBuilder callCredentials(@NonNull Function<Session, CallCredentials> credentials) {
   //public GrpcServerConfigurationBuilder callCredentials(@NonNull String credentials) {
   //public GrpcServerConfigurationBuilder callCredentials(@NonNull CallCredentials credentials) {

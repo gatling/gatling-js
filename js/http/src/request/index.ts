@@ -725,7 +725,8 @@ export const requestWithBodyActionBuilderImpl = <T, J extends JvmRequestWithBody
 });
 
 export interface HttpRequestActionBuilder
-  extends RequestWithBodyActionBuilder<HttpRequestActionBuilder>,
+  extends
+    RequestWithBodyActionBuilder<HttpRequestActionBuilder>,
     RequestActionBuilder<HttpRequestActionBuilder>,
     ActionBuilder {
   // Assembling all original subtypes

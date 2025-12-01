@@ -25,7 +25,8 @@ import JvmRoundRobinSwitch = io.gatling.javaapi.core.condition.RoundRobinSwitch;
 import JvmErrors = io.gatling.javaapi.core.error.Errors;
 
 export interface JvmStructureBuilderLike<T, W>
-  extends JvmExecs<T, W>,
+  extends
+    JvmExecs<T, W>,
     JvmGroups<T, W>,
     JvmFeeds<T, W>,
     JvmPauses<T, W>,
