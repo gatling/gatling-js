@@ -189,7 +189,7 @@ jobs:
     needs:
       - release-jvm
       - create-github-release
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
       - name: Download artifact
@@ -211,7 +211,7 @@ jobs:
     needs:
       - release-jvm
       - create-github-release
-    runs-on: ubuntu-24-arm-2-cores
+    runs-on: ubuntu-24.04-arm
     timeout-minutes: 5
     steps:
       - name: Download artifact
@@ -233,7 +233,7 @@ jobs:
     needs:
       - release-jvm
       - create-github-release
-    runs-on: macos-13
+    runs-on: macos-15-intel
     timeout-minutes: 5
     steps:
       - name: Download artifact
@@ -255,7 +255,7 @@ jobs:
     needs:
       - release-jvm
       - create-github-release
-    runs-on: macos-14
+    runs-on: macos-15
     timeout-minutes: 5
     steps:
       - name: Download artifact
