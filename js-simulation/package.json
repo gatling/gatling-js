@@ -13,8 +13,8 @@
   },
   "devDependencies": {
     "@gatling.io/cli": "../tmp/cli/package",
-    "prettier": "3.6.2",
-    "rimraf": "6.0.1"
+    "prettier": "3.7.4",
+    "rimraf": "6.1.2"
   },
   "scripts": {
     "clean": "rimraf target",
