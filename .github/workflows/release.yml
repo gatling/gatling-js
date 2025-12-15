@@ -91,7 +91,7 @@ jobs:
       url: https://www.npmjs.com/org/gatling.io
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: release-jvm-workdir
 
@@ -193,7 +193,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: release-js-workdir
 
@@ -215,7 +215,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: release-js-workdir
 
@@ -237,7 +237,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: release-js-workdir
 
@@ -259,7 +259,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: release-js-workdir
 
@@ -281,7 +281,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: release-js-workdir
 
