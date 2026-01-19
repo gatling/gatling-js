@@ -13,7 +13,7 @@
   "devDependencies": {
     "@types/archiver": "7.0.0",
     "@types/decompress": "4.2.7",
-    "@types/node": "20.19.28",
+    "@types/node": "20.19.30",
     "prettier": "3.8.0",
     "rimraf": "6.1.2",
     "typescript": "5.9.3"
