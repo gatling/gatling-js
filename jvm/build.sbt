@@ -3,7 +3,7 @@ import scala.collection.Seq
 import net.moznion.sbt.spotless.Target
 import net.moznion.sbt.spotless.config.{ GoogleJavaFormatConfig, JavaConfig, SpotlessConfig }
 
-ThisBuild / scalaVersion := "2.13.18"
+ThisBuild / scalaVersion := "3.8.1"
 ThisBuild / crossPaths := false
 
 Global / githubPath := "gatling/gatling-js"
