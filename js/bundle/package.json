@@ -6,7 +6,7 @@
   "types": "target/index.d.ts",
   "dependencies": {
     "archiver": "7.0.1",
-    "commander": "14.0.2",
+    "commander": "14.0.3",
     "decompress": "4.2.1",
     "make-fetch-happen": "15.0.3"
   },
