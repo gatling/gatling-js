@@ -107,9 +107,11 @@ jobs:
 
       - name: Deploy JS packages
         working-directory: ./js
+        env:
+          VERSION: ${{ needs.release-jvm.outputs.version }}
         run: |
           npm ci
-          npm version "${{ needs.release-jvm.outputs.version }}"
+          npm version "$VERSION"
           npm run build --workspaces
           for pkg in "cli" "jvm-types" "core" "http" "grpc" "mqtt"; do
             cp ../LICENSE "./$pkg/LICENSE"
@@ -143,8 +145,12 @@ jobs:
     steps:
       - name: Create GitHub release (draft)
         id: release
+        env:
+          version: ${{ needs.release-jvm.outputs.version }}
+          RELEASES_URL: ${{ github.event.repository.releases_url }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ github.ref_name }}
         run: |
-          version="${{ needs.release-jvm.outputs.version }}"
           if [[ "$version" =~ -M[0-9]+$ ]]; then
             prerelease=true
           else
@@ -152,7 +158,7 @@ jobs:
           fi
           echo "prerelease=$prerelease"
           echo "prerelease=$prerelease" >> $GITHUB_OUTPUT
-          releases_url=$(echo "${{ github.event.repository.releases_url }}" | sed 's/{\/id}//')
+          releases_url=$(echo "$RELEASES_URL" | sed 's/{\/id}//')
           response=$(curl \
             --fail-with-body \
             --location \
@@ -160,13 +166,13 @@ jobs:
             --silent \
             --request POST \
             --header "Accept: application/vnd.github+json" \
-            --header "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            --header "Authorization: Bearer $GITHUB_TOKEN" \
             --header "X-GitHub-Api-Version: 2022-11-28" \
             "$releases_url" \
             --data @- <<EOF
           {
             "name": "Gatling JS $version",
-            "tag_name": "${{ github.ref_name }}",
+            "tag_name": "$TAG",
             "body": "To get started with Gatling JS, please check [the tutorial](https://docs.gatling.io/tutorials/scripting-intro-js/).\n\nThe bundle files in this release are normally automatically downloaded by the Gatling JS CLI. If you need to perform a manual install, please refer to [the documentation](https://docs.gatling.io/reference/integrations/build-tools/js-cli/).",
             "draft": true,
             "prerelease": $prerelease
@@ -288,8 +294,11 @@ jobs:
     steps:
       - name: Publish GitHub release
         id: release
+        env:
+          prerelease: ${{ needs.create-github-release.outputs.prerelease }}
+          URL: ${{ needs.create-github-release.outputs.url }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          prerelease="${{ needs.create-github-release.outputs.prerelease }}"
           if [[ "$prerelease" = "true" ]]; then
             make_latest=false
           else
@@ -302,9 +311,9 @@ jobs:
             --silent \
             --request PATCH \
             --header "Accept: application/vnd.github+json" \
-            --header "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            --header "Authorization: Bearer $GITHUB_TOKEN" \
             --header "X-GitHub-Api-Version: 2022-11-28" \
-            "${{ needs.create-github-release.outputs.url }}" \
+            "$URL" \
             --data @- <<EOF
           {
             "draft": false,
