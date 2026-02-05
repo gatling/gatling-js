@@ -28,12 +28,18 @@ runs:
     - name: Build bundle
       shell: bash
       working-directory: ./js
+      env:
+        UPLOAD_URL: ${{ inputs.upload-url }}
+        GITHUB_TOKEN: ${{ inputs.github-token }}
+        VERSION: ${{ inputs.version }}
+        OS_TYPE: ${{ inputs.os-type }}
+        OS_ARCH: ${{ inputs.os-arch }}
       run: |
         echo "architecture: $(arch)"
         rm -rf node_modules bundle/node_modules
         npm ci
         npm run generate --workspace=bundle
-        upload_url=$(echo "${{ inputs.upload-url }}" | sed 's/{[^}]*}//')
+        upload_url="$(echo "$UPLOAD_URL" | sed 's/{[^}]*}//')"
         echo "upload_url=$upload_url"
         curl --location \
           --silent \
@@ -42,8 +48,8 @@ runs:
           --max-time 300 \
           --request POST \
           --header "Accept: application/vnd.github+json" \
-          --header "Authorization: Bearer ${{ inputs.github-token }}" \
+          --header "Authorization: Bearer GITHUB_TOKEN" \
           --header "Content-Type: application/octet-stream" \
           --header "X-GitHub-Api-Version: 2022-11-28" \
-          "${upload_url}?name=gatling-js-bundle-${{ inputs.version }}-${{ inputs.os-type }}-${{ inputs.os-arch }}.zip" \
-          --data-binary "@bundle/tmp/gatling-js-bundle-${{ inputs.version }}-${{ inputs.os-type }}-${{ inputs.os-arch }}.zip"
+          "${upload_url}?name=gatling-js-bundle-$VERSION-$OS_TYPE-$OS_ARCH.zip" \
+          --data-binary "@bundle/tmp/gatling-js-bundle-$VERSION-$OS_TYPE-$OS_ARCH.zip"
