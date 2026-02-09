@@ -48,7 +48,7 @@ runs:
           --max-time 300 \
           --request POST \
           --header "Accept: application/vnd.github+json" \
-          --header "Authorization: Bearer GITHUB_TOKEN" \
+          --header "Authorization: Bearer $GITHUB_TOKEN" \
           --header "Content-Type: application/octet-stream" \
           --header "X-GitHub-Api-Version: 2022-11-28" \
           "${upload_url}?name=gatling-js-bundle-$VERSION-$OS_TYPE-$OS_ARCH.zip" \
