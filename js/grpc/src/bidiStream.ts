@@ -13,7 +13,13 @@ import {
 } from "@gatling.io/core";
 
 import { transformJvmInboundMessages, underlyingSessionToJvmDynamicMessage, wrapToJvmDynamicMessage } from "./dynamic";
-import { GrpcInboundMessage, MessageResponseTimePolicy, toJvmMessageResponseTimePolicy } from "./grpc";
+import {
+  GrpcInboundMessage,
+  InitialTimestampFunction,
+  MessageResponseTimePolicy,
+  toJvmInitialTimestampFunction,
+  toJvmMessageResponseTimePolicy
+} from "./grpc";
 import { GrpcHeaders, wrapGrpcHeaders } from "./headers";
 
 import JvmDescriptorsDescriptor = com.google.protobuf.Descriptors$Descriptor;
@@ -42,6 +48,9 @@ export interface GrpcBidirectionalStreamingServiceBuilder extends GrpcHeaders<Gr
   messageRequestName(messageRequestName: (session: Session) => string): GrpcBidirectionalStreamingServiceBuilder;
   messageResponseTimePolicy(
     messageResponseTimePolicy: MessageResponseTimePolicy
+  ): GrpcBidirectionalStreamingServiceBuilder;
+  messageResponseTimePolicy(
+    initialTimestampFunction: InitialTimestampFunction
   ): GrpcBidirectionalStreamingServiceBuilder;
   serverConfiguration(serverConfigurationName: string): GrpcBidirectionalStreamingServiceBuilder;
   streamName(streamName: string): GrpcBidirectionalStreamingServiceBuilder;
@@ -93,7 +102,11 @@ export const wrapGrpcBidirectionalStreamingServiceBuilder =
             : _underlying.messageRequestName(messageRequestName)
         ),
       messageResponseTimePolicy: (messageResponseTimePolicy) =>
-        wrap(_underlying.messageResponseTimePolicy(toJvmMessageResponseTimePolicy(messageResponseTimePolicy))),
+        wrap(
+          typeof messageResponseTimePolicy === "function"
+            ? _underlying.messageResponseTimePolicy(toJvmInitialTimestampFunction(messageResponseTimePolicy))
+            : _underlying.messageResponseTimePolicy(toJvmMessageResponseTimePolicy(messageResponseTimePolicy))
+        ),
       serverConfiguration: (serverConfigurationName) => wrap(_underlying.serverConfiguration(serverConfigurationName)),
       streamName: (streamName) => wrap(_underlying.streamName(streamName)),
       // Terminal methods / specific actions

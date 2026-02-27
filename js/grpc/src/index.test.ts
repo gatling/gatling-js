@@ -163,7 +163,11 @@ const serverStream = grpc("streamRequestName")
   .binaryHeaders({ key: [118, 97, 108, 117, 101] }) // "value".getBytes(UTF_8)))
   .messageRequestName("#{messageRequestName}")
   .messageRequestName((session: Session) => session.get<string>("messageRequestName"))
-  .messageResponseTimePolicy("FROM_LAST_MESSAGE_SENT");
+  .messageResponseTimePolicy("FROM_LAST_MESSAGE_SENT")
+  .messageResponseTimePolicy(
+    (message, nowTimestamp, streamStartTimestamp, lastMessageSentTimestamp, lastMessageReceivedTimestamp) =>
+      streamStartTimestamp
+  );
 
 const _serverStreamWithStreamName = grpc("requestName").serverStream(
   "sample.SampleService/SampleServerStreaming",
@@ -217,7 +221,11 @@ const clientStream = grpc("streamRequestName")
   .binaryHeaders({ key: [118, 97, 108, 117, 101] }) // FIXME "value".getBytes(UTF_8)))
   .messageRequestName("#{messageRequestName}")
   .messageRequestName((session: Session) => session.get<string>("messageRequestName"))
-  .messageResponseTimePolicy("FROM_LAST_MESSAGE_SENT");
+  .messageResponseTimePolicy("FROM_LAST_MESSAGE_SENT")
+  .messageResponseTimePolicy(
+    (message, nowTimestamp, streamStartTimestamp, lastMessageSentTimestamp, lastMessageReceivedTimestamp) =>
+      streamStartTimestamp
+  );
 
 const clientStreaming = scenario("name")
   .exec(clientStream.send({ sample }))
@@ -265,7 +273,11 @@ const bidiStream = grpc("streamRequestName")
   .binaryHeaders({ key: [118, 97, 108, 117, 101] }) // FIXME "value".getBytes(UTF_8)))
   .messageRequestName("#{messageRequestName}")
   .messageRequestName((session: Session) => session.get<string>("messageRequestName"))
-  .messageResponseTimePolicy("FROM_LAST_MESSAGE_SENT");
+  .messageResponseTimePolicy("FROM_LAST_MESSAGE_SENT")
+  .messageResponseTimePolicy(
+    (message, nowTimestamp, streamStartTimestamp, lastMessageSentTimestamp, lastMessageReceivedTimestamp) =>
+      streamStartTimestamp
+  );
 
 const _bidiStreamWithStreamName = grpc("requestName").bidiStream("sample.SampleService/SampleBidirectionalStreaming");
 
