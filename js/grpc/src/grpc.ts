@@ -7,6 +7,8 @@ import JvmGrpcDslMessageResponseTimePolicy = io.gatling.javaapi.grpc.GrpcDsl$Mes
 import JvmGrpcServerConfigurationBuilder = io.gatling.javaapi.grpc.GrpcServerConfigurationBuilder;
 import JvmSession = io.gatling.javaapi.core.Session;
 
+import { GrpcDynamic } from "./dynamic";
+
 export interface GrpcDslAddonsStatic {
   // Checks
   statusCodeAsString(): JvmCheckBuilderFind<Status.Code>;
@@ -55,6 +57,33 @@ export const toJvmMessageResponseTimePolicy = (
 
   throw Error(`Unhandled message response time policy ${policy}`);
 };
+
+export const toJvmInitialTimestampFunction =
+  (initialTimestampFunction: InitialTimestampFunction): any =>
+  (
+    message: any,
+    nowTimestamp: number,
+    streamStartTimestamp: number,
+    lastMessageSentTimestamp: number | null,
+    lastMessageReceivedTimestamp: number | null
+  ) =>
+    initialTimestampFunction(
+      GrpcDynamic.convertFromMessage(message),
+      nowTimestamp,
+      streamStartTimestamp,
+      lastMessageSentTimestamp,
+      lastMessageReceivedTimestamp
+    );
+
+export interface InitialTimestampFunction {
+  (
+    message: Record<string, any>,
+    nowTimestamp: number,
+    streamStartTimestamp: number,
+    lastMessageSentTimestamp: number | null,
+    lastMessageReceivedTimestamp: number | null
+  ): number | null;
+}
 
 export namespace Status {
   export type Code =

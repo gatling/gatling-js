@@ -14,7 +14,13 @@ import {
 
 import { transformJvmInboundMessages, underlyingSessionToJvmDynamicMessage, wrapToJvmDynamicMessage } from "./dynamic";
 import { GrpcHeaders, wrapGrpcHeaders } from "./headers";
-import { GrpcInboundMessage, MessageResponseTimePolicy, toJvmMessageResponseTimePolicy } from "./grpc";
+import {
+  GrpcInboundMessage,
+  InitialTimestampFunction,
+  MessageResponseTimePolicy,
+  toJvmInitialTimestampFunction,
+  toJvmMessageResponseTimePolicy
+} from "./grpc";
 
 import JvmDescriptorsDescriptor = com.google.protobuf.Descriptors$Descriptor;
 import JvmGrpcServerStreamAwaitStreamEndActionBuilder = io.gatling.javaapi.grpc.GrpcServerStreamAwaitStreamEndActionBuilder;
@@ -48,6 +54,7 @@ export interface GrpcServerStreamingServiceBuilder extends GrpcHeaders<GrpcServe
   messageRequestName(messageRequestName: string): GrpcServerStreamingServiceBuilder;
   messageRequestName(messageRequestName: (session: Session) => string): GrpcServerStreamingServiceBuilder;
   messageResponseTimePolicy(messageResponseTimePolicy: MessageResponseTimePolicy): GrpcServerStreamingServiceBuilder;
+  messageResponseTimePolicy(initialTimestampFunction: InitialTimestampFunction): GrpcServerStreamingServiceBuilder;
   serverConfiguration(serverConfigurationName: string): GrpcServerStreamingServiceBuilder;
   streamName(streamName: string): GrpcServerStreamingServiceBuilder;
 
@@ -94,7 +101,11 @@ export const wrapGrpcServerStreamingServiceBuilder =
             : _underlying.messageRequestName(messageRequestName)
         ),
       messageResponseTimePolicy: (messageResponseTimePolicy) =>
-        wrap(_underlying.messageResponseTimePolicy(toJvmMessageResponseTimePolicy(messageResponseTimePolicy))),
+        wrap(
+          typeof messageResponseTimePolicy === "function"
+            ? _underlying.messageResponseTimePolicy(toJvmInitialTimestampFunction(messageResponseTimePolicy))
+            : _underlying.messageResponseTimePolicy(toJvmMessageResponseTimePolicy(messageResponseTimePolicy))
+        ),
       serverConfiguration: (serverConfigurationName) => wrap(_underlying.serverConfiguration(serverConfigurationName)),
       streamName: (streamName) => wrap(_underlying.streamName(streamName)),
       // Terminal methods / specific actions

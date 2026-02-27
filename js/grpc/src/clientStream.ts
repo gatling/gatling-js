@@ -12,9 +12,13 @@ import {
 
 import { underlyingSessionToJvmDynamicMessage, wrapToJvmDynamicMessage } from "./dynamic";
 import { GrpcHeaders, wrapGrpcHeaders } from "./headers";
-import { MessageResponseTimePolicy, toJvmMessageResponseTimePolicy } from "./grpc";
+import {
+  InitialTimestampFunction,
+  MessageResponseTimePolicy,
+  toJvmInitialTimestampFunction,
+  toJvmMessageResponseTimePolicy
+} from "./grpc";
 
-import JvmDynamicMessageBuilder = com.google.protobuf.DynamicMessage$Builder;
 import JvmDescriptorsDescriptor = com.google.protobuf.Descriptors$Descriptor;
 import JvmGrpcClientStreamAwaitStreamEndActionBuilder = io.gatling.javaapi.grpc.GrpcClientStreamAwaitStreamEndActionBuilder;
 import JvmGrpcClientStreamingServiceBuilder = io.gatling.javaapi.grpc.GrpcClientStreamingServiceBuilder;
@@ -38,6 +42,7 @@ export interface GrpcClientStreamingServiceBuilder extends GrpcHeaders<GrpcClien
   messageRequestName(messageRequestName: string): GrpcClientStreamingServiceBuilder;
   messageRequestName(messageRequestName: (session: Session) => string): GrpcClientStreamingServiceBuilder;
   messageResponseTimePolicy(messageResponseTimePolicy: MessageResponseTimePolicy): GrpcClientStreamingServiceBuilder;
+  messageResponseTimePolicy(initialTimestampFunction: InitialTimestampFunction): GrpcClientStreamingServiceBuilder;
   serverConfiguration(serverConfigurationName: string): GrpcClientStreamingServiceBuilder;
   streamName(streamName: string): GrpcClientStreamingServiceBuilder;
 
@@ -79,7 +84,11 @@ export const wrapGrpcClientStreamingServiceBuilder =
             : _underlying.messageRequestName(messageRequestName)
         ),
       messageResponseTimePolicy: (messageResponseTimePolicy) =>
-        wrap(_underlying.messageResponseTimePolicy(toJvmMessageResponseTimePolicy(messageResponseTimePolicy))),
+        wrap(
+          typeof messageResponseTimePolicy === "function"
+            ? _underlying.messageResponseTimePolicy(toJvmInitialTimestampFunction(messageResponseTimePolicy))
+            : _underlying.messageResponseTimePolicy(toJvmMessageResponseTimePolicy(messageResponseTimePolicy))
+        ),
       serverConfiguration: (serverConfigurationName) => wrap(_underlying.serverConfiguration(serverConfigurationName)),
       streamName: (streamName) => wrap(_underlying.streamName(streamName)),
       // Terminal methods / specific actions
