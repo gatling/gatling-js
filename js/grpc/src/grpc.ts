@@ -4,7 +4,6 @@ import { GrpcDsl$MessageResponseTimePolicy as GrpcDslMessageResponseTimePolicySt
 import JvmChannelCredentials = io.grpc.ChannelCredentials;
 import JvmCheckBuilderFind = io.gatling.javaapi.core.CheckBuilder$Find;
 import JvmGrpcDslMessageResponseTimePolicy = io.gatling.javaapi.grpc.GrpcDsl$MessageResponseTimePolicy;
-import JvmGrpcProtocolBuilder = io.gatling.javaapi.grpc.GrpcProtocolBuilder;
 import JvmGrpcServerConfigurationBuilder = io.gatling.javaapi.grpc.GrpcServerConfigurationBuilder;
 import JvmSession = io.gatling.javaapi.core.Session;
 
@@ -13,7 +12,6 @@ export interface GrpcDslAddonsStatic {
   statusCodeAsString(): JvmCheckBuilderFind<Status.Code>;
   // Protocol & server configurations
   channelCredentials(rootCerts?: string, certChain?: string, privateKey?: string): JvmChannelCredentials;
-  channelCredentialsEL(protocol: JvmGrpcProtocolBuilder, credentials: string): JvmGrpcProtocolBuilder;
   channelCredentialsEL(
     protocol: JvmGrpcServerConfigurationBuilder,
     credentials: string

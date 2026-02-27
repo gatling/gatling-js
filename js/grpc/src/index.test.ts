@@ -13,8 +13,6 @@ import {
 
 const runSimulationMock = (_: Simulation): void => {};
 
-const defaultServerConfiguration = grpc.serverConfiguration("defaultServerConfiguration").forTarget("target");
-
 const serverConfiguration1 = grpc.serverConfiguration("serverConfiguration1").forTarget("target");
 
 const serverConfiguration2 = grpc.serverConfiguration("serverConfiguration2").forTarget("target");
@@ -58,44 +56,7 @@ const serverConfiguration3 = grpc
   .useRoundRobinLoadBalancingPolicy()
   .useChannelPool(4);
 
-const grpcProtocol = grpc
-  .forAddress("host", 1234)
-  .forTarget("dns:///host:1234")
-  .asciiHeader("key")
-  .value("value")
-  .asciiHeader("key")
-  .valueEL("#{value}")
-  .asciiHeader("key")
-  .value((session: Session) => session.get<string>("value"))
-  .asciiHeaders({ key: "value" })
-  .binaryHeader("key")
-  .value([118, 97, 108, 117, 101]) // FIXME "value".getBytes(UTF_8))
-  .binaryHeader("key")
-  .valueEL("#{value}")
-  .binaryHeader("key")
-  .value((session: Session) => session.get<number[]>("value"))
-  .binaryHeaders({ key: [118, 97, 108, 117, 101] }) // FIXME "value".getBytes(UTF_8)))
-  /*.callCredentials((_: Session) => ({
-      requestInfo,
-      appExecutor,
-      applier
-  }))*/
-  //.channelCredentials(TlsChannelCredentials.create())
-  //.channelCredentials(session -> TlsChannelCredentials.create())
-  .overrideAuthority("io.gatling")
-  .shareChannel()
-  .shareSslContext()
-  .usePlaintext()
-  .useInsecureTrustManager()
-  .useStandardTrustManager()
-  .useCustomCertificateTrustManager("certificatePath")
-  .useCustomLoadBalancingPolicy("pick_first")
-  .useCustomLoadBalancingPolicy("pick_first", "{}") // FIXME
-  .usePickFirstLoadBalancingPolicy()
-  .usePickRandomLoadBalancingPolicy()
-  .useRoundRobinLoadBalancingPolicy()
-  .useChannelPool(4)
-  .serverConfigurations(serverConfiguration1, serverConfiguration2, serverConfiguration3);
+const grpcProtocol = grpc.serverConfigurations(serverConfiguration1, serverConfiguration2, serverConfiguration3);
 
 const sample = {
   param: "param"

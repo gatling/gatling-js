@@ -39,12 +39,6 @@ public class GrpcDslAddons {
 
   // Protocol & Server configurations
 
-  public static GrpcProtocolBuilder channelCredentialsEL(
-      GrpcProtocolBuilder builder, String credentials) {
-    return new GrpcProtocolBuilder(
-        io.gatling.grpc.GrpcDslAddons.channelCredentialsEL(builder.asScala(), credentials));
-  }
-
   public static GrpcServerConfigurationBuilder channelCredentialsEL(
       GrpcServerConfigurationBuilder builder, String credentials) {
     return new GrpcServerConfigurationBuilder(

@@ -594,7 +594,11 @@ interface CoreDslStatic {
   regex(
     arg0: Func<io.gatling.javaapi.core.Session, string>
   ): io.gatling.javaapi.core.CheckBuilder$CaptureGroupCheckBuilder;
+  css(arg0: string): any /*io.gatling.javaapi.core.CheckBuilder$CssOfTypeMultipleFind*/;
   css(arg0: string, arg1: string): any /*io.gatling.javaapi.core.CheckBuilder$CssOfTypeMultipleFind*/;
+  css(
+    arg0: Func<io.gatling.javaapi.core.Session, string>
+  ): any /*io.gatling.javaapi.core.CheckBuilder$CssOfTypeMultipleFind*/;
   css(
     arg0: Func<io.gatling.javaapi.core.Session, string>,
     arg1: string
@@ -624,8 +628,6 @@ interface CoreDslStatic {
   substring(
     arg0: Func<io.gatling.javaapi.core.Session, string>
   ): io.gatling.javaapi.core.CheckBuilder$MultipleFind<int | null>;
-  css(arg0: string): io.gatling.javaapi.core.CheckBuilder$MultipleFind<string>;
-  css(arg0: Func<io.gatling.javaapi.core.Session, string>): io.gatling.javaapi.core.CheckBuilder$MultipleFind<string>;
   xpath(arg0: string): io.gatling.javaapi.core.CheckBuilder$MultipleFind<string>;
   xpath(arg0: string, arg1: java.util.Map<string, string>): io.gatling.javaapi.core.CheckBuilder$MultipleFind<string>;
   xpath(arg0: Func<io.gatling.javaapi.core.Session, string>): io.gatling.javaapi.core.CheckBuilder$MultipleFind<string>;
@@ -653,19 +655,19 @@ interface CoreDslStatic {
     arg0: Func<io.gatling.javaapi.core.Session, string>,
     arg1: Func<io.gatling.javaapi.core.Session, int | null>
   ): io.gatling.javaapi.core.DummyBuilder;
-  csv(arg0: string): io.gatling.javaapi.core.FeederBuilder$Batchable<string>;
-  csv(arg0: string, arg1: any /*char*/): io.gatling.javaapi.core.FeederBuilder$Batchable<string>;
-  separatedValues(arg0: string, arg1: any /*char*/): io.gatling.javaapi.core.FeederBuilder$Batchable<string>;
+  jsonFile(arg0: string): io.gatling.javaapi.core.FeederBuilder$FileBased<any /*java.lang.Object*/>;
+  csv(arg0: string): io.gatling.javaapi.core.FeederBuilder$FileBased<string>;
+  csv(arg0: string, arg1: any /*char*/): io.gatling.javaapi.core.FeederBuilder$FileBased<string>;
+  separatedValues(arg0: string, arg1: any /*char*/): io.gatling.javaapi.core.FeederBuilder$FileBased<string>;
   separatedValues(
     arg0: string,
     arg1: any /*char*/,
     arg2: any /*char*/
-  ): io.gatling.javaapi.core.FeederBuilder$Batchable<string>;
-  ssv(arg0: string): io.gatling.javaapi.core.FeederBuilder$Batchable<string>;
-  ssv(arg0: string, arg1: any /*char*/): io.gatling.javaapi.core.FeederBuilder$Batchable<string>;
-  tsv(arg0: string): io.gatling.javaapi.core.FeederBuilder$Batchable<string>;
-  tsv(arg0: string, arg1: any /*char*/): io.gatling.javaapi.core.FeederBuilder$Batchable<string>;
-  jsonFile(arg0: string): io.gatling.javaapi.core.FeederBuilder$FileBased<any /*java.lang.Object*/>;
+  ): io.gatling.javaapi.core.FeederBuilder$FileBased<string>;
+  ssv(arg0: string): io.gatling.javaapi.core.FeederBuilder$FileBased<string>;
+  ssv(arg0: string, arg1: any /*char*/): io.gatling.javaapi.core.FeederBuilder$FileBased<string>;
+  tsv(arg0: string): io.gatling.javaapi.core.FeederBuilder$FileBased<string>;
+  tsv(arg0: string, arg1: any /*char*/): io.gatling.javaapi.core.FeederBuilder$FileBased<string>;
   arrayFeeder(
     arg0: java.util.Map<string, any /*java.lang.Object*/>[]
   ): io.gatling.javaapi.core.FeederBuilder<any /*java.lang.Object*/>;
@@ -1382,14 +1384,6 @@ interface ExecutableStatic {
 }
 
 export const Executable: ExecutableStatic = Java.type("io.gatling.javaapi.core.exec.Executable");
-
-interface FeederBuilder$BatchableStatic {
-  readonly class: any;
-}
-
-export const FeederBuilder$Batchable: FeederBuilder$BatchableStatic = Java.type(
-  "io.gatling.javaapi.core.FeederBuilder$Batchable"
-);
 
 interface FeederBuilder$FileBasedStatic {
   readonly class: any;

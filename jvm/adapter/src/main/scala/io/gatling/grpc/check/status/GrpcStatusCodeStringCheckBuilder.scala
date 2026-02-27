@@ -28,5 +28,5 @@ object GrpcStatusCodeStringCheckBuilder
         "statusCode",
         status => Option(status).map(_.getCode.toString).success
       ).expressionSuccess,
-      displayActualValue = true
+      logActualValueInError = true
     )

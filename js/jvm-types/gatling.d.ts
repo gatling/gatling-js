@@ -2046,6 +2046,7 @@ declare namespace io.gatling.javaapi.core {
     is<X>(arg0: X): CheckBuilder$Final;
     isEL(arg0: string): CheckBuilder$Final;
     isNull(): CheckBuilder$Final;
+    logActualValueInError(arg0: boolean): CheckBuilder$Final;
     lt<X>(arg0: Func<Session, X>): CheckBuilder$Final;
     lt<X>(arg0: X): CheckBuilder$Final;
     ltEL(arg0: string): CheckBuilder$Final;
@@ -2078,6 +2079,7 @@ declare namespace io.gatling.javaapi.core {
 declare namespace io.gatling.javaapi.core {
   interface CheckBuilder$Final /* extends CheckBuilder*/ {
     asScala(): any /*io.gatling.core.check.CheckBuilder*/;
+    logActualValueInError(arg0: boolean): CheckBuilder$Final;
     name(arg0: string): CheckBuilder$Final;
     saveAs(arg0: string): CheckBuilder$Final;
     type(): any /*io.gatling.javaapi.core.CheckBuilder$CheckType*/;
@@ -2102,6 +2104,7 @@ declare namespace io.gatling.javaapi.core {
     is<X>(arg0: X): CheckBuilder$Final;
     isEL(arg0: string): CheckBuilder$Final;
     isNull(): CheckBuilder$Final;
+    logActualValueInError(arg0: boolean): CheckBuilder$Final;
     lt<X>(arg0: Func<Session, X>): CheckBuilder$Final;
     lt<X>(arg0: X): CheckBuilder$Final;
     ltEL(arg0: string): CheckBuilder$Final;
@@ -2150,6 +2153,7 @@ declare namespace io.gatling.javaapi.core {
     is<X>(arg0: X): CheckBuilder$Final;
     isEL(arg0: string): CheckBuilder$Final;
     isNull(): CheckBuilder$Final;
+    logActualValueInError(arg0: boolean): CheckBuilder$Final;
     lt<X>(arg0: Func<Session, X>): CheckBuilder$Final;
     lt<X>(arg0: X): CheckBuilder$Final;
     ltEL(arg0: string): CheckBuilder$Final;
@@ -2212,6 +2216,7 @@ declare namespace io.gatling.javaapi.core {
     is<X>(arg0: X): CheckBuilder$Final;
     isEL(arg0: string): CheckBuilder$Final;
     isNull(): CheckBuilder$Final;
+    logActualValueInError(arg0: boolean): CheckBuilder$Final;
     lt<X>(arg0: Func<Session, X>): CheckBuilder$Final;
     lt<X>(arg0: X): CheckBuilder$Final;
     ltEL(arg0: string): CheckBuilder$Final;
@@ -2274,6 +2279,7 @@ declare namespace io.gatling.javaapi.core {
     is<X>(arg0: X): CheckBuilder$Final;
     isEL(arg0: string): CheckBuilder$Final;
     isNull(): CheckBuilder$Final;
+    logActualValueInError(arg0: boolean): CheckBuilder$Final;
     lt<X>(arg0: Func<Session, X>): CheckBuilder$Final;
     lt<X>(arg0: X): CheckBuilder$Final;
     ltEL(arg0: string): CheckBuilder$Final;
@@ -2321,6 +2327,7 @@ declare namespace io.gatling.javaapi.core {
     is(arg0: X): CheckBuilder$Final;
     isEL(arg0: string): CheckBuilder$Final;
     isNull(): CheckBuilder$Final;
+    logActualValueInError(arg0: boolean): CheckBuilder$Final;
     lt(arg0: Func<Session, X>): CheckBuilder$Final;
     lt(arg0: X): CheckBuilder$Final;
     ltEL(arg0: string): CheckBuilder$Final;
@@ -2349,23 +2356,6 @@ declare namespace io.gatling.javaapi.core {
     within(arg0: java.util.List<X>): CheckBuilder$Final;
     withinEL(arg0: string): CheckBuilder$Final;
   } // end CheckBuilder$Validate
-} // end namespace io.gatling.javaapi.core
-declare namespace io.gatling.javaapi.core {
-  interface FeederBuilder$Batchable<T> /* extends FeederBuilder$FileBased<T>*/ {
-    asScala(): any /*scala.Function0*/;
-    batch(): FeederBuilder$Batchable<T>;
-    batch(arg0: int): FeederBuilder$Batchable<T>;
-    circular(): FeederBuilder$Batchable<T>;
-    eager(): FeederBuilder$Batchable<T>;
-    queue(): FeederBuilder$Batchable<T>;
-    random(): FeederBuilder$Batchable<T>;
-    readRecords(): java.util.List<java.util.Map<string, any /*java.lang.Object*/>>;
-    recordsCount(): int;
-    shard(): FeederBuilder$Batchable<T>;
-    shuffle(): FeederBuilder$Batchable<T>;
-    transform(arg0: BiFunction<string, T, any /*java.lang.Object*/>): FeederBuilder<any /*java.lang.Object*/>;
-    unzip(): FeederBuilder$Batchable<T>;
-  } // end FeederBuilder$Batchable
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
   interface FeederBuilder$FileBased<T> /* extends FeederBuilder<T>*/ {
@@ -3147,6 +3137,9 @@ declare namespace io.gatling.javaapi.grpc {
     messageResponseTimePolicy(
       arg0: GrpcDsl$MessageResponseTimePolicy
     ): GrpcBidirectionalStreamingServiceBuilder<ReqT, RespT>;
+    messageResponseTimePolicy(
+      arg0: any /*io.gatling.javaapi.grpc.GrpcDsl$MessageResponseTimePolicy$InitialTimestampFunction*/
+    ): GrpcBidirectionalStreamingServiceBuilder<ReqT, RespT>;
     processUnmatchedMessages(
       arg0: BiFunction<
         java.util.List<any /*io.gatling.grpc.action.GrpcInboundMessage*/>,
@@ -3208,6 +3201,9 @@ declare namespace io.gatling.javaapi.grpc {
     ): GrpcClientStreamingServiceBuilder<ReqT, RespT>;
     messageRequestName(arg0: string): GrpcClientStreamingServiceBuilder<ReqT, RespT>;
     messageResponseTimePolicy(arg0: GrpcDsl$MessageResponseTimePolicy): GrpcClientStreamingServiceBuilder<ReqT, RespT>;
+    messageResponseTimePolicy(
+      arg0: any /*io.gatling.javaapi.grpc.GrpcDsl$MessageResponseTimePolicy$InitialTimestampFunction*/
+    ): GrpcClientStreamingServiceBuilder<ReqT, RespT>;
     send(arg0: Func<io.gatling.javaapi.core.Session, ReqT>): io.gatling.javaapi.core.ActionBuilder;
     send(arg0: ReqT): io.gatling.javaapi.core.ActionBuilder;
     serverConfiguration(arg0: string): GrpcClientStreamingServiceBuilder<ReqT, RespT>;
@@ -3229,45 +3225,17 @@ declare namespace io.gatling.javaapi.grpc {
     value(arg0: Func<io.gatling.javaapi.core.Session, V>): B;
     value(arg0: V): B;
     valueEL(arg0: string): B;
-    valueEl(arg0: string): B;
   } // end GrpcHeaders$Value
 } // end namespace io.gatling.javaapi.grpc
 declare namespace io.gatling.javaapi.grpc {
-  class GrpcProtocolBuilder /* extends java.lang.Object implements io.gatling.javaapi.core.ProtocolBuilder, GrpcHeaders<any, any>*/ {
+  class GrpcProtocolBuilder /* extends java.lang.Object implements io.gatling.javaapi.core.ProtocolBuilder*/ {
     asScala(): any /*io.gatling.grpc.protocol.GrpcProtocolBuilder*/;
-    asciiHeader<B>(arg0: string): GrpcHeaders$Value<B, string>;
-    asciiHeaders<B>(arg0: java.util.Map<string, string>): B;
-    binaryHeader<B>(arg0: string): GrpcHeaders$Value<B, bytearray>;
-    binaryHeaders<B>(arg0: java.util.Map<string, bytearray>): B;
-    callCredentials(arg0: Func<io.gatling.javaapi.core.Session, io.grpc.CallCredentials>): GrpcProtocolBuilder;
-    callCredentials(arg0: io.grpc.CallCredentials): GrpcProtocolBuilder;
-    callCredentials(arg0: string): GrpcProtocolBuilder;
-    channelCredentials(arg0: Func<io.gatling.javaapi.core.Session, io.grpc.ChannelCredentials>): GrpcProtocolBuilder;
-    channelCredentials(arg0: io.grpc.ChannelCredentials): GrpcProtocolBuilder;
-    channelCredentials(arg0: string): GrpcProtocolBuilder;
     equals(arg0: any /*java.lang.Object*/): boolean;
-    forAddress(arg0: string, arg1: int): GrpcProtocolBuilder;
-    forTarget(arg0: string): GrpcProtocolBuilder;
-    header<B, T>(arg0: io.grpc.Metadata$Key<T>): GrpcHeaders$Value<B, T>;
-    overrideAuthority(arg0: string): GrpcProtocolBuilder;
     protocol(): any /*io.gatling.core.protocol.Protocol*/;
     serverConfiguration(arg0: string): GrpcServerConfigurationBuilder;
     serverConfigurations(...arg0: GrpcServerConfigurationBuilder[]): GrpcProtocolBuilder;
     serverConfigurations(arg0: java.util.List<GrpcServerConfigurationBuilder>): GrpcProtocolBuilder;
-    shareChannel(): GrpcProtocolBuilder;
-    shareSslContext(): GrpcProtocolBuilder;
     toString(): string;
-    unmatchedInboundMessageBufferSize(arg0: int): GrpcProtocolBuilder;
-    useChannelPool(arg0: int): GrpcProtocolBuilder;
-    useCustomCertificateTrustManager(arg0: string): GrpcProtocolBuilder;
-    useCustomLoadBalancingPolicy(arg0: string): GrpcProtocolBuilder;
-    useCustomLoadBalancingPolicy(arg0: string, arg1: string): GrpcProtocolBuilder;
-    useInsecureTrustManager(): GrpcProtocolBuilder;
-    usePickFirstLoadBalancingPolicy(): GrpcProtocolBuilder;
-    usePickRandomLoadBalancingPolicy(): GrpcProtocolBuilder;
-    usePlaintext(): GrpcProtocolBuilder;
-    useRoundRobinLoadBalancingPolicy(): GrpcProtocolBuilder;
-    useStandardTrustManager(): GrpcProtocolBuilder;
   } // end GrpcProtocolBuilder
 } // end namespace io.gatling.javaapi.grpc
 declare namespace io.gatling.javaapi.grpc {
@@ -3374,6 +3342,9 @@ declare namespace io.gatling.javaapi.grpc {
     ): GrpcServerStreamingServiceBuilder<ReqT, RespT>;
     messageRequestName(arg0: string): GrpcServerStreamingServiceBuilder<ReqT, RespT>;
     messageResponseTimePolicy(arg0: GrpcDsl$MessageResponseTimePolicy): GrpcServerStreamingServiceBuilder<ReqT, RespT>;
+    messageResponseTimePolicy(
+      arg0: any /*io.gatling.javaapi.grpc.GrpcDsl$MessageResponseTimePolicy$InitialTimestampFunction*/
+    ): GrpcServerStreamingServiceBuilder<ReqT, RespT>;
     processUnmatchedMessages(
       arg0: BiFunction<
         java.util.List<any /*io.gatling.grpc.action.GrpcInboundMessage*/>,
@@ -3512,6 +3483,11 @@ declare namespace io.gatling.javaapi.http {
     get(arg0: string): HttpRequestActionBuilder;
     head(arg0: Func<io.gatling.javaapi.core.Session, string>): HttpRequestActionBuilder;
     head(arg0: string): HttpRequestActionBuilder;
+    httpRequest(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: Func<io.gatling.javaapi.core.Session, string>
+    ): HttpRequestActionBuilder;
+    httpRequest(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): HttpRequestActionBuilder;
     httpRequest(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, string>): HttpRequestActionBuilder;
     httpRequest(arg0: string, arg1: string): HttpRequestActionBuilder;
     options(arg0: Func<io.gatling.javaapi.core.Session, string>): HttpRequestActionBuilder;
@@ -3752,6 +3728,7 @@ declare namespace io.gatling.javaapi.http {
     headers<T>(arg0: java.util.Map<any /*java.lang.CharSequence*/, string>): T;
     ignoreProtocolChecks(): HttpRequestActionBuilder;
     ignoreProtocolHeaders<T>(): T;
+    ignoreProtocolSignatureCalculators<T>(): T;
     multivaluedFormParam<T>(
       arg0: Func<io.gatling.javaapi.core.Session, string>,
       arg1: Func<io.gatling.javaapi.core.Session, java.util.List<any /*java.lang.Object*/>>
@@ -3887,6 +3864,7 @@ declare namespace io.gatling.javaapi.http {
     header(arg0: any /*java.lang.CharSequence*/, arg1: string): T;
     headers(arg0: java.util.Map<any /*java.lang.CharSequence*/, string>): T;
     ignoreProtocolHeaders(): T;
+    ignoreProtocolSignatureCalculators(): T;
     multivaluedQueryParam(
       arg0: Func<io.gatling.javaapi.core.Session, string>,
       arg1: Func<io.gatling.javaapi.core.Session, java.util.List<any /*java.lang.Object*/>>
@@ -3986,6 +3964,7 @@ declare namespace io.gatling.javaapi.http {
     header(arg0: any /*java.lang.CharSequence*/, arg1: string): T;
     headers(arg0: java.util.Map<any /*java.lang.CharSequence*/, string>): T;
     ignoreProtocolHeaders(): T;
+    ignoreProtocolSignatureCalculators(): T;
     multivaluedFormParam(
       arg0: Func<io.gatling.javaapi.core.Session, string>,
       arg1: Func<io.gatling.javaapi.core.Session, java.util.List<any /*java.lang.Object*/>>
@@ -4156,6 +4135,7 @@ declare namespace io.gatling.javaapi.http {
     header<T>(arg0: any /*java.lang.CharSequence*/, arg1: string): T;
     headers<T>(arg0: java.util.Map<any /*java.lang.CharSequence*/, string>): T;
     ignoreProtocolHeaders<T>(): T;
+    ignoreProtocolSignatureCalculators<T>(): T;
     multivaluedFormParam<T>(
       arg0: Func<io.gatling.javaapi.core.Session, string>,
       arg1: Func<io.gatling.javaapi.core.Session, java.util.List<any /*java.lang.Object*/>>
@@ -4360,6 +4340,7 @@ declare namespace io.gatling.javaapi.http {
     header<T>(arg0: any /*java.lang.CharSequence*/, arg1: string): T;
     headers<T>(arg0: java.util.Map<any /*java.lang.CharSequence*/, string>): T;
     ignoreProtocolHeaders<T>(): T;
+    ignoreProtocolSignatureCalculators<T>(): T;
     multivaluedQueryParam<T>(
       arg0: Func<io.gatling.javaapi.core.Session, string>,
       arg1: Func<io.gatling.javaapi.core.Session, java.util.List<any /*java.lang.Object*/>>
