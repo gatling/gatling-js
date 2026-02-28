@@ -194,6 +194,13 @@ export interface RequestActionBuilder<T> {
   ignoreProtocolHeaders(): T;
 
   /**
+   * Ignore common signature calculators set in the Http protocol configuration
+   *
+   * @returns a new DSL instance
+   */
+  ignoreProtocolSignatureCalculators(): T;
+
+  /**
    * Set the authorization header for Basic Auth
    *
    * @param username - the username, expressed as a Gatling Expression Language String
@@ -374,6 +381,7 @@ export const requestActionBuilderImpl = <T, J extends JvmRequestActionBuilder<J,
     ),
   headers: (headers: Record<string, string>): T => wrap(jvmBuilder.headers(asJava(headers) as any)),
   ignoreProtocolHeaders: (): T => wrap(jvmBuilder.ignoreProtocolHeaders()),
+  ignoreProtocolSignatureCalculators: (): T => wrap(jvmBuilder.ignoreProtocolSignatureCalculators()),
   basicAuth: (username: Expression<string>, password: Expression<string>): T =>
     wrap(
       typeof username === "function"

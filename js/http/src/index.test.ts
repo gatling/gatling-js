@@ -1,6 +1,7 @@
 import {
   AllowList,
   DenyList,
+  ElFileBody,
   RawFileBody,
   Session,
   Simulation,
@@ -80,8 +81,6 @@ const httpProtocol = http
   .acceptEncodingHeader((_: Session) => "value")
   .acceptLanguageHeader("value")
   .acceptLanguageHeader((_: Session) => "value")
-  .acceptLanguageHeader("value")
-  .acceptLanguageHeader((_: Session) => "value")
   .authorizationHeader("value")
   .authorizationHeader((_: Session) => "value")
   .connectionHeader("value")
@@ -147,7 +146,6 @@ const httpProtocol = http
   .nameInferredHtmlResourcesAfterPath()
   .nameInferredHtmlResourcesAfterLastPathElement()
   //.nameInferredHtmlResources(uri -> "foo")
-  .noProxyFor("host1", "host2")
   .proxy(Proxy("172.31.76.106", 8080))
   .proxy(Proxy("172.31.76.106", 8080).credentials("username", "password"))
   .proxy(Proxy("172.31.76.106", 8080).http())
@@ -155,6 +153,9 @@ const httpProtocol = http
   .proxy(Proxy("172.31.76.106", 8080).socks5())
   .proxy(Proxy("172.31.76.106", 8080).connectHeader("foo", "#{bar}"))
   .proxy(Proxy("172.31.76.106", 8080).connectHeaders({ foo: "#{bar}" }))
+  .noProxyFor("host1", "host2")
+  .proxyProtocolSourceIpV4Address("#{proxyProtocolSourceIpV4Address}")
+  .proxyProtocolSourceIpV6Address("#{proxyProtocolSourceIpV6Address}")
   .asyncNameResolution("dnsServer1", "dnsServer2")
   .hostNameAliases({ "gatling.io": ["192.168.0.1", "192.168.0.2"] })
   .perUserNameResolution()
@@ -308,6 +309,7 @@ const scn = scenario("scenario")
         (_: Session) => "token",
         (_: Session) => "tokenSecret"
       )
+      .ignoreProtocolSignatureCalculators()
       .ignoreProtocolChecks()
       .silent()
       .notSilent()
@@ -377,7 +379,68 @@ const scn = scenario("scenario")
   .exec(
     http("name")
       .get("url")
-      .check(status().is(200))
+      .check(
+        status().is(200),
+        status().in(200, 210).saveAs("blablaParam"),
+        header("HEADER").is("BAR"),
+        headerRegex("location", ".*&id_token=(.*)&state=.*").find().exists(),
+        headerRegex("location", ".*&id_token=(.*)&state=.*").is("BAR"),
+        headerRegex("location", ".*&id_token=(.*)&state=.*").captureGroups(2),
+        currentLocation().is("https://gatling.io"),
+        currentLocationRegex("code=(.+)&"),
+        currentLocationRegex("foo").find().exists(),
+        bodyBytes().is([1, 1, 1, 1, 1]),
+        bodyBytes().is(RawFileBody("foobar.txt")),
+        bodyLength().lte(100000),
+        bodyString().is("foo"),
+        bodyString().is(ElFileBody("foobar.txt")),
+        css(".foo"),
+        css("#foo", "href"),
+        //css(".foo").ofNode().count().is(1),
+        css(".foo").notExists(),
+        //css("#foo").ofNode().transform(Node::getNodeName),
+        css(".foo").findRandom().is("some text"),
+        css(".foo").findRandom(5).is(["some text"]),
+        jsonPath("//foo/bar[2]/baz"),
+        jsonPath("$..foo").is("bar"),
+        jsonPath("$..foo").ofString().is("bar"),
+        jsonPath("$..foo").ofInt().is(1),
+        jsonPath("$..foo").ofList().is(["foo"]),
+        jsonPath("$..foo").ofMap().is({ foo: 1 }),
+        jsonPath("$..foo.bar[2].baz").transform((s: string) => s + "foo"),
+        jsonPath("$..foo.bar[2].baz").transformWithSession((string: string, _: Session) => string + "foo"),
+        jsonPath("$..foo.bar[2].baz").withDefault((_: Session) => "foo"),
+        jsonpJsonPath("$..foo").is("bar"),
+        jmesPath("[].friends[].name"),
+        jmesPath("[].friends[].name").is("bar"),
+        jmesPath("[].friends[].name").ofString().is("bar"),
+        jmesPath("[].friends[].name").ofInt().is(1),
+        jmesPath("[].friends[].name").ofList().is(["foo"]),
+        jmesPath("[].friends[].name").ofMap().is({ foo: 1 }),
+        jsonpJmesPath("foo").is("bar"),
+        regex('<input id="text1" type="text" value="aaaa" />').optional().saveAs("var1"),
+        regex('<input id="text1" type="text" value="aaaa" />').count().is(1),
+        regex('<input id="text1" type="text" value="aaaa" />').notExists(),
+        regex("pattern").captureGroups(2),
+        substring("foo").exists(),
+        xpath("//input[@id='text1']/@value"),
+        xpath("//input[@id='text1']/@value").find(),
+        xpath("//input[@id='text1']/@value").find().exists(),
+        xpath("//input[@id='text1']/@value").find().is("expected"),
+        xpath("//input[@id='text1']/@value").find().exists().saveAs("key"),
+        xpath("//input[@id='text1']/@value").saveAs("key"),
+        xpath("//input[@id='text1']/@value").findAll(),
+        xpath("//input[@id='text1']/@value").count(),
+        xpath("//input[@id='text1']/@value").name("This is a check"),
+        xpath("//input[@value='#{aaaa_value}']/@id").name("foo").saveAs("sessionParam"),
+        xpath("//input[@value='aaaa']/@id").not("param"),
+        xpath("//input[@id='#{aaaa_value}']/@value").notExists(),
+        xpath("//input[@id='text1']/@value").is("aaaa").saveAs("test2"),
+        md5().is("0xA59E79AB53EEF2883D72B8F8398C9AC3"),
+        sha1().is("0xA59E79AB53EEF2883D72B8F8398C9AC3"),
+        responseTimeInMillis().lt(1000),
+        bodyString().is("foo").logActualValueInError(false)
+      )
       .checkIf("#{bool}")
       .then(jsonPath("$..foo"))
       .checkIf("#{bool}")
