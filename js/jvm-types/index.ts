@@ -1622,6 +1622,13 @@ interface HttpDslStatic {
   flushHttpCache(): io.gatling.javaapi.core.ActionBuilder;
   flushSessionCookies(): io.gatling.javaapi.core.ActionBuilder;
   getCookieValue(arg0: io.gatling.javaapi.http.GetCookie): io.gatling.javaapi.core.ActionBuilder;
+  httpConcurrentRequests(
+    arg0: io.gatling.javaapi.http.HttpRequestActionBuilder,
+    ...arg1: io.gatling.javaapi.http.HttpRequestActionBuilder[]
+  ): io.gatling.javaapi.core.ActionBuilder;
+  httpConcurrentRequests(
+    arg0: java.util.List<io.gatling.javaapi.http.HttpRequestActionBuilder>
+  ): io.gatling.javaapi.core.ActionBuilder;
   currentLocationRegex(arg0: string): io.gatling.javaapi.core.CheckBuilder$CaptureGroupCheckBuilder;
   headerRegex(
     arg0: any /*java.lang.CharSequence*/,

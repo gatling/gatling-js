@@ -1,4 +1,4 @@
-import { Expression, Session, wrapSession } from "@gatling.io/core";
+import { ActionBuilder, Expression, Session, wrapActionBuilder, wrapSession } from "@gatling.io/core";
 import { underlyingSessionTo } from "@gatling.io/core";
 import { HttpDsl as JvmHttpDsl } from "@gatling.io/jvm-types";
 
@@ -264,3 +264,18 @@ const httpApply = (name: Expression<string>): Http => {
 };
 
 export const http: HttpApply & HttpProtocolBuilder = Object.assign(httpApply, httpProtocolBuilder);
+
+interface HttpConcurrentRequestsFunction {
+  /**
+   * Execute HTTP requests concurrently. Works as resources in terms of concurrency level, meaning
+   * limited to maxConnectionsPerHost over HTTP/1.1.
+   *
+   * @param head - the first request of the list
+   * @param tail - the next requests of the list
+   * @returns an ActionBuilder
+   */
+  (head: HttpRequestActionBuilder, ...tail: HttpRequestActionBuilder[]): ActionBuilder;
+}
+
+export const httpConcurrentRequests: HttpConcurrentRequestsFunction = (head, ...tail) =>
+  wrapActionBuilder(JvmHttpDsl.httpConcurrentRequests(head._underlying, ...tail.map((b) => b._underlying)));

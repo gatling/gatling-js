@@ -41,6 +41,7 @@ import {
   header,
   headerRegex,
   http,
+  httpConcurrentRequests,
   poll,
   status,
   sitemap
@@ -375,6 +376,8 @@ const scn = scenario("scenario")
   .exec(http("name").options((_: Session) => "url"))
   .exec(http("name").httpRequest("JSON", "url"))
   .exec(http("name").httpRequest("JSON", (_: Session) => "url"))
+  // httpConcurrentRequests
+  .exec(httpConcurrentRequests(http("Request1").post("/"), http("Request2").get("/")))
   // check
   .exec(
     http("name")
