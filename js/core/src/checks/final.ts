@@ -16,6 +16,15 @@ export interface CheckBuilderFinal extends CheckBuilder {
   name(n: string): CheckBuilderFinal;
 
   /**
+   * Override the default behavior for this check and log or not the actual value in the error
+   * message when the check fails
+   *
+   * @param b - true to log the actual value
+   * @returns a new Final
+   */
+  logActualValueInError(b: boolean): CheckBuilderFinal;
+
+  /**
    * Save the extracted value in the virtual user's Session
    *
    * @param key - the key to store the extracted value in the Session
@@ -27,5 +36,6 @@ export interface CheckBuilderFinal extends CheckBuilder {
 export const wrapCheckBuilderFinal = (_underlying: JvmCheckBuilderFinal): CheckBuilderFinal => ({
   ...wrapCheckBuilder(_underlying),
   name: (n: string) => wrapCheckBuilderFinal(_underlying.name(n)),
+  logActualValueInError: (b: boolean) => wrapCheckBuilderFinal(_underlying.logActualValueInError(b)),
   saveAs: (key: string) => wrapCheckBuilderFinal(_underlying.saveAs(key))
 });

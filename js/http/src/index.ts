@@ -179,6 +179,24 @@ export interface Http {
    * @returns a new instance of HttpRequestActionBuilder
    */
   httpRequest(method: string, url: (session: Session) => string): HttpRequestActionBuilder;
+
+  /**
+   * Define a HTTP request
+   *
+   * @param method - the HTTP method, expressed as a function
+   * @param url - the url, expressed as a Gatling Expression Language String
+   * @returns a new instance of HttpRequestActionBuilder
+   */
+  httpRequest(method: (session: Session) => string, url: string): HttpRequestActionBuilder;
+
+  /**
+   * Define a HTTP request
+   *
+   * @param method - the HTTP method, expressed as a function
+   * @param url - the url, expressed as a function
+   * @returns a new instance of HttpRequestActionBuilder
+   */
+  httpRequest(method: (session: Session) => string, url: (session: Session) => string): HttpRequestActionBuilder;
 }
 
 const wrapHttp = (jvmHttp: JvmHttp): Http => ({
@@ -206,11 +224,15 @@ const wrapHttp = (jvmHttp: JvmHttp): Http => ({
     wrapHttpRequestActionBuilder(
       typeof url === "function" ? jvmHttp.options(underlyingSessionTo(url)) : jvmHttp.options(url)
     ),
-  httpRequest: (method: string, url: Expression<string>): HttpRequestActionBuilder =>
+  httpRequest: (method: Expression<string>, url: Expression<string>): HttpRequestActionBuilder =>
     wrapHttpRequestActionBuilder(
-      typeof url === "function"
-        ? jvmHttp.httpRequest(method, underlyingSessionTo(url))
-        : jvmHttp.httpRequest(method, url)
+      typeof method === "function"
+        ? typeof url === "function"
+          ? jvmHttp.httpRequest(underlyingSessionTo(method), underlyingSessionTo(url))
+          : jvmHttp.httpRequest(underlyingSessionTo(method), url)
+        : typeof url === "function"
+          ? jvmHttp.httpRequest(method, underlyingSessionTo(url))
+          : jvmHttp.httpRequest(method, url)
     )
 });
 
