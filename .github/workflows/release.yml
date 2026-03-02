@@ -72,7 +72,7 @@ jobs:
           echo "version=$version" >> $GITHUB_OUTPUT
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: release-jvm-workdir
           include-hidden-files: true
@@ -119,7 +119,7 @@ jobs:
           done
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: release-js-workdir
           include-hidden-files: true
