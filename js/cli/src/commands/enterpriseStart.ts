@@ -38,7 +38,6 @@ import {
   trustStorePasswordOption,
   trustStorePasswordOptionValue,
   typescriptOption,
-  typescriptOptionValueWithDefaults,
   apiUrlOption,
   apiUrlOptionValue,
   webAppUrlOption,
@@ -88,7 +87,6 @@ export default (program: Command): void => {
 
       const simulations = await findSimulations(sourcesFolder);
       const postman = postmanOptionValueWithDefaults(options);
-      const typescript = typescriptOptionValueWithDefaults(options, simulations);
 
       const resourcesFolder: string = resourcesFolderOptionValue(options);
       const bundleFile = bundleFileOptionValue(options);
@@ -120,7 +118,6 @@ export default (program: Command): void => {
         bundleFile,
         protoTargetFolder,
         postman,
-        typescript,
         simulations,
         protocPath
       });

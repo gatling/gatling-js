@@ -170,6 +170,7 @@ export const resultsFolderOption = new Option("--results-folder <value>", "The r
 );
 export const resultsFolderOptionValue = getStringValueMandatory(resultsFolderOption);
 
+// TODO RNG-128 Remove in a future version as it's no longer used for bundling
 export const typescriptOption = new Option(
   "--typescript",
   "Use the typescript compiler to compile your code (default: true if the sourcesFolder contains any *.gatling.ts file, false otherwise)"

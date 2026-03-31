@@ -36,7 +36,7 @@ export default defineConfig({
   outExtension: () => ({
     js: ".js"
   }),
-  target: "es2021",
+  target: "es2024",
   sourcemap: false,
   splitting: true
 });

@@ -13,8 +13,7 @@ import {
   protoTargetFolderOptionValue,
   sourcesFolderOption,
   sourcesFolderOptionValue,
-  typescriptOption,
-  typescriptOptionValueWithDefaults
+  typescriptOption
 } from "./options";
 import { findSimulations } from "../simulations";
 import { bundle } from "../bundle";
@@ -40,7 +39,6 @@ export default (program: Command): void => {
 
       const simulations = await findSimulations(sourcesFolder);
       const postman = postmanOptionValueWithDefaults(options);
-      const typescript = typescriptOptionValueWithDefaults(options, simulations);
 
       const { protocPath } = await resolveBundle({ gatlingHome });
 
@@ -50,7 +48,6 @@ export default (program: Command): void => {
         bundleFile,
         protoTargetFolder,
         postman,
-        typescript,
         simulations,
         protocPath
       });

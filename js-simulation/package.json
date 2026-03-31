@@ -21,7 +21,7 @@
     "format": "prettier --write '**/*.js'",
     "setup": "gatling install",
     "build": "gatling build",
-    "start": "gatling run --simulation test-simulation",
+    "start": "gatling run",
     "recorder": "gatling recorder"
   }
 }

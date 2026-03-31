@@ -16,7 +16,7 @@
     "@gatling.io/jvm-types": "../tmp/jvm-types/package",
     "prettier": "3.7.4",
     "rimraf": "6.1.2",
-    "typescript": "5.9.3"
+    "typescript": "6.0.2"
   },
   "scripts": {
     "clean": "rimraf target",
