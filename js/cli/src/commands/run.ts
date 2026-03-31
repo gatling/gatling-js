@@ -24,8 +24,7 @@ import {
   simulationOptionValueWithDefaults,
   sourcesFolderOption,
   sourcesFolderOptionValue,
-  typescriptOption,
-  typescriptOptionValueWithDefaults
+  typescriptOption
 } from "./options";
 import { findSimulations } from "../simulations";
 import { resolveBundle } from "../dependencies";
@@ -66,7 +65,6 @@ export default (program: Command): void => {
       const runParameters = parseRunParametersArgument(args);
 
       const simulations = await findSimulations(sourcesFolder);
-      const typescript = typescriptOptionValueWithDefaults(options, simulations);
       const simulation = simulationOptionValueWithDefaults(options, simulations, !nonInteractive);
 
       const { graalvmHome, jvmClasspath, protocPath } = await resolveBundle({ gatlingHome });
@@ -79,7 +77,6 @@ export default (program: Command): void => {
         bundleFile,
         protoTargetFolder,
         postman,
-        typescript,
         simulations,
         protocPath
       });

@@ -32,6 +32,9 @@
     "ts-node": "10.9.2",
     "typescript": "6.0.2"
   },
+  "overrides": {
+    "typescript": "$typescript"
+  },
   "scripts": {
     "clean": "rimraf target",
     "format": "prettier --write '**/*.ts'",
