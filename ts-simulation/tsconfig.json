@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "outDir": "./target",
-    "lib": ["es2023", "dom"],
+    "lib": ["es2024", "ESNext.Array", "ESNext.Collection", "ESNext.Error", "ESNext.Iterator", "ESNext.Promise"],
     "target": "es2024",
     "module": "nodenext",
     "moduleResolution": "node16",
