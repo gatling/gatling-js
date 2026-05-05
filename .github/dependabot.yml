@@ -27,11 +27,13 @@ updates:
     directories:
       - "/js-simulation"
       - "/ts-simulation"
+    groups:
+      gatling:
+        patterns:
+          - "@gatling.io/*"
     labels:
       - "dependencies"
     schedule:
       interval: "weekly"
       day: "monday" # explicit, even though it's the weekly default
       time: "07:00" # UTC
-    ignore:
-      - dependency-name: "@gatling.io/*"
