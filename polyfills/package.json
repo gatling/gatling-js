@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "devDependencies": {
-    "@types/node": "24.12.2",
+    "@types/node": "24.12.3",
     "assert": "2.1.0",
     "buffer": "6.0.3",
     "esbuild": "0.28.0",
