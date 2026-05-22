@@ -1,7 +1,11 @@
 import { simulation, scenario, atOnceUsers, global, getParameter } from "@gatling.io/core";
 import { http } from "@gatling.io/http";
 
-export default simulation((setUp) => {
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+export default simulation((setUp, before) => {
   // Load VU count from system properties
   // Reference: https://docs.gatling.io/guides/passing-parameters/
   const vu = parseInt(getParameter("vu", "1"));
@@ -28,4 +32,9 @@ export default simulation((setUp) => {
   setUp(scn.injectOpen(atOnceUsers(vu)))
     .assertions(assertion)
     .protocols(httpProtocol);
+
+  before(async () => {
+    await sleep(10000);
+    console.log("Salutations maximales but before");
+  });
 });

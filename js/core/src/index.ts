@@ -152,10 +152,10 @@ const wrapSetUp = (jvmSetUp: JvmSetUp): SetUp => ({
 });
 
 export type SetUpFunction = (...populationBuilders: PopulationBuilder[]) => SetUp;
-export type Simulation = (setUp: SetUpFunction) => void;
+export type Simulation = (setUp: SetUpFunction, before: (callback: () => void) => void) => void;
 
 export const simulation =
   (simulation: Simulation): jvm.Simulation =>
-  (jvmSetUp) => {
-    simulation((...populationBuilders) => wrapSetUp(jvmSetUp(populationBuilders.map((p) => p._underlying))));
+  (jvmSetUp, before) => {
+    simulation((...populationBuilders) => wrapSetUp(jvmSetUp(populationBuilders.map((p) => p._underlying))), before);
   };

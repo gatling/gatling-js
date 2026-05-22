@@ -25,6 +25,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -37,7 +38,9 @@ import org.graalvm.polyglot.Value;
 
 public class JsSimulationHelper {
 
-  public static void loadSimulation(Function<List<PopulationBuilder>, Simulation.SetUp> setUp) {
+  public static void loadSimulation(
+      Function<List<PopulationBuilder>, Simulation.SetUp> setUp,
+      Consumer<Function<Object[], Object>> before) {
     var simulationName =
         Optional.ofNullable(System.getProperty("gatling.js.simulation"))
             .orElseThrow(
@@ -74,8 +77,12 @@ public class JsSimulationHelper {
     }
 
     jsSimulationValue
-        .as(new TypeLiteral<Consumer<Function<List<PopulationBuilder>, Simulation.SetUp>>>() {})
-        .accept(setUp);
+        .as(
+            new TypeLiteral<
+                BiConsumer<
+                    Function<List<PopulationBuilder>, Simulation.SetUp>,
+                    Consumer<Function<Object[], Object>>>>() {})
+        .accept(setUp, before);
   }
 
   private static URL filePathToUrl(String filePath) {

@@ -17,6 +17,8 @@
 package io.gatling.js;
 
 import java.io.IOException;
+import java.util.concurrent.CountDownLatch;
+import java.util.function.Function;
 
 import io.gatling.javaapi.core.Simulation;
 
@@ -34,9 +36,32 @@ public class JsSimulation extends Simulation {
     }
   }
 
+  private Function<Object[], Object> beforeFunction = null;
+
+  private void before0(Function<Object[], Object> beforeFunction) {
+    this.beforeFunction = beforeFunction;
+  }
+
+  @Override
+  public void before() {
+    if (beforeFunction != null) {
+      final var latch = new CountDownLatch(1);
+
+      Function<?, ?> result = (Function<?, ?>) beforeFunction.apply(new Object[] {});
+      result.andThen(
+          (value) -> {
+            try {
+              latch.await();
+            } catch (InterruptedException e) {
+            }
+            return null;
+          });
+    }
+  }
+
   public JsSimulation() {
     // Implemented in a separate class to defer loading any GraalJS class until after the modified
     // class has been loaded in this class's static block
-    JsSimulationHelper.loadSimulation(this::setUp);
+    JsSimulationHelper.loadSimulation(this::setUp, this::before0);
   }
 }
