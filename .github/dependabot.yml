@@ -23,6 +23,9 @@ updates:
       # the major version for Node should match the minimum version required in the documentation
       - dependency-name: "@types/node"
         update-types: [ "version-update:semver-major" ]
+      # Temporarily freeze on archiver v7 until types are available for v8
+      - dependency-name: "archiver"
+        update-types: [ "version-update:semver-major" ]
   - package-ecosystem: "npm"
     directories:
       - "/js-simulation"
