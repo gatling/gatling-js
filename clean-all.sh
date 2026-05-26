@@ -7,6 +7,9 @@ root_dir="$(dirname "$(realpath -- "$0")")"
 cd "$root_dir/jvm"
 sbt clean
 
+cd "$root_dir/polyfills"
+npm run clean
+
 cd "$root_dir/js"
 npm run clean --workspaces
 
