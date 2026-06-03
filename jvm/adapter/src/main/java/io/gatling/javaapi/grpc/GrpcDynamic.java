@@ -257,21 +257,17 @@ public class GrpcDynamic {
                     e);
               }
 
-              final var parent = Paths.get(resource).getParent();
               return fileDescriptorSet.getFileList().stream()
                   .map(
                       fileDescriptorProto -> {
-                        final var path =
-                            parent != null
-                                ? parent.resolve(fileDescriptorProto.getName())
-                                : Paths.get(fileDescriptorProto.getName());
+                        final var path = Paths.get(fileDescriptorProto.getName());
                         return new Pair<>(path, fileDescriptorProto);
                       });
             })
         .collect(Collectors.toMap(p -> p.key, p -> p.value));
   }
 
-  /** Uses relative paths to proto file dependencies. */
+  /** Uses proto-path-root-relative paths for file descriptor names and their dependencies. */
   private static Descriptors.FileDescriptor resolveFileDescriptor(
       Path protoPath,
       Map<Path, DescriptorProtos.FileDescriptorProto> fileDescriptorProtos,
@@ -291,9 +287,7 @@ public class GrpcDynamic {
               proto.getDependencyList().stream()
                   .map(
                       dependency -> {
-                        final var parent = protoPath.getParent();
-                        final var dependencyPath =
-                            parent != null ? parent.resolve(dependency) : Paths.get(dependency);
+                        final var dependencyPath = Paths.get(dependency);
                         try {
                           return resolveFileDescriptor(dependencyPath, fileDescriptorProtos, cache);
                         } catch (Descriptors.DescriptorValidationException e) {
