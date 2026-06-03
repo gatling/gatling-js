@@ -14,11 +14,10 @@ export const compileProtoFiles = async (
   const allGeneratedFiles: string[] = [];
   for (const protoFile of protoFiles) {
     const sourceFile = path.join(protoFolder, protoFile);
-    const protoPath = path.dirname(sourceFile);
     const targetFile = protoFile + "c";
     const targetPath = path.join(protoTargetFolder, targetFile);
     await fs.mkdir(path.dirname(targetPath), { recursive: true });
-    await runProtoc(protocPath, sourceFile, protoPath, targetPath);
+    await runProtoc(protocPath, sourceFile, protoFolder, targetPath);
     allGeneratedFiles.push(targetFile);
   }
   if (protoFiles.length > 0) {
