@@ -26,7 +26,7 @@
     "@jspm/core": "2.1.0",
     "archiver": "7.0.1",
     "commander": "15.0.0",
-    "esbuild": "0.28.0",
+    "esbuild": "0.28.1",
     "import-meta-resolve": "4.2.0",
     "make-fetch-happen": "16.0.1",
     "node-stream-zip": "1.15.0",
