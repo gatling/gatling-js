@@ -19,9 +19,9 @@ package com.oracle.truffle.js.lang;
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 
-import io.gatling.internal.asm.*;
+import org.objectweb.asm.*;
 
-import static io.gatling.internal.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.*;
 
 public class JavaScriptLanguageHack {
   public static void allowThreadAccess() throws IOException, IllegalAccessException {

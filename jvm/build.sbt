@@ -22,7 +22,7 @@ val gatlingMqttVersion = "3.15.1"
 val protocVersion = "4.33.4"
 
 // bit weird cause this is not a dependency of this project
-val gatlingEnterprisePluginCommonsVersion = "1.23.0"
+val gatlingEnterprisePluginCommonsVersion = "1.25.0"
 
 lazy val root = (project in file("."))
   .aggregate(adapter, java2ts)
@@ -53,7 +53,7 @@ lazy val adapter = (project in file("adapter"))
     autoScalaLibrary := false,
     libraryDependencies ++= Seq(
       "io.gatling.highcharts" % "gatling-charts-highcharts" % gatlingVersion % "provided",
-      "io.gatling" % "gatling-asm-shaded" % "9.10.1",
+      "org.ow2.asm" % "asm-tree" % "9.10.1",
       "io.gatling" % "gatling-grpc-java" % gatlingGrpcVersion % "provided",
       "io.gatling" % "gatling-mqtt-java" % gatlingMqttVersion % "provided",
       "org.graalvm.polyglot" % "js" % graalvmJsVersion,
