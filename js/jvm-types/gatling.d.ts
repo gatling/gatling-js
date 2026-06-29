@@ -59,32 +59,32 @@ declare namespace Java {
 declare namespace com.google.protobuf {
   class Descriptors$Descriptor /* extends Descriptors$GenericDescriptor*/ {
     equals(arg0: any /*java.lang.Object*/): boolean;
-    findEnumTypeByName(name: string): any /*com.google.protobuf.Descriptors$EnumDescriptor*/;
-    findFieldByName(name: string): any /*com.google.protobuf.Descriptors$FieldDescriptor*/;
-    findFieldByNumber(number: int): any /*com.google.protobuf.Descriptors$FieldDescriptor*/;
+    findEnumTypeByName(name: string): any; /*com.google.protobuf.Descriptors$EnumDescriptor*/
+    findFieldByName(name: string): any; /*com.google.protobuf.Descriptors$FieldDescriptor*/
+    findFieldByNumber(number: int): any; /*com.google.protobuf.Descriptors$FieldDescriptor*/
     findNestedTypeByName(name: string): Descriptors$Descriptor;
     getContainingType(): Descriptors$Descriptor;
-    getEnumType(index: int): any /*com.google.protobuf.Descriptors$EnumDescriptor*/;
+    getEnumType(index: int): any; /*com.google.protobuf.Descriptors$EnumDescriptor*/
     getEnumTypeCount(): int;
     getEnumTypes(): java.util.List<any /*com.google.protobuf.Descriptors$EnumDescriptor*/>;
-    getExtension(index: int): any /*com.google.protobuf.Descriptors$FieldDescriptor*/;
+    getExtension(index: int): any; /*com.google.protobuf.Descriptors$FieldDescriptor*/
     getExtensionCount(): int;
     getExtensions(): java.util.List<any /*com.google.protobuf.Descriptors$FieldDescriptor*/>;
-    getField(index: int): any /*com.google.protobuf.Descriptors$FieldDescriptor*/;
+    getField(index: int): any; /*com.google.protobuf.Descriptors$FieldDescriptor*/
     getFieldCount(): int;
     getFields(): java.util.List<any /*com.google.protobuf.Descriptors$FieldDescriptor*/>;
-    getFile(): any /*com.google.protobuf.Descriptors$FileDescriptor*/;
+    getFile(): any; /*com.google.protobuf.Descriptors$FileDescriptor*/
     getFullName(): string;
     getIndex(): int;
     getName(): string;
     getNestedType(index: int): Descriptors$Descriptor;
     getNestedTypeCount(): int;
     getNestedTypes(): java.util.List<Descriptors$Descriptor>;
-    getOneof(index: int): any /*com.google.protobuf.Descriptors$OneofDescriptor*/;
+    getOneof(index: int): any; /*com.google.protobuf.Descriptors$OneofDescriptor*/
     getOneofCount(): int;
     getOneofs(): java.util.List<any /*com.google.protobuf.Descriptors$OneofDescriptor*/>;
-    getOptions(): any /*com.google.protobuf.DescriptorProtos$MessageOptions*/;
-    getRealOneof(index: int): any /*com.google.protobuf.Descriptors$OneofDescriptor*/;
+    getOptions(): any; /*com.google.protobuf.DescriptorProtos$MessageOptions*/
+    getRealOneof(index: int): any; /*com.google.protobuf.Descriptors$OneofDescriptor*/
     getRealOneofCount(): int;
     getRealOneofs(): java.util.List<any /*com.google.protobuf.Descriptors$OneofDescriptor*/>;
     isExtendable(): boolean;
@@ -92,7 +92,7 @@ declare namespace com.google.protobuf {
     isPlaceholder(): boolean;
     isReservedName(name: string): boolean;
     isReservedNumber(number: int): boolean;
-    toProto(): any /*com.google.protobuf.DescriptorProtos$DescriptorProto*/;
+    toProto(): any; /*com.google.protobuf.DescriptorProtos$DescriptorProto*/
     toString(): string;
   } // end Descriptors$Descriptor
 } // end namespace com.google.protobuf
@@ -102,8 +102,8 @@ declare namespace com.google.protobuf {
       field: any /*com.google.protobuf.Descriptors$FieldDescriptor*/,
       value: any /*java.lang.Object*/
     ): DynamicMessage$Builder;
-    build(): any /*com.google.protobuf.DynamicMessage*/;
-    buildPartial(): any /*com.google.protobuf.DynamicMessage*/;
+    build(): any; /*com.google.protobuf.DynamicMessage*/
+    buildPartial(): any; /*com.google.protobuf.DynamicMessage*/
     clear(): DynamicMessage$Builder;
     clearField(field: any /*com.google.protobuf.Descriptors$FieldDescriptor*/): DynamicMessage$Builder;
     clearOneof(oneof: any /*com.google.protobuf.Descriptors$OneofDescriptor*/): DynamicMessage$Builder;
@@ -111,26 +111,26 @@ declare namespace com.google.protobuf {
     equals(arg0: any /*java.lang.Object*/): boolean;
     findInitializationErrors(): java.util.List<string>;
     getAllFields(): java.util.Map<any /*com.google.protobuf.Descriptors$FieldDescriptor*/, any /*java.lang.Object*/>;
-    getDefaultInstanceForType(): any /*com.google.protobuf.DynamicMessage*/;
+    getDefaultInstanceForType(): any; /*com.google.protobuf.DynamicMessage*/
     getDescriptorForType(): Descriptors$Descriptor;
-    getField(field: any /*com.google.protobuf.Descriptors$FieldDescriptor*/): any /*java.lang.Object*/;
+    getField(field: any /*com.google.protobuf.Descriptors$FieldDescriptor*/): any; /*java.lang.Object*/
     getFieldBuilder(
       field: any /*com.google.protobuf.Descriptors$FieldDescriptor*/
-    ): any /*com.google.protobuf.Message$Builder*/;
+    ): any; /*com.google.protobuf.Message$Builder*/
     getInitializationErrorString(): string;
     getOneofFieldDescriptor(
       oneof: any /*com.google.protobuf.Descriptors$OneofDescriptor*/
-    ): any /*com.google.protobuf.Descriptors$FieldDescriptor*/;
+    ): any; /*com.google.protobuf.Descriptors$FieldDescriptor*/
     getRepeatedField(
       field: any /*com.google.protobuf.Descriptors$FieldDescriptor*/,
       index: int
-    ): any /*java.lang.Object*/;
+    ): any; /*java.lang.Object*/
     getRepeatedFieldBuilder(
       field: any /*com.google.protobuf.Descriptors$FieldDescriptor*/,
       index: int
-    ): any /*com.google.protobuf.Message$Builder*/;
+    ): any; /*com.google.protobuf.Message$Builder*/
     getRepeatedFieldCount(field: any /*com.google.protobuf.Descriptors$FieldDescriptor*/): int;
-    getUnknownFields(): any /*com.google.protobuf.UnknownFieldSet*/;
+    getUnknownFields(): any; /*com.google.protobuf.UnknownFieldSet*/
     hasField(field: any /*com.google.protobuf.Descriptors$FieldDescriptor*/): boolean;
     hasOneof(oneof: any /*com.google.protobuf.Descriptors$OneofDescriptor*/): boolean;
     isInitialized(): boolean;
@@ -193,18 +193,18 @@ declare namespace io.gatling.http.client {
     getBody(): io.gatling.http.client.body.RequestBody;
     getCookies(): java.util.List<io.netty.handler.codec.http.cookie.Cookie>;
     getHeaders(): io.netty.handler.codec.http.HttpHeaders;
-    getHttp2PriorKnowledge(): any /*io.gatling.http.client.Http2PriorKnowledge*/;
-    getLocalAddresses(): any /*io.gatling.http.client.LocalAddresses*/;
-    getMethod(): any /*io.netty.handler.codec.http.HttpMethod*/;
+    getHttp2PriorKnowledge(): any; /*io.gatling.http.client.Http2PriorKnowledge*/
+    getLocalAddresses(): any; /*io.gatling.http.client.LocalAddresses*/
+    getMethod(): any; /*io.netty.handler.codec.http.HttpMethod*/
     getName(): string;
-    getNameResolver(): any /*io.gatling.http.client.resolver.InetAddressNameResolver*/;
+    getNameResolver(): any; /*io.gatling.http.client.resolver.InetAddressNameResolver*/
     getProxyProtocolSourceIpV4Address(): string;
     getProxyProtocolSourceIpV6Address(): string;
-    getProxyServer(): any /*io.gatling.http.client.proxy.ProxyServer*/;
-    getRealm(): any /*io.gatling.http.client.realm.Realm*/;
+    getProxyServer(): any; /*io.gatling.http.client.proxy.ProxyServer*/
+    getRealm(): any; /*io.gatling.http.client.realm.Realm*/
     getRequestTimeout(): long;
     getSignatureCalculator(): Func<Request, Request>;
-    getUri(): any /*io.gatling.http.client.uri.Uri*/;
+    getUri(): any; /*io.gatling.http.client.uri.Uri*/
     getWsSubprotocol(): string;
     isAutoOrigin(): boolean;
     isHttp2Enabled(): boolean;
@@ -224,9 +224,9 @@ declare namespace io.gatling.http.response {
   class Response /* extends java.lang.Object implements HttpResult, scala.Product, java.io.Serializable*/ {
     body(): ResponseBody;
     canEqual(x$1: any /*java.lang.Object*/): boolean;
-    checksum(algorithm: any /*io.gatling.core.check.ChecksumAlgorithm*/): any /*scala.Option*/;
-    checksums(): any /*scala.collection.immutable.Map*/;
-    cookies(): any /*scala.collection.immutable.List*/;
+    checksum(algorithm: any /*io.gatling.core.check.ChecksumAlgorithm*/): any; /*scala.Option*/
+    checksums(): any; /*scala.collection.immutable.Map*/
+    cookies(): any; /*scala.collection.immutable.List*/
     copy(
       request: io.gatling.http.client.Request,
       startTimestamp: long,
@@ -239,17 +239,17 @@ declare namespace io.gatling.http.response {
     ): Response;
     endTimestamp(): long;
     equals(x$1: any /*java.lang.Object*/): boolean;
-    header(name: any /*java.lang.CharSequence*/): any /*scala.Option*/;
+    header(name: any /*java.lang.CharSequence*/): any; /*scala.Option*/
     headers(): io.netty.handler.codec.http.HttpHeaders;
-    headers(name: any /*java.lang.CharSequence*/): any /*scala.collection.immutable.Seq*/;
+    headers(name: any /*java.lang.CharSequence*/): any; /*scala.collection.immutable.Seq*/
     isHttp2(): boolean;
     isRedirect(): boolean;
-    lastModifiedOrEtag(protocol: any /*io.gatling.http.protocol.HttpProtocol*/): any /*scala.Option*/;
+    lastModifiedOrEtag(protocol: any /*io.gatling.http.protocol.HttpProtocol*/): any; /*scala.Option*/
     productArity(): int;
-    productElement(x$1: int): any /*java.lang.Object*/;
+    productElement(x$1: int): any; /*java.lang.Object*/
     productElementName(x$1: int): string;
-    productElementNames(): any /*scala.collection.Iterator*/;
-    productIterator(): any /*scala.collection.Iterator*/;
+    productElementNames(): any; /*scala.collection.Iterator*/
+    productIterator(): any; /*scala.collection.Iterator*/
     productPrefix(): string;
     request(): io.gatling.http.client.Request;
     startTimestamp(): long;
@@ -325,7 +325,7 @@ declare namespace io.gatling.javaapi.core {
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
   class Assertion /* extends java.lang.Object*/ {
-    asScala(): any /*io.gatling.commons.stats.assertion.Assertion*/;
+    asScala(): any; /*io.gatling.commons.stats.assertion.Assertion*/
     equals(arg0: any /*java.lang.Object*/): boolean;
     toString(): string;
   } // end Assertion
@@ -334,7 +334,7 @@ declare namespace io.gatling.javaapi.core {
   class Body$WithBytes /* extends Body implements java.util.function.Function<any, any>*/ {
     andThen<R, T, V>(arg0: Func<R, V>): Func<T, V>;
     apply(arg0: Session): bytearray;
-    asScala(): any /*io.gatling.core.body.Body*/;
+    asScala(): any; /*io.gatling.core.body.Body*/
     compose<R, T, V>(arg0: Func<V, T>): Func<V, R>;
     equals(arg0: any /*java.lang.Object*/): boolean;
     toString(): string;
@@ -344,7 +344,7 @@ declare namespace io.gatling.javaapi.core {
   class Body$WithString /* extends Body implements java.util.function.Function<any, any>*/ {
     andThen<R, T, V>(arg0: Func<R, V>): Func<T, V>;
     apply(arg0: Session): string;
-    asScala(): any /*io.gatling.core.body.Body*/;
+    asScala(): any; /*io.gatling.core.body.Body*/
     compose<R, T, V>(arg0: Func<V, T>): Func<V, R>;
     equals(arg0: any /*java.lang.Object*/): boolean;
     toString(): string;
@@ -352,7 +352,7 @@ declare namespace io.gatling.javaapi.core {
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
   class Body /* extends java.lang.Object*/ {
-    asScala(): any /*io.gatling.core.body.Body*/;
+    asScala(): any; /*io.gatling.core.body.Body*/
     equals(arg0: any /*java.lang.Object*/): boolean;
     toString(): string;
   } // end Body
@@ -806,7 +806,7 @@ declare namespace io.gatling.javaapi.core {
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
   class ClosedInjectionStep$Composite /* extends ClosedInjectionStep*/ {
-    asScala(): any /*io.gatling.core.controller.inject.closed.ClosedInjectionStep*/;
+    asScala(): any; /*io.gatling.core.controller.inject.closed.ClosedInjectionStep*/
     equals(arg0: any /*java.lang.Object*/): boolean;
     separatedByRampsLasting(arg0: java.time.Duration): ClosedInjectionStep$Composite;
     separatedByRampsLasting(arg0: long): ClosedInjectionStep$Composite;
@@ -854,14 +854,14 @@ declare namespace io.gatling.javaapi.core {
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
   class ClosedInjectionStep /* extends java.lang.Object*/ {
-    asScala(): any /*io.gatling.core.controller.inject.closed.ClosedInjectionStep*/;
+    asScala(): any; /*io.gatling.core.controller.inject.closed.ClosedInjectionStep*/
     equals(arg0: any /*java.lang.Object*/): boolean;
     toString(): string;
   } // end ClosedInjectionStep
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
   class ConstantRate$ConstantRateOpenInjectionStep /* extends OpenInjectionStep*/ {
-    asScala(): any /*io.gatling.core.controller.inject.open.OpenInjectionStep*/;
+    asScala(): any; /*io.gatling.core.controller.inject.open.OpenInjectionStep*/
     equals(arg0: any /*java.lang.Object*/): boolean;
     randomized(): OpenInjectionStep;
     toString(): string;
@@ -875,7 +875,7 @@ declare namespace io.gatling.javaapi.core {
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
   class DummyBuilder /* extends java.lang.Object implements ActionBuilder*/ {
-    asScala(): any /*io.gatling.core.action.builder.ActionBuilder*/;
+    asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
     equals(arg0: any /*java.lang.Object*/): boolean;
     toChainBuilder(): ChainBuilder;
     toString(): string;
@@ -946,49 +946,49 @@ declare namespace io.gatling.javaapi.core {
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
   class OpenInjectionStep /* extends java.lang.Object*/ {
-    asScala(): any /*io.gatling.core.controller.inject.open.OpenInjectionStep*/;
+    asScala(): any; /*io.gatling.core.controller.inject.open.OpenInjectionStep*/
     equals(arg0: any /*java.lang.Object*/): boolean;
     toString(): string;
   } // end OpenInjectionStep
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
   class PauseType$Custom /* extends PauseType*/ {
-    asScala(): any /*io.gatling.core.pause.PauseType*/;
+    asScala(): any; /*io.gatling.core.pause.PauseType*/
     equals(arg0: any /*java.lang.Object*/): boolean;
     toString(): string;
   } // end PauseType$Custom
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
   class PauseType$NormalWithPercentageDuration /* extends PauseType*/ {
-    asScala(): any /*io.gatling.core.pause.PauseType*/;
+    asScala(): any; /*io.gatling.core.pause.PauseType*/
     equals(arg0: any /*java.lang.Object*/): boolean;
     toString(): string;
   } // end PauseType$NormalWithPercentageDuration
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
   class PauseType$NormalWithStdDevDuration /* extends PauseType*/ {
-    asScala(): any /*io.gatling.core.pause.PauseType*/;
+    asScala(): any; /*io.gatling.core.pause.PauseType*/
     equals(arg0: any /*java.lang.Object*/): boolean;
     toString(): string;
   } // end PauseType$NormalWithStdDevDuration
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
   class PauseType$UniformDuration /* extends PauseType*/ {
-    asScala(): any /*io.gatling.core.pause.PauseType*/;
+    asScala(): any; /*io.gatling.core.pause.PauseType*/
     equals(arg0: any /*java.lang.Object*/): boolean;
     toString(): string;
   } // end PauseType$UniformDuration
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
   class PauseType$UniformPercentage /* extends PauseType*/ {
-    asScala(): any /*io.gatling.core.pause.PauseType*/;
+    asScala(): any; /*io.gatling.core.pause.PauseType*/
     equals(arg0: any /*java.lang.Object*/): boolean;
     toString(): string;
   } // end PauseType$UniformPercentage
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
   class PauseType /* extends java.lang.Object*/ {
-    asScala(): any /*io.gatling.core.pause.PauseType*/;
+    asScala(): any; /*io.gatling.core.pause.PauseType*/
     equals(arg0: any /*java.lang.Object*/): boolean;
     toString(): string;
   } // end PauseType
@@ -997,7 +997,7 @@ declare namespace io.gatling.javaapi.core {
   class PopulationBuilder /* extends java.lang.Object*/ {
     andThen(...arg0: PopulationBuilder[]): PopulationBuilder;
     andThen(arg0: java.util.List<PopulationBuilder>): PopulationBuilder;
-    asScala(): any /*io.gatling.core.structure.PopulationBuilder*/;
+    asScala(): any; /*io.gatling.core.structure.PopulationBuilder*/
     constantPauses(): PopulationBuilder;
     customPauses(arg0: Func<Session, long | null>): PopulationBuilder;
     disablePauses(): PopulationBuilder;
@@ -1024,7 +1024,7 @@ declare namespace io.gatling.javaapi.core {
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
   class RampRate$RampRateOpenInjectionStep /* extends OpenInjectionStep*/ {
-    asScala(): any /*io.gatling.core.controller.inject.open.OpenInjectionStep*/;
+    asScala(): any; /*io.gatling.core.controller.inject.open.OpenInjectionStep*/
     equals(arg0: any /*java.lang.Object*/): boolean;
     randomized(): OpenInjectionStep;
     toString(): string;
@@ -1464,7 +1464,7 @@ declare namespace io.gatling.javaapi.core {
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
   class Session /* extends java.lang.Object*/ {
-    asScala(): any /*io.gatling.core.session.Session*/;
+    asScala(): any; /*io.gatling.core.session.Session*/
     contains(arg0: string): boolean;
     equals(arg0: any /*java.lang.Object*/): boolean;
     get<T>(arg0: string): T;
@@ -1525,7 +1525,7 @@ declare namespace io.gatling.javaapi.core {
     params(
       arg0: any /*io.gatling.core.config.GatlingConfiguration*/,
       arg1: string
-    ): any /*io.gatling.core.scenario.SimulationParams*/;
+    ): any; /*io.gatling.core.scenario.SimulationParams*/
     setUp(...arg0: PopulationBuilder[]): Simulation$SetUp;
     setUp(arg0: java.util.List<PopulationBuilder>): Simulation$SetUp;
     toString(): string;
@@ -1533,7 +1533,7 @@ declare namespace io.gatling.javaapi.core {
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
   class Stairs$Composite /* extends OpenInjectionStep*/ {
-    asScala(): any /*io.gatling.core.controller.inject.open.OpenInjectionStep*/;
+    asScala(): any; /*io.gatling.core.controller.inject.open.OpenInjectionStep*/
     equals(arg0: any /*java.lang.Object*/): boolean;
     separatedByRampsLasting(arg0: java.time.Duration): Stairs$Composite;
     separatedByRampsLasting(arg0: long): Stairs$Composite;
@@ -1983,7 +1983,7 @@ declare namespace io.gatling.javaapi.core {
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
   class ThrottleStep /* extends java.lang.Object*/ {
-    asScala(): any /*io.gatling.core.controller.throttle.ThrottleStep*/;
+    asScala(): any; /*io.gatling.core.controller.throttle.ThrottleStep*/
     equals(arg0: any /*java.lang.Object*/): boolean;
     toString(): string;
   } // end ThrottleStep
@@ -2409,7 +2409,7 @@ declare namespace io.gatling.javaapi.core.condition {
     then(
       arg0: io.gatling.javaapi.core.exec.Executable,
       ...arg1: io.gatling.javaapi.core.exec.Executable[]
-    ): any /*io.gatling.javaapi.core.condition.DoIfEqualsOrElse$OrElse*/;
+    ): any; /*io.gatling.javaapi.core.condition.DoIfEqualsOrElse$OrElse*/
     toString(): string;
   } // end DoIfEqualsOrElse$Then
 } // end namespace io.gatling.javaapi.core.condition
@@ -3082,7 +3082,7 @@ declare namespace io.gatling.javaapi.grpc {
     ReqT,
     RespT
   > /* extends java.lang.Object implements io.gatling.javaapi.core.ActionBuilder*/ {
-    asScala(): any /*io.gatling.core.action.builder.ActionBuilder*/;
+    asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
     equals(arg0: any /*java.lang.Object*/): boolean;
     toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
     toString(): string;
@@ -3160,7 +3160,7 @@ declare namespace io.gatling.javaapi.grpc {
     ReqT,
     RespT
   > /* extends java.lang.Object implements io.gatling.javaapi.core.ActionBuilder*/ {
-    asScala(): any /*io.gatling.core.action.builder.ActionBuilder*/;
+    asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
     equals(arg0: any /*java.lang.Object*/): boolean;
     toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
     toString(): string;
@@ -3229,9 +3229,9 @@ declare namespace io.gatling.javaapi.grpc {
 } // end namespace io.gatling.javaapi.grpc
 declare namespace io.gatling.javaapi.grpc {
   class GrpcProtocolBuilder /* extends java.lang.Object implements io.gatling.javaapi.core.ProtocolBuilder*/ {
-    asScala(): any /*io.gatling.grpc.protocol.GrpcProtocolBuilder*/;
+    asScala(): any; /*io.gatling.grpc.protocol.GrpcProtocolBuilder*/
     equals(arg0: any /*java.lang.Object*/): boolean;
-    protocol(): any /*io.gatling.core.protocol.Protocol*/;
+    protocol(): any; /*io.gatling.core.protocol.Protocol*/
     serverConfiguration(arg0: string): GrpcServerConfigurationBuilder;
     serverConfigurations(...arg0: GrpcServerConfigurationBuilder[]): GrpcProtocolBuilder;
     serverConfigurations(arg0: java.util.List<GrpcServerConfigurationBuilder>): GrpcProtocolBuilder;
@@ -3240,7 +3240,7 @@ declare namespace io.gatling.javaapi.grpc {
 } // end namespace io.gatling.javaapi.grpc
 declare namespace io.gatling.javaapi.grpc {
   class GrpcServerConfigurationBuilder /* extends java.lang.Object implements GrpcHeaders<any, any>*/ {
-    asScala(): any /*io.gatling.grpc.protocol.GrpcServerConfigurationBuilder*/;
+    asScala(): any; /*io.gatling.grpc.protocol.GrpcServerConfigurationBuilder*/
     asciiHeader<B>(arg0: string): GrpcHeaders$Value<B, string>;
     asciiHeaders<B>(arg0: java.util.Map<string, string>): B;
     binaryHeader<B>(arg0: string): GrpcHeaders$Value<B, bytearray>;
@@ -3281,7 +3281,7 @@ declare namespace io.gatling.javaapi.grpc {
     ReqT,
     RespT
   > /* extends java.lang.Object implements io.gatling.javaapi.core.ActionBuilder*/ {
-    asScala(): any /*io.gatling.core.action.builder.ActionBuilder*/;
+    asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
     equals(arg0: any /*java.lang.Object*/): boolean;
     toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
     toString(): string;
@@ -3292,7 +3292,7 @@ declare namespace io.gatling.javaapi.grpc {
     ReqT,
     RespT
   > /* extends java.lang.Object implements io.gatling.javaapi.core.ActionBuilder*/ {
-    asScala(): any /*io.gatling.core.action.builder.ActionBuilder*/;
+    asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
     equals(arg0: any /*java.lang.Object*/): boolean;
     toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
     toString(): string;
@@ -3364,7 +3364,7 @@ declare namespace io.gatling.javaapi.grpc {
     ReqT,
     RespT
   > /* extends java.lang.Object implements io.gatling.javaapi.core.ActionBuilder, GrpcHeaders<ReqT, RespT>*/ {
-    asScala(): any /*io.gatling.core.action.builder.ActionBuilder*/;
+    asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
     asciiHeader<B>(arg0: string): GrpcHeaders$Value<B, string>;
     asciiHeaders<B>(arg0: java.util.Map<string, string>): B;
     binaryHeader<B>(arg0: string): GrpcHeaders$Value<B, bytearray>;
@@ -3413,7 +3413,7 @@ declare namespace io.gatling.javaapi.grpc {
 } // end namespace io.gatling.javaapi.grpc
 declare namespace io.gatling.javaapi.http {
   class AddCookie /* extends java.lang.Object*/ {
-    asScala(): any /*io.gatling.http.action.cookie.AddCookieDsl*/;
+    asScala(): any; /*io.gatling.http.action.cookie.AddCookieDsl*/
     equals(arg0: any /*java.lang.Object*/): boolean;
     toString(): string;
     withDomain(arg0: string): AddCookie;
@@ -3440,7 +3440,7 @@ declare namespace io.gatling.javaapi.http {
 } // end namespace io.gatling.javaapi.http
 declare namespace io.gatling.javaapi.http {
   class BodyPart /* extends java.lang.Object*/ {
-    asScala(): any /*io.gatling.http.request.BodyPart*/;
+    asScala(): any; /*io.gatling.http.request.BodyPart*/
     charset(arg0: string): BodyPart;
     contentId(arg0: Func<io.gatling.javaapi.core.Session, string>): BodyPart;
     contentId(arg0: string): BodyPart;
@@ -3464,7 +3464,7 @@ declare namespace io.gatling.javaapi.http {
 } // end namespace io.gatling.javaapi.http
 declare namespace io.gatling.javaapi.http {
   class GetCookie /* extends java.lang.Object*/ {
-    asScala(): any /*io.gatling.http.action.cookie.GetCookieDsl*/;
+    asScala(): any; /*io.gatling.http.action.cookie.GetCookieDsl*/
     equals(arg0: any /*java.lang.Object*/): boolean;
     saveAs(arg0: string): GetCookie;
     toString(): string;
@@ -3606,7 +3606,7 @@ declare namespace io.gatling.javaapi.http {
     originHeader(arg0: string): HttpProtocolBuilder;
     perUserKeyManagerFactory(arg0: Func<long | null, any /*javax.net.ssl.KeyManagerFactory*/>): HttpProtocolBuilder;
     perUserNameResolution(): HttpProtocolBuilder;
-    protocol(): any /*io.gatling.core.protocol.Protocol*/;
+    protocol(): any; /*io.gatling.core.protocol.Protocol*/
     proxy(arg0: Proxy): HttpProtocolBuilder;
     proxyProtocolSourceIpV4Address(arg0: Func<io.gatling.javaapi.core.Session, string>): HttpProtocolBuilder;
     proxyProtocolSourceIpV4Address(arg0: string): HttpProtocolBuilder;
@@ -3669,7 +3669,7 @@ declare namespace io.gatling.javaapi.http {
     asFormUrlEncoded<T>(): T;
     asJson<T>(): T;
     asMultipartForm<T>(): T;
-    asScala(): any /*io.gatling.core.action.builder.ActionBuilder*/;
+    asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
     asXml<T>(): T;
     basicAuth<T>(
       arg0: Func<io.gatling.javaapi.core.Session, string>,
@@ -3686,11 +3686,11 @@ declare namespace io.gatling.javaapi.http {
     check(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): HttpRequestActionBuilder;
     checkIf(
       arg0: BiFunction<io.gatling.http.response.Response, io.gatling.javaapi.core.Session, boolean | null>
-    ): any /*io.gatling.javaapi.http.HttpRequestActionBuilder$TypedCondition*/;
+    ): any; /*io.gatling.javaapi.http.HttpRequestActionBuilder$TypedCondition*/
     checkIf(
       arg0: Func<io.gatling.javaapi.core.Session, boolean | null>
-    ): any /*io.gatling.javaapi.http.HttpRequestActionBuilder$UntypedCondition*/;
-    checkIf(arg0: string): any /*io.gatling.javaapi.http.HttpRequestActionBuilder$UntypedCondition*/;
+    ): any; /*io.gatling.javaapi.http.HttpRequestActionBuilder$UntypedCondition*/
+    checkIf(arg0: string): any; /*io.gatling.javaapi.http.HttpRequestActionBuilder$UntypedCondition*/
     digestAuth<T>(
       arg0: Func<io.gatling.javaapi.core.Session, string>,
       arg1: Func<io.gatling.javaapi.core.Session, string>
@@ -3822,7 +3822,7 @@ declare namespace io.gatling.javaapi.http {
 } // end namespace io.gatling.javaapi.http
 declare namespace io.gatling.javaapi.http {
   class Proxy /* extends java.lang.Object*/ {
-    asScala(): any /*io.gatling.http.protocol.Proxy*/;
+    asScala(): any; /*io.gatling.http.protocol.Proxy*/
     connectHeader(arg0: any /*java.lang.CharSequence*/, arg1: Func<io.gatling.javaapi.core.Session, string>): Proxy;
     connectHeader(arg0: any /*java.lang.CharSequence*/, arg1: string): Proxy;
     connectHeaders(arg0: java.util.Map<any /*java.lang.CharSequence*/, string>): Proxy;
@@ -3843,7 +3843,7 @@ declare namespace io.gatling.javaapi.http {
 } // end namespace io.gatling.javaapi.http
 declare namespace io.gatling.javaapi.http {
   class RequestActionBuilder<T, W> /* extends java.lang.Object implements io.gatling.javaapi.core.ActionBuilder*/ {
-    asScala(): any /*io.gatling.core.action.builder.ActionBuilder*/;
+    asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
     basicAuth(
       arg0: Func<io.gatling.javaapi.core.Session, string>,
       arg1: Func<io.gatling.javaapi.core.Session, string>
@@ -3916,7 +3916,7 @@ declare namespace io.gatling.javaapi.http {
     asFormUrlEncoded(): T;
     asJson(): T;
     asMultipartForm(): T;
-    asScala(): any /*io.gatling.core.action.builder.ActionBuilder*/;
+    asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
     asXml(): T;
     basicAuth(
       arg0: Func<io.gatling.javaapi.core.Session, string>,
@@ -4083,7 +4083,7 @@ declare namespace io.gatling.javaapi.http {
     asFormUrlEncoded<T>(): T;
     asJson<T>(): T;
     asMultipartForm<T>(): T;
-    asScala(): any /*io.gatling.core.action.builder.ActionBuilder*/;
+    asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
     asXml<T>(): T;
     await<T>(arg0: Func<io.gatling.javaapi.core.Session, java.time.Duration>): SseAwaitActionBuilder$On<T>;
     await<T>(arg0: java.time.Duration): SseAwaitActionBuilder$On<T>;
@@ -4215,7 +4215,7 @@ declare namespace io.gatling.javaapi.http {
 } // end namespace io.gatling.javaapi.http
 declare namespace io.gatling.javaapi.http {
   class SseMessageCheck /* extends java.lang.Object*/ {
-    asScala(): any /*io.gatling.http.check.sse.SseMessageCheck*/;
+    asScala(): any; /*io.gatling.http.check.sse.SseMessageCheck*/
     check(...arg0: io.gatling.javaapi.core.CheckBuilder[]): SseMessageCheck;
     check(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): SseMessageCheck;
     checkIf(arg0: BiFunction<string, io.gatling.javaapi.core.Session, boolean | null>): SseMessageCheck$TypedCondition;
@@ -4229,7 +4229,7 @@ declare namespace io.gatling.javaapi.http {
 } // end namespace io.gatling.javaapi.http
 declare namespace io.gatling.javaapi.http {
   class SseSetCheckActionBuilder /* extends java.lang.Object implements SseAwaitActionBuilder<any, any>*/ {
-    asScala(): any /*io.gatling.core.action.builder.ActionBuilder*/;
+    asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
     await<T>(arg0: Func<io.gatling.javaapi.core.Session, java.time.Duration>): SseAwaitActionBuilder$On<T>;
     await<T>(arg0: java.time.Duration): SseAwaitActionBuilder$On<T>;
     await<T>(arg0: long): SseAwaitActionBuilder$On<T>;
@@ -4315,7 +4315,7 @@ declare namespace io.gatling.javaapi.http {
 } // end namespace io.gatling.javaapi.http
 declare namespace io.gatling.javaapi.http {
   class WsConnectActionBuilder /* extends RequestActionBuilder<any, any> implements WsAwaitActionBuilder<any, any>*/ {
-    asScala(): any /*io.gatling.core.action.builder.ActionBuilder*/;
+    asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
     await<T>(arg0: Func<io.gatling.javaapi.core.Session, java.time.Duration>): WsAwaitActionBuilder$On<T>;
     await<T>(arg0: java.time.Duration): WsAwaitActionBuilder$On<T>;
     await<T>(arg0: long): WsAwaitActionBuilder$On<T>;
@@ -4392,7 +4392,7 @@ declare namespace io.gatling.javaapi.http {
 } // end namespace io.gatling.javaapi.http
 declare namespace io.gatling.javaapi.http {
   class WsFrameCheck$Binary /* extends WsFrameCheck*/ {
-    asScala(): any /*io.gatling.http.check.ws.WsFrameCheck*/;
+    asScala(): any; /*io.gatling.http.check.ws.WsFrameCheck*/
     check(...arg0: io.gatling.javaapi.core.CheckBuilder[]): WsFrameCheck$Binary;
     check(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): WsFrameCheck$Binary;
     checkIf(arg0: BiFunction<bytearray, io.gatling.javaapi.core.Session, boolean | null>): Binary$TypedCondition;
@@ -4407,7 +4407,7 @@ declare namespace io.gatling.javaapi.http {
 } // end namespace io.gatling.javaapi.http
 declare namespace io.gatling.javaapi.http {
   class WsFrameCheck$Text /* extends WsFrameCheck*/ {
-    asScala(): any /*io.gatling.http.check.ws.WsFrameCheck*/;
+    asScala(): any; /*io.gatling.http.check.ws.WsFrameCheck*/
     check(...arg0: io.gatling.javaapi.core.CheckBuilder[]): WsFrameCheck$Text;
     check(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): WsFrameCheck$Text;
     checkIf(arg0: BiFunction<string, io.gatling.javaapi.core.Session, boolean | null>): Text$TypedCondition;
@@ -4422,14 +4422,14 @@ declare namespace io.gatling.javaapi.http {
 } // end namespace io.gatling.javaapi.http
 declare namespace io.gatling.javaapi.http {
   class WsFrameCheck /* extends java.lang.Object*/ {
-    asScala(): any /*io.gatling.http.check.ws.WsFrameCheck*/;
+    asScala(): any; /*io.gatling.http.check.ws.WsFrameCheck*/
     equals(arg0: any /*java.lang.Object*/): boolean;
     toString(): string;
   } // end WsFrameCheck
 } // end namespace io.gatling.javaapi.http
 declare namespace io.gatling.javaapi.http {
   class WsSendBinaryActionBuilder /* extends java.lang.Object implements WsAwaitActionBuilder<any, any>*/ {
-    asScala(): any /*io.gatling.core.action.builder.ActionBuilder*/;
+    asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
     await<T>(arg0: Func<io.gatling.javaapi.core.Session, java.time.Duration>): WsAwaitActionBuilder$On<T>;
     await<T>(arg0: java.time.Duration): WsAwaitActionBuilder$On<T>;
     await<T>(arg0: long): WsAwaitActionBuilder$On<T>;
@@ -4441,7 +4441,7 @@ declare namespace io.gatling.javaapi.http {
 } // end namespace io.gatling.javaapi.http
 declare namespace io.gatling.javaapi.http {
   class WsSendTextActionBuilder /* extends java.lang.Object implements WsAwaitActionBuilder<any, any>*/ {
-    asScala(): any /*io.gatling.core.action.builder.ActionBuilder*/;
+    asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
     await<T>(arg0: Func<io.gatling.javaapi.core.Session, java.time.Duration>): WsAwaitActionBuilder$On<T>;
     await<T>(arg0: java.time.Duration): WsAwaitActionBuilder$On<T>;
     await<T>(arg0: long): WsAwaitActionBuilder$On<T>;
@@ -4473,7 +4473,7 @@ declare namespace io.gatling.javaapi.http {
 } // end namespace io.gatling.javaapi.http
 declare namespace io.gatling.javaapi.mqtt {
   class ConnectActionBuilder /* extends java.lang.Object implements io.gatling.javaapi.core.ActionBuilder*/ {
-    asScala(): any /*io.gatling.core.action.builder.ActionBuilder*/;
+    asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
     equals(arg0: any /*java.lang.Object*/): boolean;
     toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
     toString(): string;
@@ -4481,7 +4481,7 @@ declare namespace io.gatling.javaapi.mqtt {
 } // end namespace io.gatling.javaapi.mqtt
 declare namespace io.gatling.javaapi.mqtt {
   class LastWillBuilder /* extends java.lang.Object*/ {
-    asScala(): any /*io.gatling.mqtt.protocol.LastWillBuilder*/;
+    asScala(): any; /*io.gatling.mqtt.protocol.LastWillBuilder*/
     equals(arg0: any /*java.lang.Object*/): boolean;
     qosAtLeastOnce(): LastWillBuilder;
     qosAtMostOnce(): LastWillBuilder;
@@ -4522,7 +4522,7 @@ declare namespace io.gatling.javaapi.mqtt {
         io.gatling.javaapi.core.Session
       >
     ): io.gatling.javaapi.core.ActionBuilder;
-    protocol(): any /*io.gatling.core.protocol.Protocol*/;
+    protocol(): any; /*io.gatling.core.protocol.Protocol*/
     qosAtLeastOnce<T>(): T;
     qosAtMostOnce<T>(): T;
     qosExactlyOnce<T>(): T;
@@ -4583,7 +4583,7 @@ declare namespace io.gatling.javaapi.mqtt {
     mqttVersion_3_1_1<T>(): T;
     mqttVersion_5<T>(): T;
     perUserKeyManagerFactory<T>(arg0: Func<long | null, any /*javax.net.ssl.KeyManagerFactory*/>): T;
-    protocol(): any /*io.gatling.core.protocol.Protocol*/;
+    protocol(): any; /*io.gatling.core.protocol.Protocol*/
     qosAtLeastOnce<T>(): T;
     qosAtMostOnce<T>(): T;
     qosExactlyOnce<T>(): T;
@@ -4611,7 +4611,7 @@ declare namespace io.gatling.javaapi.mqtt {
 } // end namespace io.gatling.javaapi.mqtt
 declare namespace io.gatling.javaapi.mqtt {
   class PublishActionBuilder$Checkable /* extends java.lang.Object implements io.gatling.javaapi.core.ActionBuilder*/ {
-    asScala(): any /*io.gatling.core.action.builder.ActionBuilder*/;
+    asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
     check(...arg0: io.gatling.javaapi.core.CheckBuilder[]): PublishActionBuilder$Checkable;
     check(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): PublishActionBuilder$Checkable;
     equals(arg0: any /*java.lang.Object*/): boolean;
@@ -4624,7 +4624,7 @@ declare namespace io.gatling.javaapi.mqtt {
 } // end namespace io.gatling.javaapi.mqtt
 declare namespace io.gatling.javaapi.mqtt {
   class PublishActionBuilder /* extends java.lang.Object implements io.gatling.javaapi.core.ActionBuilder*/ {
-    asScala(): any /*io.gatling.core.action.builder.ActionBuilder*/;
+    asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
     await(arg0: java.time.Duration): PublishActionBuilder$Checkable;
     await(
       arg0: java.time.Duration,
@@ -4653,7 +4653,7 @@ declare namespace io.gatling.javaapi.mqtt {
 } // end namespace io.gatling.javaapi.mqtt
 declare namespace io.gatling.javaapi.mqtt {
   class SubscribeActionBuilder$Checkable /* extends java.lang.Object implements io.gatling.javaapi.core.ActionBuilder*/ {
-    asScala(): any /*io.gatling.core.action.builder.ActionBuilder*/;
+    asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
     check(...arg0: io.gatling.javaapi.core.CheckBuilder[]): SubscribeActionBuilder$Checkable;
     check(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): SubscribeActionBuilder$Checkable;
     equals(arg0: any /*java.lang.Object*/): boolean;
@@ -4666,7 +4666,7 @@ declare namespace io.gatling.javaapi.mqtt {
 } // end namespace io.gatling.javaapi.mqtt
 declare namespace io.gatling.javaapi.mqtt {
   class SubscribeActionBuilder /* extends java.lang.Object implements io.gatling.javaapi.core.ActionBuilder*/ {
-    asScala(): any /*io.gatling.core.action.builder.ActionBuilder*/;
+    asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
     await(arg0: java.time.Duration): SubscribeActionBuilder$Checkable;
     await(arg0: long): SubscribeActionBuilder$Checkable;
     equals(arg0: any /*java.lang.Object*/): boolean;
@@ -4681,7 +4681,7 @@ declare namespace io.gatling.javaapi.mqtt {
 } // end namespace io.gatling.javaapi.mqtt
 declare namespace io.gatling.javaapi.mqtt {
   class WaitForMessagesActionBuilder /* extends java.lang.Object implements io.gatling.javaapi.core.ActionBuilder*/ {
-    asScala(): any /*io.gatling.core.action.builder.ActionBuilder*/;
+    asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
     equals(arg0: any /*java.lang.Object*/): boolean;
     timeout(arg0: java.time.Duration): WaitForMessagesActionBuilder;
     timeout(arg0: long): WaitForMessagesActionBuilder;
@@ -4719,8 +4719,8 @@ declare namespace io.grpc {
     getAuthority(): string;
     getCompressor(): string;
     getCredentials(): CallCredentials;
-    getDeadline(): any /*io.grpc.Deadline*/;
-    getExecutor(): any /*java.util.concurrent.Executor*/;
+    getDeadline(): any; /*io.grpc.Deadline*/
+    getExecutor(): any; /*java.util.concurrent.Executor*/
     getMaxInboundMessageSize(): int | null;
     getMaxOutboundMessageSize(): int | null;
     getOnReadyThreshold(): int | null;
@@ -4815,8 +4815,8 @@ declare namespace io.netty.handler.codec.http {
     getAsString(arg0: any /*java.lang.CharSequence*/): string;
     getInt(arg0: any /*java.lang.CharSequence*/): int | null;
     getInt(arg0: any /*java.lang.CharSequence*/, arg1: int): int;
-    getShort(arg0: any /*java.lang.CharSequence*/): any /*java.lang.Short*/;
-    getShort(arg0: any /*java.lang.CharSequence*/, arg1: any /*short*/): any /*short*/;
+    getShort(arg0: any /*java.lang.CharSequence*/): any; /*java.lang.Short*/
+    getShort(arg0: any /*java.lang.CharSequence*/, arg1: any /*short*/): any; /*short*/
     getTimeMillis(arg0: any /*java.lang.CharSequence*/): long | null;
     getTimeMillis(arg0: any /*java.lang.CharSequence*/, arg1: long): long;
     isEmpty(): boolean;
@@ -4835,7 +4835,7 @@ declare namespace io.netty.handler.codec.http {
     setInt(arg0: any /*java.lang.CharSequence*/, arg1: int): HttpHeaders;
     setShort(arg0: any /*java.lang.CharSequence*/, arg1: any /*short*/): HttpHeaders;
     size(): int;
-    spliterator(): any /*java.util.Spliterator*/;
+    spliterator(): any; /*java.util.Spliterator*/
     toString(): string;
     valueCharSequenceIterator(arg0: any /*java.lang.CharSequence*/): java.util.Iterator<any /*java.lang.CharSequence*/>;
     valueStringIterator(arg0: any /*java.lang.CharSequence*/): java.util.Iterator<string>;
@@ -4844,8 +4844,8 @@ declare namespace io.netty.handler.codec.http {
 declare namespace io.netty.handler.codec.http {
   class HttpResponseStatus /* extends java.lang.Object implements java.lang.Comparable<any>*/ {
     code(): int;
-    codeAsText(): any /*io.netty.util.AsciiString*/;
-    codeClass(): any /*io.netty.handler.codec.http.HttpStatusClass*/;
+    codeAsText(): any; /*io.netty.util.AsciiString*/
+    codeClass(): any; /*io.netty.handler.codec.http.HttpStatusClass*/
     compareTo(arg0: HttpResponseStatus): int;
     equals(arg0: any /*java.lang.Object*/): boolean;
     reasonPhrase(): string;
@@ -4933,7 +4933,7 @@ declare namespace io.netty.handler.codec.mqtt {
     add(arg0: any /*io.netty.handler.codec.mqtt.MqttProperties$MqttProperty*/): void;
     equals(arg0: any /*java.lang.Object*/): boolean;
     getProperties(arg0: int): java.util.List<any /*io.netty.handler.codec.mqtt.MqttProperties$MqttProperty*/>;
-    getProperty(arg0: int): any /*io.netty.handler.codec.mqtt.MqttProperties$MqttProperty*/;
+    getProperty(arg0: int): any; /*io.netty.handler.codec.mqtt.MqttProperties$MqttProperty*/
     isEmpty(): boolean;
     listAll(): java.util.Collection<any /*io.netty.handler.codec.mqtt.MqttProperties$MqttProperty*/>;
     toString(): string;
@@ -4951,12 +4951,12 @@ declare namespace io.netty.handler.codec.mqtt {
 } // end namespace io.netty.handler.codec.mqtt
 declare namespace java.lang {
   class String /* extends Object implements java.io.Serializable, Comparable<any>, CharSequence, java.lang.constant.Constable, java.lang.constant.ConstantDesc*/ {
-    charAt(arg0: int): any /*char*/;
-    chars(): any /*java.util.stream.IntStream*/;
+    charAt(arg0: int): any; /*char*/
+    chars(): any; /*java.util.stream.IntStream*/
     codePointAt(arg0: int): int;
     codePointBefore(arg0: int): int;
     codePointCount(arg0: int, arg1: int): int;
-    codePoints(): any /*java.util.stream.IntStream*/;
+    codePoints(): any; /*java.util.stream.IntStream*/
     compareTo(arg0: string): int;
     compareToIgnoreCase(arg0: string): int;
     concat(arg0: string): string;
@@ -5008,7 +5008,7 @@ declare namespace java.lang {
     stripIndent(): string;
     stripLeading(): string;
     stripTrailing(): string;
-    subSequence(arg0: int, arg1: int): any /*java.lang.CharSequence*/;
+    subSequence(arg0: int, arg1: int): any; /*java.lang.CharSequence*/
     substring(arg0: int): string;
     substring(arg0: int, arg1: int): string;
     toCharArray(): chararray;
@@ -5048,7 +5048,7 @@ declare namespace java.lang {
 declare namespace java.time {
   class Duration /* extends java.lang.Object implements java.time.temporal.TemporalAmount, java.lang.Comparable<any>, java.io.Serializable*/ {
     abs(): Duration;
-    addTo(arg0: any /*java.time.temporal.Temporal*/): any /*java.time.temporal.Temporal*/;
+    addTo(arg0: any /*java.time.temporal.Temporal*/): any; /*java.time.temporal.Temporal*/
     compareTo(arg0: Duration): int;
     dividedBy(arg0: Duration): long;
     dividedBy(arg0: long): Duration;
@@ -5078,7 +5078,7 @@ declare namespace java.time {
     plusMinutes(arg0: long): Duration;
     plusNanos(arg0: long): Duration;
     plusSeconds(arg0: long): Duration;
-    subtractFrom(arg0: any /*java.time.temporal.Temporal*/): any /*java.time.temporal.Temporal*/;
+    subtractFrom(arg0: any /*java.time.temporal.Temporal*/): any; /*java.time.temporal.Temporal*/
     toDays(): long;
     toDaysPart(): long;
     toHours(): long;
