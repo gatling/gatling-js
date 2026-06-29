@@ -10,13 +10,11 @@ export const findSimulations = async (sourcesFolder: string): Promise<Array<Simu
   const children = await fs.readdir(sourcesFolder, { recursive: false });
   const simulations = children
     .filter((path) => path.endsWith(".gatling.js") || path.endsWith(".gatling.ts"))
-    .map(
-      (path): SimulationFile => ({
-        path,
-        name: path.slice(0, -11),
-        type: path.endsWith(".ts") ? "typescript" : "javascript"
-      })
-    );
+    .map((path): SimulationFile => ({
+      path,
+      name: path.slice(0, -11),
+      type: path.endsWith(".ts") ? "typescript" : "javascript"
+    }));
   const duplicates = simulations.filter(
     (value, index) => simulations.findIndex((other) => other.name === value.name) !== index
   );
