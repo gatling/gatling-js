@@ -53,4 +53,4 @@ const arch = {
   arm64: "aarch64"
 }[osArch];
 
-const url = `https://github.com/graalvm/graalvm-ce-builds/releases/download/jdk-${versions.graalvm.jdk}/graalvm-community-jdk-${versions.graalvm.jdk}_${os}-${arch}_bin.${extension}`;
+const url = `https://github.com/graalvm/graalvm-ce-builds/releases/download/${versions.graalvm.jdkTag}/graalvm-community-jdk-${versions.graalvm.jdkVersion}_${os}-${arch}_bin.${extension}`;

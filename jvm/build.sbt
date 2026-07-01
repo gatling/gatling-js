@@ -14,8 +14,9 @@ Global / gatlingDevelopers := Seq(
 )
 
 val compilerRelease = 21
-val graalvmJdkVersion = "25.0.2"
-val graalvmJsVersion = "25.0.3"
+val graalvmJdkTag = "graal-25.1.3"
+val graalvmJdkVersion = "25i1-25.0.3"
+val graalvmJsVersion = "25.1.3"
 val gatlingVersion = "3.15.1"
 val gatlingGrpcVersion = "3.15.1"
 val gatlingMqttVersion = "3.15.1"
@@ -67,7 +68,8 @@ lazy val adapter = (project in file("adapter"))
       val content =
         s"""export const versions = {
            |  graalvm: {
-           |    jdk: "$graalvmJdkVersion",
+           |    jdkTag: "$graalvmJdkTag",
+           |    jdkVersion: "$graalvmJdkVersion",
            |    js: "$graalvmJsVersion"
            |  },
            |  java: {

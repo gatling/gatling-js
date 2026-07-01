@@ -15,7 +15,7 @@ const run = async () => {
 OS arch: ${osArch}
 Gatling JS version: ${versions.gatling.jsAdapter}
 Gatling version: ${versions.gatling.core}
-GraalVM version: ${versions.graalvm.jdk}
+GraalVM version: ${versions.graalvm.jdkVersion}
 GraalJS version: ${versions.graalvm.js}`);
 
   console.log("Initialize tmp directory...");
