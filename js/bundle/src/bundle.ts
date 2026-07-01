@@ -36,7 +36,7 @@ const metadata = JSON.stringify(
     version: versions.gatling.jsAdapter,
     "gatling-js": versions.gatling.jsAdapter,
     "gatling-core": versions.gatling.core,
-    graalvm: versions.graalvm.jdk,
+    graalvm: versions.graalvm.jdkVersion,
     graaljs: versions.graalvm.js
   },
   null,
