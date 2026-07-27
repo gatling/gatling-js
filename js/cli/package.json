@@ -24,7 +24,7 @@
   "types": "target/index.d.ts",
   "dependencies": {
     "@jspm/core": "2.1.0",
-    "archiver": "7.0.1",
+    "archiver": "8.0.0",
     "commander": "15.0.0",
     "esbuild": "0.28.1",
     "import-meta-resolve": "4.2.0",
@@ -33,7 +33,7 @@
     "readline-sync": "1.4.10"
   },
   "devDependencies": {
-    "@types/archiver": "7.0.0",
+    "@types/archiver": "8.0.0",
     "@types/make-fetch-happen": "10.0.4",
     "@types/node": "24.13.3",
     "@types/readline-sync": "1.4.8",

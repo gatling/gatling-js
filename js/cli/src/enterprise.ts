@@ -1,4 +1,4 @@
-import archiver from "archiver";
+import { ZipArchive } from "archiver";
 import fs from "fs";
 import { pipeline } from "stream/promises";
 import { constants as zConstants } from "zlib";
@@ -27,9 +27,7 @@ export const enterprisePackage = async (options: EnterprisePackageOptions): Prom
 
   const output = fs.createWriteStream(options.packageFile);
 
-  const archive = archiver("zip", {
-    zlib: { level: zConstants.Z_MAX_LEVEL }
-  });
+  const archive = new ZipArchive({ zlib: { level: zConstants.Z_MAX_LEVEL } });
   archive.on("warning", (err) => {
     // The pipeline will rethrow errors but not warnings. We don't want to ignore warnings from the archiver, because
     // they include things like 'no such file or directory'.
