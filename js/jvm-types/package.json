@@ -18,7 +18,8 @@
     "performance testing"
   ],
   "devDependencies": {
-    "typescript": "7.0.2"
+    "@typescript/native": "npm:typescript@7.0.2",
+    "typescript": "npm:@typescript/typescript6@6.0.2"
   },
   "scripts": {
     "clean": "rm -f ./index.js ./index.d.ts",
