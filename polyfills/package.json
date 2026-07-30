@@ -23,5 +23,10 @@
     "format": "prettier --write '**/*.(js|ts)'",
     "format-check": "prettier --check '**/*.(js|ts)'",
     "build": "tsup"
+  },
+  "overrides": {
+    "tsup": {
+      "esbuild": "$esbuild"
+    }
   }
 }
