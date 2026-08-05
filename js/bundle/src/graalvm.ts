@@ -3,7 +3,7 @@ import path from "node:path";
 import fs from "node:fs/promises";
 import { promisify } from "node:util";
 
-import decompress from "decompress";
+import decompress from "@xhmikosr/decompress";
 
 import { downloadFile } from "./download";
 import { osArch, osType } from "./os";
