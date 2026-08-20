@@ -16,10 +16,8 @@
 
 package io.gatling.js.callbacks;
 
-import java.util.function.Function;
-
 import io.gatling.javaapi.core.Session;
-
+import java.util.function.Function;
 import org.graalvm.polyglot.Value;
 import org.jspecify.annotations.NonNull;
 

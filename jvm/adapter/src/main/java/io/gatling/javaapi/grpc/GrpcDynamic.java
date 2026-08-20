@@ -16,6 +16,7 @@
 
 package io.gatling.javaapi.grpc;
 
+import com.google.protobuf.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -25,8 +26,6 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import com.google.protobuf.*;
 import org.graalvm.polyglot.Value;
 
 public class GrpcDynamic {

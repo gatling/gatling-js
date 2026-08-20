@@ -16,14 +16,12 @@
 
 package io.gatling.javaapi.grpc;
 
-import java.io.IOException;
-
 import io.gatling.javaapi.core.CheckBuilder;
 import io.gatling.javaapi.grpc.internal.GrpcCheckType;
 import io.gatling.js.Resources;
-
 import io.grpc.ChannelCredentials;
 import io.grpc.TlsChannelCredentials;
+import java.io.IOException;
 
 public class GrpcDslAddons {
 

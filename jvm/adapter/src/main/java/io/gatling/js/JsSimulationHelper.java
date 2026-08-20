@@ -16,6 +16,8 @@
 
 package io.gatling.js;
 
+import io.gatling.javaapi.core.PopulationBuilder;
+import io.gatling.javaapi.core.Simulation;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -27,10 +29,6 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
-
-import io.gatling.javaapi.core.PopulationBuilder;
-import io.gatling.javaapi.core.Simulation;
-
 import org.graalvm.polyglot.Source;
 import org.graalvm.polyglot.TypeLiteral;
 import org.graalvm.polyglot.Value;
