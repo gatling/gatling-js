@@ -1,8 +1,5 @@
 import scala.collection.Seq
 
-import net.moznion.sbt.spotless.Target
-import net.moznion.sbt.spotless.config.{ GoogleJavaFormatConfig, JavaConfig, SpotlessConfig }
-
 ThisBuild / scalaVersion := "2.13.18"
 ThisBuild / crossPaths := false
 
@@ -38,19 +35,7 @@ lazy val adapter = (project in file("adapter"))
     gatlingCompilerRelease := compilerRelease,
     Compile / javacOptions ++= Seq("-encoding", "utf8", "-Xdoclint:none"), // FIXME: see why -Xdoclint:none does not seem to work
     Test / javacOptions ++= Seq("-encoding", "utf8"),
-    spotless := SpotlessConfig(
-      applyOnCompile = !sys.env.getOrElse("CI", "false").toBoolean
-    ),
-    spotlessJava := {
-      val targetExclude = sourceManaged.value.relativeTo(baseDirectory.value)
-        .map(target => Target.IsString(target + "/**/*"))
-        .toSeq
-      JavaConfig(
-        googleJavaFormat = GoogleJavaFormatConfig(),
-        importOrder = Seq("java", "javax", "scala", "io.gatling", "", "\\#"),
-        targetExclude = targetExclude
-      )
-    },
+    javafmtOnCompile := !sys.env.getOrElse("CI", "false").toBoolean,
     autoScalaLibrary := false,
     libraryDependencies ++= Seq(
       "io.gatling.highcharts" % "gatling-charts-highcharts" % gatlingVersion % "provided",

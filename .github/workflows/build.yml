@@ -55,7 +55,7 @@ jobs:
           sbt \
             "project gatling-jvm-to-js-adapter" \
             headerCheckAll \
-            spotlessCheck \
+            javafmtCheckAll \
             scalafmtCheckAll \
             "scalafixAll --check" \
             compile \

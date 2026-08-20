@@ -16,12 +16,10 @@
 
 package io.gatling.js;
 
+import com.oracle.truffle.js.runtime.JSContextOptions;
+import io.gatling.js.fs.JsFileSystem;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import io.gatling.js.fs.JsFileSystem;
-
-import com.oracle.truffle.js.runtime.JSContextOptions;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.EnvironmentAccess;
 import org.graalvm.polyglot.HostAccess;
