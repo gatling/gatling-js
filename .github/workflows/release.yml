@@ -66,8 +66,10 @@ jobs:
 
       - name: Set version
         id: version
+        env:
+          TAG: ${{ github.ref_name }}
         run: |
-          version="$(cat jvm/adapter/target/release-info)"
+          version="${TAG#v}"
           echo "version=$version"
           echo "version=$version" >> $GITHUB_OUTPUT
 
