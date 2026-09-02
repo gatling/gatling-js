@@ -195,13 +195,6 @@ export const enterpriseDeploy = async (options: EnterpriseDeployOptions): Promis
   const additionalClasspathElements = [options.resourcesFolder];
   const javaArgs = javaArgsFromDeployOptions(options);
 
-  if (process.env["DEBUG"] === "true") {
-    logger.debug("Java arguments:");
-    for (let i = 0; i < javaArgs.length; i++) {
-      logger.debug("  " + javaArgs[i]);
-    }
-  }
-
   return runJavaProcess(
     options,
     "io.gatling.plugin.cli.EnterpriseDeploy",
@@ -235,13 +228,6 @@ export const enterpriseStart = async (options: EnterpriseStartOptions): Promise<
   }
   if (options.waitForRunEnd) {
     javaArgs.push("-Dgatling.enterprise.waitForRunEnd=true");
-  }
-
-  if (process.env["DEBUG"] === "true") {
-    logger.debug("Java arguments:");
-    for (let i = 0; i < javaArgs.length; i++) {
-      logger.debug("  " + javaArgs[i]);
-    }
   }
 
   return runJavaProcess(
