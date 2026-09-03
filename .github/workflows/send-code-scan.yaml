@@ -18,8 +18,8 @@ jobs:
 
       - name: Git commit and push
         env:
-          COMMIT_AUTHOR_EMAIL: ${{ secrets.GATLING_CI_EMAIL }}
-          COMMIT_AUTHOR_NAME: ${{ secrets.GATLING_CI_NAME }}
+          COMMIT_AUTHOR_EMAIL: ${{ vars.GATLING_CI_EMAIL }}
+          COMMIT_AUTHOR_NAME: ${{ vars.GATLING_CI_NAME }}
           GITHUB_REPO: gatling/gatling-js-code-scan
         run: |
           git config user.name "${COMMIT_AUTHOR_NAME}"
