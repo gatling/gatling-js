@@ -24,13 +24,16 @@ object Java2ts {
 
       val command: Seq[String] = Seq(
         "javac",
-        "-classpath", classpath,
+        "-classpath",
+        classpath,
         "-proc:only",
-        "-processor", "org.bsc.processor.TypescriptProcessor",
+        "-processor",
+        "org.bsc.processor.TypescriptProcessor",
         "-XprintRounds",
-        "-d", destinationDirectory.getAbsolutePath,
+        "-d",
+        destinationDirectory.getAbsolutePath,
         "-Acompatibility=graaljs",
-        s"-Ats.outfile=gatling",
+        s"-Ats.outfile=gatling"
       ) ++ filesToProcess
 
       failIfNonZeroExitStatus(command, "Failed to process annotations.", log)
