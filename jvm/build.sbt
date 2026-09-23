@@ -20,9 +20,11 @@ val gatlingMqttVersion = "3.15.1"
 val protocVersion = "4.35.1"
 
 // bit weird cause this is not a dependency of this project
-val gatlingEnterprisePluginCommonsVersion = "1.26.1"
+val gatlingEnterprisePluginCommonsVersion = "1.26.2"
+val coursierVersion = "2.1.24"
 
 lazy val root = (project in file("."))
+  .enablePlugins(GatlingOssPlugin)
   .aggregate(adapter, java2ts)
 
 // FIXME unused loggers
@@ -38,14 +40,14 @@ lazy val adapter = (project in file("adapter"))
     javafmtOnCompile := !sys.env.getOrElse("CI", "false").toBoolean,
     autoScalaLibrary := false,
     libraryDependencies ++= Seq(
-      "io.gatling.highcharts" % "gatling-charts-highcharts" % gatlingVersion % "provided",
-      "org.ow2.asm" % "asm-tree" % "9.10.1",
-      "io.gatling" % "gatling-grpc-java" % gatlingGrpcVersion % "provided",
-      "io.gatling" % "gatling-mqtt-java" % gatlingMqttVersion % "provided",
-      "org.graalvm.polyglot" % "js" % graalvmJsVersion,
-      "org.scala-lang" % "scala-library" % scalaVersion.value % "provided",
-      "org.scalatest" %% "scalatest" % "3.2.20" % Test
-),
+      "io.gatling.highcharts" % "gatling-charts-highcharts" % gatlingVersion     % "provided",
+      "org.ow2.asm"           % "asm-tree"                  % "9.10.1",
+      "io.gatling"            % "gatling-grpc-java"         % gatlingGrpcVersion % "provided",
+      "io.gatling"            % "gatling-mqtt-java"         % gatlingMqttVersion % "provided",
+      "org.graalvm.polyglot"  % "js"                        % graalvmJsVersion,
+      "org.scala-lang"        % "scala-library"             % scalaVersion.value % "provided",
+      "org.scalatest"        %% "scalatest"                 % "3.2.20"           % Test
+    ),
     Compile / sourceGenerators += Def.task {
       // Generate a file directly into the CLI project and bundle project to share version numbers
       val basePath = (ThisBuild / baseDirectory).value / ".."
@@ -69,11 +71,12 @@ lazy val adapter = (project in file("adapter"))
            |  },
            |  protobuf: {
            |    protoc: "$protocVersion"
-           |  }
+           |  },
+           |  coursier: "$coursierVersion"
            |};
            |""".stripMargin
       IO.write(basePath / "js" / "cli" / "src" / "dependencies" / "versions.ts", content)
-      IO.write(basePath / "js" / "bundle" / "src"/ "versions.ts", content)
+      IO.write(basePath / "js" / "bundle" / "src" / "versions.ts", content)
       // These files aren't actually part of _this_ project's sources, return empty Seq
       Seq()
     }.taskValue,
@@ -94,3 +97,15 @@ lazy val java2ts = (project in file("java2ts"))
     publish / skip := true
   )
   .settings(Java2ts.java2tsSettings)
+
+/**
+ * Dummy project used simply so that its dependencies (used by JS projects) are resolved and checked by Scala Steward.
+ */
+lazy val dummy = (project in file("dummy"))
+  .settings(
+    publish / skip := true,
+    libraryDependencies ++= Seq(
+      "io.gatling"       % "gatling-enterprise-plugin-commons" % gatlingEnterprisePluginCommonsVersion,
+      "io.get-coursier" %% "coursier"                          % coursierVersion
+    )
+  )

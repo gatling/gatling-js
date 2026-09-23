@@ -54,6 +54,7 @@ jobs:
         run: |
           sbt \
             "project gatling-jvm-to-js-adapter" \
+            scalafmtSbtCheck \
             headerCheckAll \
             javafmtCheckAll \
             scalafmtCheckAll \

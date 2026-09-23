@@ -42,8 +42,8 @@ const downloadCoursier = async (tmpDir: TmpDirStructure) => {
 
 const execAsync = promisify(exec);
 
-const jarUrl = "https://github.com/coursier/launchers/raw/master/coursier";
-const windowsLauncherUrl = "https://github.com/coursier/launchers/raw/master/coursier.bat";
+const jarUrl = `https://github.com/coursier/coursier/releases/download/v${versions.coursier}/coursier.jar`;
+const windowsLauncherUrl = `https://github.com/coursier/coursier/releases/download/v${versions.coursier}/coursier.bat`;
 
 const dependencies = [
   `"io.gatling.highcharts:gatling-charts-highcharts:${versions.gatling.core}"`,

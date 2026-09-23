@@ -15,7 +15,8 @@ object JsPolyfills {
     Compile / resourceGenerators += Def.task {
       val target = jsPolyfillsTargetDirectory.value
       val destination = (Compile / resourceManaged).value
-      val polyfills = (target ** "*.js").get()
+      val polyfills = (target ** "*.js")
+        .get()
         .flatMap(_ pair Path.rebase(target, destination / "@gatling.io" / "polyfills" / "target"))
       IO.copy(polyfills)
       polyfills.map(_._2)
