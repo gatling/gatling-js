@@ -11,9 +11,9 @@ Global / gatlingDevelopers := Seq(
 )
 
 val compilerRelease = 21
-val graalvmJdkTag = "graal-25.3.4.1"
-val graalvmJdkVersion = "25i3-25.0.4.1"
-val graalvmJsVersion = "25.3.4.1"
+val graalvmJdkTag = "graal-25.4.4.1.1"
+val graalvmJdkVersion = "25i4-25.0.4.1.1"
+val graalvmJsVersion = "25.4.4.1.1"
 val gatlingVersion = "3.15.1"
 val gatlingGrpcVersion = "3.15.1"
 val gatlingMqttVersion = "3.15.1"
