@@ -43,7 +43,8 @@ const downloadCoursier = async (tmpDir: TmpDirStructure) => {
 const execAsync = promisify(exec);
 
 const jarUrl = `https://github.com/coursier/coursier/releases/download/v${versions.coursier}/coursier.jar`;
-const windowsLauncherUrl = `https://github.com/coursier/coursier/releases/download/v${versions.coursier}/coursier.bat`;
+// Starting from Coursier 2.1.25+, we will be able to download coursier.bat from the same GH relase as coursier.jar
+const windowsLauncherUrl = "https://github.com/coursier/launchers/raw/master/coursier.bat";
 
 const dependencies = [
   `"io.gatling.highcharts:gatling-charts-highcharts:${versions.gatling.core}"`,
