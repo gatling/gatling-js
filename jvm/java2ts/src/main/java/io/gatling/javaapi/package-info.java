@@ -79,6 +79,7 @@
         @Type(value = io.gatling.javaapi.core.PauseType.Custom.class, export = true),
         @Type(value = io.gatling.javaapi.core.PauseType.UniformPercentage.class, export = true),
         @Type(value = io.gatling.javaapi.core.PauseType.UniformDuration.class, export = true),
+        @Type(value = io.gatling.javaapi.core.PerUserCounterBuilder.class, export = true),
         @Type(value = io.gatling.javaapi.core.PopulationBuilder.class, export = true),
         @Type(value = io.gatling.javaapi.core.ProtocolBuilder.class, export = true),
         @Type(value = io.gatling.javaapi.core.ScenarioBuilder.class, export = true),

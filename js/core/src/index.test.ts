@@ -145,6 +145,12 @@ const scn = scenario("scenario")
     counter("counter").shard(),
     counter("counter").startingAt(1).withIncrement(10).upTo(100).wrapAround().shard(),
     counter("counter").startingAt(1).withIncrement(10).upTo(100).wrapAround().perUser(),
+    counter("counter").perUser().startingAt("#{start}").withIncrement("#{increment}").upTo("#{end}"),
+    counter("counter")
+      .perUser()
+      .startingAt((session) => session.get("start"))
+      .withIncrement((session) => session.get("increment"))
+      .upTo((session) => session.get("end")),
     // queues
     myQueue.put("#{value}"),
     myQueue.put(1),
