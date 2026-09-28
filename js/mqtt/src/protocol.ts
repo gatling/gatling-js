@@ -62,6 +62,27 @@ export interface MqttProtocolBuilder extends ProtocolBuilder {
   // FIXME perUserKeyManagerFactory(f: (number) => KeyManagerFactory): MqttProtocolBuilder;
 
   /**
+   * Assign a KeyManagerFactory per virtual user, out of a single PKCS#12 keyStore that
+   * contains one key entry per virtual user. Entries are assigned in the keyStore aliases' natural
+   * order, the virtual user with the userId 1 getting the first one.
+   *
+   * <p>When running on Gatling Enterprise with multiple load generators, the aliases are sharded so
+   * that each load generator gets its own disjoint slice, hence a given key entry is never used by
+   * 2 different load generators.
+   *
+   * <p>The run is stopped once all the key entries have been assigned, so 2 virtual users never
+   * share the same one. The keyStore must hence contain at least as many key entries as the number
+   * of virtual users of the run.
+   *
+   * @param keyStorePath - the location of the PKCS#12 keyStore, either on the classpath or as an
+   * absolute path on the filesystem
+   * @param keyStorePassword - the keyStore password, also used to recover the key entries; omit if
+   * the keyStore is not password protected
+   * @returns a new MqttProtocolBuilder instance
+   */
+  perUserKeyManagerFactory(keyStorePath: string, keyStorePassword?: string): MqttProtocolBuilder;
+
+  /**
    * Define the clientId
    *
    * @param clientId - the clientId, expressed as a Gatling Expression Language String
@@ -254,7 +275,12 @@ const wrapMqttProtocolBuilder = (_underlying: JvmMqttProtocolBuilder): MqttProto
 
   useTls: (useTls): MqttProtocolBuilder => wrapMqttProtocolBuilder(_underlying.useTls(useTls)),
 
-  // FIXME perUserKeyManagerFactory(f: (number) => KeyManagerFactory): MqttProtocolBuilder;
+  perUserKeyManagerFactory: (keyStorePath, keyStorePassword) =>
+    wrapMqttProtocolBuilder(
+      keyStorePassword === undefined
+        ? _underlying.perUserKeyManagerFactory(keyStorePath)
+        : _underlying.perUserKeyManagerFactory(keyStorePath, keyStorePassword)
+    ),
 
   clientId: (clientId: Expression<string>) =>
     wrapMqttProtocolBuilder(
