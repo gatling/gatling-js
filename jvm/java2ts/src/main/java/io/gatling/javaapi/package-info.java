@@ -83,6 +83,8 @@
         @Type(value = io.gatling.javaapi.core.ProtocolBuilder.class, export = true),
         @Type(value = io.gatling.javaapi.core.ScenarioBuilder.class, export = true),
         @Type(value = io.gatling.javaapi.core.Session.class, export = true),
+        @Type(value = io.gatling.javaapi.core.SharedQueueBuilder.class, export = true),
+        @Type(value = io.gatling.javaapi.core.SharedQueueTakeBuilder.class, export = true),
         @Type(value = io.gatling.javaapi.core.Simulation.class, export = true),
         @Type(value = io.gatling.javaapi.core.Simulation.SetUp.class, export = true),
         @Type(value = io.gatling.javaapi.core.StructureBuilder.class, export = true),

@@ -35,6 +35,7 @@ import {
   repeat,
   scenario,
   separatedValues,
+  sharedQueue,
   ssv,
   stressPeakUsers,
   tsv,
@@ -80,6 +81,9 @@ GlobalStore.containsKey("key");
 GlobalStore.update<number>("key", (oldValue) => (oldValue === null ? 0 : oldValue + 1));
 GlobalStore.remove<number>("key");
 GlobalStore.clear();
+
+// queues
+const myQueue = sharedQueue("myQueue");
 
 // scenario
 const scn = scenario("scenario")
@@ -140,7 +144,16 @@ const scn = scenario("scenario")
     counter("counter").perUser(),
     counter("counter").shard(),
     counter("counter").startingAt(1).withIncrement(10).upTo(100).wrapAround().shard(),
-    counter("counter").startingAt(1).withIncrement(10).upTo(100).wrapAround().perUser()
+    counter("counter").startingAt(1).withIncrement(10).upTo(100).wrapAround().perUser(),
+    // queues
+    myQueue.put("#{value}"),
+    myQueue.put(1),
+    myQueue.put((session: Session) => session.get("value")),
+    myQueue.take("value"),
+    myQueue.take("value").timeout({ amount: 10, unit: "seconds" }),
+    myQueue.take("value").timeout(10),
+    myQueue.poll("value"),
+    myQueue.size("size")
   )
   // pauses
   .pause(1)
