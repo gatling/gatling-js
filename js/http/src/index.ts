@@ -67,6 +67,22 @@ export interface Http {
   get(url: (session: Session) => string): HttpRequestActionBuilder;
 
   /**
+   * Define a QUERY request
+   *
+   * @param url - the url, expressed as a Gatling Expression Language String
+   * @returns a new instance of HttpRequestActionBuilder
+   */
+  query(url: string): HttpRequestActionBuilder;
+
+  /**
+   * Define a QUERY request
+   *
+   * @param url - the url, expressed as a function
+   * @returns a new instance of HttpRequestActionBuilder
+   */
+  query(url: (session: Session) => string): HttpRequestActionBuilder;
+
+  /**
    * Define a PUT request
    *
    * @param url - the url, expressed as a Gatling Expression Language String
@@ -202,6 +218,10 @@ export interface Http {
 const wrapHttp = (jvmHttp: JvmHttp): Http => ({
   get: (url: Expression<string>): HttpRequestActionBuilder =>
     wrapHttpRequestActionBuilder(typeof url === "function" ? jvmHttp.get(underlyingSessionTo(url)) : jvmHttp.get(url)),
+  query: (url: Expression<string>): HttpRequestActionBuilder =>
+    wrapHttpRequestActionBuilder(
+      typeof url === "function" ? jvmHttp.query(underlyingSessionTo(url)) : jvmHttp.query(url)
+    ),
   put: (url: Expression<string>): HttpRequestActionBuilder =>
     wrapHttpRequestActionBuilder(typeof url === "function" ? jvmHttp.put(underlyingSessionTo(url)) : jvmHttp.put(url)),
   post: (url: Expression<string>): HttpRequestActionBuilder =>
