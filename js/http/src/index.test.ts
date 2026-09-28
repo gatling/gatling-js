@@ -68,6 +68,8 @@ const httpProtocol = http
   //      throw new RuntimeException(e);
   //    }
   //  })
+  .perUserKeyManagerFactory("keys/multi-alias.p12", "password")
+  .perUserKeyManagerFactory("keys/multi-alias.p12")
   .disableAutoReferer()
   .disableAutoOrigin()
   .disableCaching()

@@ -115,6 +115,27 @@ export interface HttpProtocolBuilder extends ProtocolBuilder {
   // TODO
   //perUserKeyManagerFactory(arg0: Func<long | null, any /*javax.net.ssl.KeyManagerFactory*/>): HttpProtocolBuilder;
 
+  /**
+   * Assign a KeyManagerFactory per virtual user, out of a single PKCS#12 keyStore that
+   * contains one key entry per virtual user. Entries are assigned in the keyStore aliases' natural
+   * order, the virtual user with the userId 1 getting the first one.
+   *
+   * When running on Gatling Enterprise with multiple load generators, the aliases are sharded so
+   * that each load generator gets its own disjoint slice, hence a given key entry is never used by
+   * 2 different load generators.
+   *
+   * The run is stopped once all the key entries have been assigned, so 2 virtual users never
+   * share the same one. The keyStore must hence contain at least as many key entries as the number
+   * of virtual users of the run.
+   *
+   * @param keyStorePath - the location of the PKCS#12 keyStore, either in the project resources or
+   * as an absolute path on the filesystem
+   * @param keyStorePassword - the keyStore password, also used to recover the key entries; omit if
+   * the keyStore is not password protected
+   * @returns a new HttpProtocolBuilder instance
+   */
+  perUserKeyManagerFactory(keyStorePath: string, keyStorePassword?: string): HttpProtocolBuilder;
+
   // Request part
 
   /**
@@ -835,7 +856,12 @@ export const wrapHttpProtocolBuilder = (_underlying: JvmHttpProtocolBuilder): Ht
     wrapHttpProtocolBuilder(_underlying.useAllLocalAddressesMatching(...patterns)),
   maxConnectionsPerHost: (max: int): HttpProtocolBuilder =>
     wrapHttpProtocolBuilder(_underlying.maxConnectionsPerHost(max)),
-  // TODO perUserKeyManagerFactory
+  perUserKeyManagerFactory: (keyStorePath, keyStorePassword): HttpProtocolBuilder =>
+    wrapHttpProtocolBuilder(
+      keyStorePassword === undefined
+        ? _underlying.perUserKeyManagerFactory(keyStorePath)
+        : _underlying.perUserKeyManagerFactory(keyStorePath, keyStorePassword)
+    ),
 
   // Request part
 
