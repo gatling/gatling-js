@@ -7,16 +7,25 @@ import JvmCheckBuilderCaptureGroup = io.gatling.javaapi.core.CheckBuilder$Captur
  */
 export interface CheckBuilderCaptureGroup extends CheckBuilderMultipleFind<string> {
   /**
-   * Define that the check extracts an expected number of values from capture groups
+   * Define that the check extracts all capture groups
+   *
+   * @returns a new MultipleFind
+   */
+  allCaptureGroups(): CheckBuilderMultipleFind<string[]>;
+
+  /**
+   * Define that the check extracts an expected number of capture groups
    *
    * @param count - the number of capture groups in the regular expression pattern
    * @returns a new MultipleFind
+   *
+   * @deprecated Use {@link allCaptureGroups} instead.
    */
   captureGroups(count: number): CheckBuilderMultipleFind<string[]>;
 }
 
 export const wrapCheckBuilderCaptureGroup = (_underlying: JvmCheckBuilderCaptureGroup): CheckBuilderCaptureGroup => ({
   ...wrapCheckBuilderMultipleFind<string>(_underlying),
-  captureGroups: (count: number): CheckBuilderMultipleFind<string[]> =>
-    wrapCheckBuilderMultipleFind(_underlying.captureGroups(count))
+  allCaptureGroups: () => wrapCheckBuilderMultipleFind(_underlying.allCaptureGroups()),
+  captureGroups: (count) => wrapCheckBuilderMultipleFind(_underlying.captureGroups(count))
 });
