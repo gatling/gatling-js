@@ -390,7 +390,7 @@ const scn = scenario("scenario")
         header("HEADER").is("BAR"),
         headerRegex("location", ".*&id_token=(.*)&state=.*").find().exists(),
         headerRegex("location", ".*&id_token=(.*)&state=.*").is("BAR"),
-        headerRegex("location", ".*&id_token=(.*)&state=.*").captureGroups(2),
+        headerRegex("location", ".*&id_token=(.*)&state=.*").allCaptureGroups(),
         currentLocation().is("https://gatling.io"),
         currentLocationRegex("code=(.+)&"),
         currentLocationRegex("foo").find().exists(),
