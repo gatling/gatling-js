@@ -575,6 +575,11 @@ interface CoreDslStatic {
   pause(arg0: long, arg1: long): io.gatling.javaapi.core.ChainBuilder;
   pause(arg0: long, arg1: long, arg2: io.gatling.javaapi.core.PauseType): io.gatling.javaapi.core.ChainBuilder;
   rendezVous(arg0: int): io.gatling.javaapi.core.ChainBuilder;
+  setInSession(arg0: string, arg1: string): io.gatling.javaapi.core.ChainBuilder;
+  setInSession(
+    arg0: Func<io.gatling.javaapi.core.Session, any /*java.lang.Object*/>,
+    arg1: string
+  ): io.gatling.javaapi.core.ChainBuilder;
   stopLoadGenerator(arg0: string): io.gatling.javaapi.core.ChainBuilder;
   stopLoadGenerator(arg0: Func<io.gatling.javaapi.core.Session, string>): io.gatling.javaapi.core.ChainBuilder;
   stopLoadGeneratorIf(arg0: string, arg1: string): io.gatling.javaapi.core.ChainBuilder;
@@ -646,6 +651,7 @@ interface CoreDslStatic {
   constantConcurrentUsers(arg0: int): io.gatling.javaapi.core.ClosedInjectionStep$Constant;
   rampConcurrentUsers(arg0: int): io.gatling.javaapi.core.ClosedInjectionStep$Ramp;
   incrementConcurrentUsers(arg0: int): io.gatling.javaapi.core.ClosedInjectionStep$Stairs;
+  counter(arg0: string): any /*io.gatling.javaapi.core.CounterBuilder*/;
   dummy(arg0: string, arg1: int): io.gatling.javaapi.core.DummyBuilder;
   dummy(arg0: string, arg1: string): io.gatling.javaapi.core.DummyBuilder;
   dummy(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, int | null>): io.gatling.javaapi.core.DummyBuilder;
@@ -656,18 +662,19 @@ interface CoreDslStatic {
     arg1: Func<io.gatling.javaapi.core.Session, int | null>
   ): io.gatling.javaapi.core.DummyBuilder;
   jsonFile(arg0: string): io.gatling.javaapi.core.FeederBuilder$FileBased<any /*java.lang.Object*/>;
-  csv(arg0: string): io.gatling.javaapi.core.FeederBuilder$FileBased<string>;
-  csv(arg0: string, arg1: any /*char*/): io.gatling.javaapi.core.FeederBuilder$FileBased<string>;
-  separatedValues(arg0: string, arg1: any /*char*/): io.gatling.javaapi.core.FeederBuilder$FileBased<string>;
+  jsonlFile(arg0: string): io.gatling.javaapi.core.FeederBuilder$FileBased<any /*java.lang.Object*/>;
+  csv(arg0: string): io.gatling.javaapi.core.FeederBuilder$SeparatedValues<string>;
+  csv(arg0: string, arg1: any /*char*/): io.gatling.javaapi.core.FeederBuilder$SeparatedValues<string>;
+  separatedValues(arg0: string, arg1: any /*char*/): io.gatling.javaapi.core.FeederBuilder$SeparatedValues<string>;
   separatedValues(
     arg0: string,
     arg1: any /*char*/,
     arg2: any /*char*/
-  ): io.gatling.javaapi.core.FeederBuilder$FileBased<string>;
-  ssv(arg0: string): io.gatling.javaapi.core.FeederBuilder$FileBased<string>;
-  ssv(arg0: string, arg1: any /*char*/): io.gatling.javaapi.core.FeederBuilder$FileBased<string>;
-  tsv(arg0: string): io.gatling.javaapi.core.FeederBuilder$FileBased<string>;
-  tsv(arg0: string, arg1: any /*char*/): io.gatling.javaapi.core.FeederBuilder$FileBased<string>;
+  ): io.gatling.javaapi.core.FeederBuilder$SeparatedValues<string>;
+  ssv(arg0: string): io.gatling.javaapi.core.FeederBuilder$SeparatedValues<string>;
+  ssv(arg0: string, arg1: any /*char*/): io.gatling.javaapi.core.FeederBuilder$SeparatedValues<string>;
+  tsv(arg0: string): io.gatling.javaapi.core.FeederBuilder$SeparatedValues<string>;
+  tsv(arg0: string, arg1: any /*char*/): io.gatling.javaapi.core.FeederBuilder$SeparatedValues<string>;
   arrayFeeder(
     arg0: java.util.Map<string, any /*java.lang.Object*/>[]
   ): io.gatling.javaapi.core.FeederBuilder<any /*java.lang.Object*/>;
@@ -693,6 +700,7 @@ interface CoreDslStatic {
   uniformPausesPlusOrMinusDuration(arg0: java.time.Duration): io.gatling.javaapi.core.PauseType;
   uniformPausesPlusOrMinusPercentage(arg0: double): io.gatling.javaapi.core.PauseType;
   scenario(arg0: string): io.gatling.javaapi.core.ScenarioBuilder;
+  sharedQueue(arg0: string): any /*io.gatling.javaapi.core.SharedQueueBuilder*/;
   holdFor(arg0: java.time.Duration): io.gatling.javaapi.core.ThrottleStep;
   holdFor(arg0: long): io.gatling.javaapi.core.ThrottleStep;
   jumpToRps(arg0: int): io.gatling.javaapi.core.ThrottleStep;
@@ -1391,6 +1399,14 @@ interface FeederBuilder$FileBasedStatic {
 
 export const FeederBuilder$FileBased: FeederBuilder$FileBasedStatic = Java.type(
   "io.gatling.javaapi.core.FeederBuilder$FileBased"
+);
+
+interface FeederBuilder$SeparatedValuesStatic {
+  readonly class: any;
+}
+
+export const FeederBuilder$SeparatedValues: FeederBuilder$SeparatedValuesStatic = Java.type(
+  "io.gatling.javaapi.core.FeederBuilder$SeparatedValues"
 );
 
 interface FeederBuilderStatic {
