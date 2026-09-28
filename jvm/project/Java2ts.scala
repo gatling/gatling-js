@@ -24,6 +24,8 @@ object Java2ts {
 
       val command: Seq[String] = Seq(
         "javac",
+        "-J--enable-native-access=ALL-UNNAMED",
+        "-J--sun-misc-unsafe-memory-access=allow",
         "-classpath",
         classpath,
         "-proc:only",
@@ -33,7 +35,7 @@ object Java2ts {
         "-d",
         destinationDirectory.getAbsolutePath,
         "-Acompatibility=graaljs",
-        s"-Ats.outfile=gatling"
+        "-Ats.outfile=gatling"
       ) ++ filesToProcess
 
       failIfNonZeroExitStatus(command, "Failed to process annotations.", log)
