@@ -1,6 +1,7 @@
 import { CoreDsl as JvmCoreDsl } from "@gatling.io/jvm-types";
 import JvmFeederBuilder = io.gatling.javaapi.core.FeederBuilder;
 import JvmFeederBuilderFileBased = io.gatling.javaapi.core.FeederBuilder$FileBased;
+import JvmFeederBuilderSeparatedValues = io.gatling.javaapi.core.FeederBuilder$SeparatedValues;
 
 import { Wrapper } from "./common";
 
@@ -87,11 +88,11 @@ const wrapFeederBuilder = <T>(_underlying: JvmFeederBuilder<T>): FeederBuilder<T
 });
 
 export interface FileBasedFeederBuilder<T> extends FeederBuilder<T> {
-  /**
-   * Advice to unzip the underlying source because it's a zip or tar file
-   *
-   * @returns a new FileBased
-   */
+  queue(): FileBasedFeederBuilder<T>;
+  random(): FileBasedFeederBuilder<T>;
+  shuffle(): FileBasedFeederBuilder<T>;
+  circular(): FileBasedFeederBuilder<T>;
+  shard(): FileBasedFeederBuilder<T>;
   unzip(): FileBasedFeederBuilder<T>;
 }
 
@@ -109,6 +110,41 @@ export const wrapFileBasedFeederBuilder = <T>(
   unzip: () => wrapFileBasedFeederBuilder(_underlying.unzip())
 });
 
+export interface SeparatedValuesFeederBuilder<T> extends FileBasedFeederBuilder<T> {
+  queue(): SeparatedValuesFeederBuilder<T>;
+  random(): SeparatedValuesFeederBuilder<T>;
+  shuffle(): SeparatedValuesFeederBuilder<T>;
+  circular(): SeparatedValuesFeederBuilder<T>;
+  shard(): SeparatedValuesFeederBuilder<T>;
+  unzip(): SeparatedValuesFeederBuilder<T>;
+
+  /**
+   * Provide the column names of a file that doesn't have a header line. The first line of the
+   * file is then a record like all the other ones.
+   *
+   * @param firstHeader - the first column name
+   * @param otherHeaders - the other column names
+   * @returns a new SeparatedValuesFeederBuilder
+   */
+  headers(firstHeader: string, ...otherHeaders: string[]): SeparatedValuesFeederBuilder<T>;
+}
+
+export const wrapSeparatedValuesFeederBuilder = <T>(
+  _underlying: JvmFeederBuilderSeparatedValues<T>
+): SeparatedValuesFeederBuilder<T> => ({
+  _underlying,
+  queue: () => wrapSeparatedValuesFeederBuilder(_underlying.queue()),
+  random: () => wrapSeparatedValuesFeederBuilder(_underlying.random()),
+  shuffle: () => wrapSeparatedValuesFeederBuilder(_underlying.shuffle()),
+  circular: () => wrapSeparatedValuesFeederBuilder(_underlying.circular()),
+  transform: (f: (name: string, value: T) => unknown) => wrapFeederBuilder(_underlying.transform(f)),
+  recordsCount: () => _underlying.recordsCount(),
+  shard: () => wrapSeparatedValuesFeederBuilder(_underlying.shard()),
+  unzip: () => wrapSeparatedValuesFeederBuilder(_underlying.unzip()),
+  headers: (firstHeader, ...otherHeaders) =>
+    wrapSeparatedValuesFeederBuilder(_underlying.headers(firstHeader, ...otherHeaders))
+});
+
 export interface CsvFunction {
   /**
    * Bootstrap a new {@link https://datatracker.ietf.org/doc/html/rfc4180 | CSV file} based feeder
@@ -116,7 +152,7 @@ export interface CsvFunction {
    * @param filePath - the path of the file, relative to the root of the resources folder
    * @returns a new feeder
    */
-  (filePath: string): FileBasedFeederBuilder<string>;
+  (filePath: string): SeparatedValuesFeederBuilder<string>;
 
   /**
    * Bootstrap a new {@link https://datatracker.ietf.org/doc/html/rfc4180 | CSV file} based feeder
@@ -125,11 +161,13 @@ export interface CsvFunction {
    * @param quoteChar - the quote char to wrap values containing special characters
    * @returns a new feeder
    */
-  (filePath: string, quoteChar: string): FileBasedFeederBuilder<string>;
+  (filePath: string, quoteChar: string): SeparatedValuesFeederBuilder<string>;
 }
 
-export const csv: CsvFunction = (filePath: string, quoteChar?: string): FileBasedFeederBuilder<string> =>
-  wrapFileBasedFeederBuilder(quoteChar !== undefined ? JvmCoreDsl.csv(filePath, quoteChar) : JvmCoreDsl.csv(filePath));
+export const csv: CsvFunction = (filePath, quoteChar?: string) =>
+  wrapSeparatedValuesFeederBuilder(
+    quoteChar !== undefined ? JvmCoreDsl.csv(filePath, quoteChar) : JvmCoreDsl.csv(filePath)
+  );
 
 export interface SsvFunction {
   /**
@@ -139,7 +177,7 @@ export interface SsvFunction {
    * @param filePath - the path of the file, relative to the root of the resources folder
    * @returns a new feeder
    */
-  (filePath: string): FileBasedFeederBuilder<string>;
+  (filePath: string): SeparatedValuesFeederBuilder<string>;
 
   /**
    * Bootstrap a new {@link https://datatracker.ietf.org/doc/html/rfc4180 | CSV file} based feeder, where the separator
@@ -149,11 +187,13 @@ export interface SsvFunction {
    * @param quoteChar - the quote char to wrap values containing special characters (must be a single character)
    * @returns a new feeder
    */
-  (filePath: string, quoteChar: string): FileBasedFeederBuilder<string>;
+  (filePath: string, quoteChar: string): SeparatedValuesFeederBuilder<string>;
 }
 
-export const ssv: SsvFunction = (filePath: string, quoteChar?: string) =>
-  wrapFileBasedFeederBuilder(quoteChar !== undefined ? JvmCoreDsl.ssv(filePath, quoteChar) : JvmCoreDsl.ssv(filePath));
+export const ssv: SsvFunction = (filePath, quoteChar?: string) =>
+  wrapSeparatedValuesFeederBuilder(
+    quoteChar !== undefined ? JvmCoreDsl.ssv(filePath, quoteChar) : JvmCoreDsl.ssv(filePath)
+  );
 
 export interface TsvFunction {
   /**
@@ -163,7 +203,7 @@ export interface TsvFunction {
    * @param filePath - the path of the file, relative to the root of the resources folder
    * @returns a new feeder
    */
-  (filePath: string): FileBasedFeederBuilder<string>;
+  (filePath: string): SeparatedValuesFeederBuilder<string>;
 
   /**
    * Bootstrap a new {@link https://datatracker.ietf.org/doc/html/rfc4180 | CSV file} based feeder, where the separator
@@ -173,11 +213,13 @@ export interface TsvFunction {
    * @param quoteChar - the quote char to wrap values containing special characters (must be a single character)
    * @returns a new feeder
    */
-  (filePath: string, quoteChar: string): FileBasedFeederBuilder<string>;
+  (filePath: string, quoteChar: string): SeparatedValuesFeederBuilder<string>;
 }
 
-export const tsv: TsvFunction = (filePath: string, quoteChar?: string) =>
-  wrapFileBasedFeederBuilder(quoteChar !== undefined ? JvmCoreDsl.tsv(filePath, quoteChar) : JvmCoreDsl.tsv(filePath));
+export const tsv: TsvFunction = (filePath, quoteChar?: string) =>
+  wrapSeparatedValuesFeederBuilder(
+    quoteChar !== undefined ? JvmCoreDsl.tsv(filePath, quoteChar) : JvmCoreDsl.tsv(filePath)
+  );
 
 export interface SeparatedValuesFunction {
   /**
@@ -188,7 +230,7 @@ export interface SeparatedValuesFunction {
    * @param separator - the provided separator char (must be a single character)
    * @returns a new feeder
    */
-  (filePath: string, separator: string): FileBasedFeederBuilder<string>;
+  (filePath: string, separator: string): SeparatedValuesFeederBuilder<string>;
 
   /**
    * Bootstrap a new {@link https://datatracker.ietf.org/doc/html/rfc4180 | CSV file} based feeder, where the separator
@@ -199,11 +241,11 @@ export interface SeparatedValuesFunction {
    * @param quoteChar - the quote char to wrap values containing special characters (must be a single character)
    * @returns a new feeder
    */
-  (filePath: string, separator: string, quoteChar: string): FileBasedFeederBuilder<string>;
+  (filePath: string, separator: string, quoteChar: string): SeparatedValuesFeederBuilder<string>;
 }
 
-export const separatedValues: SeparatedValuesFunction = (filePath: string, separator: string, quoteChar?: string) =>
-  wrapFileBasedFeederBuilder(
+export const separatedValues: SeparatedValuesFunction = (filePath, separator, quoteChar?: string) =>
+  wrapSeparatedValuesFeederBuilder(
     quoteChar !== undefined
       ? JvmCoreDsl.separatedValues(filePath, separator, quoteChar)
       : JvmCoreDsl.separatedValues(filePath, separator)
