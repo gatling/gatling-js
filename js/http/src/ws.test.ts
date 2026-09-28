@@ -106,6 +106,10 @@ const chain = exec(
         .then(bodyLength().lte(10))
         .silent()
     ),
+  ws("Wait for a message")
+    .setCheck()
+    .await(30)
+    .on(ws.checkTextMessage("checkName").check(jsonPath("$.foo"))),
   ws("Close WS").close(),
   ws("Close WS").close(1000, "Bye"),
   ws("Open Named", "foo").connect("/bar"),
