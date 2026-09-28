@@ -11,6 +11,7 @@ import {
   atOnceUsers,
   constantConcurrentUsers,
   constantUsersPerSec,
+  counter,
   csv,
   details,
   exec,
@@ -129,6 +130,18 @@ const scn = scenario("scenario")
   //        })
   //      .iterator())
   .feed(arrayFeeder([{ foo: "foo1" }, { foo: "foo2" }]))
+  .exec(
+    // counters
+    counter("counter"),
+    counter("counter").startingAt(1),
+    counter("counter").withIncrement(10),
+    counter("counter").upTo(100),
+    counter("counter").wrapAround(),
+    counter("counter").perUser(),
+    counter("counter").shard(),
+    counter("counter").startingAt(1).withIncrement(10).upTo(100).wrapAround().shard(),
+    counter("counter").startingAt(1).withIncrement(10).upTo(100).wrapAround().perUser()
+  )
   // pauses
   .pause(1)
   .pause({ amount: 100, unit: "milliseconds" })

@@ -876,6 +876,20 @@ declare namespace io.gatling.javaapi.core {
   } // end CoreDsl
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
+  class CounterBuilder /* extends java.lang.Object implements ActionBuilder*/ {
+    asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    perUser(): any; /*io.gatling.javaapi.core.PerUserCounterBuilder*/
+    shard(): CounterBuilder;
+    startingAt(arg0: int): CounterBuilder;
+    toChainBuilder(): ChainBuilder;
+    toString(): string;
+    upTo(arg0: int): CounterBuilder;
+    withIncrement(arg0: int): CounterBuilder;
+    wrapAround(): CounterBuilder;
+  } // end CounterBuilder
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
   class DummyBuilder /* extends java.lang.Object implements ActionBuilder*/ {
     asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
     equals(arg0: any /*java.lang.Object*/): boolean;

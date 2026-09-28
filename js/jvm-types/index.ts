@@ -651,7 +651,7 @@ interface CoreDslStatic {
   constantConcurrentUsers(arg0: int): io.gatling.javaapi.core.ClosedInjectionStep$Constant;
   rampConcurrentUsers(arg0: int): io.gatling.javaapi.core.ClosedInjectionStep$Ramp;
   incrementConcurrentUsers(arg0: int): io.gatling.javaapi.core.ClosedInjectionStep$Stairs;
-  counter(arg0: string): any /*io.gatling.javaapi.core.CounterBuilder*/;
+  counter(arg0: string): io.gatling.javaapi.core.CounterBuilder;
   dummy(arg0: string, arg1: int): io.gatling.javaapi.core.DummyBuilder;
   dummy(arg0: string, arg1: string): io.gatling.javaapi.core.DummyBuilder;
   dummy(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, int | null>): io.gatling.javaapi.core.DummyBuilder;
@@ -1192,6 +1192,13 @@ interface CoreDslStatic {
 }
 
 export const CoreDsl: CoreDslStatic = Java.type("io.gatling.javaapi.core.CoreDsl");
+
+interface CounterBuilderStatic {
+  readonly class: any;
+  new (arg0: string): io.gatling.javaapi.core.CounterBuilder;
+}
+
+export const CounterBuilder: CounterBuilderStatic = Java.type("io.gatling.javaapi.core.CounterBuilder");
 
 interface Descriptors$DescriptorStatic {
   readonly class: any;
