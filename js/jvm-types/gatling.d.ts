@@ -769,6 +769,8 @@ declare namespace io.gatling.javaapi.core {
     repeat<T>(arg0: string): io.gatling.javaapi.core.loop.Repeat$On<T>;
     repeat<T>(arg0: string, arg1: string): io.gatling.javaapi.core.loop.Repeat$On<T>;
     roundRobinSwitch<T>(): io.gatling.javaapi.core.condition.RoundRobinSwitch$On<T>;
+    setInSession<T>(arg0: Func<Session, any /*java.lang.Object*/>, arg1: string): T;
+    setInSession<T>(arg0: string, arg1: string): T;
     stopLoadGenerator<T>(arg0: Func<Session, string>): T;
     stopLoadGenerator<T>(arg0: string): T;
     stopLoadGeneratorIf<T>(arg0: Func<Session, string>, arg1: Func<Session, boolean | null>): T;
@@ -1446,6 +1448,8 @@ declare namespace io.gatling.javaapi.core {
     repeat<T>(arg0: string): io.gatling.javaapi.core.loop.Repeat$On<T>;
     repeat<T>(arg0: string, arg1: string): io.gatling.javaapi.core.loop.Repeat$On<T>;
     roundRobinSwitch<T>(): io.gatling.javaapi.core.condition.RoundRobinSwitch$On<T>;
+    setInSession<T>(arg0: Func<Session, any /*java.lang.Object*/>, arg1: string): T;
+    setInSession<T>(arg0: string, arg1: string): T;
     stopLoadGenerator<T>(arg0: Func<Session, string>): T;
     stopLoadGenerator<T>(arg0: string): T;
     stopLoadGeneratorIf<T>(arg0: Func<Session, string>, arg1: Func<Session, boolean | null>): T;
@@ -1522,10 +1526,7 @@ declare namespace io.gatling.javaapi.core {
     after(): void;
     before(): void;
     equals(arg0: any /*java.lang.Object*/): boolean;
-    params(
-      arg0: any /*io.gatling.core.config.GatlingConfiguration*/,
-      arg1: string
-    ): any; /*io.gatling.core.scenario.SimulationParams*/
+    params(arg0: string): any; /*io.gatling.core.scenario.SimulationParams*/
     setUp(...arg0: PopulationBuilder[]): Simulation$SetUp;
     setUp(arg0: java.util.List<PopulationBuilder>): Simulation$SetUp;
     toString(): string;
@@ -1955,6 +1956,8 @@ declare namespace io.gatling.javaapi.core {
     repeat(arg0: string): io.gatling.javaapi.core.loop.Repeat$On<T>;
     repeat(arg0: string, arg1: string): io.gatling.javaapi.core.loop.Repeat$On<T>;
     roundRobinSwitch(): io.gatling.javaapi.core.condition.RoundRobinSwitch$On<T>;
+    setInSession(arg0: Func<Session, any /*java.lang.Object*/>, arg1: string): T;
+    setInSession(arg0: string, arg1: string): T;
     stopLoadGenerator(arg0: Func<Session, string>): T;
     stopLoadGenerator(arg0: string): T;
     stopLoadGeneratorIf(arg0: Func<Session, string>, arg1: Func<Session, boolean | null>): T;
@@ -2022,6 +2025,7 @@ declare namespace io.gatling.javaapi.core {
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
   interface CheckBuilder$CaptureGroupCheckBuilder /* extends CheckBuilder$MultipleFind<any>*/ {
+    allCaptureGroups(): CheckBuilder$MultipleFind<java.util.List<string>>;
     asScala(): any /*io.gatling.core.check.CheckBuilder*/;
     captureGroups(arg0: int): CheckBuilder$MultipleFind<java.util.List<string>>;
     count(): CheckBuilder$Validate<int | null>;
@@ -2372,6 +2376,21 @@ declare namespace io.gatling.javaapi.core {
   } // end FeederBuilder$FileBased
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
+  interface FeederBuilder$SeparatedValues<T> /* extends FeederBuilder$FileBased<T>*/ {
+    asScala(): any /*scala.Function0*/;
+    circular(): FeederBuilder$SeparatedValues<T>;
+    headers(arg0: string, ...arg1: string[]): FeederBuilder$SeparatedValues<T>;
+    queue(): FeederBuilder$SeparatedValues<T>;
+    random(): FeederBuilder$SeparatedValues<T>;
+    readRecords(): java.util.List<java.util.Map<string, any /*java.lang.Object*/>>;
+    recordsCount(): int;
+    shard(): FeederBuilder$SeparatedValues<T>;
+    shuffle(): FeederBuilder$SeparatedValues<T>;
+    transform(arg0: BiFunction<string, T, any /*java.lang.Object*/>): FeederBuilder<any /*java.lang.Object*/>;
+    unzip(): FeederBuilder$SeparatedValues<T>;
+  } // end FeederBuilder$SeparatedValues
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
   interface FeederBuilder<T> {
     asScala(): any /*scala.Function0*/;
     circular(): FeederBuilder<T>;
@@ -2626,6 +2645,8 @@ declare namespace io.gatling.javaapi.core.exec {
     exec(arg0: Executable, ...arg1: Executable[]): T;
     exec(arg0: Func<io.gatling.javaapi.core.Session, io.gatling.javaapi.core.Session>): T;
     exec(arg0: java.util.List<io.gatling.javaapi.core.ChainBuilder>): T;
+    setInSession(arg0: Func<io.gatling.javaapi.core.Session, any /*java.lang.Object*/>, arg1: string): T;
+    setInSession(arg0: string, arg1: string): T;
   } // end Execs
 } // end namespace io.gatling.javaapi.core.exec
 declare namespace io.gatling.javaapi.core.exec {
@@ -3498,6 +3519,8 @@ declare namespace io.gatling.javaapi.http {
     post(arg0: string): HttpRequestActionBuilder;
     put(arg0: Func<io.gatling.javaapi.core.Session, string>): HttpRequestActionBuilder;
     put(arg0: string): HttpRequestActionBuilder;
+    query(arg0: Func<io.gatling.javaapi.core.Session, string>): HttpRequestActionBuilder;
+    query(arg0: string): HttpRequestActionBuilder;
     toString(): string;
   } // end Http
 } // end namespace io.gatling.javaapi.http
@@ -3605,7 +3628,10 @@ declare namespace io.gatling.javaapi.http {
     originHeader(arg0: Func<io.gatling.javaapi.core.Session, string>): HttpProtocolBuilder;
     originHeader(arg0: string): HttpProtocolBuilder;
     perUserKeyManagerFactory(arg0: Func<long | null, any /*javax.net.ssl.KeyManagerFactory*/>): HttpProtocolBuilder;
+    perUserKeyManagerFactory(arg0: string): HttpProtocolBuilder;
+    perUserKeyManagerFactory(arg0: string, arg1: string): HttpProtocolBuilder;
     perUserNameResolution(): HttpProtocolBuilder;
+    postCheck(arg0: Func<io.gatling.javaapi.core.Session, io.gatling.javaapi.core.Session>): HttpProtocolBuilder;
     protocol(): any; /*io.gatling.core.protocol.Protocol*/
     proxy(arg0: Proxy): HttpProtocolBuilder;
     proxyProtocolSourceIpV4Address(arg0: Func<io.gatling.javaapi.core.Session, string>): HttpProtocolBuilder;
@@ -3759,6 +3785,7 @@ declare namespace io.gatling.javaapi.http {
     multivaluedQueryParam<T>(arg0: string, arg1: java.util.List<any /*java.lang.Object*/>): T;
     multivaluedQueryParam<T>(arg0: string, arg1: string): T;
     notSilent(): HttpRequestActionBuilder;
+    postCheck(arg0: Func<io.gatling.javaapi.core.Session, io.gatling.javaapi.core.Session>): HttpRequestActionBuilder;
     processRequestBody<T>(arg0: Func<io.gatling.javaapi.core.Body, io.gatling.javaapi.core.Body>): T;
     proxy<T>(arg0: Proxy): T;
     queryParam<T>(
@@ -4224,6 +4251,7 @@ declare namespace io.gatling.javaapi.http {
     equals(arg0: any /*java.lang.Object*/): boolean;
     matching(...arg0: io.gatling.javaapi.core.CheckBuilder[]): SseMessageCheck;
     matching(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): SseMessageCheck;
+    postCheck(arg0: Func<io.gatling.javaapi.core.Session, io.gatling.javaapi.core.Session>): SseMessageCheck;
     toString(): string;
   } // end SseMessageCheck
 } // end namespace io.gatling.javaapi.http
@@ -4300,6 +4328,7 @@ declare namespace io.gatling.javaapi.http {
     sendBytes(arg0: string): WsSendBinaryActionBuilder;
     sendText(arg0: Func<io.gatling.javaapi.core.Session, string>): WsSendTextActionBuilder;
     sendText(arg0: string): WsSendTextActionBuilder;
+    setCheck(): any; /*io.gatling.javaapi.http.WsSetCheckActionBuilder*/
     toString(): string;
     wsName(arg0: Func<io.gatling.javaapi.core.Session, string>): Ws;
     wsName(arg0: string): Ws;
@@ -4316,6 +4345,7 @@ declare namespace io.gatling.javaapi.http {
 declare namespace io.gatling.javaapi.http {
   class WsConnectActionBuilder /* extends RequestActionBuilder<any, any> implements WsAwaitActionBuilder<any, any>*/ {
     asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
+    autoReplyTextFrame(arg0: Func<string, string>): WsConnectActionBuilder;
     await<T>(arg0: Func<io.gatling.javaapi.core.Session, java.time.Duration>): WsAwaitActionBuilder$On<T>;
     await<T>(arg0: java.time.Duration): WsAwaitActionBuilder$On<T>;
     await<T>(arg0: long): WsAwaitActionBuilder$On<T>;
@@ -4401,6 +4431,7 @@ declare namespace io.gatling.javaapi.http {
     equals(arg0: any /*java.lang.Object*/): boolean;
     matching(...arg0: io.gatling.javaapi.core.CheckBuilder[]): WsFrameCheck$Binary;
     matching(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): WsFrameCheck$Binary;
+    postCheck(arg0: Func<io.gatling.javaapi.core.Session, io.gatling.javaapi.core.Session>): WsFrameCheck$Binary;
     silent(): WsFrameCheck$Binary;
     toString(): string;
   } // end WsFrameCheck$Binary
@@ -4416,6 +4447,7 @@ declare namespace io.gatling.javaapi.http {
     equals(arg0: any /*java.lang.Object*/): boolean;
     matching(...arg0: io.gatling.javaapi.core.CheckBuilder[]): WsFrameCheck$Text;
     matching(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): WsFrameCheck$Text;
+    postCheck(arg0: Func<io.gatling.javaapi.core.Session, io.gatling.javaapi.core.Session>): WsFrameCheck$Text;
     silent(): WsFrameCheck$Text;
     toString(): string;
   } // end WsFrameCheck$Text
@@ -4514,6 +4546,8 @@ declare namespace io.gatling.javaapi.mqtt {
     mqttVersion_3_1_1<T>(): T;
     mqttVersion_5<T>(): T;
     perUserKeyManagerFactory<T>(arg0: Func<long | null, any /*javax.net.ssl.KeyManagerFactory*/>): T;
+    perUserKeyManagerFactory<T>(arg0: string): T;
+    perUserKeyManagerFactory<T>(arg0: string, arg1: string): T;
     processUnmatchedMessages(
       arg0: string,
       arg1: BiFunction<
@@ -4583,6 +4617,8 @@ declare namespace io.gatling.javaapi.mqtt {
     mqttVersion_3_1_1<T>(): T;
     mqttVersion_5<T>(): T;
     perUserKeyManagerFactory<T>(arg0: Func<long | null, any /*javax.net.ssl.KeyManagerFactory*/>): T;
+    perUserKeyManagerFactory<T>(arg0: string): T;
+    perUserKeyManagerFactory<T>(arg0: string, arg1: string): T;
     protocol(): any; /*io.gatling.core.protocol.Protocol*/
     qosAtLeastOnce<T>(): T;
     qosAtMostOnce<T>(): T;
