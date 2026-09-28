@@ -879,7 +879,7 @@ declare namespace io.gatling.javaapi.core {
   class CounterBuilder /* extends java.lang.Object implements ActionBuilder*/ {
     asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
     equals(arg0: any /*java.lang.Object*/): boolean;
-    perUser(): any; /*io.gatling.javaapi.core.PerUserCounterBuilder*/
+    perUser(): PerUserCounterBuilder;
     shard(): CounterBuilder;
     startingAt(arg0: int): CounterBuilder;
     toChainBuilder(): ChainBuilder;
@@ -1008,6 +1008,24 @@ declare namespace io.gatling.javaapi.core {
     equals(arg0: any /*java.lang.Object*/): boolean;
     toString(): string;
   } // end PauseType
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
+  class PerUserCounterBuilder /* extends java.lang.Object implements ActionBuilder*/ {
+    asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    startingAt(arg0: Func<Session, int | null>): PerUserCounterBuilder;
+    startingAt(arg0: int): PerUserCounterBuilder;
+    startingAt(arg0: string): PerUserCounterBuilder;
+    toChainBuilder(): ChainBuilder;
+    toString(): string;
+    upTo(arg0: Func<Session, int | null>): PerUserCounterBuilder;
+    upTo(arg0: int): PerUserCounterBuilder;
+    upTo(arg0: string): PerUserCounterBuilder;
+    withIncrement(arg0: Func<Session, int | null>): PerUserCounterBuilder;
+    withIncrement(arg0: int): PerUserCounterBuilder;
+    withIncrement(arg0: string): PerUserCounterBuilder;
+    wrapAround(): PerUserCounterBuilder;
+  } // end PerUserCounterBuilder
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
   class PopulationBuilder /* extends java.lang.Object*/ {

@@ -2245,6 +2245,14 @@ interface PausesStatic {
 
 export const Pauses: PausesStatic = Java.type("io.gatling.javaapi.core.pause.Pauses");
 
+interface PerUserCounterBuilderStatic {
+  readonly class: any;
+}
+
+export const PerUserCounterBuilder: PerUserCounterBuilderStatic = Java.type(
+  "io.gatling.javaapi.core.PerUserCounterBuilder"
+);
+
 interface Polling$EveryStatic {
   readonly class: any;
   new (arg0: any /*io.gatling.http.request.builder.polling.PollingEveryStep*/): io.gatling.javaapi.http.Polling$Every;
