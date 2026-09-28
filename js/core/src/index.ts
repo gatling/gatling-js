@@ -20,6 +20,7 @@ export * from "./body";
 export * from "./checks";
 export * from "./closedInjection";
 export * from "./common";
+export * from "./counters";
 export { dummy, DummyBuilder, DummyFunction } from "./dummy";
 export * from "./feeders";
 export * from "./filters";
