@@ -3,7 +3,7 @@ import { CoreDsl as JvmCoreDsl } from "@gatling.io/jvm-types";
 import JvmChainBuilder = io.gatling.javaapi.core.ChainBuilder;
 
 import { JvmStructureBuilderLike } from "./jvmStructureBuilder";
-import { ExecFunction, Execs, Executable, execImpl } from "./execs";
+import { ExecFunction, Execs, Executable, SetInSessionFunction, execImpl, setInSessionImpl } from "./execs";
 import { GroupFunction, Groups, groupImpl } from "./groups";
 import { FeedFunction, Feeds, feedImpl } from "./feeds";
 import { PauseFunction, Pauses, pauseImpl } from "./pauses";
@@ -60,6 +60,7 @@ export const structureBuilderImpl = <J2, J1 extends JvmStructureBuilderLike<J2, 
   wrap: (wrapped: J2) => T
 ): StructureBuilder<T> => ({
   exec: execImpl(jvm, wrap),
+  setInSession: setInSessionImpl(jvm, wrap),
   group: groupImpl(jvm, wrap),
   feed: feedImpl(jvm, wrap),
   pause: pauseImpl(jvm, wrap),
@@ -97,6 +98,7 @@ const wrapChainBuilder = (_underlying: JvmChainBuilder): ChainBuilder => ({
 export { ActionBuilder, wrapActionBuilder } from "./execs";
 export { onCase, percent } from "./choices";
 export const exec: ExecFunction<ChainBuilder> = execImpl(JvmCoreDsl, wrapChainBuilder);
+export const setInSession: SetInSessionFunction<ChainBuilder> = setInSessionImpl(JvmCoreDsl, wrapChainBuilder);
 export const group: GroupFunction<ChainBuilder> = groupImpl(JvmCoreDsl, wrapChainBuilder);
 export const feed: FeedFunction<ChainBuilder> = feedImpl(JvmCoreDsl, wrapChainBuilder);
 export const pause: PauseFunction<ChainBuilder> = pauseImpl(JvmCoreDsl, wrapChainBuilder);

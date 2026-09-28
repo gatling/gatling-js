@@ -90,6 +90,9 @@ const scn = scenario("scenario")
   // execs
   .exec((session) => session)
   .exec(chain1, chain2)
+  // setInSession
+  .setInSession("#{randomUuid()}", "uuid")
+  .setInSession((session) => 1, "foo")
   // groups
   .group("group")
   .on(chain1, chain2)

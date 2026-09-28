@@ -1,5 +1,5 @@
 import { Wrapper } from "../common";
-import { SessionTransform, underlyingSessionTransform } from "../session";
+import { SessionTo, SessionTransform, underlyingSessionTo, underlyingSessionTransform } from "../session";
 
 import JvmActionBuilder = io.gatling.javaapi.core.ActionBuilder;
 import JvmExecs = io.gatling.javaapi.core.exec.Execs;
@@ -46,8 +46,42 @@ export interface ExecFunction<T extends Execs<T>> {
   (executable: SessionTransform): T;
 }
 
+export interface SetInSessionFunction<T extends Execs<T>> {
+  /**
+   * Attach a new action that will evaluate a Gatling Expression Language String and store the
+   * result in the Session. Typically useful when the expression is non-deterministic, eg random,
+   * and its result must be used in multiple places.
+   *
+   * @example
+   * ```ts
+   * setInSession("#{randomUuid()}", "uuid")
+   * ```
+   *
+   * @param input - the value to store, expressed as a Gatling Expression Language String
+   * @param attributeName - the name of the attribute to store the value into
+   * @returns a new StructureBuilder
+   */
+  (input: string, attributeName: string): T;
+
+  /**
+   * Attach a new action that will evaluate a function and store the result in the Session.
+   * Important: the function must only perform fast in-memory operations.
+   *
+   * @example
+   * ```ts
+   * setInSession(session -> UUID.randomUUID().toString(), "uuid")
+   * ```
+   *
+   * @param input - the value to store, expressed as a function
+   * @param attributeName - the name of the attribute to store the value into
+   * @returns a new StructureBuilder
+   */
+  (input: SessionTo<unknown>, attributeName: string): T;
+}
+
 export interface Execs<T extends Execs<T>> {
   exec: ExecFunction<T>;
+  setInSession: SetInSessionFunction<T>;
 }
 
 export const execImpl =
@@ -57,4 +91,16 @@ export const execImpl =
       typeof arg0 === "function"
         ? jvmExecs.exec(underlyingSessionTransform(arg0)) // arg0: SessionTransform
         : jvmExecs.exec(arg0._underlying, ...arg1.map((e) => e._underlying)) // arg0: Executable, ...arg1: Executable[]
+    );
+
+export const setInSessionImpl =
+  <J2, J1 extends JvmExecs<J2, any>, T extends Execs<T>>(
+    jvmExecs: J1,
+    wrap: (wrapped: J2) => T
+  ): SetInSessionFunction<T> =>
+  (input, attributeName) =>
+    wrap(
+      typeof input === "function"
+        ? jvmExecs.setInSession(underlyingSessionTo(input), attributeName)
+        : jvmExecs.setInSession(input, attributeName)
     );
