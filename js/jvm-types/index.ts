@@ -2875,6 +2875,14 @@ export const WsSendTextActionBuilder: WsSendTextActionBuilderStatic = Java.type(
   "io.gatling.javaapi.http.WsSendTextActionBuilder"
 );
 
+interface WsSetCheckActionBuilderStatic {
+  readonly class: any;
+}
+
+export const WsSetCheckActionBuilder: WsSetCheckActionBuilderStatic = Java.type(
+  "io.gatling.javaapi.http.WsSetCheckActionBuilder"
+);
+
 interface WsStatic {
   readonly class: any;
 }

@@ -32,6 +32,7 @@ import JvmWsFrameCheckBinaryTypedCondition = io.gatling.javaapi.http.Binary$Type
 import JvmWsFrameCheckText = io.gatling.javaapi.http.WsFrameCheck$Text;
 import JvmWsFrameCheckTextUntypedCondition = io.gatling.javaapi.http.Text$UntypedCondition;
 import JvmWsFrameCheckTextTypedCondition = io.gatling.javaapi.http.Text$TypedCondition;
+import JvmWsSetCheckActionBuilder = io.gatling.javaapi.http.WsSetCheckActionBuilder;
 
 /**
  * DSL for building WebSocket configurations
@@ -110,6 +111,13 @@ export interface Ws {
    * @returns the next DSL step
    */
   sendBytes(bytes: (session: Session) => number[]): WsSendBinaryActionBuilder;
+
+  /**
+   * Boostrap an action to set checks on the inbound messages, without sending anything
+   *
+   * @returns the next DSL step
+   */
+  setCheck(): WsSetCheckActionBuilder;
 
   /**
    * Boostrap an action to send a CLOSE frame with the default 1000 status code
@@ -327,6 +335,16 @@ const wrapWsConnectActionBuilder = (_underlying: JvmWsConnectActionBuilder): WsC
   onConnected: (chain) => wrapWsConnectActionBuilder(_underlying.onConnected(chain._underlying)),
   ...requestActionBuilderImpl(_underlying, wrapWsConnectActionBuilder),
   ...wsAwaitActionBuilderImpl(_underlying, wrapWsConnectActionBuilder)
+});
+
+export interface WsSetCheckActionBuilder extends WsAwaitActionBuilder<WsSetCheckActionBuilder>, ActionBuilder {
+  // Assembling all original subtypes
+  _underlying: JvmWsSetCheckActionBuilder;
+}
+
+const wrapWsSetCheckActionBuilder = (_underlying: JvmWsSetCheckActionBuilder): WsSetCheckActionBuilder => ({
+  _underlying,
+  ...wsAwaitActionBuilderImpl(_underlying, wrapWsSetCheckActionBuilder)
 });
 
 /**
@@ -610,6 +628,7 @@ const wrapWs = (jvmWs: JvmWs): Ws => ({
           ? jvmWs.sendBytes(bytes)
           : jvmWs.sendBytes(bytes)
     ),
+  setCheck: () => wrapWsSetCheckActionBuilder(jvmWs.setCheck()),
   close: () => wrapActionBuilder(jvmWs.close())
 });
 

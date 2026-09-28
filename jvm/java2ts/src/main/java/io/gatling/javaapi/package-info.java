@@ -193,6 +193,7 @@
         @Type(value = io.gatling.javaapi.http.WsConnectActionBuilder.class, export = true),
         @Type(value = io.gatling.javaapi.http.WsSendBinaryActionBuilder.class, export = true),
         @Type(value = io.gatling.javaapi.http.WsSendTextActionBuilder.class, export = true),
+        @Type(value = io.gatling.javaapi.http.WsSetCheckActionBuilder.class, export = true),
         // ********** grpc **********
         @Type(value = com.google.protobuf.Descriptors.Descriptor.class, export = true),
         @Type(value = com.google.protobuf.DynamicMessage.Builder.class, export = true),

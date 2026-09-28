@@ -4383,7 +4383,7 @@ declare namespace io.gatling.javaapi.http {
     sendBytes(arg0: string): WsSendBinaryActionBuilder;
     sendText(arg0: Func<io.gatling.javaapi.core.Session, string>): WsSendTextActionBuilder;
     sendText(arg0: string): WsSendTextActionBuilder;
-    setCheck(): any; /*io.gatling.javaapi.http.WsSetCheckActionBuilder*/
+    setCheck(): WsSetCheckActionBuilder;
     toString(): string;
     wsName(arg0: Func<io.gatling.javaapi.core.Session, string>): Ws;
     wsName(arg0: string): Ws;
@@ -4537,6 +4537,18 @@ declare namespace io.gatling.javaapi.http {
     toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
     toString(): string;
   } // end WsSendTextActionBuilder
+} // end namespace io.gatling.javaapi.http
+declare namespace io.gatling.javaapi.http {
+  class WsSetCheckActionBuilder /* extends java.lang.Object implements WsAwaitActionBuilder<any, any>*/ {
+    asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
+    await<T>(arg0: Func<io.gatling.javaapi.core.Session, java.time.Duration>): WsAwaitActionBuilder$On<T>;
+    await<T>(arg0: java.time.Duration): WsAwaitActionBuilder$On<T>;
+    await<T>(arg0: long): WsAwaitActionBuilder$On<T>;
+    await<T>(arg0: string): WsAwaitActionBuilder$On<T>;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
+    toString(): string;
+  } // end WsSetCheckActionBuilder
 } // end namespace io.gatling.javaapi.http
 declare namespace io.gatling.javaapi.http {
   interface SseAwaitActionBuilder<T, W> /* extends io.gatling.javaapi.core.ActionBuilder*/ {
