@@ -31,6 +31,7 @@ export { getParameter, getOption, getEnvironmentVariable, GetWithDefault } from 
 export * from "./protocol";
 export * from "./scenario";
 export * from "./session";
+export * from "./sharedQueue";
 export * from "./structure";
 export * from "./throttling";
 

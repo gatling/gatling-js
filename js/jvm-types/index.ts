@@ -700,7 +700,7 @@ interface CoreDslStatic {
   uniformPausesPlusOrMinusDuration(arg0: java.time.Duration): io.gatling.javaapi.core.PauseType;
   uniformPausesPlusOrMinusPercentage(arg0: double): io.gatling.javaapi.core.PauseType;
   scenario(arg0: string): io.gatling.javaapi.core.ScenarioBuilder;
-  sharedQueue(arg0: string): any /*io.gatling.javaapi.core.SharedQueueBuilder*/;
+  sharedQueue(arg0: string): io.gatling.javaapi.core.SharedQueueBuilder;
   holdFor(arg0: java.time.Duration): io.gatling.javaapi.core.ThrottleStep;
   holdFor(arg0: long): io.gatling.javaapi.core.ThrottleStep;
   jumpToRps(arg0: int): io.gatling.javaapi.core.ThrottleStep;
@@ -2488,6 +2488,21 @@ interface SessionStatic {
 }
 
 export const Session: SessionStatic = Java.type("io.gatling.javaapi.core.Session");
+
+interface SharedQueueBuilderStatic {
+  readonly class: any;
+  new (arg0: string): io.gatling.javaapi.core.SharedQueueBuilder;
+}
+
+export const SharedQueueBuilder: SharedQueueBuilderStatic = Java.type("io.gatling.javaapi.core.SharedQueueBuilder");
+
+interface SharedQueueTakeBuilderStatic {
+  readonly class: any;
+}
+
+export const SharedQueueTakeBuilder: SharedQueueTakeBuilderStatic = Java.type(
+  "io.gatling.javaapi.core.SharedQueueTakeBuilder"
+);
 
 interface Simulation$SetUpStatic {
   readonly class: any;

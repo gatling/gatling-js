@@ -1513,6 +1513,29 @@ declare namespace io.gatling.javaapi.core {
   } // end Session
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
+  class SharedQueueBuilder /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    peek(arg0: string): ActionBuilder;
+    poll(arg0: string): ActionBuilder;
+    put(arg0: Func<Session, any /*java.lang.Object*/>): ActionBuilder;
+    put(arg0: any /*java.lang.Object*/): ActionBuilder;
+    put(arg0: string): ActionBuilder;
+    size(arg0: string): ActionBuilder;
+    take(arg0: string): SharedQueueTakeBuilder;
+    toString(): string;
+  } // end SharedQueueBuilder
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
+  class SharedQueueTakeBuilder /* extends java.lang.Object implements ActionBuilder*/ {
+    asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    timeout(arg0: int): SharedQueueTakeBuilder;
+    timeout(arg0: java.time.Duration): SharedQueueTakeBuilder;
+    toChainBuilder(): ChainBuilder;
+    toString(): string;
+  } // end SharedQueueTakeBuilder
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
   class Simulation$SetUp /* extends java.lang.Object*/ {
     assertions(...arg0: Assertion[]): Simulation$SetUp;
     assertions(arg0: java.util.List<Assertion>): Simulation$SetUp;
