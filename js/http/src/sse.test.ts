@@ -15,6 +15,12 @@ const chain = exec(
         .check(regex("event: snapshot(.*)"))
         .checkIf("#{cond}")
         .then(regex("event: snapshot(.*)"))
+        .postCheck((session) => {
+          if (!session.contains("foo")) {
+            throw Error("foo is missing");
+          }
+          return session.set("bar", 1);
+        })
     ),
   sse("waitForSomeMessage")
     .setCheck()

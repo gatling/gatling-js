@@ -7,8 +7,10 @@ import {
   ProtocolBuilder,
   Session,
   SessionTo,
+  SessionTransform,
   asJava,
   underlyingSessionTo,
+  underlyingSessionTransform,
   wrapCondition
 } from "@gatling.io/core";
 
@@ -622,6 +624,16 @@ export interface HttpProtocolBuilder extends ProtocolBuilder {
   checkIf(condition: (session: Session) => boolean): Condition<HttpProtocolBuilder>;
 
   /**
+   * Define a common function to be applied on all the requests, on the Session resulting from the
+   * checks, after they've been applied. Throw an Exception to make the request fail with its
+   * message.
+   *
+   * @param postCheck - the function
+   * @returns a new HttpProtocolBuilder instance
+   */
+  postCheck(postCheck: SessionTransform): HttpProtocolBuilder;
+
+  /**
    * Automatically infer resources from HTML payloads
    *
    * @returns a new HttpProtocolBuilder instance
@@ -792,7 +804,7 @@ export interface HttpProtocolBuilder extends ProtocolBuilder {
    * @param address - a fake local address in IPv4 format
    * @returns a new HttpProtocolBuilder instance
    */
-  proxyProtocolSourceIpV4Address(address: (session: Session) => string): HttpProtocolBuilder;
+  proxyProtocolSourceIpV4Address(address: SessionTo<string>): HttpProtocolBuilder;
 
   /**
    * Enable Proxy Protocol for IPv6
@@ -808,7 +820,7 @@ export interface HttpProtocolBuilder extends ProtocolBuilder {
    * @param address - a fake local address in IPv6 format
    * @returns a new HttpProtocolBuilder instance
    */
-  proxyProtocolSourceIpV6Address(address: (session: Session) => string): HttpProtocolBuilder;
+  proxyProtocolSourceIpV6Address(address: SessionTo<string>): HttpProtocolBuilder;
 
   // DNS part
 
@@ -1030,6 +1042,8 @@ export const wrapHttpProtocolBuilder = (_underlying: JvmHttpProtocolBuilder): Ht
         : _underlying.checkIf(underlyingSessionTo(condition)),
       wrapHttpProtocolBuilder
     ),
+
+  postCheck: (postCheck) => wrapHttpProtocolBuilder(_underlying.postCheck(underlyingSessionTransform(postCheck))),
 
   inferHtmlResources: (arg0?: AllowListFilter | DenyListFilter, arg1?: DenyListFilter): HttpProtocolBuilder =>
     wrapHttpProtocolBuilder(

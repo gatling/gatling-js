@@ -7,10 +7,12 @@ import {
   Expression,
   Session,
   SessionTo,
+  SessionTransform,
   asJava,
   toJvmDuration,
   underlyingSessionTo,
   underlyingSessionToJava,
+  underlyingSessionTransform,
   wrapCondition
 } from "@gatling.io/core";
 
@@ -774,6 +776,15 @@ export interface HttpRequestActionBuilder
   ignoreProtocolChecks(): HttpRequestActionBuilder;
 
   /**
+   * Apply a function on the Session resulting from the checks, after they've been applied. Throw an
+   * Exception to make the request fail with its message.
+   *
+   * @param postCheck - the function
+   * @returns a new HttpRequestActionBuilder instance
+   */
+  postCheck(postCheck: SessionTransform): HttpRequestActionBuilder;
+
+  /**
    * Have this request ignore the common checks defined on the HTTP protocol configuration
    *
    * @returns a new HttpRequestActionBuilder instance
@@ -827,6 +838,7 @@ export const wrapHttpRequestActionBuilder = (_underlying: JvmHttpRequestActionBu
         : _underlying.checkIf(underlyingSessionTo(condition)),
       wrapHttpRequestActionBuilder
     ),
+  postCheck: (postCheck) => wrapHttpRequestActionBuilder(_underlying.postCheck(underlyingSessionTransform(postCheck))),
   ignoreProtocolChecks: () => wrapHttpRequestActionBuilder(_underlying.ignoreProtocolChecks()),
   silent: () => wrapHttpRequestActionBuilder(_underlying.silent()),
   notSilent: () => wrapHttpRequestActionBuilder(_underlying.notSilent()),

@@ -252,8 +252,9 @@ const httpProtocol = http
   .checkIf("#{bool}")
   .then(jsonPath("$..foo"))
   .checkIf("#{bool}")
-  .then(jsonPath("$..foo"), jsonPath("$..foo"));
-//.checkIf((response, session) -> true).then(jsonPath("$..foo"));
+  .then(jsonPath("$..foo"), jsonPath("$..foo"))
+  //.checkIf((response, session) -> true).then(jsonPath("$..foo"));
+  .postCheck((session) => session.set("bar", 1));
 
 const scn = scenario("scenario")
   .exec(
@@ -452,7 +453,13 @@ const scn = scenario("scenario")
       .then(jsonPath("$..foo"))
       .checkIf("#{bool}")
       .then(jsonPath("$..foo"), jsonPath("$..foo"))
-    //.checkIf((response, session) -> true).then(jsonPath("$..foo"))
+      //.checkIf((response, session) -> true).then(jsonPath("$..foo"))
+      .postCheck((session) => {
+        if (!session.contains("foo")) {
+          throw Error("foo is missing");
+        }
+        return session.set("bar", 1);
+      })
   )
   // processRequestBody
   //.exec(

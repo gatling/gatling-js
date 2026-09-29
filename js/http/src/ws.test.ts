@@ -82,7 +82,13 @@ const chain = exec(
         .checkTextMessage("checkName1")
         .check(regex("somePattern1").saveAs("message1"), regex("somePattern2").saveAs("message2"))
         .checkIf("#{cond}")
-        .then(regex("somePattern1")),
+        .then(regex("somePattern1"))
+        .postCheck((session) => {
+          if (!session.contains("foo")) {
+            throw Error("foo is missing");
+          }
+          return session.set("bar", 1);
+        }),
       ws.checkTextMessage("checkName2").check(regex("somePattern2").saveAs("message2"))
     ),
   ws("Message3").sendText('{"text": "Hello, I\'m #{id} and this is message #{i}!"}').await(30).on(
@@ -104,6 +110,12 @@ const chain = exec(
         )
         .checkIf("#{cond}")
         .then(bodyLength().lte(10))
+        .postCheck((session) => {
+          if (!session.contains("foo")) {
+            throw Error("foo is missing");
+          }
+          return session.set("bar", 1);
+        })
         .silent()
     ),
   ws("Wait for a message")

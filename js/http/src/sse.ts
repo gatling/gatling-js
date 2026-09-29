@@ -4,12 +4,14 @@ import {
   Duration,
   Session,
   SessionTo,
+  SessionTransform,
   XWithSessionTo,
   Wrapper,
   isDuration,
   toJvmDuration,
   underlyingSessionToDuration,
   underlyingSessionTo,
+  underlyingSessionTransform,
   underlyingXWithSessionTo,
   wrapActionBuilder,
   underlyingXWithSessionToSession
@@ -102,6 +104,15 @@ export interface SseMessageCheck extends Wrapper<JvmSseMessageCheck> {
    * @returns the next DSL step
    */
   checkIf(condition: (response: string, session: Session) => boolean): SseTypedCondition;
+
+  /**
+   * Apply a function on the Session resulting from the checks, after they've been applied. Throw an
+   * Exception to make the check fail with its message.
+   *
+   * @param postCheck - the function
+   * @returns a new SseMessageCheck instance
+   */
+  postCheck(postCheck: SessionTransform): SseMessageCheck;
 }
 
 const wrapSseMessageCheck = (_underlying: JvmSseMessageCheck): SseMessageCheck => ({
@@ -123,7 +134,8 @@ const wrapSseMessageCheck = (_underlying: JvmSseMessageCheck): SseMessageCheck =
     }
 
     throw Error(`checkIf() called with invalid argument ${condition}`);
-  }
+  },
+  postCheck: (postCheck) => wrapSseMessageCheck(_underlying.postCheck(underlyingSessionTransform(postCheck)))
 });
 
 export interface SseAwaitActionBuilderOn<T> {
