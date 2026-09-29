@@ -14,9 +14,9 @@ val compilerRelease = 21
 val graalvmJdkTag = "graal-25.4.4.1.1"
 val graalvmJdkVersion = "25i4-25.0.4.1.1"
 val graalvmJsVersion = "25.4.4.1.1"
-val gatlingVersion = "3.16.0-SNAPSHOT"
-val gatlingGrpcVersion = "3.16.0-SNAPSHOT"
-val gatlingMqttVersion = "3.16.0-SNAPSHOT"
+val gatlingVersion = "3.16.0"
+val gatlingGrpcVersion = "3.16.0"
+val gatlingMqttVersion = "3.16.0"
 val protocVersion = "4.35.1"
 
 // bit weird cause this is not a dependency of this project
