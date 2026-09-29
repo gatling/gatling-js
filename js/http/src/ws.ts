@@ -5,12 +5,14 @@ import {
   Duration,
   Session,
   SessionTo,
+  SessionTransform,
   Wrapper,
   XWithSessionTo,
   isDuration,
   toJvmDuration,
   underlyingSessionTo,
   underlyingSessionToDuration,
+  underlyingSessionTransform,
   underlyingXWithSessionTo,
   underlyingXWithSessionToSession,
   wrapActionBuilder
@@ -422,6 +424,15 @@ export interface WsFrameCheckBinary extends Wrapper<JvmWsFrameCheckBinary> {
   checkIf(condition: (response: number[], session: Session) => boolean): WsFrameCheckBinaryTypedCondition;
 
   /**
+   * Apply a function on the Session resulting from the checks, after they've been applied. Throw
+   * an Exception to make the check fail with its message.
+   *
+   * @param postCheck - the function
+   * @returns a new Binary instance
+   */
+  postCheck(postCheck: SessionTransform): WsFrameCheckBinary;
+
+  /**
    * Make the check silent, not logged by the reporting engine
    *
    * @returns a new Binary instance
@@ -449,6 +460,7 @@ const wrapWsFrameCheckBinary = (_underlying: JvmWsFrameCheckBinary): WsFrameChec
       return wrapWsFrameCheckBinaryUntypedCondition(_underlying.checkIf(condition));
     }
   },
+  postCheck: (postCheck) => wrapWsFrameCheckBinary(_underlying.postCheck(underlyingSessionTransform(postCheck))),
   silent: () => wrapWsFrameCheckBinary(_underlying.silent())
 });
 
@@ -533,6 +545,15 @@ export interface WsFrameCheckText extends Wrapper<JvmWsFrameCheckText> {
   checkIf(condition: (response: string, session: Session) => boolean): WsFrameCheckTextTypedCondition;
 
   /**
+   * Apply a function on the Session resulting from the checks, after they've been applied. Throw
+   * an Exception to make the check fail with its message.
+   *
+   * @param postCheck - the function
+   * @returns a new Binary instance
+   */
+  postCheck(postCheck: SessionTransform): WsFrameCheckText;
+
+  /**
    * Make the check silent, not logged by the reporting engine
    *
    * @returns a new Text instance
@@ -560,6 +581,7 @@ const wrapWsFrameCheckText = (_underlying: JvmWsFrameCheckText): WsFrameCheckTex
       return wrapWsFrameCheckTextUntypedCondition(_underlying.checkIf(condition));
     }
   },
+  postCheck: (postCheck) => wrapWsFrameCheckText(_underlying.postCheck(underlyingSessionTransform(postCheck))),
   silent: () => wrapWsFrameCheckText(_underlying.silent())
 });
 
