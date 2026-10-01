@@ -3114,6 +3114,231 @@ declare namespace io.gatling.javaapi.core.pause {
     rendezVous(arg0: int): T;
   } // end RendezVous
 } // end namespace io.gatling.javaapi.core.pause
+declare namespace io.gatling.javaapi.graphql {
+  /* enum */ class GraphQlOperationType /* extends java.lang.Enum<any>*/ {
+    // QUERY:GraphQlOperationType;
+    // MUTATION:GraphQlOperationType;
+    // SUBSCRIPTION:GraphQlOperationType;
+
+    compareTo<E>(arg0: E): int;
+    describeConstable(): java.util.Optional<any /*java.lang.Enum$EnumDesc*/>;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    getDeclaringClass<E>(): java.lang.Class<E>;
+    keyword(): string;
+    name(): string;
+    ordinal(): int;
+    toString(): string;
+  } // end GraphQlOperationType
+} // end namespace io.gatling.javaapi.graphql
+declare namespace io.gatling.javaapi.graphql {
+  class GraphQl /* extends java.lang.Object*/ {
+    automaticPersistedQueries(): GraphQlProtocolBuilder;
+    automaticPersistedQueriesOverGet(): GraphQlProtocolBuilder;
+    document(arg0: string): GraphQlRequestActionBuilder;
+    dynamicDocument(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: Func<io.gatling.javaapi.core.Session, string>
+    ): GraphQlRequestActionBuilder;
+    dynamicDocument(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): GraphQlRequestActionBuilder;
+    dynamicDocument(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, string>): GraphQlRequestActionBuilder;
+    dynamicDocument(arg0: string, arg1: string): GraphQlRequestActionBuilder;
+    endpoint(arg0: Func<io.gatling.javaapi.core.Session, string>): GraphQlProtocolBuilder;
+    endpoint(arg0: string): GraphQlProtocolBuilder;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    failOnDataNull(): GraphQlProtocolBuilder;
+    failOnErrors(): GraphQlProtocolBuilder;
+    file(arg0: string): GraphQlRequestActionBuilder;
+    ignoreErrors(): GraphQlProtocolBuilder;
+    mutation(arg0: string): GraphQlRequestActionBuilder;
+    queriesOverGet(): GraphQlProtocolBuilder;
+    query(arg0: string): GraphQlRequestActionBuilder;
+    requireNamedOperations(): GraphQlProtocolBuilder;
+    sharePersistedQueries(): GraphQlProtocolBuilder;
+    toString(): string;
+    wsEndpoint(arg0: Func<io.gatling.javaapi.core.Session, string>): GraphQlProtocolBuilder;
+    wsEndpoint(arg0: string): GraphQlProtocolBuilder;
+  } // end GraphQl
+} // end namespace io.gatling.javaapi.graphql
+declare namespace io.gatling.javaapi.graphql {
+  class GraphQlDocument /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    operationName(): string;
+    operationType(): GraphQlOperationType;
+    raw(): string;
+    rootFields(): java.util.List<string>;
+    sha256(): string;
+    sourcePath(): string;
+    toString(): string;
+  } // end GraphQlDocument
+} // end namespace io.gatling.javaapi.graphql
+declare namespace io.gatling.javaapi.graphql {
+  class GraphQlDsl /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toString(): string;
+  } // end GraphQlDsl
+} // end namespace io.gatling.javaapi.graphql
+declare namespace io.gatling.javaapi.graphql {
+  class GraphQlJsonScope /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    jmesPath(arg0: string): io.gatling.javaapi.core.CheckBuilder$JsonOfTypeFind;
+    jsonPath(arg0: string): io.gatling.javaapi.core.CheckBuilder$JsonOfTypeMultipleFind;
+    toString(): string;
+  } // end GraphQlJsonScope
+} // end namespace io.gatling.javaapi.graphql
+declare namespace io.gatling.javaapi.graphql {
+  class GraphQlProtocolBuilder /* extends java.lang.Object implements io.gatling.javaapi.core.ProtocolBuilder*/ {
+    automaticPersistedQueries(): GraphQlProtocolBuilder;
+    automaticPersistedQueriesOverGet(): GraphQlProtocolBuilder;
+    endpoint(arg0: Func<io.gatling.javaapi.core.Session, string>): GraphQlProtocolBuilder;
+    endpoint(arg0: string): GraphQlProtocolBuilder;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    failOnDataNull(): GraphQlProtocolBuilder;
+    failOnErrors(): GraphQlProtocolBuilder;
+    ignoreErrors(): GraphQlProtocolBuilder;
+    inferOperationName(arg0: GraphQlOperationNaming): GraphQlProtocolBuilder;
+    inferOperationNameFromFileName(): GraphQlProtocolBuilder;
+    inferOperationNameFromHash(): GraphQlProtocolBuilder;
+    inferOperationNameFromRootFields(): GraphQlProtocolBuilder;
+    protocol(): any; /*io.gatling.core.protocol.Protocol*/
+    queriesOverGet(): GraphQlProtocolBuilder;
+    requireNamedOperations(): GraphQlProtocolBuilder;
+    sharePersistedQueries(): GraphQlProtocolBuilder;
+    toString(): string;
+    wsEndpoint(arg0: Func<io.gatling.javaapi.core.Session, string>): GraphQlProtocolBuilder;
+    wsEndpoint(arg0: string): GraphQlProtocolBuilder;
+  } // end GraphQlProtocolBuilder
+} // end namespace io.gatling.javaapi.graphql
+declare namespace io.gatling.javaapi.graphql {
+  class GraphQlRequestActionBuilder /* extends java.lang.Object implements io.gatling.javaapi.core.ActionBuilder*/ {
+    asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
+    check(...arg0: io.gatling.javaapi.core.CheckBuilder[]): GraphQlRequestActionBuilder;
+    check(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): GraphQlRequestActionBuilder;
+    endpoint(arg0: Func<io.gatling.javaapi.core.Session, string>): GraphQlRequestActionBuilder;
+    endpoint(arg0: string): GraphQlRequestActionBuilder;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    header(
+      arg0: any /*java.lang.CharSequence*/,
+      arg1: Func<io.gatling.javaapi.core.Session, string>
+    ): GraphQlRequestActionBuilder;
+    header(arg0: any /*java.lang.CharSequence*/, arg1: string): GraphQlRequestActionBuilder;
+    headers(arg0: java.util.Map<any /*java.lang.CharSequence*/, string>): GraphQlRequestActionBuilder;
+    ignoreProtocolChecks(): GraphQlRequestActionBuilder;
+    notSilent(): GraphQlRequestActionBuilder;
+    operationName(arg0: string): GraphQlRequestActionBuilder;
+    overGet(): GraphQlRequestActionBuilder;
+    postCheck(
+      arg0: Func<io.gatling.javaapi.core.Session, io.gatling.javaapi.core.Session>
+    ): GraphQlRequestActionBuilder;
+    requestName(arg0: Func<io.gatling.javaapi.core.Session, string>): GraphQlRequestActionBuilder;
+    requestName(arg0: string): GraphQlRequestActionBuilder;
+    requestTimeout(arg0: java.time.Duration): GraphQlRequestActionBuilder;
+    silent(): GraphQlRequestActionBuilder;
+    toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
+    toString(): string;
+    variable(
+      arg0: string,
+      arg1: Func<io.gatling.javaapi.core.Session, any /*java.lang.Object*/>
+    ): GraphQlRequestActionBuilder;
+    variable(arg0: string, arg1: any /*java.lang.Object*/): GraphQlRequestActionBuilder;
+    variable(arg0: string, arg1: string): GraphQlRequestActionBuilder;
+    variables(
+      arg0: Func<io.gatling.javaapi.core.Session, java.util.Map<string, any /*java.lang.Object*/>>
+    ): GraphQlRequestActionBuilder;
+    variables(arg0: java.util.Map<string, any /*java.lang.Object*/>): GraphQlRequestActionBuilder;
+    variablesJson(arg0: string): GraphQlRequestActionBuilder;
+  } // end GraphQlRequestActionBuilder
+} // end namespace io.gatling.javaapi.graphql
+declare namespace io.gatling.javaapi.graphql {
+  class GraphQlWs /* extends java.lang.Object*/ {
+    checkNext(): GraphQlWsNextCheck;
+    checkNext(arg0: string): GraphQlWsNextCheck;
+    close(): io.gatling.javaapi.core.ActionBuilder;
+    connect(): GraphQlWsConnectActionBuilder;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    subscribe(arg0: string): GraphQlWsSubscribeActionBuilder;
+    subscribeFile(arg0: string): GraphQlWsSubscribeActionBuilder;
+    toString(): string;
+    unsubscribe(arg0: string): GraphQlWsUnsubscribeActionBuilder;
+  } // end GraphQlWs
+} // end namespace io.gatling.javaapi.graphql
+declare namespace io.gatling.javaapi.graphql {
+  class GraphQlWsConnectActionBuilder /* extends java.lang.Object implements io.gatling.javaapi.core.ActionBuilder*/ {
+    ackTimeout(arg0: java.time.Duration): GraphQlWsConnectActionBuilder;
+    asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
+    connectionInitPayload(
+      arg0: Func<io.gatling.javaapi.core.Session, java.util.Map<string, any /*java.lang.Object*/>>
+    ): GraphQlWsConnectActionBuilder;
+    connectionInitPayload(arg0: java.util.Map<string, any /*java.lang.Object*/>): GraphQlWsConnectActionBuilder;
+    connectionInitPayload(
+      arg0: string,
+      arg1: Func<io.gatling.javaapi.core.Session, any /*java.lang.Object*/>
+    ): GraphQlWsConnectActionBuilder;
+    connectionInitPayload(arg0: string, arg1: any /*java.lang.Object*/): GraphQlWsConnectActionBuilder;
+    connectionInitPayload(arg0: string, arg1: string): GraphQlWsConnectActionBuilder;
+    connectionInitPayloadJson(arg0: string): GraphQlWsConnectActionBuilder;
+    endpoint(arg0: string): GraphQlWsConnectActionBuilder;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    requestName(arg0: string): GraphQlWsConnectActionBuilder;
+    toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
+    toString(): string;
+  } // end GraphQlWsConnectActionBuilder
+} // end namespace io.gatling.javaapi.graphql
+declare namespace io.gatling.javaapi.graphql {
+  class GraphQlWsNextCheck /* extends java.lang.Object*/ {
+    check(...arg0: io.gatling.javaapi.core.CheckBuilder[]): GraphQlWsNextCheck;
+    check(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): GraphQlWsNextCheck;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    postCheck(arg0: Func<io.gatling.javaapi.core.Session, io.gatling.javaapi.core.Session>): GraphQlWsNextCheck;
+    silent(): GraphQlWsNextCheck;
+    toString(): string;
+  } // end GraphQlWsNextCheck
+} // end namespace io.gatling.javaapi.graphql
+declare namespace io.gatling.javaapi.graphql {
+  class GraphQlWsSubscribeActionBuilder$Await /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    on(...arg0: GraphQlWsNextCheck[]): GraphQlWsSubscribeActionBuilder;
+    on(arg0: java.util.List<GraphQlWsNextCheck>): GraphQlWsSubscribeActionBuilder;
+    toString(): string;
+  } // end GraphQlWsSubscribeActionBuilder$Await
+} // end namespace io.gatling.javaapi.graphql
+declare namespace io.gatling.javaapi.graphql {
+  class GraphQlWsSubscribeActionBuilder /* extends java.lang.Object implements io.gatling.javaapi.core.ActionBuilder*/ {
+    asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
+    await(arg0: java.time.Duration): GraphQlWsSubscribeActionBuilder$Await;
+    awaitNext(arg0: java.time.Duration, arg1: int): GraphQlWsSubscribeActionBuilder;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    operationName(arg0: string): GraphQlWsSubscribeActionBuilder;
+    requestName(arg0: string): GraphQlWsSubscribeActionBuilder;
+    subscriptionName(arg0: string): GraphQlWsSubscribeActionBuilder;
+    toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
+    toString(): string;
+    variable(
+      arg0: string,
+      arg1: Func<io.gatling.javaapi.core.Session, any /*java.lang.Object*/>
+    ): GraphQlWsSubscribeActionBuilder;
+    variable(arg0: string, arg1: any /*java.lang.Object*/): GraphQlWsSubscribeActionBuilder;
+    variable(arg0: string, arg1: string): GraphQlWsSubscribeActionBuilder;
+    variables(
+      arg0: Func<io.gatling.javaapi.core.Session, java.util.Map<string, any /*java.lang.Object*/>>
+    ): GraphQlWsSubscribeActionBuilder;
+    variables(arg0: java.util.Map<string, any /*java.lang.Object*/>): GraphQlWsSubscribeActionBuilder;
+    variablesJson(arg0: string): GraphQlWsSubscribeActionBuilder;
+  } // end GraphQlWsSubscribeActionBuilder
+} // end namespace io.gatling.javaapi.graphql
+declare namespace io.gatling.javaapi.graphql {
+  class GraphQlWsUnsubscribeActionBuilder /* extends java.lang.Object implements io.gatling.javaapi.core.ActionBuilder*/ {
+    asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    requestName(arg0: string): GraphQlWsUnsubscribeActionBuilder;
+    toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
+    toString(): string;
+  } // end GraphQlWsUnsubscribeActionBuilder
+} // end namespace io.gatling.javaapi.graphql
+declare namespace io.gatling.javaapi.graphql {
+  interface GraphQlOperationNaming {
+    (arg0: io.gatling.javaapi.graphql.GraphQlDocument): string;
+  } // end GraphQlOperationNaming
+} // end namespace io.gatling.javaapi.graphql
 declare namespace io.gatling.javaapi.grpc {
   /* enum */ class GrpcDsl$MessageResponseTimePolicy /* extends java.lang.Enum<any>*/ {
     // FromStreamStart:GrpcDsl$MessageResponseTimePolicy;
