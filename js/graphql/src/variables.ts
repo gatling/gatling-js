@@ -1,4 +1,4 @@
-import { Session, SessionTo, asJava, isSessionTo, underlyingSessionToJava } from "@gatling.io/core";
+import { Session, SessionTo, isSessionTo, underlyingSessionToJava } from "@gatling.io/core";
 
 interface JvmWithVariables<J> {
   operationName(name: string): J;
@@ -68,15 +68,20 @@ export interface WithVariables<T> {
   variablesJson(json: string): T;
 }
 
-export const withVariables = <J, T>(jvm: JvmWithVariables<J>, wrap: (underlying: J) => T): WithVariables<T> => ({
-  operationName: (name: string) => wrap(jvm.operationName(name)),
+export const withVariables = <J, T>(jvmBuilder: JvmWithVariables<J>, wrap: (underlying: J) => T): WithVariables<T> => ({
+  operationName: (name: string) => wrap(jvmBuilder.operationName(name)),
   variable: (name: string, value: any) =>
     wrap(
       isSessionTo(value)
-        ? jvm.variable(name, underlyingSessionToJava(value as SessionTo<any>))
-        : jvm.variable(name, asJava(value))
+        ? jvmBuilder.variable(name, underlyingSessionToJava(value as SessionTo<any>))
+        : jvmBuilder.variable(name, value)
     ),
   variables: (variables: Record<string, any> | SessionTo<Record<string, any>>) =>
-    wrap(jvm.variables(isSessionTo(variables) ? underlyingSessionToJava(variables) : asJava(variables))),
-  variablesJson: (json: string) => wrap(jvm.variablesJson(json))
+    wrap(
+      isSessionTo(variables)
+        ? // a JS function is applicable to both variables(Map) and variables(Function), so select the overload explicitly
+          (jvmBuilder as any)["variables(java.util.function.Function)"](underlyingSessionToJava(variables))
+        : jvmBuilder.variables(variables)
+    ),
+  variablesJson: (json: string) => wrap(jvmBuilder.variablesJson(json))
 });
