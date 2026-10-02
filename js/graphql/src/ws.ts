@@ -120,7 +120,12 @@ export const wrapGraphQlWsConnectActionBuilder = (
     wrapGraphQlWsConnectActionBuilder(
       typeof nameOrPayload === "string"
         ? _underlying.connectionInitPayload(nameOrPayload, toJavaExpression(value))
-        : _underlying.connectionInitPayload(toJavaExpression(nameOrPayload))
+        : isSessionTo(nameOrPayload)
+          ? // a JS function is applicable to both connectionInitPayload(Map) and connectionInitPayload(Function), so select the overload explicitly
+            (_underlying as any)["connectionInitPayload(java.util.function.Function)"](
+              underlyingSessionToJava(nameOrPayload)
+            )
+          : _underlying.connectionInitPayload(asJava(nameOrPayload) as any)
     ),
   connectionInitPayloadJson: (json: string) =>
     wrapGraphQlWsConnectActionBuilder(_underlying.connectionInitPayloadJson(json)),
