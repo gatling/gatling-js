@@ -6,7 +6,6 @@ import {
   SessionTo,
   SessionTransform,
   Wrapper,
-  asJava,
   isSessionTo,
   toJvmDuration,
   underlyingSessionToJava,
@@ -108,7 +107,7 @@ export interface GraphQlWsConnectActionBuilder extends ActionBuilder {
 }
 
 const toJavaExpression = (value: any): any =>
-  isSessionTo(value) ? underlyingSessionToJava(value as SessionTo<any>) : asJava(value);
+  isSessionTo(value) ? underlyingSessionToJava(value as SessionTo<any>) : value;
 
 export const wrapGraphQlWsConnectActionBuilder = (
   _underlying: JvmGraphQlWsConnectActionBuilder
@@ -125,7 +124,7 @@ export const wrapGraphQlWsConnectActionBuilder = (
             (_underlying as any)["connectionInitPayload(java.util.function.Function)"](
               underlyingSessionToJava(nameOrPayload)
             )
-          : _underlying.connectionInitPayload(asJava(nameOrPayload) as any)
+          : _underlying.connectionInitPayload(nameOrPayload)
     ),
   connectionInitPayloadJson: (json: string) =>
     wrapGraphQlWsConnectActionBuilder(_underlying.connectionInitPayloadJson(json)),

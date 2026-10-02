@@ -1,4 +1,4 @@
-import { Session, SessionTo, asJava, isSessionTo, underlyingSessionToJava } from "@gatling.io/core";
+import { Session, SessionTo, isSessionTo, underlyingSessionToJava } from "@gatling.io/core";
 
 interface JvmWithVariables<J> {
   operationName(name: string): J;
@@ -74,14 +74,14 @@ export const withVariables = <J, T>(jvm: JvmWithVariables<J>, wrap: (underlying:
     wrap(
       isSessionTo(value)
         ? jvm.variable(name, underlyingSessionToJava(value as SessionTo<any>))
-        : jvm.variable(name, asJava(value))
+        : jvm.variable(name, value)
     ),
   variables: (variables: Record<string, any> | SessionTo<Record<string, any>>) =>
     wrap(
       isSessionTo(variables)
         ? // a JS function is applicable to both variables(Map) and variables(Function), so select the overload explicitly
           (jvm as any)["variables(java.util.function.Function)"](underlyingSessionToJava(variables))
-        : jvm.variables(asJava(variables))
+        : jvm.variables(variables)
     ),
   variablesJson: (json: string) => wrap(jvm.variablesJson(json))
 });
