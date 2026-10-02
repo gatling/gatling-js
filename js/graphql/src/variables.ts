@@ -77,6 +77,11 @@ export const withVariables = <J, T>(jvm: JvmWithVariables<J>, wrap: (underlying:
         : jvm.variable(name, asJava(value))
     ),
   variables: (variables: Record<string, any> | SessionTo<Record<string, any>>) =>
-    wrap(jvm.variables(isSessionTo(variables) ? underlyingSessionToJava(variables) : asJava(variables))),
+    wrap(
+      isSessionTo(variables)
+        ? // a JS function is applicable to both variables(Map) and variables(Function), so select the overload explicitly
+          (jvm as any)["variables(java.util.function.Function)"](underlyingSessionToJava(variables))
+        : jvm.variables(asJava(variables))
+    ),
   variablesJson: (json: string) => wrap(jvm.variablesJson(json))
 });
