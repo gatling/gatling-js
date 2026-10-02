@@ -1,6 +1,7 @@
 import { CheckBuilderValidate, wrapCheckBuilderValidate } from "./validate";
 
 import JvmCheckBuilderMultipleFind = io.gatling.javaapi.core.CheckBuilder$MultipleFind;
+import JvmCheckBuilderValidate = io.gatling.javaapi.core.CheckBuilder$Validate;
 
 /**
  * Step 1 of the Check DSL when the check can return multiple values Immutable, so all methods
@@ -81,7 +82,6 @@ export const wrapCheckBuilderMultipleFind = <X>(
       return wrapCheckBuilderValidate(_underlying.findRandom());
     }
   },
-  count: function (): CheckBuilderValidate<number> {
-    throw new Error("Function not implemented.");
-  }
+  count: (): CheckBuilderValidate<number> =>
+    wrapCheckBuilderValidate(_underlying.count() as JvmCheckBuilderValidate<number>)
 });
