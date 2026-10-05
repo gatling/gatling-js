@@ -1,5 +1,3 @@
-import scala.collection.Seq
-
 ThisBuild / scalaVersion := "2.13.18"
 ThisBuild / crossPaths := false
 
@@ -23,7 +21,7 @@ val protocVersion = "4.35.1"
 val gatlingEnterprisePluginCommonsVersion = "1.26.2"
 val coursierVersion = "2.1.24"
 
-lazy val root = (project in file("."))
+lazy val root = rootProject
   .enablePlugins(GatlingOssPlugin)
   .aggregate(adapter, java2ts)
 
@@ -78,7 +76,7 @@ lazy val adapter = (project in file("adapter"))
       IO.write(basePath / "js" / "cli" / "src" / "dependencies" / "versions.ts", content)
       IO.write(basePath / "js" / "bundle" / "src" / "versions.ts", content)
       // These files aren't actually part of _this_ project's sources, return empty Seq
-      Seq()
+      Seq.empty[File]
     }.taskValue,
     Compile / packageDoc / mappings := Seq.empty,
     Compile / packageSrc / mappings := Seq.empty

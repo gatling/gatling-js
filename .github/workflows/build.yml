@@ -53,14 +53,14 @@ jobs:
         working-directory: ./jvm
         run: |
           sbt \
-            "project gatling-jvm-to-js-adapter" \
-            scalafmtSbtCheck \
-            headerCheckAll \
-            javafmtCheckAll \
-            scalafmtCheckAll \
-            "scalafixAll --check" \
-            compile \
-            test
+            "project gatling-jvm-to-js-adapter;" \
+            "scalafmtSbtCheck;" \
+            "headerCheckAll;" \
+            "javafmtCheckAll;" \
+            "scalafmtCheckAll;" \
+            "scalafixAll --check;" \
+            "compile;" \
+            "test;"
 
       - name: Build JS projects
         working-directory: ./js

@@ -1,22 +1,27 @@
-import sbt.Keys._
-import sbt._
+import sbt.Keys.*
+import sbt.*
 
 object Java2ts {
   // https://stackoverflow.com/questions/25623915/sbt-how-to-run-an-annotation-processing-plugin
 
   lazy val processJava2tsAnnotations = taskKey[Unit]("Process java2ts annotations")
 
-  def java2tsSettings = Seq(
+  def java2tsSettings: Seq[Def.Setting[?]] = Seq(
     resolvers += Resolver.mavenLocal,
     libraryDependencies += "io.gatling" % "java2ts-processor" % "1.4.1",
     javacOptions += "-proc:none",
-    processJava2tsAnnotations := {
+    processJava2tsAnnotations := Def.uncached {
       val log = streams.value.log
+      val fc = fileConverter.value
 
       log.info("Processing annotations ...")
 
       val sourceDir = (Compile / unmanagedSourceDirectories).value
-      val classpath = ((Compile / products).value ++ (Compile / dependencyClasspath).value.files).mkString(":")
+
+      val productPaths = (Compile / products).value
+      val dependencyPaths = (Compile / dependencyClasspath).value.map(f => fc.toPath(f.data).toFile)
+      val classpath = (productPaths ++ dependencyPaths).mkString(":")
+
       val destinationDirectory = new File((Compile / target).value, "java2ts")
       val filesToProcess = (Compile / unmanagedSources).value.collect {
         case f if f.name == "package-info.java" => f.getAbsolutePath
@@ -45,7 +50,7 @@ object Java2ts {
   )
 
   def failIfNonZeroExitStatus(command: Seq[String], message: => String, log: Logger): Unit = {
-    import scala.sys.process._
+    import scala.sys.process.*
     val result = command.!
     if (result != 0) {
       log.error(message)

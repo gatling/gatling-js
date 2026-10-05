@@ -62,7 +62,7 @@ jobs:
           PGP_PASSPHRASE: ${{ secrets.SONATYPE_PGP_PASSPHRASE }}
         working-directory: ./jvm
         run: |
-          sbt "project gatling-jvm-to-js-adapter" "release with-defaults"
+          sbt "project gatling-jvm-to-js-adapter;" "release with-defaults"
 
       - name: Set version
         id: version
