@@ -1478,6 +1478,114 @@ interface GetCookieStatic {
 
 export const GetCookie: GetCookieStatic = Java.type("io.gatling.javaapi.http.GetCookie");
 
+interface GraphQlDocumentStatic {
+  readonly class: any;
+}
+
+export const GraphQlDocument: GraphQlDocumentStatic = Java.type("io.gatling.javaapi.graphql.GraphQlDocument");
+
+interface GraphQlDslStatic {
+  readonly class: any;
+}
+
+export const GraphQlDsl: GraphQlDslStatic = Java.type("io.gatling.javaapi.graphql.GraphQlDsl");
+
+interface GraphQlJsonScopeStatic {
+  readonly class: any;
+}
+
+export const GraphQlJsonScope: GraphQlJsonScopeStatic = Java.type("io.gatling.javaapi.graphql.GraphQlJsonScope");
+
+interface GraphQlOperationNamingStatic {
+  readonly class: any;
+  new (arg0: io.gatling.javaapi.graphql.GraphQlOperationNaming): io.gatling.javaapi.graphql.GraphQlOperationNaming;
+}
+
+export const GraphQlOperationNaming: GraphQlOperationNamingStatic = Java.type(
+  "io.gatling.javaapi.graphql.GraphQlOperationNaming"
+);
+
+interface GraphQlOperationTypeStatic {
+  QUERY: io.gatling.javaapi.graphql.GraphQlOperationType;
+  MUTATION: io.gatling.javaapi.graphql.GraphQlOperationType;
+  SUBSCRIPTION: io.gatling.javaapi.graphql.GraphQlOperationType;
+
+  readonly class: any;
+  valueOf<T>(arg0: java.lang.Class<T>, arg1: string): T;
+  valueOf(arg0: string): io.gatling.javaapi.graphql.GraphQlOperationType;
+  values(): [io.gatling.javaapi.graphql.GraphQlOperationType];
+}
+
+export const GraphQlOperationType: GraphQlOperationTypeStatic = Java.type(
+  "io.gatling.javaapi.graphql.GraphQlOperationType"
+);
+
+interface GraphQlProtocolBuilderStatic {
+  readonly class: any;
+}
+
+export const GraphQlProtocolBuilder: GraphQlProtocolBuilderStatic = Java.type(
+  "io.gatling.javaapi.graphql.GraphQlProtocolBuilder"
+);
+
+interface GraphQlRequestActionBuilderStatic {
+  readonly class: any;
+}
+
+export const GraphQlRequestActionBuilder: GraphQlRequestActionBuilderStatic = Java.type(
+  "io.gatling.javaapi.graphql.GraphQlRequestActionBuilder"
+);
+
+interface GraphQlStatic {
+  readonly class: any;
+}
+
+export const GraphQl: GraphQlStatic = Java.type("io.gatling.javaapi.graphql.GraphQl");
+
+interface GraphQlWsConnectActionBuilderStatic {
+  readonly class: any;
+}
+
+export const GraphQlWsConnectActionBuilder: GraphQlWsConnectActionBuilderStatic = Java.type(
+  "io.gatling.javaapi.graphql.GraphQlWsConnectActionBuilder"
+);
+
+interface GraphQlWsNextCheckStatic {
+  readonly class: any;
+}
+
+export const GraphQlWsNextCheck: GraphQlWsNextCheckStatic = Java.type("io.gatling.javaapi.graphql.GraphQlWsNextCheck");
+
+interface GraphQlWsStatic {
+  readonly class: any;
+}
+
+export const GraphQlWs: GraphQlWsStatic = Java.type("io.gatling.javaapi.graphql.GraphQlWs");
+
+interface GraphQlWsSubscribeActionBuilder$AwaitStatic {
+  readonly class: any;
+}
+
+export const GraphQlWsSubscribeActionBuilder$Await: GraphQlWsSubscribeActionBuilder$AwaitStatic = Java.type(
+  "io.gatling.javaapi.graphql.GraphQlWsSubscribeActionBuilder$Await"
+);
+
+interface GraphQlWsSubscribeActionBuilderStatic {
+  readonly class: any;
+}
+
+export const GraphQlWsSubscribeActionBuilder: GraphQlWsSubscribeActionBuilderStatic = Java.type(
+  "io.gatling.javaapi.graphql.GraphQlWsSubscribeActionBuilder"
+);
+
+interface GraphQlWsUnsubscribeActionBuilderStatic {
+  readonly class: any;
+}
+
+export const GraphQlWsUnsubscribeActionBuilder: GraphQlWsUnsubscribeActionBuilderStatic = Java.type(
+  "io.gatling.javaapi.graphql.GraphQlWsUnsubscribeActionBuilder"
+);
+
 interface Groups$OnStatic {
   readonly class: any;
 }
