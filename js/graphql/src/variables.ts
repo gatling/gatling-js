@@ -1,21 +1,12 @@
 import { Session, SessionTo, isSessionTo, underlyingSessionToJava } from "@gatling.io/core";
 
 interface JvmWithVariables<J> {
-  operationName(name: string): J;
   variable(name: string, value: any): J;
   variables(variables: any): J;
   variablesJson(json: string): J;
 }
 
 export interface WithVariables<T> {
-  /**
-   * Select the operation to execute when the document contains multiple operations
-   *
-   * @param name - the operation name
-   * @returns a new instance
-   */
-  operationName(name: string): T;
-
   /**
    * Set a variable
    *
@@ -69,7 +60,6 @@ export interface WithVariables<T> {
 }
 
 export const withVariables = <J, T>(jvmBuilder: JvmWithVariables<J>, wrap: (underlying: J) => T): WithVariables<T> => ({
-  operationName: (name: string) => wrap(jvmBuilder.operationName(name)),
   variable: (name: string, value: any) =>
     wrap(
       isSessionTo(value)

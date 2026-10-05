@@ -202,6 +202,16 @@ export interface GraphQlWsSubscribeActionBuilder extends ActionBuilder, WithVari
   requestName(name: string): GraphQlWsSubscribeActionBuilder;
 
   /**
+   * Select the operation to execute when the document contains multiple operations, sent as the
+   * operationName of the subscribe message payload. Defaults to the name of the operation of the
+   * document, if any.
+   *
+   * @param name - the static operation name
+   * @returns a new GraphQlWsSubscribeActionBuilder instance
+   */
+  operationName(name: string): GraphQlWsSubscribeActionBuilder;
+
+  /**
    * Define the name of the subscription, used as the subscription id and to unsubscribe
    *
    * @param name - the subscription name, expressed as a Gatling Expression Language String
@@ -233,6 +243,7 @@ export const wrapGraphQlWsSubscribeActionBuilder = (
   _underlying,
   ...withVariables(_underlying, wrapGraphQlWsSubscribeActionBuilder),
   requestName: (name: string) => wrapGraphQlWsSubscribeActionBuilder(_underlying.requestName(name)),
+  operationName: (name: string) => wrapGraphQlWsSubscribeActionBuilder(_underlying.operationName(name)),
   subscriptionName: (name: string) => wrapGraphQlWsSubscribeActionBuilder(_underlying.subscriptionName(name)),
   await: (timeout: Duration) => GraphQlWsSubscribeActionBuilder.wrapAwait(_underlying.await(toJvmDuration(timeout))),
   awaitNext: (timeout: Duration, count: number) =>

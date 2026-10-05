@@ -57,6 +57,30 @@ exec(
   )
 );
 
+// dynamic documents
+graphql
+  .dynamicDocument("#{requestName}", "#{document}")
+  .operationName("#{operationName}")
+  .operationName((session) => session.get<string>("operationName"))
+  .variables((session) => ({ id: session.get<string>("id") }))
+  .variable("locale", "#{locale}")
+  .requestName("Dynamic")
+  .endpoint("/other/graphql")
+  .header("X-Trace", "#{traceId}")
+  .headers({ "X-Client": "gatling" })
+  .check(graphqlData.jsonPath("$.user.id").saveAs("userId"))
+  .postCheck((session) => session)
+  .requestTimeout(10)
+  .silent()
+  .notSilent()
+  .ignoreProtocolChecks();
+// @ts-expect-error overGet isn't supported with dynamic documents
+graphql.dynamicDocument("dynamic", "#{document}").overGet();
+
+// operation name
+graphql.file("graphql/multiple.graphql").operationName("CreateOrder");
+graphqlWs.subscribeFile("graphql/orderEvents.graphql").operationName("OrderEvents");
+
 // request name
 exec(graphql.file("graphql/getUser.graphql").requestName("Get current user"));
 exec(graphql.file("graphql/getUser.graphql").requestName((session) => "Get user " + session.get<string>("userId")));
