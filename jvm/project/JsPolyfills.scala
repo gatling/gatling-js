@@ -1,5 +1,5 @@
-import sbt._
-import sbt.Keys._
+import sbt.*
+import sbt.Keys.*
 
 object JsPolyfills {
 
@@ -9,7 +9,7 @@ object JsPolyfills {
   private def escape(seq: Seq[String]): String =
     seq.map(element => s""""${element.substring(0, element.length - 3)}"""").mkString(", ")
 
-  val settings: Seq[Def.Setting[_]] = Seq(
+  val settings: Seq[Def.Setting[?]] = Seq(
     jsPolyfillsTargetDirectory := (ThisBuild / baseDirectory).value / ".." / "polyfills" / "target",
     jsPolyfills := (jsPolyfillsTargetDirectory.value ** "*.js").get(),
     Compile / resourceGenerators += Def.task {
@@ -37,7 +37,7 @@ object JsPolyfills {
            |""".stripMargin
       IO.write(basePath / "js" / "cli" / "src" / "bundle" / "polyfills.ts", content)
       // These files aren't actually part of _this_ project's sources, return empty Seq
-      Seq()
+      Seq.empty[File]
     }.taskValue,
     Compile / sourceGenerators += Def.task {
       val file = (Compile / sourceManaged).value / "io" / "gatling" / "js" / "JsPolyfills.java"
