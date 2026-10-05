@@ -2,7 +2,12 @@ import { Expression, Session, underlyingSessionTo } from "@gatling.io/core";
 
 import { GraphQlJsonScope, wrapGraphQlJsonScope } from "./jsonScope";
 import { GraphQlProtocolBuilder, wrapGraphQlProtocolBuilder } from "./protocol";
-import { GraphQlRequestActionBuilder, wrapGraphQlRequestActionBuilder } from "./request";
+import {
+  GraphQlDynamicRequestActionBuilder,
+  GraphQlRequestActionBuilder,
+  wrapGraphQlDynamicRequestActionBuilder,
+  wrapGraphQlRequestActionBuilder
+} from "./request";
 import { GraphQlWs, wrapGraphQlWs } from "./ws";
 
 export * from "./jsonScope";
@@ -71,57 +76,61 @@ export interface GraphQl extends Pick<
 
   /**
    * Bootstrap an operation whose document is only known at runtime, eg from a feeder. The document
-   * isn't validated when the simulation is built, so the operation must be named explicitly.
+   * isn't parsed when the simulation is built, so the request must be named explicitly. This name is
+   * only used in the statistics: use operationName() to send an operation name in the request payload.
    *
-   * @param operationName - the operation name, expressed as a Gatling Expression Language String
+   * @param requestName - the request name, expressed as a Gatling Expression Language String
    * @param document - the document, expressed as a Gatling Expression Language String
    * @returns the next DSL step
    */
-  dynamicDocument(operationName: string, document: string): GraphQlRequestActionBuilder;
+  dynamicDocument(requestName: string, document: string): GraphQlDynamicRequestActionBuilder;
 
   /**
    * Bootstrap an operation whose document is only known at runtime, eg from a feeder. The document
-   * isn't validated when the simulation is built, so the operation must be named explicitly.
+   * isn't parsed when the simulation is built, so the request must be named explicitly. This name is
+   * only used in the statistics: use operationName() to send an operation name in the request payload.
    *
-   * @param operationName - the operation name, expressed as a Gatling Expression Language String
+   * @param requestName - the request name, expressed as a Gatling Expression Language String
    * @param document - the document, expressed as a function
    * @returns the next DSL step
    */
-  dynamicDocument(operationName: string, document: (session: Session) => string): GraphQlRequestActionBuilder;
+  dynamicDocument(requestName: string, document: (session: Session) => string): GraphQlDynamicRequestActionBuilder;
 
   /**
    * Bootstrap an operation whose document is only known at runtime, eg from a feeder. The document
-   * isn't validated when the simulation is built, so the operation must be named explicitly.
+   * isn't parsed when the simulation is built, so the request must be named explicitly. This name is
+   * only used in the statistics: use operationName() to send an operation name in the request payload.
    *
-   * @param operationName - the operation name, expressed as a function
+   * @param requestName - the request name, expressed as a function
    * @param document - the document, expressed as a Gatling Expression Language String
    * @returns the next DSL step
    */
-  dynamicDocument(operationName: (session: Session) => string, document: string): GraphQlRequestActionBuilder;
+  dynamicDocument(requestName: (session: Session) => string, document: string): GraphQlDynamicRequestActionBuilder;
 
   /**
    * Bootstrap an operation whose document is only known at runtime, eg from a feeder. The document
-   * isn't validated when the simulation is built, so the operation must be named explicitly.
+   * isn't parsed when the simulation is built, so the request must be named explicitly. This name is
+   * only used in the statistics: use operationName() to send an operation name in the request payload.
    *
-   * @param operationName - the operation name, expressed as a function
+   * @param requestName - the request name, expressed as a function
    * @param document - the document, expressed as a function
    * @returns the next DSL step
    */
   dynamicDocument(
-    operationName: (session: Session) => string,
+    requestName: (session: Session) => string,
     document: (session: Session) => string
-  ): GraphQlRequestActionBuilder;
+  ): GraphQlDynamicRequestActionBuilder;
 }
 
-const dynamicDocument = (operationName: Expression<string>, document: Expression<string>) => {
-  if (typeof operationName === "function") {
+const dynamicDocument = (requestName: Expression<string>, document: Expression<string>) => {
+  if (typeof requestName === "function") {
     return typeof document === "function"
-      ? jvmGraphQl.dynamicDocument(underlyingSessionTo(operationName), underlyingSessionTo(document))
-      : jvmGraphQl.dynamicDocument(underlyingSessionTo(operationName), document);
+      ? jvmGraphQl.dynamicDocument(underlyingSessionTo(requestName), underlyingSessionTo(document))
+      : jvmGraphQl.dynamicDocument(underlyingSessionTo(requestName), document);
   } else {
     return typeof document === "function"
-      ? jvmGraphQl.dynamicDocument(operationName, underlyingSessionTo(document))
-      : jvmGraphQl.dynamicDocument(operationName, document);
+      ? jvmGraphQl.dynamicDocument(requestName, underlyingSessionTo(document))
+      : jvmGraphQl.dynamicDocument(requestName, document);
   }
 };
 
@@ -153,8 +162,8 @@ export const graphql: GraphQl = {
   mutation: (document: string) => wrapGraphQlRequestActionBuilder(jvmGraphQl.mutation(document)),
   file: (filePath: string) => wrapGraphQlRequestActionBuilder(jvmGraphQl.file(filePath)),
   document: (document: string) => wrapGraphQlRequestActionBuilder(jvmGraphQl.document(document)),
-  dynamicDocument: (operationName: Expression<string>, document: Expression<string>) =>
-    wrapGraphQlRequestActionBuilder(dynamicDocument(operationName, document))
+  dynamicDocument: (requestName: Expression<string>, document: Expression<string>) =>
+    wrapGraphQlDynamicRequestActionBuilder(dynamicDocument(requestName, document))
 };
 
 /**

@@ -9,7 +9,13 @@ export default simulation((setUp) => {
   const graphqlProtocol = graphql.endpoint("/api").failOnErrors();
 
   const scn = scenario("GraphQL")
-    .exec((session) => session.set("postId", 1).set("title", "Hello from Gatling"))
+    .exec((session) =>
+      session
+        .set("postId", 1)
+        .set("title", "Hello from Gatling")
+        .set("operation", "GetPost")
+        .set("document", "query GetPost($id: ID!) { post(id: $id) { id title } }")
+    )
     .exec(
       // variable() with an EL String, a function and a static value
       graphql
@@ -60,7 +66,19 @@ export default simulation((setUp) => {
           graphqlData.jmesPath("variables.extra").isEL("#{title}"),
           graphqlData.jmesPath("variables.static.list[2]").ofInt().is(3),
           graphqlData.jmesPath("variables.static.nested.key").is("value")
-        )
+        ),
+      // dynamicDocument() with a document only known at runtime: the first parameter is the request name, the
+      // operation name is only sent with operationName(), as an EL String or a function
+      graphql
+        .dynamicDocument("dynamic #{operation}", "#{document}")
+        .operationName("#{operation}")
+        .variable("id", "#{postId}")
+        .check(graphqlData.jmesPath("post.title").exists()),
+      graphql
+        .dynamicDocument("dynamic echo", (session) => session.get("document"))
+        .endpoint("https://postman-echo.com/post")
+        .operationName((session) => session.get("operation"))
+        .check(graphqlData.jmesPath("operationName").is("GetPost"), graphqlData.jmesPath("query").isEL("#{document}"))
     );
 
   setUp(scn.injectOpen(atOnceUsers(1)))
