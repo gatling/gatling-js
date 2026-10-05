@@ -1,7 +1,7 @@
 import { Simulation, atOnceUsers, exec, scenario } from "@gatling.io/core";
 import { http, status } from "@gatling.io/http";
 
-import { graphql, graphqlData, graphqlErrors, graphqlExtensions, graphqlWs } from "./index";
+import { graphql, graphqlWs } from "./index";
 
 const runSimulationMock = (_: Simulation): void => {};
 
@@ -68,7 +68,7 @@ graphql
   .endpoint("/other/graphql")
   .header("X-Trace", "#{traceId}")
   .headers({ "X-Client": "gatling" })
-  .check(graphqlData.jsonPath("$.user.id").saveAs("userId"))
+  .check(graphql.data.jsonPath("$.user.id").saveAs("userId"))
   .postCheck((session) => session)
   .requestTimeout(10)
   .silent()
@@ -119,16 +119,16 @@ graphql.query("query GetUser($id: ID!) { user(id: $id) { name } }").variable("id
 graphql
   .file("graphql/getUser.graphql")
   .check(
-    graphqlData.jsonPath("$.user.name").is("Stephane"),
-    graphqlData.jsonPath("$.user.id").saveAs("userId"),
-    graphqlData.jmesPath("user.name").exists(),
-    graphqlErrors.jsonPath("$[0].extensions.code").optional().saveAs("errorCode"),
-    graphqlExtensions.jsonPath("$.tracing.duration").optional(),
+    graphql.data.jsonPath("$.user.name").is("Stephane"),
+    graphql.data.jsonPath("$.user.id").saveAs("userId"),
+    graphql.data.jmesPath("user.name").exists(),
+    graphql.errors.jsonPath("$[0].extensions.code").optional().saveAs("errorCode"),
+    graphql.extensions.jsonPath("$.tracing.duration").optional(),
     status().is(200)
   );
 graphql
   .file("graphql/getUser.graphql")
-  .check(graphqlData.jsonPath("$.user.name").saveAs("userName"))
+  .check(graphql.data.jsonPath("$.user.name").saveAs("userName"))
   .postCheck((session) => {
     if (!session.contains("userName")) {
       throw Error("userName is missing");
@@ -171,7 +171,8 @@ exec(
         .checkNext()
         .check(
           graphqlWs.data.jsonPath("$.orderCreated.id").saveAs("orderId"),
-          graphqlWs.errors.jsonPath("$[0].message").optional()
+          graphqlWs.errors.jsonPath("$[0].message").optional(),
+          graphqlWs.extensions.jsonPath("$.tracing.duration").optional()
         )
         .postCheck((session) => session)
         .silent()

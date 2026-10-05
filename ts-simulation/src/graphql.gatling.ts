@@ -1,5 +1,5 @@
 import { atOnceUsers, global, jmesPath, scenario, simulation } from "@gatling.io/core";
-import { graphql, graphqlData } from "@gatling.io/graphql";
+import { graphql } from "@gatling.io/graphql";
 import { http } from "@gatling.io/http";
 
 export default simulation((setUp) => {
@@ -21,18 +21,23 @@ export default simulation((setUp) => {
       graphql
         .query("query GetPost($id: ID!) { post(id: $id) { id title user { name } } }")
         .variable("id", "#{postId}")
-        .check(graphqlData.jmesPath("post.id").is("1"), graphqlData.jmesPath("post.user.name").saveAs("userName")),
+        .check(
+          graphql.data.jmesPath("post.id").is("1"),
+          graphql.data.jmesPath("post.user.name").saveAs("userName"),
+          graphql.errors.jmesPath("[0]").notExists(),
+          graphql.extensions.jmesPath("tracing").notExists()
+        ),
       graphql
         .query(
           "query GetPosts($options: PageQueryOptions) { posts(options: $options) { data { id } meta { totalCount } } }"
         )
         .variable("options", (session) => ({ paginate: { page: 1, limit: session.get<number>("postId") + 4 } }))
-        .check(graphqlData.jsonPath("$.posts.data[*].id").count().is(5)),
+        .check(graphql.data.jsonPath("$.posts.data[*].id").count().is(5)),
       // variables() with a static object and a function
       graphql
         .mutation("mutation CreatePost($input: CreatePostInput!) { createPost(input: $input) { id title body } }")
         .variables({ input: { title: "Static title", body: "Static body" } })
-        .check(graphqlData.jmesPath("createPost.title").is("Static title")),
+        .check(graphql.data.jmesPath("createPost.title").is("Static title")),
       graphql
         .mutation("mutation CreatePost($input: CreatePostInput!) { createPost(input: $input) { id title body } }")
         .requestName("mutation CreatePost (dynamic)")
@@ -40,11 +45,11 @@ export default simulation((setUp) => {
           input: { title: session.get<string>("title"), body: "By " + session.get<string>("userName") }
         }))
         .check(
-          graphqlData.jmesPath("createPost.title").isEL("#{title}"),
-          graphqlData.jmesPath("createPost.body").isEL("By #{userName}")
+          graphql.data.jmesPath("createPost.title").isEL("#{title}"),
+          graphql.data.jmesPath("createPost.body").isEL("By #{userName}")
         ),
       // GraphQLZero doesn't expose request headers, so send this one to Postman Echo, which echoes back the request
-      // headers and the JSON body (under "data", conveniently, so graphqlData sees the GraphQL payload we sent)
+      // headers and the JSON body (under "data", conveniently, so graphql.data sees the GraphQL payload we sent)
       graphql
         .query("query GetPost($id: ID!) { post(id: $id) { id } }")
         .requestName("headers and variables echo")
@@ -59,13 +64,13 @@ export default simulation((setUp) => {
           jmesPath('headers."x-client"').is("gatling"),
           jmesPath('headers."x-post-id"').is("1"),
           jmesPath('headers."content-type"').is("application/json"),
-          graphqlData.jmesPath("operationName").is("GetPost"),
-          graphqlData.jmesPath("variables.id").ofInt().is(42),
-          graphqlData.jmesPath("variables.tags[1]").is("b"),
-          graphqlData.jmesPath("variables.nested.flag").ofBoolean().is(true),
-          graphqlData.jmesPath("variables.extra").isEL("#{title}"),
-          graphqlData.jmesPath("variables.static.list[2]").ofInt().is(3),
-          graphqlData.jmesPath("variables.static.nested.key").is("value")
+          graphql.data.jmesPath("operationName").is("GetPost"),
+          graphql.data.jmesPath("variables.id").ofInt().is(42),
+          graphql.data.jmesPath("variables.tags[1]").is("b"),
+          graphql.data.jmesPath("variables.nested.flag").ofBoolean().is(true),
+          graphql.data.jmesPath("variables.extra").isEL("#{title}"),
+          graphql.data.jmesPath("variables.static.list[2]").ofInt().is(3),
+          graphql.data.jmesPath("variables.static.nested.key").is("value")
         ),
       // dynamicDocument() with a document only known at runtime: the first parameter is the request name, the
       // operation name is only sent with operationName(), as an EL String or a function
@@ -73,12 +78,12 @@ export default simulation((setUp) => {
         .dynamicDocument("dynamic #{operation}", "#{document}")
         .operationName("#{operation}")
         .variable("id", "#{postId}")
-        .check(graphqlData.jmesPath("post.title").exists()),
+        .check(graphql.data.jmesPath("post.title").exists()),
       graphql
         .dynamicDocument("dynamic echo", (session) => session.get<string>("document"))
         .endpoint("https://postman-echo.com/post")
         .operationName((session) => session.get<string>("operation"))
-        .check(graphqlData.jmesPath("operationName").is("GetPost"), graphqlData.jmesPath("query").isEL("#{document}"))
+        .check(graphql.data.jmesPath("operationName").is("GetPost"), graphql.data.jmesPath("query").isEL("#{document}"))
     );
 
   setUp(scn.injectOpen(atOnceUsers(1)))

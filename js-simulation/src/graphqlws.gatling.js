@@ -37,7 +37,9 @@ export default simulation((setUp) => {
             graphqlWs.data.jsonPath("$.echo.init.locale").is("en"),
             graphqlWs.data.jsonPath("$.echo.init.list[2]").ofInt().is(3),
             graphqlWs.data.jsonPath("$.echo.variables.id").ofInt().is(7),
-            graphqlWs.data.jsonPath("$.echo.variables.nested.list[1]").ofInt().is(2)
+            graphqlWs.data.jsonPath("$.echo.variables.nested.list[1]").ofInt().is(2),
+            graphqlWs.errors.jsonPath("$[0]").notExists(),
+            graphqlWs.extensions.jsonPath("$.tracing").notExists()
           )
       ),
       graphqlWs.close()
