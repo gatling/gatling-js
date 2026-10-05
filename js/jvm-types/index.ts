@@ -1490,6 +1490,14 @@ interface GraphQlDslStatic {
 
 export const GraphQlDsl: GraphQlDslStatic = Java.type("io.gatling.javaapi.graphql.GraphQlDsl");
 
+interface GraphQlDynamicRequestActionBuilderStatic {
+  readonly class: any;
+}
+
+export const GraphQlDynamicRequestActionBuilder: GraphQlDynamicRequestActionBuilderStatic = Java.type(
+  "io.gatling.javaapi.graphql.GraphQlDynamicRequestActionBuilder"
+);
+
 interface GraphQlJsonScopeStatic {
   readonly class: any;
 }
@@ -1526,6 +1534,14 @@ interface GraphQlProtocolBuilderStatic {
 
 export const GraphQlProtocolBuilder: GraphQlProtocolBuilderStatic = Java.type(
   "io.gatling.javaapi.graphql.GraphQlProtocolBuilder"
+);
+
+interface GraphQlRequestActionBuilderBaseStatic {
+  readonly class: any;
+}
+
+export const GraphQlRequestActionBuilderBase: GraphQlRequestActionBuilderBaseStatic = Java.type(
+  "io.gatling.javaapi.graphql.GraphQlRequestActionBuilderBase"
 );
 
 interface GraphQlRequestActionBuilderStatic {
