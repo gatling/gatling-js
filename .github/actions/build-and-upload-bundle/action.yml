@@ -20,6 +20,12 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Configure AWS Credentials (for CodeArtifact)
+      uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
+      with:
+        role-to-assume: ${{ vars.AWS_ROLE_PROD_GATLING_JS }}
+        aws-region: us-east-1
+
     - name: Setup Node
       uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
       with:
@@ -37,6 +43,18 @@ runs:
       run: |
         echo "architecture: $(arch)"
         rm -rf node_modules bundle/node_modules
+        export COURSIER_REPOSITORIES="ivy2Local|central|https://gatlingcorp-049894548288.d.codeartifact.us-east-1.amazonaws.com/maven/releases/|https://gatlingcorp-049894548288.d.codeartifact.us-east-1.amazonaws.com/maven/milestones/"
+        AWS_CODEARTIFACT_AUTH_TOKEN=$( \
+          aws \
+            --region us-east-1 \
+            codeartifact get-authorization-token \
+            --domain gatlingcorp \
+            --domain-owner 049894548288 \
+            --query authorizationToken \
+            --output text \
+        )
+        echo "::add-mask::$AWS_CODEARTIFACT_AUTH_TOKEN"
+        export COURSIER_CREDENTIALS="gatlingcorp-049894548288.d.codeartifact.us-east-1.amazonaws.com aws:$AWS_CODEARTIFACT_AUTH_TOKEN"
         npm ci
         npm run generate --workspace=bundle
         upload_url="$(echo "$UPLOAD_URL" | sed 's/{[^}]*}//')"

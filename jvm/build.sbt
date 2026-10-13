@@ -1,8 +1,8 @@
-ThisBuild / scalaVersion := "2.13.18"
-ThisBuild / crossPaths := false
+scalaVersion := "2.13.18"
+crossPaths := false
 
-Global / githubPath := "gatling/gatling-js"
-Global / gatlingDevelopers := Seq(
+githubPath := "gatling/gatling-js"
+gatlingDevelopers := Seq(
   GatlingDeveloper("slandelle@gatling.io", "Stephane Landelle", isGatlingCorp = true),
   GatlingDeveloper("gcorre@gatling.io", "Guillaume Corré", isGatlingCorp = true),
   GatlingDeveloper("ggaly@gatling.io", "Guillaume Galy", isGatlingCorp = true)
@@ -80,6 +80,8 @@ lazy val adapter = (project in file("adapter"))
       // These files aren't actually part of _this_ project's sources, return empty Seq
       Seq.empty[File]
     }.taskValue,
+    // We only publish privately (public distribution is through the bundle)
+    gatlingPublishToSonatype := false,
     Compile / packageDoc / mappings := Seq.empty,
     Compile / packageSrc / mappings := Seq.empty
   )
@@ -89,11 +91,11 @@ lazy val java2ts = (project in file("java2ts"))
   .settings(
     name := "gatling-java2ts",
     libraryDependencies ++= Seq(
-      "io.gatling" % "gatling-core-java" % gatlingVersion,
+      "io.gatling" % "gatling-core-java"    % gatlingVersion,
       "io.gatling" % "gatling-graphql-java" % gatlingGraphqlVersion,
-      "io.gatling" % "gatling-grpc-java" % gatlingGrpcVersion,
-      "io.gatling" % "gatling-http-java" % gatlingVersion,
-      "io.gatling" % "gatling-mqtt-java" % gatlingMqttVersion
+      "io.gatling" % "gatling-grpc-java"    % gatlingGrpcVersion,
+      "io.gatling" % "gatling-http-java"    % gatlingVersion,
+      "io.gatling" % "gatling-mqtt-java"    % gatlingMqttVersion
     ),
     publish / skip := true
   )

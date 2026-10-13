@@ -27,14 +27,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
+      - name: Configure AWS Credentials (for CodeArtifact)
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_PROD_GATLING_JS }}
+          aws-region: us-east-1
+
       - name: Prepare sbt environment
         env:
-          SONATYPE_SBT: ${{ secrets.SONATYPE_SBT }}
-          SONATYPE_PGP_SECRET: ${{ secrets.SONATYPE_PGP_SECRET }}
+          PRIVATE_REPOSITORY_SBT: ${{ vars.PRIVATE_REPOSITORY_SBT_2 }}
         run: |
           mkdir --parents ~/.config/sbt/2 || true
-          echo "$SONATYPE_SBT" > ~/.config/sbt/2/sonatype.sbt
-          echo -n "$SONATYPE_PGP_SECRET" | base64 --decode | gpg --batch --import
+          echo "$PRIVATE_REPOSITORY_SBT" > ~/.config/sbt/2/privateRepository.sbt
 
       - name: Set up JDK
         uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
@@ -58,8 +62,6 @@ jobs:
 
       - name: Deploy Java adapter
         id: deploy-jvm
-        env:
-          PGP_PASSPHRASE: ${{ secrets.SONATYPE_PGP_PASSPHRASE }}
         working-directory: ./jvm
         run: |
           sbt "project gatling-jvm-to-js-adapter;" "release with-defaults"
