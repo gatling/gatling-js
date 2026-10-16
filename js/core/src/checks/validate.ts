@@ -1,7 +1,15 @@
-import { Session, SessionTo, isSessionTo, underlyingSessionTo, underlyingXWithSessionTo } from "../session";
+import {
+  Session,
+  SessionTo,
+  isSessionTo,
+  underlyingSessionTo,
+  underlyingXWithSessionTo,
+  wrapSession
+} from "../session";
 import { CheckBuilderFinal, wrapCheckBuilderFinal } from "./final";
 
 import JvmCheckBuilderValidate = io.gatling.javaapi.core.CheckBuilder$Validate;
+import JvmSession = io.gatling.javaapi.core.Session;
 
 /**
  * Step 2 of the Check DSL where we define how to validate the extracted value. Immutable, so all
@@ -51,8 +59,20 @@ export interface CheckBuilderValidate<X> extends CheckBuilderFinal {
    * @param name - the name of the validation, in case of a failure
    * @param f - the custom validation function, must throw to trigger a failure
    * @returns a new CheckBuilderFinal
+   * @deprecated use {@link CheckBuilderValidate.verify} instead
    */
   validate(name: string, f: (x: X, session: Session) => X): CheckBuilderFinal;
+
+  /**
+   * Provide a custom validation strategy
+   *
+   * @param name - the name of the validation, in case of a failure
+   * @param f - the custom validation function, takes the extracted value (null if nothing was
+   *   extracted) and the Session, and returns an error message to trigger a failure, or null on
+   *   success
+   * @returns a new CheckBuilderFinal
+   */
+  verify(name: string, f: (x: X | null, session: Session) => string | null | undefined): CheckBuilderFinal;
 
   /**
    * Validate the extracted value is equal to an expected value
@@ -220,6 +240,11 @@ export const wrapCheckBuilderValidate = <X>(_underlying: JvmCheckBuilderValidate
     ),
   withDefaultEL: (value) => wrapCheckBuilderValidate(_underlying.withDefaultEl(value)),
   validate: (name, f) => wrapCheckBuilderFinal(_underlying.validate(name, underlyingXWithSessionTo(f))),
+  verify: (name, f) =>
+    wrapCheckBuilderFinal(
+      // Java expects null on success: normalize undefined (no return value) into null
+      _underlying.verify(name, (x: X, jvmSession: JvmSession) => (f(x, wrapSession(jvmSession)) ?? null) as string)
+    ),
   is: (expected) =>
     wrapCheckBuilderFinal(
       isSessionTo(expected) ? _underlying.is(underlyingSessionTo(expected)) : _underlying.is(expected)
