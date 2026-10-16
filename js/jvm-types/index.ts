@@ -575,6 +575,8 @@ interface CoreDslStatic {
   pause(arg0: long, arg1: long): io.gatling.javaapi.core.ChainBuilder;
   pause(arg0: long, arg1: long, arg2: io.gatling.javaapi.core.PauseType): io.gatling.javaapi.core.ChainBuilder;
   rendezVous(arg0: int): io.gatling.javaapi.core.ChainBuilder;
+  rendezVous(arg0: int, arg1: java.time.Duration): io.gatling.javaapi.core.ChainBuilder;
+  rendezVous(arg0: int, arg1: long): io.gatling.javaapi.core.ChainBuilder;
   setInSession(arg0: string, arg1: string): io.gatling.javaapi.core.ChainBuilder;
   setInSession(
     arg0: Func<io.gatling.javaapi.core.Session, any /*java.lang.Object*/>,
@@ -2540,7 +2542,8 @@ interface RequestStatic {
     arg14: any /*io.gatling.http.client.resolver.InetAddressNameResolver*/,
     arg15: boolean,
     arg16: any /*io.gatling.http.client.Http2PriorKnowledge*/,
-    arg17: string
+    arg17: any /*io.gatling.http.client.Http2FlowControlWindows*/,
+    arg18: string
   ): io.gatling.http.client.Request;
 }
 

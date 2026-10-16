@@ -418,6 +418,9 @@ const scn = scenario("scenario")
         jsonPath("$..foo.bar[2].baz").transform((s: string) => s + "foo"),
         jsonPath("$..foo.bar[2].baz").transformWithSession((string: string, _: Session) => string + "foo"),
         jsonPath("$..foo.bar[2].baz").withDefault((_: Session) => "foo"),
+        jsonPath("$..foo")
+          .ofInt()
+          .verify("positive", (i, _) => (i !== null && i > 0 ? null : "expected a positive int")),
         jsonpJsonPath("$..foo").is("bar"),
         jmesPath("[].friends[].name"),
         jmesPath("[].friends[].name").is("bar"),
