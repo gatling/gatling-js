@@ -186,6 +186,11 @@ public final class NumericValidate implements CheckBuilder.Validate<Object> {
   }
 
   @Override
+  public Final verify(String name, BiFunction<Object, Session, String> f) {
+    return delegate.verify(name, f);
+  }
+
+  @Override
   public CheckBuilder.Final isEL(String expected) {
     return delegate.isEL(expected);
   }

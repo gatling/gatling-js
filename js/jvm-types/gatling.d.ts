@@ -193,6 +193,7 @@ declare namespace io.gatling.http.client {
     getBody(): io.gatling.http.client.body.RequestBody;
     getCookies(): java.util.List<io.netty.handler.codec.http.cookie.Cookie>;
     getHeaders(): io.netty.handler.codec.http.HttpHeaders;
+    getHttp2FlowControlWindows(): any; /*io.gatling.http.client.Http2FlowControlWindows*/
     getHttp2PriorKnowledge(): any; /*io.gatling.http.client.Http2PriorKnowledge*/
     getLocalAddresses(): any; /*io.gatling.http.client.LocalAddresses*/
     getMethod(): any; /*io.netty.handler.codec.http.HttpMethod*/
@@ -762,6 +763,8 @@ declare namespace io.gatling.javaapi.core {
     randomSwitch<T>(): io.gatling.javaapi.core.condition.RandomSwitch$On<T>;
     randomSwitchOrElse<T>(): io.gatling.javaapi.core.condition.RandomSwitchOrElse$On<T>;
     rendezVous<T>(arg0: int): T;
+    rendezVous<T>(arg0: int, arg1: java.time.Duration): T;
+    rendezVous<T>(arg0: int, arg1: long): T;
     repeat<T>(arg0: Func<Session, int | null>): io.gatling.javaapi.core.loop.Repeat$On<T>;
     repeat<T>(arg0: Func<Session, int | null>, arg1: string): io.gatling.javaapi.core.loop.Repeat$On<T>;
     repeat<T>(arg0: int): io.gatling.javaapi.core.loop.Repeat$On<T>;
@@ -1473,6 +1476,8 @@ declare namespace io.gatling.javaapi.core {
     randomSwitch<T>(): io.gatling.javaapi.core.condition.RandomSwitch$On<T>;
     randomSwitchOrElse<T>(): io.gatling.javaapi.core.condition.RandomSwitchOrElse$On<T>;
     rendezVous<T>(arg0: int): T;
+    rendezVous<T>(arg0: int, arg1: java.time.Duration): T;
+    rendezVous<T>(arg0: int, arg1: long): T;
     repeat<T>(arg0: Func<Session, int | null>): io.gatling.javaapi.core.loop.Repeat$On<T>;
     repeat<T>(arg0: Func<Session, int | null>, arg1: string): io.gatling.javaapi.core.loop.Repeat$On<T>;
     repeat<T>(arg0: int): io.gatling.javaapi.core.loop.Repeat$On<T>;
@@ -2004,6 +2009,8 @@ declare namespace io.gatling.javaapi.core {
     randomSwitch(): io.gatling.javaapi.core.condition.RandomSwitch$On<T>;
     randomSwitchOrElse(): io.gatling.javaapi.core.condition.RandomSwitchOrElse$On<T>;
     rendezVous(arg0: int): T;
+    rendezVous(arg0: int, arg1: java.time.Duration): T;
+    rendezVous(arg0: int, arg1: long): T;
     repeat(arg0: Func<Session, int | null>): io.gatling.javaapi.core.loop.Repeat$On<T>;
     repeat(arg0: Func<Session, int | null>, arg1: string): io.gatling.javaapi.core.loop.Repeat$On<T>;
     repeat(arg0: int): io.gatling.javaapi.core.loop.Repeat$On<T>;
@@ -2126,6 +2133,7 @@ declare namespace io.gatling.javaapi.core {
     transformWithSession<X, X2>(arg0: BiFunction<X, Session, X2>): CheckBuilder$Validate<X2>;
     type(): any /*io.gatling.javaapi.core.CheckBuilder$CheckType*/;
     validate<X>(arg0: string, arg1: BiFunction<X, Session, X>): CheckBuilder$Final;
+    verify<X>(arg0: string, arg1: BiFunction<X, Session, string>): CheckBuilder$Final;
     withDefault<X>(arg0: Func<Session, X>): CheckBuilder$Validate<X>;
     withDefault<X>(arg0: X): CheckBuilder$Validate<X>;
     withDefaultEl<X>(arg0: string): CheckBuilder$Validate<X>;
@@ -2184,6 +2192,7 @@ declare namespace io.gatling.javaapi.core {
     transformWithSession<X, X2>(arg0: BiFunction<X, Session, X2>): CheckBuilder$Validate<X2>;
     type(): any /*io.gatling.javaapi.core.CheckBuilder$CheckType*/;
     validate<X>(arg0: string, arg1: BiFunction<X, Session, X>): CheckBuilder$Final;
+    verify<X>(arg0: string, arg1: BiFunction<X, Session, string>): CheckBuilder$Final;
     withDefault<X>(arg0: Func<Session, X>): CheckBuilder$Validate<X>;
     withDefault<X>(arg0: X): CheckBuilder$Validate<X>;
     withDefaultEl<X>(arg0: string): CheckBuilder$Validate<X>;
@@ -2241,6 +2250,7 @@ declare namespace io.gatling.javaapi.core {
     transformWithSession<X, X2>(arg0: BiFunction<X, Session, X2>): CheckBuilder$Validate<X2>;
     type(): any /*io.gatling.javaapi.core.CheckBuilder$CheckType*/;
     validate<X>(arg0: string, arg1: BiFunction<X, Session, X>): CheckBuilder$Final;
+    verify<X>(arg0: string, arg1: BiFunction<X, Session, string>): CheckBuilder$Final;
     withDefault<X>(arg0: Func<Session, X>): CheckBuilder$Validate<X>;
     withDefault<X>(arg0: X): CheckBuilder$Validate<X>;
     withDefaultEl<X>(arg0: string): CheckBuilder$Validate<X>;
@@ -2304,6 +2314,7 @@ declare namespace io.gatling.javaapi.core {
     transformWithSession<X, X2>(arg0: BiFunction<X, Session, X2>): CheckBuilder$Validate<X2>;
     type(): any /*io.gatling.javaapi.core.CheckBuilder$CheckType*/;
     validate<X>(arg0: string, arg1: BiFunction<X, Session, X>): CheckBuilder$Final;
+    verify<X>(arg0: string, arg1: BiFunction<X, Session, string>): CheckBuilder$Final;
     withDefault<X>(arg0: Func<Session, X>): CheckBuilder$Validate<X>;
     withDefault<X>(arg0: X): CheckBuilder$Validate<X>;
     withDefaultEl<X>(arg0: string): CheckBuilder$Validate<X>;
@@ -2359,6 +2370,7 @@ declare namespace io.gatling.javaapi.core {
     transformWithSession<X, X2>(arg0: BiFunction<X, Session, X2>): CheckBuilder$Validate<X2>;
     type(): any /*io.gatling.javaapi.core.CheckBuilder$CheckType*/;
     validate<X>(arg0: string, arg1: BiFunction<X, Session, X>): CheckBuilder$Final;
+    verify<X>(arg0: string, arg1: BiFunction<X, Session, string>): CheckBuilder$Final;
     withDefault<X>(arg0: Func<Session, X>): CheckBuilder$Validate<X>;
     withDefault<X>(arg0: X): CheckBuilder$Validate<X>;
     withDefaultEl<X>(arg0: string): CheckBuilder$Validate<X>;
@@ -2407,6 +2419,7 @@ declare namespace io.gatling.javaapi.core {
     transformWithSession<X2>(arg0: BiFunction<X, Session, X2>): CheckBuilder$Validate<X2>;
     type(): any /*io.gatling.javaapi.core.CheckBuilder$CheckType*/;
     validate(arg0: string, arg1: BiFunction<X, Session, X>): CheckBuilder$Final;
+    verify(arg0: string, arg1: BiFunction<X, Session, string>): CheckBuilder$Final;
     withDefault(arg0: Func<Session, X>): CheckBuilder$Validate<X>;
     withDefault(arg0: X): CheckBuilder$Validate<X>;
     withDefaultEl(arg0: string): CheckBuilder$Validate<X>;
@@ -3112,6 +3125,8 @@ declare namespace io.gatling.javaapi.core.pause {
 declare namespace io.gatling.javaapi.core.pause {
   interface RendezVous<T, W> {
     rendezVous(arg0: int): T;
+    rendezVous(arg0: int, arg1: java.time.Duration): T;
+    rendezVous(arg0: int, arg1: long): T;
   } // end RendezVous
 } // end namespace io.gatling.javaapi.core.pause
 declare namespace io.gatling.javaapi.graphql {
@@ -3942,7 +3957,9 @@ declare namespace io.gatling.javaapi.http {
     header(arg0: any /*java.lang.CharSequence*/, arg1: string): HttpProtocolBuilder;
     headers(arg0: java.util.Map<any /*java.lang.CharSequence*/, string>): HttpProtocolBuilder;
     hostNameAliases(arg0: java.util.Map<string, java.util.List<string>>): HttpProtocolBuilder;
+    http2ConnectionWindowSize(arg0: int): HttpProtocolBuilder;
     http2PriorKnowledge(arg0: java.util.Map<string, boolean | null>): HttpProtocolBuilder;
+    http2StreamWindowSize(arg0: int): HttpProtocolBuilder;
     inferHtmlResources(): HttpProtocolBuilder;
     inferHtmlResources(arg0: io.gatling.javaapi.core.Filter$AllowList): HttpProtocolBuilder;
     inferHtmlResources(
@@ -4000,6 +4017,7 @@ declare namespace io.gatling.javaapi.http {
     signWithOAuth1(arg0: string, arg1: string, arg2: string, arg3: string, arg4: boolean): HttpProtocolBuilder;
     silentResources(): HttpProtocolBuilder;
     silentUri(arg0: string): HttpProtocolBuilder;
+    sseSetCheckBuffer(arg0: int, arg1: java.time.Duration): HttpProtocolBuilder;
     sseUnmatchedInboundMessageBufferSize(arg0: int): HttpProtocolBuilder;
     strict302Handling(): HttpProtocolBuilder;
     toString(): string;
@@ -4024,6 +4042,7 @@ declare namespace io.gatling.javaapi.http {
     wsBaseUrls(arg0: java.util.List<string>): HttpProtocolBuilder;
     wsMaxReconnects(arg0: int): HttpProtocolBuilder;
     wsReconnect(): HttpProtocolBuilder;
+    wsSetCheckBuffer(arg0: int, arg1: java.time.Duration): HttpProtocolBuilder;
     wsUnmatchedInboundMessageBufferSize(arg0: int): HttpProtocolBuilder;
   } // end HttpProtocolBuilder
 } // end namespace io.gatling.javaapi.http
@@ -4063,6 +4082,7 @@ declare namespace io.gatling.javaapi.http {
     digestAuth<T>(arg0: string, arg1: string): T;
     disableFollowRedirect(): HttpRequestActionBuilder;
     disableUrlEncoding<T>(): T;
+    enableFollowRedirect(): HttpRequestActionBuilder;
     equals(arg0: any /*java.lang.Object*/): boolean;
     form<T>(arg0: Func<io.gatling.javaapi.core.Session, java.util.Map<string, any /*java.lang.Object*/>>): T;
     form<T>(arg0: string): T;
@@ -4089,6 +4109,7 @@ declare namespace io.gatling.javaapi.http {
     header<T>(arg0: any /*java.lang.CharSequence*/, arg1: Func<io.gatling.javaapi.core.Session, string>): T;
     header<T>(arg0: any /*java.lang.CharSequence*/, arg1: string): T;
     headers<T>(arg0: java.util.Map<any /*java.lang.CharSequence*/, string>): T;
+    ignoreProtocolAuth<T>(): T;
     ignoreProtocolChecks(): HttpRequestActionBuilder;
     ignoreProtocolHeaders<T>(): T;
     ignoreProtocolSignatureCalculators<T>(): T;
@@ -4227,6 +4248,7 @@ declare namespace io.gatling.javaapi.http {
     header(arg0: any /*java.lang.CharSequence*/, arg1: Func<io.gatling.javaapi.core.Session, string>): T;
     header(arg0: any /*java.lang.CharSequence*/, arg1: string): T;
     headers(arg0: java.util.Map<any /*java.lang.CharSequence*/, string>): T;
+    ignoreProtocolAuth(): T;
     ignoreProtocolHeaders(): T;
     ignoreProtocolSignatureCalculators(): T;
     multivaluedQueryParam(
@@ -4327,6 +4349,7 @@ declare namespace io.gatling.javaapi.http {
     header(arg0: any /*java.lang.CharSequence*/, arg1: Func<io.gatling.javaapi.core.Session, string>): T;
     header(arg0: any /*java.lang.CharSequence*/, arg1: string): T;
     headers(arg0: java.util.Map<any /*java.lang.CharSequence*/, string>): T;
+    ignoreProtocolAuth(): T;
     ignoreProtocolHeaders(): T;
     ignoreProtocolSignatureCalculators(): T;
     multivaluedFormParam(
@@ -4498,6 +4521,7 @@ declare namespace io.gatling.javaapi.http {
     header<T>(arg0: any /*java.lang.CharSequence*/, arg1: Func<io.gatling.javaapi.core.Session, string>): T;
     header<T>(arg0: any /*java.lang.CharSequence*/, arg1: string): T;
     headers<T>(arg0: java.util.Map<any /*java.lang.CharSequence*/, string>): T;
+    ignoreProtocolAuth<T>(): T;
     ignoreProtocolHeaders<T>(): T;
     ignoreProtocolSignatureCalculators<T>(): T;
     multivaluedFormParam<T>(
@@ -4706,6 +4730,7 @@ declare namespace io.gatling.javaapi.http {
     header<T>(arg0: any /*java.lang.CharSequence*/, arg1: Func<io.gatling.javaapi.core.Session, string>): T;
     header<T>(arg0: any /*java.lang.CharSequence*/, arg1: string): T;
     headers<T>(arg0: java.util.Map<any /*java.lang.CharSequence*/, string>): T;
+    ignoreProtocolAuth<T>(): T;
     ignoreProtocolHeaders<T>(): T;
     ignoreProtocolSignatureCalculators<T>(): T;
     multivaluedQueryParam<T>(
