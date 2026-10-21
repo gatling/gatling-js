@@ -64,7 +64,7 @@ jobs:
         id: deploy-jvm
         working-directory: ./jvm
         run: |
-          sbt "project gatling-jvm-to-js-adapter;" "release with-defaults"
+          sbt "project gatling-jvm-to-js-adapter;" "testFull;" "gatlingPublish"
 
       - name: Set version
         id: version

@@ -80,8 +80,10 @@ lazy val adapter = (project in file("adapter"))
       // These files aren't actually part of _this_ project's sources, return empty Seq
       Seq.empty[File]
     }.taskValue,
-    // We only publish privately (public distribution is through the bundle)
-    gatlingPublishToSonatype := false,
+    // Exception: public artifact, but we only publish privately (public distribution is through the bundle):
+    // route to the private repositories, and do not sign as no GPG key is available.
+    GatlingPublishPlugin.gatlingPublicArtifact := false,
+    GatlingPublishPlugin.unsignedAetherArtifact,
     Compile / packageDoc / mappings := Seq.empty,
     Compile / packageSrc / mappings := Seq.empty
   )
