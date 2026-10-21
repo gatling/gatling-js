@@ -60,7 +60,7 @@ jobs:
             "scalafmtCheckAll;" \
             "scalafixAll --check;" \
             "compile;" \
-            "test;"
+            "testFull;"
 
       - name: Build JS projects
         working-directory: ./js
