@@ -125,34 +125,79 @@ export interface Session extends Wrapper<JvmSession> {
   toString(): string;
 }
 
-export const wrapSession = (_underlying: JvmSession): Session => ({
-  _underlying,
-  get: <T>(key: string): T => _underlying.get(key),
+// A class rather than an object literal: wrapSession is called on every session callback, and methods defined on the
+// prototype don't allocate one closure per method on each call
+class SessionImpl implements Session {
+  constructor(readonly _underlying: JvmSession) {}
+
+  get<T>(key: string): T {
+    return this._underlying.get(key);
+  }
+
   // FIXME won't work on feeders
-  set: (key: string, value: any): Session => {
-    return wrapSession(_underlying.set(key, asJava(value)));
-  },
+  set(key: string, value: any): Session {
+    return new SessionImpl(this._underlying.set(key, asJava(value)));
+  }
+
   // FIXME ???
-  setByteArray: (key: string, value: number[]): Session => wrapSession(_underlying.set(key, asByteArray(value))),
-  setAll: (newAttributes: Record<string, any>): Session => {
-    let session = _underlying;
+  setByteArray(key: string, value: number[]): Session {
+    return new SessionImpl(this._underlying.set(key, asByteArray(value)));
+  }
+
+  setAll(newAttributes: Record<string, any>): Session {
+    let session = this._underlying;
     for (const key in newAttributes) {
       session = session.set(key, asJava(newAttributes[key]));
     }
-    return wrapSession(session);
-  },
-  remove: (key: string): Session => wrapSession(_underlying.remove(key)),
-  reset: (): Session => wrapSession(_underlying.reset()),
-  removeAll: (...keys: string[]): Session => wrapSession(_underlying.removeAll(...keys)),
-  contains: (key: string): boolean => _underlying.contains(key),
-  isFailed: (): boolean => _underlying.isFailed(),
-  markAsSucceeded: (): Session => wrapSession(_underlying.markAsSucceeded()),
-  markAsFailed: (): Session => wrapSession(_underlying.markAsFailed()),
-  scenario: (): string => _underlying.scenario(),
-  groups: (): string[] => _underlying.groups(),
-  userId: (): number => _underlying.userId(),
-  toString: (): string => _underlying.toString()
-});
+    return new SessionImpl(session);
+  }
+
+  remove(key: string): Session {
+    return new SessionImpl(this._underlying.remove(key));
+  }
+
+  reset(): Session {
+    return new SessionImpl(this._underlying.reset());
+  }
+
+  removeAll(...keys: string[]): Session {
+    return new SessionImpl(this._underlying.removeAll(...keys));
+  }
+
+  contains(key: string): boolean {
+    return this._underlying.contains(key);
+  }
+
+  isFailed(): boolean {
+    return this._underlying.isFailed();
+  }
+
+  markAsSucceeded(): Session {
+    return new SessionImpl(this._underlying.markAsSucceeded());
+  }
+
+  markAsFailed(): Session {
+    return new SessionImpl(this._underlying.markAsFailed());
+  }
+
+  scenario(): string {
+    return this._underlying.scenario();
+  }
+
+  groups(): string[] {
+    return this._underlying.groups();
+  }
+
+  userId(): number {
+    return this._underlying.userId();
+  }
+
+  toString(): string {
+    return this._underlying.toString();
+  }
+}
+
+export const wrapSession = (_underlying: JvmSession): Session => new SessionImpl(_underlying);
 
 export type Expression<T> = T | ((session: Session) => T);
 
