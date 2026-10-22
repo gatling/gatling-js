@@ -10,11 +10,23 @@ interface ConcurrentHashMap<K, V> {
   get(key: K): V | null;
   getOrDefault(key: K, defaultValue: V): V;
   containsKey(key: K): boolean;
-  compute(key: K, remappingFunction: (k: K, v: V | null) => V | null): V | null;
   clear(): void;
 }
 
 const javaStore = new ConcurrentHashMap<string, any>();
+
+interface GlobalStores {
+  update<T>(
+    store: ConcurrentHashMap<string, any>,
+    key: string,
+    updateFunction: (oldValue?: T) => T | undefined
+  ): T | null;
+}
+
+// The update function is passed as is to Java, which calls it with no argument when there's no mapping (so it
+// receives undefined), and removes the mapping when it returns undefined: no JavaScript function and no Java proxy
+// are created on each call
+const GlobalStores = Java.type<GlobalStores>("io.gatling.js.callbacks.GlobalStores");
 
 export interface GlobalStore {
   /**
@@ -88,10 +100,7 @@ export interface GlobalStore {
  */
 export const GlobalStore: GlobalStore = {
   put: (key, value) => nullToUndefined(javaStore.put(key, value)),
-  update: (key, updateFunction) =>
-    nullToUndefined(
-      javaStore.compute(key, (_, oldValue) => undefinedToNull(updateFunction(nullToUndefined(oldValue))))
-    ),
+  update: (key, updateFunction) => nullToUndefined(GlobalStores.update(javaStore, key, updateFunction)),
   get: (key) => nullToUndefined(javaStore.get(key)),
   getOrDefault: (key, defaultValue) => javaStore.getOrDefault(key, defaultValue),
   containsKey: (key) => javaStore.containsKey(key),
@@ -100,5 +109,3 @@ export const GlobalStore: GlobalStore = {
 };
 
 const nullToUndefined = <T>(x: T | null): T | undefined => (x === null ? undefined : x);
-
-const undefinedToNull = <T>(x: T | undefined): T | null => (x === undefined ? null : x);
