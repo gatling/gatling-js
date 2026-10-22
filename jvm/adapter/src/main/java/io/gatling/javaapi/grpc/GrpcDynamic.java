@@ -17,12 +17,7 @@
 package io.gatling.javaapi.grpc;
 
 import com.google.protobuf.*;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -181,131 +176,14 @@ public class GrpcDynamic {
     return enumValue;
   }
 
+  /**
+   * Load the descriptor of a gRPC method from the protobuf files compiled by the gatling-js CLI.
+   * Descriptors are cached: compiled files are only read once, and each file descriptor is only
+   * built once, even when the simulation is loaded multiple times.
+   */
   public static GrpcMethodDescriptorWrapper loadMethodDescriptor(
       String pkg, String service, String method)
       throws IOException, Descriptors.DescriptorValidationException {
-    // Retrieve the list of all binary files
-    final var allCompiledProtos = readCompiledProtosList();
-    // Load all the binary files
-    final var fileDescriptorProtos = loadFileDescriptors(allCompiledProtos);
-
-    // Find the correct entry point binary file
-    final var fileDescriptorPath =
-        fileDescriptorProtos.entrySet().stream()
-            .filter(
-                entry -> {
-                  final var fileDescriptorProto = entry.getValue();
-                  return Objects.equals(fileDescriptorProto.getPackage(), pkg)
-                      && fileDescriptorProto.getServiceList().stream()
-                          .anyMatch(
-                              serviceDescriptorProto ->
-                                  service.equals(serviceDescriptorProto.getName())
-                                      && serviceDescriptorProto.getMethodList().stream()
-                                          .anyMatch(
-                                              methodDescriptorProto ->
-                                                  method.equals(methodDescriptorProto.getName())));
-                })
-            .findFirst()
-            .orElseThrow(
-                () -> {
-                  final var pkgPrefix = pkg != null ? pkg + "." : "";
-                  return new IllegalArgumentException(
-                      "File descriptor not found for gRPC method "
-                          + pkgPrefix
-                          + service
-                          + "/"
-                          + method);
-                })
-            .getKey();
-
-    // Convert to a FileDescriptor with resolved dependencies
-    final var fileDescriptor =
-        resolveFileDescriptor(fileDescriptorPath, fileDescriptorProtos, new HashMap<>());
-
-    // Find and convert method
-    final var serviceDescriptor = fileDescriptor.findServiceByName(service);
-    final var methodDescriptor = serviceDescriptor.findMethodByName(method);
-    return new GrpcMethodDescriptorWrapper(methodDescriptor);
-  }
-
-  private static List<String> readCompiledProtosList() throws IOException {
-    try (final var is =
-        GrpcDynamic.class.getClassLoader().getResourceAsStream("compiled-protobuf-files")) {
-      if (is == null) {
-        return Collections.emptyList();
-      }
-      try (final var isr = new InputStreamReader(is, StandardCharsets.UTF_8);
-          final var br = new BufferedReader(isr)) {
-        return br.lines().toList();
-      }
-    }
-  }
-
-  private static Map<Path, DescriptorProtos.FileDescriptorProto> loadFileDescriptors(
-      List<String> paths) {
-    return paths.stream()
-        .flatMap(
-            resource -> {
-              final DescriptorProtos.FileDescriptorSet fileDescriptorSet;
-              try (final var is =
-                  GrpcDynamic.class.getClassLoader().getResourceAsStream(resource)) {
-                fileDescriptorSet = DescriptorProtos.FileDescriptorSet.parseFrom(is);
-              } catch (IOException e) {
-                throw new RuntimeException(
-                    "Failed to read compiled protobuf file from resource path '" + resource + "'",
-                    e);
-              }
-
-              return fileDescriptorSet.getFileList().stream()
-                  .map(
-                      fileDescriptorProto -> {
-                        final var path = Paths.get(fileDescriptorProto.getName());
-                        return new Pair<>(path, fileDescriptorProto);
-                      });
-            })
-        .collect(Collectors.toMap(p -> p.key, p -> p.value));
-  }
-
-  /** Uses proto-path-root-relative paths for file descriptor names and their dependencies. */
-  private static Descriptors.FileDescriptor resolveFileDescriptor(
-      Path protoPath,
-      Map<Path, DescriptorProtos.FileDescriptorProto> fileDescriptorProtos,
-      Map<Path, Descriptors.FileDescriptor> cache)
-      throws Descriptors.DescriptorValidationException {
-    // We cannot simply use cache.computeIfAbsent because the recursive call then leads to a
-    // ConcurrentModificationException
-    if (!cache.containsKey(protoPath)) {
-      final var proto = fileDescriptorProtos.get(protoPath);
-      if (proto == null) {
-        throw new IllegalArgumentException(
-            "Dependency " + protoPath + " not found in input proto file(s)");
-      }
-      final var fileDescriptor =
-          Descriptors.FileDescriptor.buildFrom(
-              proto,
-              proto.getDependencyList().stream()
-                  .map(
-                      dependency -> {
-                        final var dependencyPath = Paths.get(dependency);
-                        try {
-                          return resolveFileDescriptor(dependencyPath, fileDescriptorProtos, cache);
-                        } catch (Descriptors.DescriptorValidationException e) {
-                          throw new RuntimeException(e);
-                        }
-                      })
-                  .toArray(Descriptors.FileDescriptor[]::new));
-      cache.put(protoPath, fileDescriptor);
-    }
-    return cache.get(protoPath);
-  }
-
-  private static final class Pair<K, V> {
-    public final K key;
-    public final V value;
-
-    public Pair(K key, V value) {
-      this.key = key;
-      this.value = value;
-    }
+    return GrpcMethodDescriptors.fromClasspath().load(pkg, service, method);
   }
 }
