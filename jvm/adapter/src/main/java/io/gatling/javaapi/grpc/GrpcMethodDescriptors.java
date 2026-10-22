@@ -29,7 +29,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -98,7 +97,8 @@ final class GrpcMethodDescriptors {
             .filter(
                 entry -> {
                   final var fileDescriptorProto = entry.getValue();
-                  return Objects.equals(fileDescriptorProto.getPackage(), pkg)
+                  // proto files without a package have an empty package, not null
+                  return fileDescriptorProto.getPackage().equals(pkg != null ? pkg : "")
                       && fileDescriptorProto.getServiceList().stream()
                           .anyMatch(
                               serviceDescriptorProto ->
