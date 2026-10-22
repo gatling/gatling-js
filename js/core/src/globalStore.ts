@@ -1,6 +1,9 @@
-const ConcurrentHashMap = Java.type<ConcurrentHashMapStatic>("java.util.concurrent.ConcurrentHashMap");
+import { shared } from "./gatlingJvm/shared";
 
-interface ConcurrentHashMapStatic {
+// Ignores writes performed while loading the simulation in the context of another thread
+const JsGlobalStore = Java.type<JsGlobalStoreStatic>("io.gatling.js.JsGlobalStore");
+
+interface JsGlobalStoreStatic {
   new <K, V>(): ConcurrentHashMap<K, V>;
 }
 
@@ -14,7 +17,7 @@ interface ConcurrentHashMap<K, V> {
   clear(): void;
 }
 
-const javaStore = new ConcurrentHashMap<string, any>();
+const javaStore = shared("globalStore", () => new JsGlobalStore<string, any>());
 
 export interface GlobalStore {
   /**
