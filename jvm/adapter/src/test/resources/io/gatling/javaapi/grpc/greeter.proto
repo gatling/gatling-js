@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+// Compiled into services.protoc together with plain.proto
+
+package test;
+
+message Greeting {
+  string text = 1;
+}
+
+service Greeter {
+  rpc Hello(Greeting) returns (Greeting);
+}

@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+// Compiled into services.protoc together with greeter.proto
+// No package: methods are named Service/Method
+
+message Empty {}
+
+service Plain {
+  rpc Ping(Empty) returns (Empty);
+}
