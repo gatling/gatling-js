@@ -11,9 +11,12 @@ const asJavaList = (elements: unknown[]): unknown => {
 
 const asJavaMap = (records: object): unknown => {
   const javaMap = new HashMap();
-  Object.entries(records).forEach(([key, value]) => {
-    javaMap.put(key, asJava(value));
-  });
+  // for...in rather than Object.entries: no intermediate arrays, called on every session.set with an object value
+  for (const key in records) {
+    if (Object.hasOwn(records, key)) {
+      javaMap.put(key, asJava((records as Record<string, unknown>)[key]));
+    }
+  }
   return javaMap;
 };
 
