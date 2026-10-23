@@ -2126,6 +2126,7 @@ declare namespace io.gatling.javaapi.core {
     transformWithSession<X, X2>(arg0: BiFunction<X, Session, X2>): CheckBuilder$Validate<X2>;
     type(): any /*io.gatling.javaapi.core.CheckBuilder$CheckType*/;
     validate<X>(arg0: string, arg1: BiFunction<X, Session, X>): CheckBuilder$Final;
+    verify<X>(arg0: string, arg1: BiFunction<X, Session, string>): CheckBuilder$Final;
     withDefault<X>(arg0: Func<Session, X>): CheckBuilder$Validate<X>;
     withDefault<X>(arg0: X): CheckBuilder$Validate<X>;
     withDefaultEl<X>(arg0: string): CheckBuilder$Validate<X>;
@@ -2184,6 +2185,7 @@ declare namespace io.gatling.javaapi.core {
     transformWithSession<X, X2>(arg0: BiFunction<X, Session, X2>): CheckBuilder$Validate<X2>;
     type(): any /*io.gatling.javaapi.core.CheckBuilder$CheckType*/;
     validate<X>(arg0: string, arg1: BiFunction<X, Session, X>): CheckBuilder$Final;
+    verify<X>(arg0: string, arg1: BiFunction<X, Session, string>): CheckBuilder$Final;
     withDefault<X>(arg0: Func<Session, X>): CheckBuilder$Validate<X>;
     withDefault<X>(arg0: X): CheckBuilder$Validate<X>;
     withDefaultEl<X>(arg0: string): CheckBuilder$Validate<X>;
@@ -2241,6 +2243,7 @@ declare namespace io.gatling.javaapi.core {
     transformWithSession<X, X2>(arg0: BiFunction<X, Session, X2>): CheckBuilder$Validate<X2>;
     type(): any /*io.gatling.javaapi.core.CheckBuilder$CheckType*/;
     validate<X>(arg0: string, arg1: BiFunction<X, Session, X>): CheckBuilder$Final;
+    verify<X>(arg0: string, arg1: BiFunction<X, Session, string>): CheckBuilder$Final;
     withDefault<X>(arg0: Func<Session, X>): CheckBuilder$Validate<X>;
     withDefault<X>(arg0: X): CheckBuilder$Validate<X>;
     withDefaultEl<X>(arg0: string): CheckBuilder$Validate<X>;
@@ -2304,6 +2307,7 @@ declare namespace io.gatling.javaapi.core {
     transformWithSession<X, X2>(arg0: BiFunction<X, Session, X2>): CheckBuilder$Validate<X2>;
     type(): any /*io.gatling.javaapi.core.CheckBuilder$CheckType*/;
     validate<X>(arg0: string, arg1: BiFunction<X, Session, X>): CheckBuilder$Final;
+    verify<X>(arg0: string, arg1: BiFunction<X, Session, string>): CheckBuilder$Final;
     withDefault<X>(arg0: Func<Session, X>): CheckBuilder$Validate<X>;
     withDefault<X>(arg0: X): CheckBuilder$Validate<X>;
     withDefaultEl<X>(arg0: string): CheckBuilder$Validate<X>;
@@ -2359,6 +2363,7 @@ declare namespace io.gatling.javaapi.core {
     transformWithSession<X, X2>(arg0: BiFunction<X, Session, X2>): CheckBuilder$Validate<X2>;
     type(): any /*io.gatling.javaapi.core.CheckBuilder$CheckType*/;
     validate<X>(arg0: string, arg1: BiFunction<X, Session, X>): CheckBuilder$Final;
+    verify<X>(arg0: string, arg1: BiFunction<X, Session, string>): CheckBuilder$Final;
     withDefault<X>(arg0: Func<Session, X>): CheckBuilder$Validate<X>;
     withDefault<X>(arg0: X): CheckBuilder$Validate<X>;
     withDefaultEl<X>(arg0: string): CheckBuilder$Validate<X>;
@@ -2407,6 +2412,7 @@ declare namespace io.gatling.javaapi.core {
     transformWithSession<X2>(arg0: BiFunction<X, Session, X2>): CheckBuilder$Validate<X2>;
     type(): any /*io.gatling.javaapi.core.CheckBuilder$CheckType*/;
     validate(arg0: string, arg1: BiFunction<X, Session, X>): CheckBuilder$Final;
+    verify(arg0: string, arg1: BiFunction<X, Session, string>): CheckBuilder$Final;
     withDefault(arg0: Func<Session, X>): CheckBuilder$Validate<X>;
     withDefault(arg0: X): CheckBuilder$Validate<X>;
     withDefaultEl(arg0: string): CheckBuilder$Validate<X>;
