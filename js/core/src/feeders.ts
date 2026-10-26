@@ -4,6 +4,7 @@ import JvmFeederBuilderFileBased = io.gatling.javaapi.core.FeederBuilder$FileBas
 import JvmFeederBuilderSeparatedValues = io.gatling.javaapi.core.FeederBuilder$SeparatedValues;
 
 import { Wrapper } from "./common";
+import { shared } from "./gatlingJvm/shared";
 
 export interface FeederBuilder<T> extends Wrapper<JvmFeederBuilder<T>> {
   /**
@@ -83,7 +84,7 @@ const wrapFeederBuilder = <T>(_underlying: JvmFeederBuilder<T>): FeederBuilder<T
   shuffle: () => wrapFeederBuilder(_underlying.shuffle()),
   circular: () => wrapFeederBuilder(_underlying.circular()),
   transform: (f: (name: string, value: T) => unknown) => wrapFeederBuilder(_underlying.transform(f)),
-  recordsCount: () => _underlying.recordsCount(),
+  recordsCount: () => shared("recordsCount", () => _underlying.recordsCount()),
   shard: () => wrapFeederBuilder(_underlying.shard())
 });
 
@@ -105,7 +106,7 @@ export const wrapFileBasedFeederBuilder = <T>(
   shuffle: () => wrapFileBasedFeederBuilder(_underlying.shuffle()),
   circular: () => wrapFileBasedFeederBuilder(_underlying.circular()),
   transform: (f: (name: string, value: T) => unknown) => wrapFeederBuilder(_underlying.transform(f)),
-  recordsCount: () => _underlying.recordsCount(),
+  recordsCount: () => shared("recordsCount", () => _underlying.recordsCount()),
   shard: () => wrapFileBasedFeederBuilder(_underlying.shard()),
   unzip: () => wrapFileBasedFeederBuilder(_underlying.unzip())
 });
@@ -138,7 +139,7 @@ export const wrapSeparatedValuesFeederBuilder = <T>(
   shuffle: () => wrapSeparatedValuesFeederBuilder(_underlying.shuffle()),
   circular: () => wrapSeparatedValuesFeederBuilder(_underlying.circular()),
   transform: (f: (name: string, value: T) => unknown) => wrapFeederBuilder(_underlying.transform(f)),
-  recordsCount: () => _underlying.recordsCount(),
+  recordsCount: () => shared("recordsCount", () => _underlying.recordsCount()),
   shard: () => wrapSeparatedValuesFeederBuilder(_underlying.shard()),
   unzip: () => wrapSeparatedValuesFeederBuilder(_underlying.unzip()),
   headers: (firstHeader, ...otherHeaders) =>
@@ -166,7 +167,9 @@ export interface CsvFunction {
 
 export const csv: CsvFunction = (filePath, quoteChar?: string) =>
   wrapSeparatedValuesFeederBuilder(
-    quoteChar !== undefined ? JvmCoreDsl.csv(filePath, quoteChar) : JvmCoreDsl.csv(filePath)
+    shared(`csv:${filePath}`, () =>
+      quoteChar !== undefined ? JvmCoreDsl.csv(filePath, quoteChar) : JvmCoreDsl.csv(filePath)
+    )
   );
 
 export interface SsvFunction {
@@ -192,7 +195,9 @@ export interface SsvFunction {
 
 export const ssv: SsvFunction = (filePath, quoteChar?: string) =>
   wrapSeparatedValuesFeederBuilder(
-    quoteChar !== undefined ? JvmCoreDsl.ssv(filePath, quoteChar) : JvmCoreDsl.ssv(filePath)
+    shared(`ssv:${filePath}`, () =>
+      quoteChar !== undefined ? JvmCoreDsl.ssv(filePath, quoteChar) : JvmCoreDsl.ssv(filePath)
+    )
   );
 
 export interface TsvFunction {
@@ -218,7 +223,9 @@ export interface TsvFunction {
 
 export const tsv: TsvFunction = (filePath, quoteChar?: string) =>
   wrapSeparatedValuesFeederBuilder(
-    quoteChar !== undefined ? JvmCoreDsl.tsv(filePath, quoteChar) : JvmCoreDsl.tsv(filePath)
+    shared(`tsv:${filePath}`, () =>
+      quoteChar !== undefined ? JvmCoreDsl.tsv(filePath, quoteChar) : JvmCoreDsl.tsv(filePath)
+    )
   );
 
 export interface SeparatedValuesFunction {
@@ -246,9 +253,11 @@ export interface SeparatedValuesFunction {
 
 export const separatedValues: SeparatedValuesFunction = (filePath, separator, quoteChar?: string) =>
   wrapSeparatedValuesFeederBuilder(
-    quoteChar !== undefined
-      ? JvmCoreDsl.separatedValues(filePath, separator, quoteChar)
-      : JvmCoreDsl.separatedValues(filePath, separator)
+    shared(`separatedValues:${filePath}`, () =>
+      quoteChar !== undefined
+        ? JvmCoreDsl.separatedValues(filePath, separator, quoteChar)
+        : JvmCoreDsl.separatedValues(filePath, separator)
+    )
   );
 
 /**
@@ -258,7 +267,7 @@ export const separatedValues: SeparatedValuesFunction = (filePath, separator, qu
  * @returns a new feeder
  */
 export const jsonFile = (filePath: string): FileBasedFeederBuilder<any> =>
-  wrapFileBasedFeederBuilder(JvmCoreDsl.jsonFile(filePath));
+  wrapFileBasedFeederBuilder(shared(`jsonFile:${filePath}`, () => JvmCoreDsl.jsonFile(filePath)));
 
 /**
  * Bootstrap a new JSON API based feeder
@@ -266,7 +275,8 @@ export const jsonFile = (filePath: string): FileBasedFeederBuilder<any> =>
  * @param url - the url of the API
  * @returns a new feeder
  */
-export const jsonUrl = (url: string): FeederBuilder<any> => wrapFeederBuilder(JvmCoreDsl.jsonUrl(url));
+export const jsonUrl = (url: string): FeederBuilder<any> =>
+  wrapFeederBuilder(shared(`jsonUrl:${url}`, () => JvmCoreDsl.jsonUrl(url)));
 
 /**
  * Bootstrap a new in-memory array of Maps based feeder
@@ -275,4 +285,4 @@ export const jsonUrl = (url: string): FeederBuilder<any> => wrapFeederBuilder(Jv
  * @returns a new feeder
  */
 export const arrayFeeder = (data: Array<Record<string, unknown>>): FeederBuilder<unknown> =>
-  wrapFeederBuilder(JvmCoreDsl.arrayFeeder(data));
+  wrapFeederBuilder(shared("arrayFeeder", () => JvmCoreDsl.arrayFeeder(data)));

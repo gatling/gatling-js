@@ -1,6 +1,6 @@
 import { HttpDsl as JvmHttpDsl } from "@gatling.io/jvm-types";
 
-import { FileBasedFeederBuilder, wrapFileBasedFeederBuilder } from "@gatling.io/core";
+import { FileBasedFeederBuilder, shared, wrapFileBasedFeederBuilder } from "@gatling.io/core";
 
 /**
  * Bootstrap a feeder that reads from a sitemap XML file
@@ -10,4 +10,4 @@ import { FileBasedFeederBuilder, wrapFileBasedFeederBuilder } from "@gatling.io/
  * @returns the next DSL step
  */
 export const sitemap = (filePath: string): FileBasedFeederBuilder<string> =>
-  wrapFileBasedFeederBuilder(JvmHttpDsl.sitemap(filePath));
+  wrapFileBasedFeederBuilder(shared(`sitemap:${filePath}`, () => JvmHttpDsl.sitemap(filePath)));
