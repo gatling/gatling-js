@@ -3,6 +3,14 @@ import { CheckBuilderFinal, wrapCheckBuilderFinal } from "./final";
 
 import JvmCheckBuilderValidate = io.gatling.javaapi.core.CheckBuilder$Validate;
 
+interface NumericValidateStatic {
+  of<X>(validate: JvmCheckBuilderValidate<X>): JvmCheckBuilderValidate<X>;
+}
+
+// Converts the numbers passed to is/not/lt/lte/gt/gte/withDefault to the class of the check value, on the Java side:
+// GraalJS passes a number as an Integer or a Double depending on how it holds it, while Gatling's comparators cast
+const NumericValidate = Java.type<NumericValidateStatic>("io.gatling.js.checks.NumericValidate");
+
 /**
  * Step 2 of the Check DSL where we define how to validate the extracted value. Immutable, so all
  * methods return a new occurrence and leave the original unmodified.
@@ -210,48 +218,48 @@ export interface CheckBuilderValidate<X> extends CheckBuilderFinal {
   gteEL(value: string): CheckBuilderFinal;
 }
 
-export const wrapCheckBuilderValidate = <X>(_underlying: JvmCheckBuilderValidate<X>): CheckBuilderValidate<X> => ({
-  ...wrapCheckBuilderFinal(_underlying),
-  transform: (f) => wrapCheckBuilderValidate(_underlying.transform(f)),
-  transformWithSession: (f) => wrapCheckBuilderValidate(_underlying.transformWithSession(underlyingXWithSessionTo(f))),
-  withDefault: (value) =>
-    wrapCheckBuilderValidate(
-      isSessionTo(value) ? _underlying.withDefault(underlyingSessionTo(value)) : _underlying.withDefault(value)
-    ),
-  withDefaultEL: (value) => wrapCheckBuilderValidate(_underlying.withDefaultEl(value)),
-  validate: (name, f) => wrapCheckBuilderFinal(_underlying.validate(name, underlyingXWithSessionTo(f))),
-  is: (expected) =>
-    wrapCheckBuilderFinal(
-      isSessionTo(expected) ? _underlying.is(underlyingSessionTo(expected)) : _underlying.is(expected)
-    ),
-  isEL: (expected) => wrapCheckBuilderFinal(_underlying.isEL(expected)),
-  isNull: () => wrapCheckBuilderFinal(_underlying.isNull()),
-  not: (expected) =>
-    wrapCheckBuilderFinal(
-      isSessionTo(expected) ? _underlying.not(underlyingSessionTo(expected)) : _underlying.not(expected)
-    ),
-  notEL: (expected) => wrapCheckBuilderFinal(_underlying.notEL(expected)),
-  notNull: () => wrapCheckBuilderFinal(_underlying.notNull()),
-  in: (expectedOrFunction, ...additionalValues) =>
-    wrapCheckBuilderFinal(
-      typeof expectedOrFunction === "function"
-        ? _underlying.in(underlyingSessionTo(expectedOrFunction as SessionTo<X[]>))
-        : _underlying.in([expectedOrFunction, ...additionalValues])
-    ),
-  inEL: (expected) => wrapCheckBuilderFinal(_underlying.inEL(expected)),
-  exists: () => wrapCheckBuilderFinal(_underlying.exists()),
-  notExists: () => wrapCheckBuilderFinal(_underlying.notExists()),
-  optional: () => wrapCheckBuilderFinal(_underlying.optional()),
-  lt: (value) =>
-    wrapCheckBuilderFinal(isSessionTo(value) ? _underlying.lt(underlyingSessionTo(value)) : _underlying.lt(value)),
-  ltEL: (value) => wrapCheckBuilderFinal(_underlying.ltEL(value)),
-  lte: (value) =>
-    wrapCheckBuilderFinal(isSessionTo(value) ? _underlying.lte(underlyingSessionTo(value)) : _underlying.lte(value)),
-  lteEL: (value) => wrapCheckBuilderFinal(_underlying.lteEL(value)),
-  gt: (value) =>
-    wrapCheckBuilderFinal(isSessionTo(value) ? _underlying.gt(underlyingSessionTo(value)) : _underlying.gt(value)),
-  gtEL: (value) => wrapCheckBuilderFinal(_underlying.gtEL(value)),
-  gte: (value) =>
-    wrapCheckBuilderFinal(isSessionTo(value) ? _underlying.gte(underlyingSessionTo(value)) : _underlying.gte(value)),
-  gteEL: (value) => wrapCheckBuilderFinal(_underlying.gteEL(value))
-});
+export const wrapCheckBuilderValidate = <X>(_underlying: JvmCheckBuilderValidate<X>): CheckBuilderValidate<X> => {
+  const numeric = NumericValidate.of(_underlying);
+  return {
+    ...wrapCheckBuilderFinal(_underlying),
+    transform: (f) => wrapCheckBuilderValidate(_underlying.transform(f)),
+    transformWithSession: (f) =>
+      wrapCheckBuilderValidate(_underlying.transformWithSession(underlyingXWithSessionTo(f))),
+    withDefault: (value) =>
+      wrapCheckBuilderValidate(
+        isSessionTo(value) ? numeric.withDefault(underlyingSessionTo(value)) : numeric.withDefault(value)
+      ),
+    withDefaultEL: (value) => wrapCheckBuilderValidate(_underlying.withDefaultEl(value)),
+    validate: (name, f) => wrapCheckBuilderFinal(_underlying.validate(name, underlyingXWithSessionTo(f))),
+    is: (expected) =>
+      wrapCheckBuilderFinal(isSessionTo(expected) ? numeric.is(underlyingSessionTo(expected)) : numeric.is(expected)),
+    isEL: (expected) => wrapCheckBuilderFinal(_underlying.isEL(expected)),
+    isNull: () => wrapCheckBuilderFinal(_underlying.isNull()),
+    not: (expected) =>
+      wrapCheckBuilderFinal(isSessionTo(expected) ? numeric.not(underlyingSessionTo(expected)) : numeric.not(expected)),
+    notEL: (expected) => wrapCheckBuilderFinal(_underlying.notEL(expected)),
+    notNull: () => wrapCheckBuilderFinal(_underlying.notNull()),
+    in: (expectedOrFunction, ...additionalValues) =>
+      wrapCheckBuilderFinal(
+        typeof expectedOrFunction === "function"
+          ? _underlying.in(underlyingSessionTo(expectedOrFunction as SessionTo<X[]>))
+          : _underlying.in([expectedOrFunction, ...additionalValues])
+      ),
+    inEL: (expected) => wrapCheckBuilderFinal(_underlying.inEL(expected)),
+    exists: () => wrapCheckBuilderFinal(_underlying.exists()),
+    notExists: () => wrapCheckBuilderFinal(_underlying.notExists()),
+    optional: () => wrapCheckBuilderFinal(_underlying.optional()),
+    lt: (value) =>
+      wrapCheckBuilderFinal(isSessionTo(value) ? numeric.lt(underlyingSessionTo(value)) : numeric.lt(value)),
+    ltEL: (value) => wrapCheckBuilderFinal(_underlying.ltEL(value)),
+    lte: (value) =>
+      wrapCheckBuilderFinal(isSessionTo(value) ? numeric.lte(underlyingSessionTo(value)) : numeric.lte(value)),
+    lteEL: (value) => wrapCheckBuilderFinal(_underlying.lteEL(value)),
+    gt: (value) =>
+      wrapCheckBuilderFinal(isSessionTo(value) ? numeric.gt(underlyingSessionTo(value)) : numeric.gt(value)),
+    gtEL: (value) => wrapCheckBuilderFinal(_underlying.gtEL(value)),
+    gte: (value) =>
+      wrapCheckBuilderFinal(isSessionTo(value) ? numeric.gte(underlyingSessionTo(value)) : numeric.gte(value)),
+    gteEL: (value) => wrapCheckBuilderFinal(_underlying.gteEL(value))
+  };
+};
