@@ -16,6 +16,9 @@ inputs:
   github-token:
     description: "Token used to upload file to the GitHub release"
     required: true
+  aws-role:
+    description: "AWS role to assume (for CodeArtifact)"
+    required: true
 
 runs:
   using: "composite"
@@ -23,7 +26,7 @@ runs:
     - name: Configure AWS Credentials (for CodeArtifact)
       uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
       with:
-        role-to-assume: ${{ vars.AWS_ROLE_PROD_GATLING_JS }}
+        role-to-assume: ${{ inputs.aws-role }}
         aws-region: us-east-1
 
     - name: Setup Node
