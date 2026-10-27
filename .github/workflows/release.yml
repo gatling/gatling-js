@@ -215,6 +215,7 @@ jobs:
           os-type: Linux
           os-arch: x64
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          aws-role: ${{ vars.AWS_ROLE_PROD_GATLING_JS }}
 
   build-linux-arm64:
     name: Build bundle for Linux ARM64
@@ -237,6 +238,7 @@ jobs:
           os-type: Linux
           os-arch: arm64
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          aws-role: ${{ vars.AWS_ROLE_PROD_GATLING_JS }}
 
   build-macos-arm64:
     name: Build bundle for macOS ARM64
@@ -259,6 +261,7 @@ jobs:
           os-type: Darwin
           os-arch: arm64
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          aws-role: ${{ vars.AWS_ROLE_PROD_GATLING_JS }}
 
   build-windows-x64:
     name: Build bundle for Windows x64
@@ -281,6 +284,7 @@ jobs:
           os-type: Windows_NT
           os-arch: x64
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          aws-role: ${{ vars.AWS_ROLE_PROD_GATLING_JS }}
 
   publish-github-release:
     name: Publish GitHub release
