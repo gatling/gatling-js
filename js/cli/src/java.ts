@@ -9,17 +9,31 @@ export interface RunJavaProcessOptions {
   jvmClasspath: string;
 }
 
+/**
+ * Classpath elements around the Gatling bundle classpath: "beforeBundle" ones take precedence over the bundle, such as
+ * resources overriding its configuration files, while the bundle takes precedence over "afterBundle" ones, such as
+ * JVM dependencies of the project which could conflict with the libraries it provides
+ */
+export interface AdditionalClasspathElements {
+  beforeBundle: string[];
+  afterBundle?: string[];
+}
+
 export const runJavaProcess = (
   options: RunJavaProcessOptions,
   mainClass: string,
-  additionalClasspathElements: string[],
+  additionalClasspathElements: AdditionalClasspathElements,
   javaArgs: string[],
   mainClassArgs: string[],
   proxyConf?: ProxyConfiguration
 ): Promise<void> => {
   const command = `${options.graalvmHome}/bin/java`;
   const classpathSeparator = osType === "Windows_NT" ? ";" : ":";
-  const classpath = [...additionalClasspathElements, options.jvmClasspath].join(classpathSeparator);
+  const classpath = [
+    ...additionalClasspathElements.beforeBundle,
+    options.jvmClasspath,
+    ...(additionalClasspathElements.afterBundle ?? [])
+  ].join(classpathSeparator);
   const proxyArgs = generateProxyArgs(proxyConf);
   const allArgs = [
     "-server",
@@ -51,7 +65,7 @@ export const runJavaProcess = (
   });
 };
 
-const generateProxyArgs = (proxyConf?: ProxyConfiguration): string[] => {
+export const generateProxyArgs = (proxyConf?: ProxyConfiguration): string[] => {
   const proxyProps = (protocol: string, url?: URL): string[] => {
     const props = [];
     if (url !== undefined) {

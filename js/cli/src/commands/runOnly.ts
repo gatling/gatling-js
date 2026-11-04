@@ -47,6 +47,8 @@ export default (program: Command): void => {
       const runParameters = parseRunParametersArgument(args);
 
       await runSimulation({
+        // the classpath is passed explicitly
+        jvmDependencies: [],
         graalvmHome,
         jvmClasspath,
         simulation: simulation,

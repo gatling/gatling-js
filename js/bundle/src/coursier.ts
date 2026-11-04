@@ -1,4 +1,4 @@
-import { exec } from "node:child_process";
+import { execFile } from "node:child_process";
 import path from "node:path";
 import fs from "node:fs/promises";
 import { promisify } from "node:util";
@@ -9,12 +9,13 @@ import { TmpDirStructure } from "./tmpDir";
 import { versions } from "./versions";
 
 export const resolveJavaLibraries = async (tmpDir: TmpDirStructure): Promise<void> => {
-  const coursierPath = await downloadCoursier(tmpDir);
-  console.log(`Coursier path: ${coursierPath}`);
+  await downloadCoursier(tmpDir);
 
   console.log("Resolving dependencies with Coursier");
-  const command = `"${coursierPath}" fetch --classpath ${dependencies.join(" ")}`;
-  const { stdout } = await execAsync(command, { env: { ...process.env, JAVA_HOME: tmpDir.graalVm.homeDir } });
+  const javaPath = path.join(tmpDir.graalVm.homeDir, "bin", "java");
+  const args = ["-jar", tmpDir.coursier.jarFile, "fetch", "--classpath", ...dependencies];
+  console.log(`Running: ${javaPath} ${args.join(" ")}`);
+  const { stdout } = await execFileAsync(javaPath, args);
   console.log(`stdout: ${stdout}`);
 
   console.log(`Copying Java libraries to ${tmpDir.lib.javaDir}`);
@@ -28,33 +29,25 @@ export const resolveJavaLibraries = async (tmpDir: TmpDirStructure): Promise<voi
 };
 
 const downloadCoursier = async (tmpDir: TmpDirStructure) => {
-  console.log(`Downloading Coursier JAR from ${jarUrl} to ${tmpDir.coursier.jarFile}`);
-  await downloadFile(jarUrl, tmpDir.coursier.jarFile);
-  if (osType === "Windows_NT") {
-    console.log(`Downloading Coursier BAT from ${windowsLauncherUrl} to ${tmpDir.coursier.batFile}`);
-    await downloadFile(windowsLauncherUrl, tmpDir.coursier.batFile);
-    return tmpDir.coursier.batFile;
-  } else {
-    await fs.chmod(tmpDir.coursier.jarFile, 0o744);
-    return tmpDir.coursier.jarFile;
-  }
+  console.log(`Downloading Coursier JAR-based launcher from ${launcherUrl} to ${tmpDir.coursier.jarFile}`);
+  await downloadFile(launcherUrl, tmpDir.coursier.jarFile);
 };
 
-const execAsync = promisify(exec);
+const execFileAsync = promisify(execFile);
 
-const jarUrl = `https://github.com/coursier/coursier/releases/download/v${versions.coursier}/coursier.jar`;
-// Starting from Coursier 2.1.25+, we will be able to download coursier.bat from the same GH relase as coursier.jar
-const windowsLauncherUrl = "https://github.com/coursier/launchers/raw/master/coursier.bat";
+// The JAR-based launcher, see https://get-coursier.io/docs/cli-installation#jar-based-launcher: a small bootstrap JAR
+// that downloads the actual Coursier CLI on its first run
+const launcherUrl = "https://github.com/coursier/launchers/raw/master/coursier";
 
 const dependencies = [
-  `"io.gatling.highcharts:gatling-charts-highcharts:${versions.gatling.core}"`,
-  `"io.gatling:gatling-enterprise-plugin-commons:${versions.gatling.enterprisePluginCommons}"`,
-  `"io.gatling:gatling-jvm-to-js-adapter:${versions.gatling.jsAdapter}"`,
-  `"io.gatling:gatling-graphql-java:${versions.gatling.graphql}"`,
-  `"io.gatling:gatling-grpc-java:${versions.gatling.grpc}"`,
-  `"io.gatling:gatling-mqtt-java:${versions.gatling.mqtt}"`,
+  `io.gatling.highcharts:gatling-charts-highcharts:${versions.gatling.core}`,
+  `io.gatling:gatling-enterprise-plugin-commons:${versions.gatling.enterprisePluginCommons}`,
+  `io.gatling:gatling-jvm-to-js-adapter:${versions.gatling.jsAdapter}`,
+  `io.gatling:gatling-graphql-java:${versions.gatling.graphql}`,
+  `io.gatling:gatling-grpc-java:${versions.gatling.grpc}`,
+  `io.gatling:gatling-mqtt-java:${versions.gatling.mqtt}`,
   // TODO handle Gatling Postman version if different from Gatling JS version
-  `"io.gatling:gatling-postman-jvm-to-js-adapter:${versions.gatling.jsAdapter}"`, // For Gatling Postman
-  `"io.gatling:gatling-recorder:${versions.gatling.core}"`, // For the recorder
-  `"org.graalvm.polyglot:js:${versions.graalvm.js}"`
+  `io.gatling:gatling-postman-jvm-to-js-adapter:${versions.gatling.jsAdapter}`, // For Gatling Postman
+  `io.gatling:gatling-recorder:${versions.gatling.core}`, // For the recorder
+  `org.graalvm.polyglot:js:${versions.graalvm.js}`
 ];

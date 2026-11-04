@@ -4,6 +4,8 @@ import {
   bundleFileOptionValue,
   gatlingHomeOption,
   gatlingHomeOptionValueWithDefaults,
+  jvmLibsFolderOption,
+  jvmLibsFolderOptionValue,
   memoryOption,
   memoryOptionValue,
   nonInteractiveOption,
@@ -28,6 +30,7 @@ import {
 } from "./options";
 import { findSimulations } from "../simulations";
 import { resolveBundle } from "../dependencies";
+import { resolveJvmDependencies } from "../dependencies/jvmDependencies";
 import { logger } from "../log";
 import { bundle } from "../bundle";
 import { runSimulation } from "../run";
@@ -45,6 +48,7 @@ export default (program: Command): void => {
     .addOption(bundleFileOption)
     .addOption(protoTargetFolderOption)
     .addOption(resourcesFolderOption)
+    .addOption(jvmLibsFolderOption)
     .addOption(resultsFolderOption)
     .addOption(gatlingHomeOption)
     .addOption(memoryOption)
@@ -58,6 +62,7 @@ export default (program: Command): void => {
       const bundleFile = bundleFileOptionValue(options);
       const protoTargetFolder = protoTargetFolderOptionValue(options);
       const resourcesFolder: string = resourcesFolderOptionValue(options);
+      const jvmLibsFolder: string = jvmLibsFolderOptionValue(options);
       const resultsFolder: string = resultsFolderOptionValue(options);
       const memory: number | undefined = memoryOptionValue(options);
       const nonInteractive: boolean = nonInteractiveOptionValue(options);
@@ -67,9 +72,15 @@ export default (program: Command): void => {
       const simulations = await findSimulations(sourcesFolder);
       const simulation = simulationOptionValueWithDefaults(options, simulations, !nonInteractive);
 
-      const { graalvmHome, jvmClasspath, protocPath } = await resolveBundle({ gatlingHome });
+      const { graalvmHome, jvmClasspath, protocPath, coursierJarPath } = await resolveBundle({ gatlingHome });
       logger.debug(`graalvmHome=${graalvmHome}`);
       logger.debug(`jvmClasspath=${jvmClasspath}`);
+      const jvmDependencies = await resolveJvmDependencies({
+        graalvmHome,
+        jvmClasspath,
+        coursierJarPath,
+        jvmLibsFolder
+      });
 
       await bundle({
         sourcesFolder,
@@ -89,6 +100,7 @@ export default (program: Command): void => {
         resourcesFolder,
         protoTargetFolder,
         resultsFolder,
+        jvmDependencies,
         memory,
         runParameters
       });

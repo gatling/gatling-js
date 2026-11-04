@@ -23,6 +23,7 @@ export interface ResolvedBundle {
   graalvmHome: string;
   jvmClasspath: string;
   protocPath: string;
+  coursierJarPath: string;
 }
 
 export const installBundleFile = async (options: BundleInstallOptions): Promise<ResolvedBundle> => {
@@ -103,7 +104,8 @@ const canReadPath = async (path: string) => {
 const getResolvedBundle = (bundlePath: string): ResolvedBundle => ({
   graalvmHome: path.join(bundlePath, "graalvm"),
   jvmClasspath: path.join(bundlePath, "lib", "java", "*"),
-  protocPath: path.join(bundlePath, "bin", "protoc.exe")
+  protocPath: path.join(bundlePath, "bin", "protoc.exe"),
+  coursierJarPath: path.join(bundlePath, "bin", "coursier.jar")
 });
 
 const downloadAndInstallBundle = async (options: BundleOptions) => {
