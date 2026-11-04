@@ -8,6 +8,10 @@ export interface RunSimulationOptions extends RunJavaProcessOptions {
   resourcesFolder: string;
   protoTargetFolder: string;
   resultsFolder: string;
+  /**
+   * The jars of the JVM dependencies of the project, from its JVM libraries folder and declared in package.json
+   */
+  jvmDependencies: string[];
   memory?: number;
   runParameters: Record<string, string>;
 }
@@ -25,7 +29,10 @@ export const runSimulation = async (options: RunSimulationOptions): Promise<void
  - resourcesFolder: ${options.resourcesFolder}
  - resultsFolder: ${options.resultsFolder}`);
 
-  const additionalClasspathElements = [options.resourcesFolder, options.protoTargetFolder];
+  const additionalClasspathElements = {
+    beforeBundle: [options.resourcesFolder, options.protoTargetFolder],
+    afterBundle: options.jvmDependencies
+  };
   const jitTuningArgs = ["-XX:JVMCINativeLibraryThreadFraction=0.8", "-Djdk.graal.MethodInlineBailoutLimit=500"];
   const memoryArgs = options.memory !== undefined ? [`-Xms${options.memory}M`, `-Xmx${options.memory}M`] : [];
   const javaArgs = [
@@ -68,5 +75,5 @@ export const runRecorder = async (options: RunRecorderOptions): Promise<void> =>
     options.typescript ? "typescript" : "javascript"
   ];
 
-  return runJavaProcess(options, "io.gatling.recorder.GatlingRecorder", [], [], recorderArgs);
+  return runJavaProcess(options, "io.gatling.recorder.GatlingRecorder", { beforeBundle: [] }, [], recorderArgs);
 };

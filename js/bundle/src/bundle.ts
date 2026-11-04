@@ -22,6 +22,8 @@ export const bundle = async (tmpDir: TmpDirStructure): Promise<void> => {
   archive.directory(tmpDir.graalVm.homeDir + "/", "graalvm");
   archive.directory(tmpDir.lib.dir + "/", "lib");
   archive.directory(tmpDir.bin.dir + "/", "bin");
+  // The JAR-based launcher, used by the CLI to resolve the JVM dependencies projects declare
+  archive.file(tmpDir.coursier.jarFile, { name: "bin/coursier.jar" });
   archive.finalize();
 
   await pipeline(archive, output);

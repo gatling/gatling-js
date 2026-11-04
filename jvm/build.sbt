@@ -19,7 +19,6 @@ val protocVersion = "4.35.1"
 
 // bit weird cause this is not a dependency of this project
 val gatlingEnterprisePluginCommonsVersion = "1.26.3"
-val coursierVersion = "2.1.24"
 
 lazy val root = rootProject
   .enablePlugins(GatlingOssPlugin)
@@ -74,8 +73,7 @@ lazy val adapter = (project in file("adapter"))
            |  },
            |  protobuf: {
            |    protoc: "$protocVersion"
-           |  },
-           |  coursier: "$coursierVersion"
+           |  }
            |};
            |""".stripMargin
       IO.write(basePath / "js" / "cli" / "src" / "dependencies" / "versions.ts", content)
@@ -114,7 +112,6 @@ lazy val dummy = (project in file("dummy"))
   .settings(
     publish / skip := true,
     libraryDependencies ++= Seq(
-      "io.gatling"       % "gatling-enterprise-plugin-commons" % gatlingEnterprisePluginCommonsVersion,
-      "io.get-coursier" %% "coursier"                          % coursierVersion
+      "io.gatling" % "gatling-enterprise-plugin-commons" % gatlingEnterprisePluginCommonsVersion
     )
   )

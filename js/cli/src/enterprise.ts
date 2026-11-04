@@ -1,6 +1,9 @@
 import { ZipArchive } from "archiver";
 import fs from "fs";
+import path from "path";
 import { pipeline } from "stream/promises";
+
+import StreamZip from "node-stream-zip";
 import { constants as zConstants } from "zlib";
 
 import { versions } from "./dependencies";
@@ -16,6 +19,11 @@ export interface EnterprisePackageOptions {
   packageFile: string;
   postman: string | undefined;
   simulations: SimulationFile[];
+  /**
+   * The jars of the JVM dependencies of the project, from its JVM libraries folder and declared in package.json, whose
+   * content is merged into the package
+   */
+  jvmDependencies: string[];
 }
 
 export const enterprisePackage = async (options: EnterprisePackageOptions): Promise<void> => {
@@ -33,15 +41,92 @@ export const enterprisePackage = async (options: EnterprisePackageOptions): Prom
     // they include things like 'no such file or directory'.
     throw err;
   });
+  const written = pipeline(archive, output);
+
   archive.file(options.bundleFile, { name: "bundle.js" });
   archive.append(Buffer.from(manifest), { name: "META-INF/MANIFEST.MF" });
   archive.directory(options.resourcesFolder + "/", false);
   archive.directory(options.protoTargetFolder + "/", false);
+  const projectEntries = new Set([
+    "bundle.js",
+    "META-INF/MANIFEST.MF",
+    ...listFiles(options.resourcesFolder),
+    ...listFiles(options.protoTargetFolder)
+  ]);
+  await appendJvmDependencies(archive, options.jvmDependencies, projectEntries);
   archive.finalize();
 
-  await pipeline(archive, output);
+  await written;
 
   logger.info(`Package for Gatling Enterprise created at ${options.packageFile}`);
+};
+
+const listFiles = (folder: string): string[] =>
+  fs.existsSync(folder)
+    ? (fs.readdirSync(folder, { recursive: true, withFileTypes: true }) as fs.Dirent[])
+        .filter((entry) => entry.isFile())
+        .map((entry) => path.relative(folder, path.join(entry.parentPath, entry.name)).split(path.sep).join("/"))
+    : [];
+
+// meaningless once merged, or wrong: signatures no longer match, and module descriptors don't apply on the classpath
+const isDroppedJarEntry = (name: string): boolean =>
+  name === "META-INF/MANIFEST.MF" ||
+  name === "META-INF/INDEX.LIST" ||
+  /^META-INF\/[^/]+\.(SF|DSA|RSA|EC)$/i.test(name) ||
+  /(^|\/)module-info\.class$/.test(name);
+
+/**
+ * Merges the content of the jars into the package, like the Maven and Gradle plugins do: the project's own files and the
+ * first jar providing an entry win, except for service provider configuration files, typically registering JDBC drivers,
+ * that are concatenated.
+ */
+const appendJvmDependencies = async (
+  archive: ZipArchive,
+  jars: string[],
+  projectEntries: Set<string>
+): Promise<void> => {
+  const addedEntries = new Set(projectEntries);
+  const services = new Map<string, string[]>();
+
+  for (const jar of jars) {
+    logger.debug(`Merging ${jar} into the package`);
+    const zip = new StreamZip.async({ file: jar });
+    let entries: StreamZip.ZipEntry[];
+    try {
+      entries = Object.values(await zip.entries());
+    } catch (e) {
+      // not closing the zip, which fails again with the same error
+      throw Error(`Failed to read ${jar}, which isn't a valid JAR file: ${(e as Error).message}`);
+    }
+    try {
+      for (const entry of entries) {
+        const name = entry.name;
+        if (entry.isDirectory || isDroppedJarEntry(name)) {
+          continue;
+        }
+        if (name.startsWith("META-INF/services/")) {
+          const providers = services.get(name) ?? [];
+          providers.push((await zip.entryData(entry)).toString("utf-8").trim());
+          services.set(name, providers);
+        } else if (!addedEntries.has(name)) {
+          addedEntries.add(name);
+          archive.append(await zip.entryData(entry), { name });
+        }
+      }
+    } finally {
+      await zip.close();
+    }
+  }
+
+  for (const [name, providers] of services) {
+    if (addedEntries.has(name)) {
+      logger.info(
+        `Not merging the service providers of the JVM dependencies into ${name}, as the project provides its own`
+      );
+      continue;
+    }
+    archive.append(Buffer.from(providers.join("\n") + "\n", "utf-8"), { name });
+  }
 };
 
 const generateManifest = (options: EnterprisePackageOptions) => {
@@ -192,7 +277,7 @@ const javaArgsFromDeployOptions = (options: EnterpriseDeployOptions) => {
 };
 
 export const enterpriseDeploy = async (options: EnterpriseDeployOptions): Promise<void> => {
-  const additionalClasspathElements = [options.resourcesFolder];
+  const additionalClasspathElements = { beforeBundle: [options.resourcesFolder] };
   const javaArgs = javaArgsFromDeployOptions(options);
 
   return runJavaProcess(
@@ -213,7 +298,7 @@ export interface EnterpriseStartOptions extends EnterpriseDeployOptions {
 }
 
 export const enterpriseStart = async (options: EnterpriseStartOptions): Promise<void> => {
-  const additionalClasspathElements = [options.resourcesFolder];
+  const additionalClasspathElements = { beforeBundle: [options.resourcesFolder] };
   const javaArgs = javaArgsFromDeployOptions(options);
 
   // Start

@@ -165,6 +165,12 @@ export const resourcesFolderOption = new Option("--resources-folder <value>", "T
 );
 export const resourcesFolderOptionValue = getStringValueMandatory(resourcesFolderOption);
 
+export const jvmLibsFolderOption = new Option(
+  "--jvm-libs-folder <value>",
+  "The folder of the JAR files to add to the JVM classpath, an alternative to declaring jvmDependencies in package.json"
+).default("jvm_libs");
+export const jvmLibsFolderOptionValue = getStringValueMandatory(jvmLibsFolderOption);
+
 export const resultsFolderOption = new Option("--results-folder <value>", "The results folder path").default(
   "target/gatling"
 );

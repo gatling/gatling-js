@@ -5,6 +5,8 @@ import {
   bundleFileOptionValue,
   gatlingHomeOption,
   gatlingHomeOptionValueWithDefaults,
+  jvmLibsFolderOption,
+  jvmLibsFolderOptionValue,
   packageFileOption,
   packageFileOptionValue,
   postmanOption,
@@ -23,6 +25,7 @@ import { findSimulations } from "../simulations";
 import { bundle } from "../bundle";
 import { enterprisePackage } from "../enterprise";
 import { resolveBundle } from "../dependencies";
+import { resolveJvmDependencies } from "../dependencies/jvmDependencies";
 
 export default (program: Command): void => {
   program
@@ -31,6 +34,7 @@ export default (program: Command): void => {
     .addOption(sourcesFolderOption)
     .addOption(protoFolderOption)
     .addOption(resourcesFolderOption)
+    .addOption(jvmLibsFolderOption)
     .addOption(bundleFileOption)
     .addOption(protoTargetFolderOption)
     .addOption(packageFileOption)
@@ -41,6 +45,7 @@ export default (program: Command): void => {
       const sourcesFolder: string = sourcesFolderOptionValue(options);
       const protoFolder: string = protoFolderOptionValue(options);
       const resourcesFolder: string = resourcesFolderOptionValue(options);
+      const jvmLibsFolder: string = jvmLibsFolderOptionValue(options);
       const bundleFile = bundleFileOptionValue(options);
       const protoTargetFolder = protoTargetFolderOptionValue(options);
       const packageFile = packageFileOptionValue(options);
@@ -49,7 +54,13 @@ export default (program: Command): void => {
       const simulations = await findSimulations(sourcesFolder);
       const postman = postmanOptionValueWithDefaults(options);
 
-      const { protocPath } = await resolveBundle({ gatlingHome });
+      const { graalvmHome, jvmClasspath, protocPath, coursierJarPath } = await resolveBundle({ gatlingHome });
+      const jvmDependencies = await resolveJvmDependencies({
+        graalvmHome,
+        jvmClasspath,
+        coursierJarPath,
+        jvmLibsFolder
+      });
 
       await bundle({
         sourcesFolder,
@@ -61,6 +72,14 @@ export default (program: Command): void => {
         protocPath
       });
 
-      await enterprisePackage({ bundleFile, resourcesFolder, protoTargetFolder, packageFile, postman, simulations });
+      await enterprisePackage({
+        bundleFile,
+        resourcesFolder,
+        protoTargetFolder,
+        packageFile,
+        postman,
+        simulations,
+        jvmDependencies
+      });
     });
 };

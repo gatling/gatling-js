@@ -11,6 +11,8 @@ import {
   enterpriseSimulationOptionValue,
   gatlingHomeOption,
   gatlingHomeOptionValueWithDefaults,
+  jvmLibsFolderOption,
+  jvmLibsFolderOptionValue,
   nonInteractiveOption,
   nonInteractiveOptionValue,
   packageDescriptorFilenameOption,
@@ -47,6 +49,7 @@ import {
 } from "./options";
 import { findSimulations } from "../simulations";
 import { resolveBundle } from "../dependencies";
+import { resolveJvmDependencies } from "../dependencies/jvmDependencies";
 import { bundle } from "../bundle";
 import { enterprisePackage, enterpriseStart } from "../enterprise";
 
@@ -57,6 +60,7 @@ export default (program: Command): void => {
     .addOption(sourcesFolderOption)
     .addOption(protoFolderOption)
     .addOption(resourcesFolderOption)
+    .addOption(jvmLibsFolderOption)
     .addOption(bundleFileOption)
     .addOption(protoTargetFolderOption)
     .addOption(resultsFolderOption)
@@ -89,6 +93,7 @@ export default (program: Command): void => {
       const postman = postmanOptionValueWithDefaults(options);
 
       const resourcesFolder: string = resourcesFolderOptionValue(options);
+      const jvmLibsFolder: string = jvmLibsFolderOptionValue(options);
       const bundleFile = bundleFileOptionValue(options);
       const protoTargetFolder = protoTargetFolderOptionValue(options);
       const resultsFolder: string = resultsFolderOptionValue(options);
@@ -111,7 +116,13 @@ export default (program: Command): void => {
         throw new Error(`No simulation specified when using non-interactive mode`);
       }
 
-      const { graalvmHome, jvmClasspath, protocPath } = await resolveBundle({ gatlingHome });
+      const { graalvmHome, jvmClasspath, protocPath, coursierJarPath } = await resolveBundle({ gatlingHome });
+      const jvmDependencies = await resolveJvmDependencies({
+        graalvmHome,
+        jvmClasspath,
+        coursierJarPath,
+        jvmLibsFolder
+      });
       await bundle({
         sourcesFolder,
         protoFolder,
@@ -121,7 +132,15 @@ export default (program: Command): void => {
         simulations,
         protocPath
       });
-      await enterprisePackage({ bundleFile, resourcesFolder, protoTargetFolder, packageFile, postman, simulations });
+      await enterprisePackage({
+        bundleFile,
+        resourcesFolder,
+        protoTargetFolder,
+        packageFile,
+        postman,
+        simulations,
+        jvmDependencies
+      });
       await enterpriseStart({
         graalvmHome,
         jvmClasspath,
