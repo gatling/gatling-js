@@ -76,7 +76,7 @@ export interface FeederBuilder<T> extends Wrapper<JvmFeederBuilder<T>> {
   shard(): FeederBuilder<T>;
 }
 
-const wrapFeederBuilder = <T>(_underlying: JvmFeederBuilder<T>): FeederBuilder<T> => ({
+export const wrapFeederBuilder = <T>(_underlying: JvmFeederBuilder<T>): FeederBuilder<T> => ({
   _underlying,
   queue: () => wrapFeederBuilder(_underlying.queue()),
   random: () => wrapFeederBuilder(_underlying.random()),

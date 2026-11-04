@@ -9,6 +9,7 @@
     "@gatling.io/graphql": "3.16.1",
     "@gatling.io/grpc": "3.16.1",
     "@gatling.io/http": "3.16.1",
+    "@gatling.io/jdbc": "3.16.1",
     "@gatling.io/mqtt": "3.16.1",
     "uuid": "14.0.3"
   },
@@ -26,5 +27,10 @@
     "build": "tsc --noEmit && gatling build --typescript",
     "start": "gatling run",
     "recorder": "gatling recorder --typescript"
+  },
+  "gatling": {
+    "jvmDependencies": {
+      "artifacts": ["org.postgresql:postgresql:42.7.14"]
+    }
   }
 }
