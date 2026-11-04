@@ -2099,6 +2099,129 @@ interface IterableStatic {
 
 export const Iterable: IterableStatic = Java.type("java.lang.Iterable");
 
+interface JdbcBeginActionBuilderStatic {
+  readonly class: any;
+}
+
+export const JdbcBeginActionBuilder: JdbcBeginActionBuilderStatic = Java.type(
+  "io.gatling.javaapi.jdbc.JdbcBeginActionBuilder"
+);
+
+interface JdbcCallableStatementActionBuilderStatic {
+  readonly class: any;
+}
+
+export const JdbcCallableStatementActionBuilder: JdbcCallableStatementActionBuilderStatic = Java.type(
+  "io.gatling.javaapi.jdbc.JdbcCallableStatementActionBuilder"
+);
+
+interface JdbcDslStatic {
+  readonly class: any;
+  rowCount(): io.gatling.javaapi.core.CheckBuilder$Find<int | null>;
+  outValue(arg0: int): io.gatling.javaapi.core.CheckBuilder$Find<any /*java.lang.Object*/>;
+  rows(): io.gatling.javaapi.core.CheckBuilder$Find<java.util.List<java.util.Map<string, any /*java.lang.Object*/>>>;
+  updateCount(): io.gatling.javaapi.core.CheckBuilder$MultipleFind<int | null>;
+  column(arg0: int): io.gatling.javaapi.core.CheckBuilder$MultipleFind<any /*java.lang.Object*/>;
+  column(arg0: string): io.gatling.javaapi.core.CheckBuilder$MultipleFind<any /*java.lang.Object*/>;
+  column(
+    arg0: Func<io.gatling.javaapi.core.Session, string>
+  ): io.gatling.javaapi.core.CheckBuilder$MultipleFind<any /*java.lang.Object*/>;
+  generatedKey(): io.gatling.javaapi.core.CheckBuilder$MultipleFind<any /*java.lang.Object*/>;
+  generatedKey(arg0: int): io.gatling.javaapi.core.CheckBuilder$MultipleFind<any /*java.lang.Object*/>;
+  generatedKey(arg0: string): io.gatling.javaapi.core.CheckBuilder$MultipleFind<any /*java.lang.Object*/>;
+  generatedKey(
+    arg0: Func<io.gatling.javaapi.core.Session, string>
+  ): io.gatling.javaapi.core.CheckBuilder$MultipleFind<any /*java.lang.Object*/>;
+  jdbcFeeder(
+    arg0: string,
+    arg1: string,
+    arg2: string,
+    arg3: string
+  ): io.gatling.javaapi.core.FeederBuilder<any /*java.lang.Object*/>;
+  jdbc(arg0: string): io.gatling.javaapi.jdbc.Jdbc;
+  jdbc(arg0: Func<io.gatling.javaapi.core.Session, string>): io.gatling.javaapi.jdbc.Jdbc;
+  inOutParam(arg0: any /*java.lang.Object*/, arg1: any /*java.sql.JDBCType*/): io.gatling.javaapi.jdbc.JdbcParam;
+  inOutParam(
+    arg0: Func<io.gatling.javaapi.core.Session, any /*java.lang.Object*/>,
+    arg1: any /*java.sql.JDBCType*/
+  ): io.gatling.javaapi.jdbc.JdbcParam;
+  outParam(arg0: any /*java.sql.JDBCType*/): io.gatling.javaapi.jdbc.JdbcParam;
+  param(arg0: any /*java.lang.Object*/, arg1: any /*java.sql.JDBCType*/): io.gatling.javaapi.jdbc.JdbcParam;
+  param(arg0: Func<io.gatling.javaapi.core.Session, any /*java.lang.Object*/>): io.gatling.javaapi.jdbc.JdbcParam;
+  param(
+    arg0: Func<io.gatling.javaapi.core.Session, any /*java.lang.Object*/>,
+    arg1: any /*java.sql.JDBCType*/
+  ): io.gatling.javaapi.jdbc.JdbcParam;
+}
+
+export const JdbcDsl: JdbcDslStatic = Java.type("io.gatling.javaapi.jdbc.JdbcDsl");
+
+interface JdbcParamStatic {
+  readonly class: any;
+}
+
+export const JdbcParam: JdbcParamStatic = Java.type("io.gatling.javaapi.jdbc.JdbcParam");
+
+interface JdbcPreparedStatementActionBuilderStatic {
+  readonly class: any;
+}
+
+export const JdbcPreparedStatementActionBuilder: JdbcPreparedStatementActionBuilderStatic = Java.type(
+  "io.gatling.javaapi.jdbc.JdbcPreparedStatementActionBuilder"
+);
+
+interface JdbcProtocolBuilder$BaseStatic {
+  readonly class: any;
+}
+
+export const JdbcProtocolBuilder$Base: JdbcProtocolBuilder$BaseStatic = Java.type(
+  "io.gatling.javaapi.jdbc.JdbcProtocolBuilder$Base"
+);
+
+interface JdbcProtocolBuilderStatic {
+  readonly class: any;
+}
+
+export const JdbcProtocolBuilder: JdbcProtocolBuilderStatic = Java.type("io.gatling.javaapi.jdbc.JdbcProtocolBuilder");
+
+interface JdbcRequestActionBuilder$UntypedConditionStatic {
+  readonly class: any;
+}
+
+export const JdbcRequestActionBuilder$UntypedCondition: JdbcRequestActionBuilder$UntypedConditionStatic = Java.type(
+  "io.gatling.javaapi.jdbc.JdbcRequestActionBuilder$UntypedCondition"
+);
+
+interface JdbcRequestActionBuilderStatic {
+  readonly class: any;
+}
+
+export const JdbcRequestActionBuilder: JdbcRequestActionBuilderStatic = Java.type(
+  "io.gatling.javaapi.jdbc.JdbcRequestActionBuilder"
+);
+
+interface JdbcStatementActionBuilderStatic {
+  readonly class: any;
+}
+
+export const JdbcStatementActionBuilder: JdbcStatementActionBuilderStatic = Java.type(
+  "io.gatling.javaapi.jdbc.JdbcStatementActionBuilder"
+);
+
+interface JdbcStatic {
+  readonly class: any;
+}
+
+export const Jdbc: JdbcStatic = Java.type("io.gatling.javaapi.jdbc.Jdbc");
+
+interface JdbcTransactionActionBuilderStatic {
+  readonly class: any;
+}
+
+export const JdbcTransactionActionBuilder: JdbcTransactionActionBuilderStatic = Java.type(
+  "io.gatling.javaapi.jdbc.JdbcTransactionActionBuilder"
+);
+
 interface LastWillBuilderStatic {
   readonly class: any;
 }

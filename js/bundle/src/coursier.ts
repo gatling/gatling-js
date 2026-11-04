@@ -44,6 +44,7 @@ const dependencies = [
   `io.gatling:gatling-enterprise-plugin-commons:${versions.gatling.enterprisePluginCommons}`,
   `io.gatling:gatling-jvm-to-js-adapter:${versions.gatling.jsAdapter}`,
   `io.gatling:gatling-graphql-java:${versions.gatling.graphql}`,
+  `io.gatling:gatling-jdbc-java:${versions.gatling.jdbc}`,
   `io.gatling:gatling-grpc-java:${versions.gatling.grpc}`,
   `io.gatling:gatling-mqtt-java:${versions.gatling.mqtt}`,
   // TODO handle Gatling Postman version if different from Gatling JS version

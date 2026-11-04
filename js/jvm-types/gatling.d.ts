@@ -4877,6 +4877,146 @@ declare namespace io.gatling.javaapi.http {
     toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
   } // end WsAwaitActionBuilder
 } // end namespace io.gatling.javaapi.http
+declare namespace io.gatling.javaapi.jdbc {
+  class Jdbc /* extends java.lang.Object*/ {
+    begin(): JdbcBeginActionBuilder;
+    callableStatement(arg0: Func<io.gatling.javaapi.core.Session, string>): JdbcCallableStatementActionBuilder;
+    callableStatement(arg0: string): JdbcCallableStatementActionBuilder;
+    commit(): JdbcTransactionActionBuilder;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    preparedStatement(arg0: Func<io.gatling.javaapi.core.Session, string>): JdbcPreparedStatementActionBuilder;
+    preparedStatement(arg0: string): JdbcPreparedStatementActionBuilder;
+    rollback(): JdbcTransactionActionBuilder;
+    statement(arg0: Func<io.gatling.javaapi.core.Session, string>): JdbcStatementActionBuilder;
+    statement(arg0: string): JdbcStatementActionBuilder;
+    toString(): string;
+  } // end Jdbc
+} // end namespace io.gatling.javaapi.jdbc
+declare namespace io.gatling.javaapi.jdbc {
+  class JdbcBeginActionBuilder /* extends java.lang.Object implements io.gatling.javaapi.core.ActionBuilder*/ {
+    asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    readOnly(): JdbcBeginActionBuilder;
+    toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
+    toString(): string;
+    transactionIsolation(arg0: int): JdbcBeginActionBuilder;
+  } // end JdbcBeginActionBuilder
+} // end namespace io.gatling.javaapi.jdbc
+declare namespace io.gatling.javaapi.jdbc {
+  class JdbcCallableStatementActionBuilder /* extends JdbcRequestActionBuilder<any, any>*/ {
+    asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
+    check<T>(...arg0: io.gatling.javaapi.core.CheckBuilder[]): T;
+    check<T>(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): T;
+    checkIf<T>(
+      arg0: Func<io.gatling.javaapi.core.Session, boolean | null>
+    ): JdbcRequestActionBuilder$UntypedCondition<T>;
+    checkIf<T>(arg0: string): JdbcRequestActionBuilder$UntypedCondition<T>;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    params(...arg0: any /*java.lang.Object*/[]): JdbcCallableStatementActionBuilder;
+    toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
+    toString(): string;
+  } // end JdbcCallableStatementActionBuilder
+} // end namespace io.gatling.javaapi.jdbc
+declare namespace io.gatling.javaapi.jdbc {
+  class JdbcDsl /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toString(): string;
+  } // end JdbcDsl
+} // end namespace io.gatling.javaapi.jdbc
+declare namespace io.gatling.javaapi.jdbc {
+  class JdbcParam /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toString(): string;
+  } // end JdbcParam
+} // end namespace io.gatling.javaapi.jdbc
+declare namespace io.gatling.javaapi.jdbc {
+  class JdbcPreparedStatementActionBuilder /* extends JdbcRequestActionBuilder<any, any>*/ {
+    asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
+    batch(
+      arg0: Func<io.gatling.javaapi.core.Session, java.util.List<java.util.List<any /*java.lang.Object*/>>>
+    ): JdbcPreparedStatementActionBuilder;
+    batch(arg0: string): JdbcPreparedStatementActionBuilder;
+    check<T>(...arg0: io.gatling.javaapi.core.CheckBuilder[]): T;
+    check<T>(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): T;
+    checkIf<T>(
+      arg0: Func<io.gatling.javaapi.core.Session, boolean | null>
+    ): JdbcRequestActionBuilder$UntypedCondition<T>;
+    checkIf<T>(arg0: string): JdbcRequestActionBuilder$UntypedCondition<T>;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    params(...arg0: any /*java.lang.Object*/[]): JdbcPreparedStatementActionBuilder;
+    returnGeneratedKeys(): JdbcPreparedStatementActionBuilder;
+    returnGeneratedKeys(arg0: string, ...arg1: string[]): JdbcPreparedStatementActionBuilder;
+    toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
+    toString(): string;
+  } // end JdbcPreparedStatementActionBuilder
+} // end namespace io.gatling.javaapi.jdbc
+declare namespace io.gatling.javaapi.jdbc {
+  class JdbcProtocolBuilder$Base /* extends java.lang.Object*/ {
+    dataSource(arg0: any /*javax.sql.DataSource*/): JdbcProtocolBuilder;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toString(): string;
+    url(arg0: string): JdbcProtocolBuilder;
+  } // end JdbcProtocolBuilder$Base
+} // end namespace io.gatling.javaapi.jdbc
+declare namespace io.gatling.javaapi.jdbc {
+  class JdbcProtocolBuilder /* extends java.lang.Object implements io.gatling.javaapi.core.ProtocolBuilder*/ {
+    credentials(arg0: string, arg1: string): JdbcProtocolBuilder;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    fetchSize(arg0: int): JdbcProtocolBuilder;
+    loginTimeout(arg0: java.time.Duration): JdbcProtocolBuilder;
+    loginTimeout(arg0: long): JdbcProtocolBuilder;
+    maxConnections(arg0: int): JdbcProtocolBuilder;
+    property(arg0: string, arg1: string): JdbcProtocolBuilder;
+    protocol(): any; /*io.gatling.core.protocol.Protocol*/
+    queryTimeout(arg0: java.time.Duration): JdbcProtocolBuilder;
+    queryTimeout(arg0: long): JdbcProtocolBuilder;
+    toString(): string;
+  } // end JdbcProtocolBuilder
+} // end namespace io.gatling.javaapi.jdbc
+declare namespace io.gatling.javaapi.jdbc {
+  class JdbcRequestActionBuilder$UntypedCondition<T> /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    then(...arg0: io.gatling.javaapi.core.CheckBuilder[]): T;
+    then(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): T;
+    toString(): string;
+  } // end JdbcRequestActionBuilder$UntypedCondition
+} // end namespace io.gatling.javaapi.jdbc
+declare namespace io.gatling.javaapi.jdbc {
+  class JdbcRequestActionBuilder<T, W> /* extends java.lang.Object implements io.gatling.javaapi.core.ActionBuilder*/ {
+    asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
+    check(...arg0: io.gatling.javaapi.core.CheckBuilder[]): T;
+    check(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): T;
+    checkIf(arg0: Func<io.gatling.javaapi.core.Session, boolean | null>): JdbcRequestActionBuilder$UntypedCondition<T>;
+    checkIf(arg0: string): JdbcRequestActionBuilder$UntypedCondition<T>;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
+    toString(): string;
+  } // end JdbcRequestActionBuilder
+} // end namespace io.gatling.javaapi.jdbc
+declare namespace io.gatling.javaapi.jdbc {
+  class JdbcStatementActionBuilder /* extends JdbcRequestActionBuilder<any, any>*/ {
+    asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
+    check<T>(...arg0: io.gatling.javaapi.core.CheckBuilder[]): T;
+    check<T>(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): T;
+    checkIf<T>(
+      arg0: Func<io.gatling.javaapi.core.Session, boolean | null>
+    ): JdbcRequestActionBuilder$UntypedCondition<T>;
+    checkIf<T>(arg0: string): JdbcRequestActionBuilder$UntypedCondition<T>;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    returnGeneratedKeys(): JdbcStatementActionBuilder;
+    returnGeneratedKeys(arg0: string, ...arg1: string[]): JdbcStatementActionBuilder;
+    toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
+    toString(): string;
+  } // end JdbcStatementActionBuilder
+} // end namespace io.gatling.javaapi.jdbc
+declare namespace io.gatling.javaapi.jdbc {
+  class JdbcTransactionActionBuilder /* extends java.lang.Object implements io.gatling.javaapi.core.ActionBuilder*/ {
+    asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
+    toString(): string;
+  } // end JdbcTransactionActionBuilder
+} // end namespace io.gatling.javaapi.jdbc
 declare namespace io.gatling.javaapi.mqtt {
   class ConnectActionBuilder /* extends java.lang.Object implements io.gatling.javaapi.core.ActionBuilder*/ {
     asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/

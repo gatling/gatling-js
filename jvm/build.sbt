@@ -13,6 +13,7 @@ val graalvmJdkVersion = "25i5-25.0.5.0.3"
 val graalvmJsVersion = "25.5.5.0.3"
 val gatlingVersion = "3.16.1-M2"
 val gatlingGraphqlVersion = "3.16.0.4"
+val gatlingJdbcVersion = "3.16.1-M2"
 val gatlingGrpcVersion = "3.16.0"
 val gatlingMqttVersion = "3.16.0"
 val protocVersion = "4.35.1"
@@ -39,6 +40,7 @@ lazy val adapter = (project in file("adapter"))
     libraryDependencies ++= Seq(
       "io.gatling"           % "gatling-core-java"    % gatlingVersion        % "provided",
       "io.gatling"           % "gatling-graphql-java" % gatlingGraphqlVersion % "provided",
+      "io.gatling"           % "gatling-jdbc-java"    % gatlingJdbcVersion    % "provided",
       "io.gatling"           % "gatling-grpc-java"    % gatlingGrpcVersion    % "provided",
       "io.gatling"           % "gatling-http-java"    % gatlingVersion        % "provided",
       "io.gatling"           % "gatling-mqtt-java"    % gatlingMqttVersion    % "provided",
@@ -68,6 +70,7 @@ lazy val adapter = (project in file("adapter"))
            |    enterprisePluginCommons: "$gatlingEnterprisePluginCommonsVersion",
            |    jsAdapter: "$jsAdapterVersion",
            |    graphql: "$gatlingGraphqlVersion",
+           |    jdbc: "$gatlingJdbcVersion",
            |    grpc: "$gatlingGrpcVersion",
            |    mqtt: "$gatlingMqttVersion"
            |  },
@@ -97,6 +100,7 @@ lazy val java2ts = (project in file("java2ts"))
     libraryDependencies ++= Seq(
       "io.gatling" % "gatling-core-java"    % gatlingVersion,
       "io.gatling" % "gatling-graphql-java" % gatlingGraphqlVersion,
+      "io.gatling" % "gatling-jdbc-java"    % gatlingJdbcVersion,
       "io.gatling" % "gatling-grpc-java"    % gatlingGrpcVersion,
       "io.gatling" % "gatling-http-java"    % gatlingVersion,
       "io.gatling" % "gatling-mqtt-java"    % gatlingMqttVersion
