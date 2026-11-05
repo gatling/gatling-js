@@ -38,13 +38,17 @@ lazy val adapter = (project in file("adapter"))
     javafmtOnCompile := !sys.env.getOrElse("CI", "false").toBoolean,
     autoScalaLibrary := false,
     libraryDependencies ++= Seq(
-      "io.gatling.highcharts" % "gatling-charts-highcharts" % gatlingVersion     % "provided",
-      "org.ow2.asm"           % "asm-tree"                  % "9.11.1",
-      "io.gatling"            % "gatling-grpc-java"         % gatlingGrpcVersion % "provided",
-      "io.gatling"            % "gatling-mqtt-java"         % gatlingMqttVersion % "provided",
-      "org.graalvm.polyglot"  % "js"                        % graalvmJsVersion,
-      "org.scala-lang"        % "scala-library"             % scalaVersion.value % "provided",
-      "org.scalatest"        %% "scalatest"                 % "3.2.20"           % Test
+      "io.gatling"           % "gatling-core-java"    % gatlingVersion        % "provided",
+      "io.gatling"           % "gatling-graphql-java" % gatlingGraphqlVersion % "provided",
+      "io.gatling"           % "gatling-grpc-java"    % gatlingGrpcVersion    % "provided",
+      "io.gatling"           % "gatling-http-java"    % gatlingVersion        % "provided",
+      "io.gatling"           % "gatling-mqtt-java"    % gatlingMqttVersion    % "provided",
+      "org.ow2.asm"          % "asm-tree"             % "9.11.1",
+      "io.gatling"           % "gatling-grpc-java"    % gatlingGrpcVersion    % "provided",
+      "io.gatling"           % "gatling-mqtt-java"    % gatlingMqttVersion    % "provided",
+      "org.graalvm.polyglot" % "js"                   % graalvmJsVersion,
+      "org.scala-lang"       % "scala-library"        % scalaVersion.value    % "provided",
+      "org.scalatest"       %% "scalatest"            % "3.2.20"              % Test
     ),
     Compile / sourceGenerators += Def.task {
       // Generate a file directly into the CLI project and bundle project to share version numbers
