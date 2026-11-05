@@ -8,6 +8,7 @@ const chain = exec(
   sse("connect")
     .sseName("sse")
     .get("/stocks/prices")
+    .ignoreProtocolAuth()
     .await(30)
     .on(
       sse

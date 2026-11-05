@@ -314,6 +314,7 @@ const scn = scenario("scenario")
         (_: Session) => "tokenSecret"
       )
       .ignoreProtocolSignatureCalculators()
+      .ignoreProtocolAuth()
       .ignoreProtocolChecks()
       .silent()
       .notSilent()
