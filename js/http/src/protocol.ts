@@ -555,6 +555,24 @@ export interface HttpProtocolBuilder extends ProtocolBuilder {
    */
   http2PriorKnowledge(remotes: Record<string, boolean>): HttpProtocolBuilder;
 
+  /**
+   * Define the HTTP/2 flow-control window of each stream, i.e. how many bytes the server can send
+   * on a stream before waiting for the client to acknowledge them. Defaults to 6MB, like Chrome.
+   *
+   * @param bytes - the window size in bytes, must be positive
+   * @returns a new HttpProtocolBuilder instance
+   */
+  http2StreamWindowSize(bytes: number): HttpProtocolBuilder;
+
+  /**
+   * Define the HTTP/2 flow-control window of each connection, shared by all its streams. Defaults
+   * to 15MB, like Chrome.
+   *
+   * @param bytes - the window size in bytes, can't be lower than the protocol's initial 65,535
+   * @returns a new HttpProtocolBuilder instance
+   */
+  http2ConnectionWindowSize(bytes: number): HttpProtocolBuilder;
+
   // Response part
 
   /**
@@ -1023,6 +1041,10 @@ export const wrapHttpProtocolBuilder = (_underlying: JvmHttpProtocolBuilder): Ht
   enableHttp2: (): HttpProtocolBuilder => wrapHttpProtocolBuilder(_underlying.enableHttp2()),
   http2PriorKnowledge: (remotes: Record<string, boolean>): HttpProtocolBuilder =>
     wrapHttpProtocolBuilder(_underlying.http2PriorKnowledge(remotes)),
+  http2StreamWindowSize: (bytes: number): HttpProtocolBuilder =>
+    wrapHttpProtocolBuilder(_underlying.http2StreamWindowSize(bytes)),
+  http2ConnectionWindowSize: (bytes: number): HttpProtocolBuilder =>
+    wrapHttpProtocolBuilder(_underlying.http2ConnectionWindowSize(bytes)),
 
   // Response part
 
