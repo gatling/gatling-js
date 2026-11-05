@@ -815,6 +815,13 @@ export interface HttpRequestActionBuilder
    */
   disableFollowRedirect(): HttpRequestActionBuilder;
 
+  /**
+   * Follow redirects for this request even if they're disabled at the protocol level
+   *
+   * @returns a new HttpRequestActionBuilder instance
+   */
+  enableFollowRedirect(): HttpRequestActionBuilder;
+
   // TODO transformResponse(f: (response: Response, session: Session) => Response): T;
 
   /**
@@ -852,6 +859,7 @@ export const wrapHttpRequestActionBuilder = (_underlying: JvmHttpRequestActionBu
   silent: () => wrapHttpRequestActionBuilder(_underlying.silent()),
   notSilent: () => wrapHttpRequestActionBuilder(_underlying.notSilent()),
   disableFollowRedirect: () => wrapHttpRequestActionBuilder(_underlying.disableFollowRedirect()),
+  enableFollowRedirect: () => wrapHttpRequestActionBuilder(_underlying.enableFollowRedirect()),
   // TODO transformResponse: (f: (response: Response, session: Session) => Response): T =>
   //  wrap(jvmBuilder.transformResponse(wrapBiCallback(underlyingResponseTransform(f))))
   resources: (...res) =>
