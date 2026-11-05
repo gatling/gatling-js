@@ -18,7 +18,7 @@ val gatlingMqttVersion = "3.16.0"
 val protocVersion = "4.35.1"
 
 // bit weird cause this is not a dependency of this project
-val gatlingEnterprisePluginCommonsVersion = "1.26.2"
+val gatlingEnterprisePluginCommonsVersion = "1.26.3"
 val coursierVersion = "2.1.24"
 
 lazy val root = rootProject
