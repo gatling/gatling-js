@@ -27,6 +27,7 @@ const httpProtocol = http
 const chain = exec(
   ws("Connect WS")
     .connect("/room/chat?username=#{id}")
+    .ignoreProtocolAuth()
     .subprotocol("FOO")
     .onConnected(exec(ws("Perform auth").sendText("Some auth token")).pause(1))
     .await(1)
