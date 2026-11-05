@@ -2,7 +2,7 @@ import { Simulation, StringBody, exec, jmesPath, jsonPath, regex, group } from "
 
 import { http, sse } from "./index";
 
-const httpProtocol = http.sseUnmatchedInboundMessageBufferSize(5);
+const httpProtocol = http.sseUnmatchedInboundMessageBufferSize(5).sseSetCheckBuffer(10, 5);
 
 const chain = exec(
   sse("connect")

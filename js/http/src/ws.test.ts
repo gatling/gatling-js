@@ -22,7 +22,8 @@ const httpProtocol = http
   .wsMaxReconnects(1)
   .wsAutoReplyTextFrame((txt) => (txt === "foo" ? "bar" : null))
   .wsAutoReplySocketIo4()
-  .wsUnmatchedInboundMessageBufferSize(5);
+  .wsUnmatchedInboundMessageBufferSize(5)
+  .wsSetCheckBuffer(10, { amount: 5, unit: "seconds" });
 
 const chain = exec(
   ws("Connect WS")
