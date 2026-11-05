@@ -3,12 +3,14 @@ import {
   CheckBuilder,
   Condition,
   DenyListFilter,
+  Duration,
   Expression,
   ProtocolBuilder,
   Session,
   SessionTo,
   SessionTransform,
   asJava,
+  toJvmDuration,
   underlyingSessionTo,
   underlyingSessionTransform,
   wrapCondition
@@ -779,6 +781,18 @@ export interface HttpProtocolBuilder extends ProtocolBuilder {
    */
   wsUnmatchedInboundMessageBufferSize(max: number): HttpProtocolBuilder;
 
+  /**
+   * Enable buffering the inbound WebSocket messages that no check matched, so that a later setCheck
+   * can match a message that has already arrived. Messages are discarded when the buffer is full
+   * (oldest first) or when they're older than maxAge. Disabled by default, meaning a setCheck only
+   * matches messages received after it's set.
+   *
+   * @param maxSize - the max number of buffered messages
+   * @param maxAge - the max age of buffered messages
+   * @returns a new HttpProtocolBuilder instance
+   */
+  wsSetCheckBuffer(maxSize: number, maxAge: Duration): HttpProtocolBuilder;
+
   // SSE part
 
   /**
@@ -789,6 +803,18 @@ export interface HttpProtocolBuilder extends ProtocolBuilder {
    * @returns a new HttpProtocolBuilder instance
    */
   sseUnmatchedInboundMessageBufferSize(max: number): HttpProtocolBuilder;
+
+  /**
+   * Enable buffering the inbound SSE messages that no check matched, so that a later setCheck can
+   * match a message that has already arrived. Messages are discarded when the buffer is full
+   * (oldest first) or when they're older than maxAge. Disabled by default, meaning a setCheck only
+   * matches messages received after it's set.
+   *
+   * @param maxSize - the max number of buffered messages
+   * @param maxAge - the max age of buffered messages
+   * @returns a new HttpProtocolBuilder instance
+   */
+  sseSetCheckBuffer(maxSize: number, maxAge: Duration): HttpProtocolBuilder;
 
   // Proxy part
 
@@ -1097,11 +1123,15 @@ export const wrapHttpProtocolBuilder = (_underlying: JvmHttpProtocolBuilder): Ht
   wsAutoReplySocketIo4: () => wrapHttpProtocolBuilder(_underlying.wsAutoReplySocketIo4()),
   wsUnmatchedInboundMessageBufferSize: (max) =>
     wrapHttpProtocolBuilder(_underlying.wsUnmatchedInboundMessageBufferSize(max)),
+  wsSetCheckBuffer: (maxSize: number, maxAge: Duration): HttpProtocolBuilder =>
+    wrapHttpProtocolBuilder(_underlying.wsSetCheckBuffer(maxSize, toJvmDuration(maxAge))),
 
   // SSE Part
 
   sseUnmatchedInboundMessageBufferSize: (max: number): HttpProtocolBuilder =>
     wrapHttpProtocolBuilder(_underlying.sseUnmatchedInboundMessageBufferSize(max)),
+  sseSetCheckBuffer: (maxSize: number, maxAge: Duration): HttpProtocolBuilder =>
+    wrapHttpProtocolBuilder(_underlying.sseSetCheckBuffer(maxSize, toJvmDuration(maxAge))),
 
   // Proxy part
 
