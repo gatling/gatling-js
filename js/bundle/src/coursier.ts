@@ -46,6 +46,7 @@ const dependencies = [
   `io.gatling:gatling-graphql-java:${versions.gatling.graphql}`,
   `io.gatling:gatling-jdbc-java:${versions.gatling.jdbc}`,
   `io.gatling:gatling-grpc-java:${versions.gatling.grpc}`,
+  `io.gatling:gatling-kafka-java:${versions.gatling.kafka}`,
   `io.gatling:gatling-mqtt-java:${versions.gatling.mqtt}`,
   // TODO handle Gatling Postman version if different from Gatling JS version
   `io.gatling:gatling-postman-jvm-to-js-adapter:${versions.gatling.jsAdapter}`, // For Gatling Postman

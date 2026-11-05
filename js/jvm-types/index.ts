@@ -425,6 +425,22 @@ export const ConstantRate$ConstantRateOpenInjectionStep: ConstantRate$ConstantRa
   "io.gatling.javaapi.core.OpenInjectionStep$ConstantRate$ConstantRateOpenInjectionStep"
 );
 
+interface ConsumeActionBuilder$BaseStatic {
+  readonly class: any;
+}
+
+export const ConsumeActionBuilder$Base: ConsumeActionBuilder$BaseStatic = Java.type(
+  "io.gatling.javaapi.kafka.ConsumeActionBuilder$Base"
+);
+
+interface ConsumeActionBuilderStatic {
+  readonly class: any;
+}
+
+export const ConsumeActionBuilder: ConsumeActionBuilderStatic = Java.type(
+  "io.gatling.javaapi.kafka.ConsumeActionBuilder"
+);
+
 interface CookieStatic {
   readonly class: any;
 }
@@ -2222,6 +2238,42 @@ export const JdbcTransactionActionBuilder: JdbcTransactionActionBuilderStatic = 
   "io.gatling.javaapi.jdbc.JdbcTransactionActionBuilder"
 );
 
+interface KafkaBuilderStatic {
+  readonly class: any;
+}
+
+export const KafkaBuilder: KafkaBuilderStatic = Java.type("io.gatling.javaapi.kafka.KafkaBuilder");
+
+interface KafkaDslStatic {
+  readonly class: any;
+  kafkaHeader(arg0: string): io.gatling.javaapi.core.CheckBuilder$Find<string>;
+  kafkaKey(): io.gatling.javaapi.core.CheckBuilder$Find<string>;
+  kafka(arg0: string): io.gatling.javaapi.kafka.KafkaBuilder;
+  kafka(arg0: Func<io.gatling.javaapi.core.Session, string>): io.gatling.javaapi.kafka.KafkaBuilder;
+  avro(arg0: string, arg1: io.gatling.javaapi.core.Body): io.gatling.javaapi.kafka.SchemaBody;
+  avroSubject(arg0: string, arg1: io.gatling.javaapi.core.Body): io.gatling.javaapi.kafka.SchemaBody;
+  jsonSchema(arg0: string, arg1: io.gatling.javaapi.core.Body): io.gatling.javaapi.kafka.SchemaBody;
+  jsonSchemaSubject(arg0: string, arg1: io.gatling.javaapi.core.Body): io.gatling.javaapi.kafka.SchemaBody;
+  protobuf(arg0: string, arg1: io.gatling.javaapi.core.Body): io.gatling.javaapi.kafka.SchemaBody;
+  protobufSubject(arg0: string, arg1: io.gatling.javaapi.core.Body): io.gatling.javaapi.kafka.SchemaBody;
+}
+
+export const KafkaDsl: KafkaDslStatic = Java.type("io.gatling.javaapi.kafka.KafkaDsl");
+
+interface KafkaProtocolBuilderStatic {
+  readonly class: any;
+}
+
+export const KafkaProtocolBuilder: KafkaProtocolBuilderStatic = Java.type(
+  "io.gatling.javaapi.kafka.KafkaProtocolBuilder"
+);
+
+interface KafkaStatic {
+  readonly class: any;
+}
+
+export const Kafka: KafkaStatic = Java.type("io.gatling.javaapi.kafka.Kafka");
+
 interface LastWillBuilderStatic {
   readonly class: any;
 }
@@ -2645,6 +2697,22 @@ interface RequestBodyStatic {
 
 export const RequestBody: RequestBodyStatic = Java.type("io.gatling.http.client.body.RequestBody");
 
+interface RequestReplyActionBuilder$BaseStatic {
+  readonly class: any;
+}
+
+export const RequestReplyActionBuilder$Base: RequestReplyActionBuilder$BaseStatic = Java.type(
+  "io.gatling.javaapi.kafka.RequestReplyActionBuilder$Base"
+);
+
+interface RequestReplyActionBuilderStatic {
+  readonly class: any;
+}
+
+export const RequestReplyActionBuilder: RequestReplyActionBuilderStatic = Java.type(
+  "io.gatling.javaapi.kafka.RequestReplyActionBuilder"
+);
+
 interface RequestStatic {
   readonly class: any;
   new (
@@ -2739,6 +2807,26 @@ interface ScenarioBuilderStatic {
 }
 
 export const ScenarioBuilder: ScenarioBuilderStatic = Java.type("io.gatling.javaapi.core.ScenarioBuilder");
+
+interface SchemaBodyStatic {
+  readonly class: any;
+}
+
+export const SchemaBody: SchemaBodyStatic = Java.type("io.gatling.javaapi.kafka.SchemaBody");
+
+interface SendActionBuilder$BaseStatic {
+  readonly class: any;
+}
+
+export const SendActionBuilder$Base: SendActionBuilder$BaseStatic = Java.type(
+  "io.gatling.javaapi.kafka.SendActionBuilder$Base"
+);
+
+interface SendActionBuilderStatic {
+  readonly class: any;
+}
+
+export const SendActionBuilder: SendActionBuilderStatic = Java.type("io.gatling.javaapi.kafka.SendActionBuilder");
 
 interface SessionStatic {
   readonly class: any;
@@ -2924,6 +3012,14 @@ interface StructureBuilderStatic {
 }
 
 export const StructureBuilder: StructureBuilderStatic = Java.type("io.gatling.javaapi.core.StructureBuilder");
+
+interface SubscribeActionBuilder$BaseStatic {
+  readonly class: any;
+}
+
+export const SubscribeActionBuilder$Base: SubscribeActionBuilder$BaseStatic = Java.type(
+  "io.gatling.javaapi.kafka.SubscribeActionBuilder$Base"
+);
 
 interface SubscribeActionBuilder$CheckableStatic {
   readonly class: any;

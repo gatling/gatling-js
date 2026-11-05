@@ -5017,6 +5017,222 @@ declare namespace io.gatling.javaapi.jdbc {
     toString(): string;
   } // end JdbcTransactionActionBuilder
 } // end namespace io.gatling.javaapi.jdbc
+declare namespace io.gatling.javaapi.kafka {
+  class ConsumeActionBuilder$Base /* extends java.lang.Object*/ {
+    correlationId(arg0: Func<io.gatling.javaapi.core.Session, string>): ConsumeActionBuilder;
+    correlationId(arg0: string): ConsumeActionBuilder;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toString(): string;
+  } // end ConsumeActionBuilder$Base
+} // end namespace io.gatling.javaapi.kafka
+declare namespace io.gatling.javaapi.kafka {
+  class ConsumeActionBuilder /* extends java.lang.Object implements io.gatling.javaapi.core.ActionBuilder*/ {
+    asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
+    check(...arg0: io.gatling.javaapi.core.CheckBuilder[]): ConsumeActionBuilder;
+    check(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): ConsumeActionBuilder;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    startTimestampFrom(arg0: string): ConsumeActionBuilder;
+    timeout(arg0: java.time.Duration): ConsumeActionBuilder;
+    timeout(arg0: long): ConsumeActionBuilder;
+    toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
+    toString(): string;
+  } // end ConsumeActionBuilder
+} // end namespace io.gatling.javaapi.kafka
+declare namespace io.gatling.javaapi.kafka {
+  class Kafka /* extends KafkaProtocolBuilder*/ {
+    bootstrapServers(...arg0: string[]): KafkaProtocolBuilder;
+    consumeBuffer(arg0: int, arg1: java.time.Duration): KafkaProtocolBuilder;
+    consumerProperties(arg0: java.util.Map<string, string>): KafkaProtocolBuilder;
+    consumerProperty(arg0: string, arg1: string): KafkaProtocolBuilder;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    keyStore(arg0: string, arg1: string): KafkaProtocolBuilder;
+    keyStore(arg0: string, arg1: string, arg2: string): KafkaProtocolBuilder;
+    matchByHeader(arg0: string): KafkaProtocolBuilder;
+    matchByKey(): KafkaProtocolBuilder;
+    matchByValue(arg0: io.gatling.javaapi.core.CheckBuilder): KafkaProtocolBuilder;
+    poll(): io.gatling.javaapi.core.ActionBuilder;
+    producerProperties(arg0: java.util.Map<string, string>): KafkaProtocolBuilder;
+    producerProperty(arg0: string, arg1: string): KafkaProtocolBuilder;
+    properties(arg0: java.util.Map<string, string>): KafkaProtocolBuilder;
+    property(arg0: string, arg1: string): KafkaProtocolBuilder;
+    protocol(): any; /*io.gatling.core.protocol.Protocol*/
+    replyTimeout(arg0: java.time.Duration): KafkaProtocolBuilder;
+    replyTimeout(arg0: long): KafkaProtocolBuilder;
+    saslAwsMskIam(): KafkaProtocolBuilder;
+    saslAwsMskIamProfile(arg0: string): KafkaProtocolBuilder;
+    saslAwsMskIamRole(arg0: string): KafkaProtocolBuilder;
+    saslAwsMskIamRole(arg0: string, arg1: string): KafkaProtocolBuilder;
+    saslAwsMskIamRole(arg0: string, arg1: string, arg2: string): KafkaProtocolBuilder;
+    saslAwsMskIamRole(arg0: string, arg1: string, arg2: string, arg3: string): KafkaProtocolBuilder;
+    saslGssapi(arg0: string, arg1: string, arg2: string): KafkaProtocolBuilder;
+    saslOauthBearer(arg0: string, arg1: string, arg2: string): KafkaProtocolBuilder;
+    saslOauthBearer(arg0: string, arg1: string, arg2: string, arg3: string): KafkaProtocolBuilder;
+    saslPlain(arg0: string, arg1: string): KafkaProtocolBuilder;
+    saslScramSha256(arg0: string, arg1: string): KafkaProtocolBuilder;
+    saslScramSha512(arg0: string, arg1: string): KafkaProtocolBuilder;
+    schemaRegistry(arg0: string): KafkaProtocolBuilder;
+    schemaRegistryBasicAuth(arg0: string, arg1: string): KafkaProtocolBuilder;
+    schemaRegistryProperties(arg0: java.util.Map<string, string>): KafkaProtocolBuilder;
+    schemaRegistryProperty(arg0: string, arg1: string): KafkaProtocolBuilder;
+    toString(): string;
+    trustStore(arg0: string, arg1: string): KafkaProtocolBuilder;
+    trustStore(arg0: string, arg1: string, arg2: string): KafkaProtocolBuilder;
+    useTls(): KafkaProtocolBuilder;
+  } // end Kafka
+} // end namespace io.gatling.javaapi.kafka
+declare namespace io.gatling.javaapi.kafka {
+  class KafkaBuilder /* extends java.lang.Object*/ {
+    consume(arg0: Func<io.gatling.javaapi.core.Session, string>): ConsumeActionBuilder$Base;
+    consume(arg0: string): ConsumeActionBuilder$Base;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    requestReply(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: Func<io.gatling.javaapi.core.Session, string>
+    ): RequestReplyActionBuilder$Base;
+    requestReply(arg0: string, arg1: string): RequestReplyActionBuilder$Base;
+    send(arg0: Func<io.gatling.javaapi.core.Session, string>): SendActionBuilder$Base;
+    send(arg0: string): SendActionBuilder$Base;
+    subscribe(arg0: Func<io.gatling.javaapi.core.Session, string>): SubscribeActionBuilder$Base;
+    subscribe(arg0: string): SubscribeActionBuilder$Base;
+    toString(): string;
+  } // end KafkaBuilder
+} // end namespace io.gatling.javaapi.kafka
+declare namespace io.gatling.javaapi.kafka {
+  class KafkaDsl /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toString(): string;
+  } // end KafkaDsl
+} // end namespace io.gatling.javaapi.kafka
+declare namespace io.gatling.javaapi.kafka {
+  class KafkaProtocolBuilder /* extends java.lang.Object implements io.gatling.javaapi.core.ProtocolBuilder*/ {
+    bootstrapServers(...arg0: string[]): KafkaProtocolBuilder;
+    consumeBuffer(arg0: int, arg1: java.time.Duration): KafkaProtocolBuilder;
+    consumerProperties(arg0: java.util.Map<string, string>): KafkaProtocolBuilder;
+    consumerProperty(arg0: string, arg1: string): KafkaProtocolBuilder;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    keyStore(arg0: string, arg1: string): KafkaProtocolBuilder;
+    keyStore(arg0: string, arg1: string, arg2: string): KafkaProtocolBuilder;
+    matchByHeader(arg0: string): KafkaProtocolBuilder;
+    matchByKey(): KafkaProtocolBuilder;
+    matchByValue(arg0: io.gatling.javaapi.core.CheckBuilder): KafkaProtocolBuilder;
+    producerProperties(arg0: java.util.Map<string, string>): KafkaProtocolBuilder;
+    producerProperty(arg0: string, arg1: string): KafkaProtocolBuilder;
+    properties(arg0: java.util.Map<string, string>): KafkaProtocolBuilder;
+    property(arg0: string, arg1: string): KafkaProtocolBuilder;
+    protocol(): any; /*io.gatling.core.protocol.Protocol*/
+    replyTimeout(arg0: java.time.Duration): KafkaProtocolBuilder;
+    replyTimeout(arg0: long): KafkaProtocolBuilder;
+    saslAwsMskIam(): KafkaProtocolBuilder;
+    saslAwsMskIamProfile(arg0: string): KafkaProtocolBuilder;
+    saslAwsMskIamRole(arg0: string): KafkaProtocolBuilder;
+    saslAwsMskIamRole(arg0: string, arg1: string): KafkaProtocolBuilder;
+    saslAwsMskIamRole(arg0: string, arg1: string, arg2: string): KafkaProtocolBuilder;
+    saslAwsMskIamRole(arg0: string, arg1: string, arg2: string, arg3: string): KafkaProtocolBuilder;
+    saslGssapi(arg0: string, arg1: string, arg2: string): KafkaProtocolBuilder;
+    saslOauthBearer(arg0: string, arg1: string, arg2: string): KafkaProtocolBuilder;
+    saslOauthBearer(arg0: string, arg1: string, arg2: string, arg3: string): KafkaProtocolBuilder;
+    saslPlain(arg0: string, arg1: string): KafkaProtocolBuilder;
+    saslScramSha256(arg0: string, arg1: string): KafkaProtocolBuilder;
+    saslScramSha512(arg0: string, arg1: string): KafkaProtocolBuilder;
+    schemaRegistry(arg0: string): KafkaProtocolBuilder;
+    schemaRegistryBasicAuth(arg0: string, arg1: string): KafkaProtocolBuilder;
+    schemaRegistryProperties(arg0: java.util.Map<string, string>): KafkaProtocolBuilder;
+    schemaRegistryProperty(arg0: string, arg1: string): KafkaProtocolBuilder;
+    toString(): string;
+    trustStore(arg0: string, arg1: string): KafkaProtocolBuilder;
+    trustStore(arg0: string, arg1: string, arg2: string): KafkaProtocolBuilder;
+    useTls(): KafkaProtocolBuilder;
+  } // end KafkaProtocolBuilder
+} // end namespace io.gatling.javaapi.kafka
+declare namespace io.gatling.javaapi.kafka {
+  class RequestReplyActionBuilder$Base /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toString(): string;
+    value(arg0: SchemaBody): RequestReplyActionBuilder;
+    value(arg0: io.gatling.javaapi.core.Body): RequestReplyActionBuilder;
+  } // end RequestReplyActionBuilder$Base
+} // end namespace io.gatling.javaapi.kafka
+declare namespace io.gatling.javaapi.kafka {
+  class RequestReplyActionBuilder /* extends java.lang.Object implements io.gatling.javaapi.core.ActionBuilder*/ {
+    asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
+    check(...arg0: io.gatling.javaapi.core.CheckBuilder[]): RequestReplyActionBuilder;
+    check(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): RequestReplyActionBuilder;
+    decodeAvroReply(): RequestReplyActionBuilder;
+    decodeJsonSchemaReply(): RequestReplyActionBuilder;
+    decodeProtobufReply(): RequestReplyActionBuilder;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    header(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, string>): RequestReplyActionBuilder;
+    header(arg0: string, arg1: string): RequestReplyActionBuilder;
+    key(arg0: Func<io.gatling.javaapi.core.Session, string>): RequestReplyActionBuilder;
+    key(arg0: SchemaBody): RequestReplyActionBuilder;
+    key(arg0: io.gatling.javaapi.core.Body): RequestReplyActionBuilder;
+    key(arg0: string): RequestReplyActionBuilder;
+    partition(arg0: Func<io.gatling.javaapi.core.Session, int | null>): RequestReplyActionBuilder;
+    partition(arg0: int): RequestReplyActionBuilder;
+    partition(arg0: string): RequestReplyActionBuilder;
+    replyTimeout(arg0: java.time.Duration): RequestReplyActionBuilder;
+    replyTimeout(arg0: long): RequestReplyActionBuilder;
+    subscribe(arg0: SubscribeActionBuilder): RequestReplyActionBuilder;
+    subscribe(arg0: string, arg1: string, arg2: string): RequestReplyActionBuilder;
+    toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
+    toString(): string;
+  } // end RequestReplyActionBuilder
+} // end namespace io.gatling.javaapi.kafka
+declare namespace io.gatling.javaapi.kafka {
+  class SchemaBody /* extends java.lang.Object*/ {
+    asScala(): any; /*io.gatling.kafka.schema.SchemaBody*/
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toString(): string;
+  } // end SchemaBody
+} // end namespace io.gatling.javaapi.kafka
+declare namespace io.gatling.javaapi.kafka {
+  class SendActionBuilder$Base /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toString(): string;
+    value(arg0: SchemaBody): SendActionBuilder;
+    value(arg0: io.gatling.javaapi.core.Body): SendActionBuilder;
+  } // end SendActionBuilder$Base
+} // end namespace io.gatling.javaapi.kafka
+declare namespace io.gatling.javaapi.kafka {
+  class SendActionBuilder /* extends java.lang.Object implements io.gatling.javaapi.core.ActionBuilder*/ {
+    asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    header(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, string>): SendActionBuilder;
+    header(arg0: string, arg1: string): SendActionBuilder;
+    key(arg0: Func<io.gatling.javaapi.core.Session, string>): SendActionBuilder;
+    key(arg0: SchemaBody): SendActionBuilder;
+    key(arg0: io.gatling.javaapi.core.Body): SendActionBuilder;
+    key(arg0: string): SendActionBuilder;
+    partition(arg0: Func<io.gatling.javaapi.core.Session, int | null>): SendActionBuilder;
+    partition(arg0: int): SendActionBuilder;
+    partition(arg0: string): SendActionBuilder;
+    subscribe(arg0: SubscribeActionBuilder): SendActionBuilder;
+    subscribe(arg0: string, arg1: string, arg2: string): SendActionBuilder;
+    toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
+    toString(): string;
+  } // end SendActionBuilder
+} // end namespace io.gatling.javaapi.kafka
+declare namespace io.gatling.javaapi.kafka {
+  class SubscribeActionBuilder$Base /* extends java.lang.Object*/ {
+    correlationId(arg0: Func<io.gatling.javaapi.core.Session, string>): SubscribeActionBuilder;
+    correlationId(arg0: string): SubscribeActionBuilder;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toString(): string;
+  } // end SubscribeActionBuilder$Base
+} // end namespace io.gatling.javaapi.kafka
+declare namespace io.gatling.javaapi.kafka {
+  class SubscribeActionBuilder /* extends java.lang.Object implements io.gatling.javaapi.core.ActionBuilder*/ {
+    asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
+    check(...arg0: io.gatling.javaapi.core.CheckBuilder[]): SubscribeActionBuilder;
+    check(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): SubscribeActionBuilder;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    startTimestampFrom(arg0: string): SubscribeActionBuilder;
+    timeout(arg0: java.time.Duration): SubscribeActionBuilder;
+    timeout(arg0: long): SubscribeActionBuilder;
+    toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
+    toString(): string;
+  } // end SubscribeActionBuilder
+} // end namespace io.gatling.javaapi.kafka
 declare namespace io.gatling.javaapi.mqtt {
   class ConnectActionBuilder /* extends java.lang.Object implements io.gatling.javaapi.core.ActionBuilder*/ {
     asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/

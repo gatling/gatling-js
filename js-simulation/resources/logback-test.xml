@@ -22,6 +22,9 @@
   <!-- uncomment and set to TRACE to log all MQTT requests -->
   <!--<logger name="io.gatling.mqtt" level="TRACE" />-->
 
+  <!-- uncomment to log the causes of failing Kafka requests -->
+  <!--<logger name="io.gatling.kafka" level="DEBUG" />-->
+
   <root level="WARN">
     <appender-ref ref="CONSOLE" />
   </root>
