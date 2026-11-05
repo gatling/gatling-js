@@ -251,6 +251,21 @@
         @Type(value = io.gatling.javaapi.grpc.GrpcUnaryActionBuilder.class, export = true),
         @Type(value = io.gatling.javaapi.grpc.GrpcUnaryServiceBuilder.class, export = true),
         @Type(value = io.gatling.javaapi.grpc.GrpcProcessMessagesAndReconcile.class, export = true),
+        // ********** kafka **********
+        @Type(value = io.gatling.javaapi.kafka.ConsumeActionBuilder.class, export = true),
+        @Type(value = io.gatling.javaapi.kafka.ConsumeActionBuilder.Base.class, export = true),
+        @Type(value = io.gatling.javaapi.kafka.Kafka.class, export = true),
+        @Type(value = io.gatling.javaapi.kafka.KafkaBuilder.class, export = true),
+        @Type(value = io.gatling.javaapi.kafka.KafkaDsl.class, export = true),
+        @Type(value = io.gatling.javaapi.kafka.KafkaProtocolBuilder.class, export = true),
+        @Type(value = io.gatling.javaapi.kafka.RequestReplyActionBuilder.class, export = true),
+        @Type(value = io.gatling.javaapi.kafka.RequestReplyActionBuilder.Base.class, export = true),
+        @Type(value = io.gatling.javaapi.kafka.SchemaBody.class, export = true),
+        @Type(value = io.gatling.javaapi.kafka.SendActionBuilder.class, export = true),
+        @Type(value = io.gatling.javaapi.kafka.SendActionBuilder.Base.class, export = true),
+        // not exported, as its name clashes with the MQTT one
+        @Type(value = io.gatling.javaapi.kafka.SubscribeActionBuilder.class, export = false),
+        @Type(value = io.gatling.javaapi.kafka.SubscribeActionBuilder.Base.class, export = true),
         // ********** mqtt **********
         @Type(value = io.netty.handler.codec.mqtt.MqttFixedHeader.class, export = true),
         @Type(value = io.netty.handler.codec.mqtt.MqttMessageType.class, export = true),

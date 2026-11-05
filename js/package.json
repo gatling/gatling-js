@@ -10,6 +10,7 @@
     "graphql",
     "jdbc",
     "grpc",
+    "kafka",
     "mqtt"
   ],
   "devDependencies": {

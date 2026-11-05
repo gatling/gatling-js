@@ -15,6 +15,7 @@ val gatlingVersion = "3.16.1-M2"
 val gatlingGraphqlVersion = "3.16.0.4"
 val gatlingJdbcVersion = "3.16.1-M2"
 val gatlingGrpcVersion = "3.16.0"
+val gatlingKafkaVersion = "3.16.1-M2"
 val gatlingMqttVersion = "3.16.0"
 val protocVersion = "4.35.1"
 
@@ -72,6 +73,7 @@ lazy val adapter = (project in file("adapter"))
            |    graphql: "$gatlingGraphqlVersion",
            |    jdbc: "$gatlingJdbcVersion",
            |    grpc: "$gatlingGrpcVersion",
+           |    kafka: "$gatlingKafkaVersion",
            |    mqtt: "$gatlingMqttVersion"
            |  },
            |  protobuf: {
@@ -103,6 +105,7 @@ lazy val java2ts = (project in file("java2ts"))
       "io.gatling" % "gatling-jdbc-java"    % gatlingJdbcVersion,
       "io.gatling" % "gatling-grpc-java"    % gatlingGrpcVersion,
       "io.gatling" % "gatling-http-java"    % gatlingVersion,
+      "io.gatling" % "gatling-kafka-java"   % gatlingKafkaVersion,
       "io.gatling" % "gatling-mqtt-java"    % gatlingMqttVersion
     ),
     publish / skip := true

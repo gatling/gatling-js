@@ -10,6 +10,7 @@
     "@gatling.io/grpc": "3.16.1",
     "@gatling.io/http": "3.16.1",
     "@gatling.io/jdbc": "3.16.1",
+    "@gatling.io/kafka": "3.16.1",
     "@gatling.io/mqtt": "3.16.1",
     "uuid": "14.0.3"
   },
