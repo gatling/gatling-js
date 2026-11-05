@@ -93,6 +93,7 @@ lazy val adapter = (project in file("adapter"))
 
 lazy val java2ts = (project in file("java2ts"))
   .withId("gatling-java2ts")
+  .enablePlugins(GatlingAutomatedScalafmtPlugin)
   .settings(
     name := "gatling-java2ts",
     libraryDependencies ++= Seq(

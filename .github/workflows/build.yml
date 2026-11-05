@@ -67,12 +67,11 @@ jobs:
         working-directory: ./jvm
         run: |
           sbt \
-            "project gatling-jvm-to-js-adapter;" \
             "scalafmtSbtCheck;" \
-            "headerCheckAll;" \
-            "javafmtCheckAll;" \
-            "scalafmtCheckAll;" \
-            "scalafixAll --check;" \
+            "gatling-jvm-to-js-adapter/headerCheckAll;" \
+            "gatling-jvm-to-js-adapter/javafmtCheckAll;" \
+            "gatling-jvm-to-js-adapter/scalafmtCheckAll;" \
+            "gatling-jvm-to-js-adapter/scalafixAll --check;" \
             "compile;" \
             "testFull;"
 
