@@ -15,7 +15,10 @@
     "load test",
     "load testing",
     "performance test",
-    "performance testing"
+    "performance testing",
+    "http",
+    "websocket",
+    "sse"
   ],
   "main": "target/index.js",
   "types": "target/index.d.ts",
