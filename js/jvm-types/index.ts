@@ -80,28 +80,6 @@ interface AssertionStatic {
 
 export const Assertion: AssertionStatic = Java.type("io.gatling.javaapi.core.Assertion");
 
-interface Binary$TypedConditionStatic {
-  readonly class: any;
-  new (
-    arg0: any /*io.gatling.javaapi.http.internal.ScalaWsFrameCheckBinaryConditions$Typed*/
-  ): io.gatling.javaapi.http.Binary$TypedCondition;
-}
-
-export const Binary$TypedCondition: Binary$TypedConditionStatic = Java.type(
-  "io.gatling.javaapi.http.WsFrameCheck$Binary$TypedCondition"
-);
-
-interface Binary$UntypedConditionStatic {
-  readonly class: any;
-  new (
-    arg0: any /*io.gatling.javaapi.http.internal.ScalaWsFrameCheckBinaryConditions$Untyped*/
-  ): io.gatling.javaapi.http.Binary$UntypedCondition;
-}
-
-export const Binary$UntypedCondition: Binary$UntypedConditionStatic = Java.type(
-  "io.gatling.javaapi.http.WsFrameCheck$Binary$UntypedCondition"
-);
-
 interface Body$WithBytesStatic {
   readonly class: any;
   new (arg0: any /*io.gatling.core.body.BodyWithBytesExpression*/): io.gatling.javaapi.core.Body$WithBytes;
@@ -212,11 +190,27 @@ interface CheckBuilderStatic {
 
 export const CheckBuilder: CheckBuilderStatic = Java.type("io.gatling.javaapi.core.CheckBuilder");
 
+interface Choice$WithKey$ThenStatic {
+  readonly class: any;
+  new (arg0: any /*java.lang.Object*/): io.gatling.javaapi.core.Choice$WithKey$Then;
+}
+
+export const Choice$WithKey$Then: Choice$WithKey$ThenStatic = Java.type("io.gatling.javaapi.core.Choice$WithKey$Then");
+
 interface Choice$WithKeyStatic {
   readonly class: any;
 }
 
 export const Choice$WithKey: Choice$WithKeyStatic = Java.type("io.gatling.javaapi.core.Choice$WithKey");
+
+interface Choice$WithWeight$ThenStatic {
+  readonly class: any;
+  new (arg0: double): io.gatling.javaapi.core.Choice$WithWeight$Then;
+}
+
+export const Choice$WithWeight$Then: Choice$WithWeight$ThenStatic = Java.type(
+  "io.gatling.javaapi.core.Choice$WithWeight$Then"
+);
 
 interface Choice$WithWeightStatic {
   readonly class: any;
@@ -413,16 +407,6 @@ interface ConnectActionBuilderStatic {
 
 export const ConnectActionBuilder: ConnectActionBuilderStatic = Java.type(
   "io.gatling.javaapi.mqtt.ConnectActionBuilder"
-);
-
-interface ConstantRate$ConstantRateOpenInjectionStepStatic {
-  readonly class: any;
-  atOnceUsers(arg0: int): io.gatling.javaapi.core.OpenInjectionStep;
-  nothingFor(arg0: java.time.Duration): io.gatling.javaapi.core.OpenInjectionStep;
-}
-
-export const ConstantRate$ConstantRateOpenInjectionStep: ConstantRate$ConstantRateOpenInjectionStepStatic = Java.type(
-  "io.gatling.javaapi.core.OpenInjectionStep$ConstantRate$ConstantRateOpenInjectionStep"
 );
 
 interface ConsumeActionBuilder$BaseStatic {
@@ -664,8 +648,8 @@ interface CoreDslStatic {
   form(
     arg0: Func<io.gatling.javaapi.core.Session, string>
   ): io.gatling.javaapi.core.CheckBuilder$MultipleFind<java.util.Map<string, any /*java.lang.Object*/>>;
-  onCase(arg0: any /*java.lang.Object*/): io.gatling.javaapi.core.WithKey$Then;
-  percent(arg0: double): io.gatling.javaapi.core.WithWeight$Then;
+  onCase(arg0: any /*java.lang.Object*/): io.gatling.javaapi.core.Choice$WithKey$Then;
+  percent(arg0: double): io.gatling.javaapi.core.Choice$WithWeight$Then;
   constantConcurrentUsers(arg0: int): io.gatling.javaapi.core.ClosedInjectionStep$Constant;
   rampConcurrentUsers(arg0: int): io.gatling.javaapi.core.ClosedInjectionStep$Ramp;
   incrementConcurrentUsers(arg0: int): io.gatling.javaapi.core.ClosedInjectionStep$Stairs;
@@ -2432,6 +2416,15 @@ interface MqttStatic {
 
 export const Mqtt: MqttStatic = Java.type("io.gatling.javaapi.mqtt.Mqtt");
 
+interface OpenInjectionStep$ConstantRate$ConstantRateOpenInjectionStepStatic {
+  readonly class: any;
+  atOnceUsers(arg0: int): io.gatling.javaapi.core.OpenInjectionStep;
+  nothingFor(arg0: java.time.Duration): io.gatling.javaapi.core.OpenInjectionStep;
+}
+
+export const OpenInjectionStep$ConstantRate$ConstantRateOpenInjectionStep: OpenInjectionStep$ConstantRate$ConstantRateOpenInjectionStepStatic =
+  Java.type("io.gatling.javaapi.core.OpenInjectionStep$ConstantRate$ConstantRateOpenInjectionStep");
+
 interface OpenInjectionStep$ConstantRateStatic {
   readonly class: any;
 }
@@ -2439,6 +2432,23 @@ interface OpenInjectionStep$ConstantRateStatic {
 export const OpenInjectionStep$ConstantRate: OpenInjectionStep$ConstantRateStatic = Java.type(
   "io.gatling.javaapi.core.OpenInjectionStep$ConstantRate"
 );
+
+interface OpenInjectionStep$RampRate$DuringStatic {
+  readonly class: any;
+}
+
+export const OpenInjectionStep$RampRate$During: OpenInjectionStep$RampRate$DuringStatic = Java.type(
+  "io.gatling.javaapi.core.OpenInjectionStep$RampRate$During"
+);
+
+interface OpenInjectionStep$RampRate$RampRateOpenInjectionStepStatic {
+  readonly class: any;
+  atOnceUsers(arg0: int): io.gatling.javaapi.core.OpenInjectionStep;
+  nothingFor(arg0: java.time.Duration): io.gatling.javaapi.core.OpenInjectionStep;
+}
+
+export const OpenInjectionStep$RampRate$RampRateOpenInjectionStep: OpenInjectionStep$RampRate$RampRateOpenInjectionStepStatic =
+  Java.type("io.gatling.javaapi.core.OpenInjectionStep$RampRate$RampRateOpenInjectionStep");
 
 interface OpenInjectionStep$RampRateStatic {
   readonly class: any;
@@ -2454,6 +2464,24 @@ interface OpenInjectionStep$RampStatic {
 
 export const OpenInjectionStep$Ramp: OpenInjectionStep$RampStatic = Java.type(
   "io.gatling.javaapi.core.OpenInjectionStep$Ramp"
+);
+
+interface OpenInjectionStep$Stairs$CompositeStatic {
+  readonly class: any;
+  atOnceUsers(arg0: int): io.gatling.javaapi.core.OpenInjectionStep;
+  nothingFor(arg0: java.time.Duration): io.gatling.javaapi.core.OpenInjectionStep;
+}
+
+export const OpenInjectionStep$Stairs$Composite: OpenInjectionStep$Stairs$CompositeStatic = Java.type(
+  "io.gatling.javaapi.core.OpenInjectionStep$Stairs$Composite"
+);
+
+interface OpenInjectionStep$Stairs$TimesStatic {
+  readonly class: any;
+}
+
+export const OpenInjectionStep$Stairs$Times: OpenInjectionStep$Stairs$TimesStatic = Java.type(
+  "io.gatling.javaapi.core.OpenInjectionStep$Stairs$Times"
 );
 
 interface OpenInjectionStep$StairsStatic {
@@ -2609,24 +2637,6 @@ interface PublishActionBuilderStatic {
 
 export const PublishActionBuilder: PublishActionBuilderStatic = Java.type(
   "io.gatling.javaapi.mqtt.PublishActionBuilder"
-);
-
-interface RampRate$DuringStatic {
-  readonly class: any;
-}
-
-export const RampRate$During: RampRate$DuringStatic = Java.type(
-  "io.gatling.javaapi.core.OpenInjectionStep$RampRate$During"
-);
-
-interface RampRate$RampRateOpenInjectionStepStatic {
-  readonly class: any;
-  atOnceUsers(arg0: int): io.gatling.javaapi.core.OpenInjectionStep;
-  nothingFor(arg0: java.time.Duration): io.gatling.javaapi.core.OpenInjectionStep;
-}
-
-export const RampRate$RampRateOpenInjectionStep: RampRate$RampRateOpenInjectionStepStatic = Java.type(
-  "io.gatling.javaapi.core.OpenInjectionStep$RampRate$RampRateOpenInjectionStep"
 );
 
 interface RandomSwitch$OnStatic {
@@ -2940,22 +2950,6 @@ interface SseStatic {
 
 export const Sse: SseStatic = Java.type("io.gatling.javaapi.http.Sse");
 
-interface Stairs$CompositeStatic {
-  readonly class: any;
-  atOnceUsers(arg0: int): io.gatling.javaapi.core.OpenInjectionStep;
-  nothingFor(arg0: java.time.Duration): io.gatling.javaapi.core.OpenInjectionStep;
-}
-
-export const Stairs$Composite: Stairs$CompositeStatic = Java.type(
-  "io.gatling.javaapi.core.OpenInjectionStep$Stairs$Composite"
-);
-
-interface Stairs$TimesStatic {
-  readonly class: any;
-}
-
-export const Stairs$Times: Stairs$TimesStatic = Java.type("io.gatling.javaapi.core.OpenInjectionStep$Stairs$Times");
-
 interface StreamStatic {
   readonly class: any;
   builder(): any /*java.util.stream.Stream$Builder*/;
@@ -3077,28 +3071,6 @@ interface TemporalUnitStatic {
 
 export const TemporalUnit: TemporalUnitStatic = Java.type("java.time.temporal.TemporalUnit");
 
-interface Text$TypedConditionStatic {
-  readonly class: any;
-  new (
-    arg0: any /*io.gatling.javaapi.http.internal.ScalaWsFrameCheckTextConditions$Typed*/
-  ): io.gatling.javaapi.http.Text$TypedCondition;
-}
-
-export const Text$TypedCondition: Text$TypedConditionStatic = Java.type(
-  "io.gatling.javaapi.http.WsFrameCheck$Text$TypedCondition"
-);
-
-interface Text$UntypedConditionStatic {
-  readonly class: any;
-  new (
-    arg0: any /*io.gatling.javaapi.http.internal.ScalaWsFrameCheckTextConditions$Untyped*/
-  ): io.gatling.javaapi.http.Text$UntypedCondition;
-}
-
-export const Text$UntypedCondition: Text$UntypedConditionStatic = Java.type(
-  "io.gatling.javaapi.http.WsFrameCheck$Text$UntypedCondition"
-);
-
 interface ThrottleStep$ReachIntermediateStatic {
   readonly class: any;
 }
@@ -3137,20 +3109,6 @@ export const WaitForMessagesActionBuilder: WaitForMessagesActionBuilderStatic = 
   "io.gatling.javaapi.mqtt.WaitForMessagesActionBuilder"
 );
 
-interface WithKey$ThenStatic {
-  readonly class: any;
-  new (arg0: any /*java.lang.Object*/): io.gatling.javaapi.core.WithKey$Then;
-}
-
-export const WithKey$Then: WithKey$ThenStatic = Java.type("io.gatling.javaapi.core.Choice$WithKey$Then");
-
-interface WithWeight$ThenStatic {
-  readonly class: any;
-  new (arg0: double): io.gatling.javaapi.core.WithWeight$Then;
-}
-
-export const WithWeight$Then: WithWeight$ThenStatic = Java.type("io.gatling.javaapi.core.Choice$WithWeight$Then");
-
 interface Ws$PrefixStatic {
   readonly class: any;
 }
@@ -3185,12 +3143,56 @@ export const WsConnectActionBuilder: WsConnectActionBuilderStatic = Java.type(
   "io.gatling.javaapi.http.WsConnectActionBuilder"
 );
 
+interface WsFrameCheck$Binary$TypedConditionStatic {
+  readonly class: any;
+  new (
+    arg0: any /*io.gatling.javaapi.http.internal.ScalaWsFrameCheckBinaryConditions$Typed*/
+  ): io.gatling.javaapi.http.WsFrameCheck$Binary$TypedCondition;
+}
+
+export const WsFrameCheck$Binary$TypedCondition: WsFrameCheck$Binary$TypedConditionStatic = Java.type(
+  "io.gatling.javaapi.http.WsFrameCheck$Binary$TypedCondition"
+);
+
+interface WsFrameCheck$Binary$UntypedConditionStatic {
+  readonly class: any;
+  new (
+    arg0: any /*io.gatling.javaapi.http.internal.ScalaWsFrameCheckBinaryConditions$Untyped*/
+  ): io.gatling.javaapi.http.WsFrameCheck$Binary$UntypedCondition;
+}
+
+export const WsFrameCheck$Binary$UntypedCondition: WsFrameCheck$Binary$UntypedConditionStatic = Java.type(
+  "io.gatling.javaapi.http.WsFrameCheck$Binary$UntypedCondition"
+);
+
 interface WsFrameCheck$BinaryStatic {
   readonly class: any;
   new (arg0: any /*io.gatling.http.check.ws.WsFrameCheck$Binary*/): io.gatling.javaapi.http.WsFrameCheck$Binary;
 }
 
 export const WsFrameCheck$Binary: WsFrameCheck$BinaryStatic = Java.type("io.gatling.javaapi.http.WsFrameCheck$Binary");
+
+interface WsFrameCheck$Text$TypedConditionStatic {
+  readonly class: any;
+  new (
+    arg0: any /*io.gatling.javaapi.http.internal.ScalaWsFrameCheckTextConditions$Typed*/
+  ): io.gatling.javaapi.http.WsFrameCheck$Text$TypedCondition;
+}
+
+export const WsFrameCheck$Text$TypedCondition: WsFrameCheck$Text$TypedConditionStatic = Java.type(
+  "io.gatling.javaapi.http.WsFrameCheck$Text$TypedCondition"
+);
+
+interface WsFrameCheck$Text$UntypedConditionStatic {
+  readonly class: any;
+  new (
+    arg0: any /*io.gatling.javaapi.http.internal.ScalaWsFrameCheckTextConditions$Untyped*/
+  ): io.gatling.javaapi.http.WsFrameCheck$Text$UntypedCondition;
+}
+
+export const WsFrameCheck$Text$UntypedCondition: WsFrameCheck$Text$UntypedConditionStatic = Java.type(
+  "io.gatling.javaapi.http.WsFrameCheck$Text$UntypedCondition"
+);
 
 interface WsFrameCheck$TextStatic {
   readonly class: any;
