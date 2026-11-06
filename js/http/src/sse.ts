@@ -30,7 +30,6 @@ import JvmSseAwaitActionBuilder = io.gatling.javaapi.http.SseAwaitActionBuilder;
 import JvmSseAwaitActionBuilderOn = io.gatling.javaapi.http.SseAwaitActionBuilder$On;
 import JvmSseConnectActionBuilder = io.gatling.javaapi.http.SseConnectActionBuilder;
 import JvmSseMessageCheck = io.gatling.javaapi.http.SseMessageCheck;
-import JvmSsePrefix = io.gatling.javaapi.http.Sse$Prefix;
 import JvmSseSetCheckActionBuilder = io.gatling.javaapi.http.SseSetCheckActionBuilder;
 import JvmTypedCondition = io.gatling.javaapi.http.SseMessageCheck$TypedCondition;
 import JvmUntypedCondition = io.gatling.javaapi.http.SseMessageCheck$UntypedCondition;
@@ -374,7 +373,7 @@ export interface SsePrefix {
   ): ActionBuilder;
 }
 
-const jvmSsePrefix = (JvmSsePrefixStatic as any).INSTANCE as JvmSsePrefix;
+const jvmSsePrefix = JvmSsePrefixStatic.INSTANCE;
 
 type SseProcessUnmatchedMessagesCallback = (messages: Array<SseInboundMessage>, session: Session) => Session;
 

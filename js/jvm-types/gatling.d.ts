@@ -12,6 +12,7 @@ type long = number;
 type float = number;
 type double = number;
 type byte = number;
+type short = number;
 type char = string;
 
 type chararray = char[];
@@ -360,6 +361,7 @@ declare namespace io.gatling.javaapi.core {
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
   class ChainBuilder /* extends StructureBuilder<any, any> implements io.gatling.javaapi.core.exec.Executable*/ {
+    readonly wrapped: any; /*W*/
     asLongAs<T>(arg0: Func<Session, boolean | null>): io.gatling.javaapi.core.loop.AsLongAs$On<T>;
     asLongAs<T>(arg0: Func<Session, boolean | null>, arg1: boolean): io.gatling.javaapi.core.loop.AsLongAs$On<T>;
     asLongAs<T>(arg0: Func<Session, boolean | null>, arg1: string): io.gatling.javaapi.core.loop.AsLongAs$On<T>;
@@ -803,6 +805,8 @@ declare namespace io.gatling.javaapi.core {
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
   class Choice$WithKey /* extends java.lang.Object*/ {
+    readonly chain: ChainBuilder;
+    readonly key: any; /*java.lang.Object*/
     equals(arg0: any /*java.lang.Object*/): boolean;
     toString(): string;
   } // end Choice$WithKey
@@ -819,6 +823,8 @@ declare namespace io.gatling.javaapi.core {
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
   class Choice$WithWeight /* extends java.lang.Object*/ {
+    readonly chain: ChainBuilder;
+    readonly weight: double;
     equals(arg0: any /*java.lang.Object*/): boolean;
     toString(): string;
   } // end Choice$WithWeight
@@ -1107,6 +1113,7 @@ declare namespace io.gatling.javaapi.core {
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
   class ScenarioBuilder /* extends StructureBuilder<any, any>*/ {
+    readonly wrapped: any; /*W*/
     asLongAs<T>(arg0: Func<Session, boolean | null>): io.gatling.javaapi.core.loop.AsLongAs$On<T>;
     asLongAs<T>(arg0: Func<Session, boolean | null>, arg1: boolean): io.gatling.javaapi.core.loop.AsLongAs$On<T>;
     asLongAs<T>(arg0: Func<Session, boolean | null>, arg1: string): io.gatling.javaapi.core.loop.AsLongAs$On<T>;
@@ -1635,6 +1642,7 @@ declare namespace io.gatling.javaapi.core {
     T,
     W
   > /* extends java.lang.Object implements io.gatling.javaapi.core.exec.Execs<T, W>, io.gatling.javaapi.core.group.Groups<T, W>, io.gatling.javaapi.core.feed.Feeds<T, W>, io.gatling.javaapi.core.pause.Pauses<T, W>, io.gatling.javaapi.core.pause.Paces<T, W>, io.gatling.javaapi.core.pause.RendezVous<T, W>, io.gatling.javaapi.core.loop.Repeat<T, W>, io.gatling.javaapi.core.loop.ForEach<T, W>, io.gatling.javaapi.core.loop.During<T, W>, io.gatling.javaapi.core.loop.Forever<T, W>, io.gatling.javaapi.core.loop.AsLongAs<T, W>, io.gatling.javaapi.core.loop.DoWhile<T, W>, io.gatling.javaapi.core.loop.AsLongAsDuring<T, W>, io.gatling.javaapi.core.loop.DoWhileDuring<T, W>, io.gatling.javaapi.core.condition.DoIf<T, W>, io.gatling.javaapi.core.condition.DoIfOrElse<T, W>, io.gatling.javaapi.core.condition.DoIfEquals<T, W>, io.gatling.javaapi.core.condition.DoIfEqualsOrElse<T, W>, io.gatling.javaapi.core.condition.DoSwitch<T, W>, io.gatling.javaapi.core.condition.DoSwitchOrElse<T, W>, io.gatling.javaapi.core.condition.RandomSwitch<T, W>, io.gatling.javaapi.core.condition.RandomSwitchOrElse<T, W>, io.gatling.javaapi.core.condition.UniformRandomSwitch<T, W>, io.gatling.javaapi.core.condition.RoundRobinSwitch<T, W>, io.gatling.javaapi.core.error.Errors<T, W>*/ {
+    readonly wrapped: W;
     asLongAs(arg0: Func<Session, boolean | null>): io.gatling.javaapi.core.loop.AsLongAs$On<T>;
     asLongAs(arg0: Func<Session, boolean | null>, arg1: boolean): io.gatling.javaapi.core.loop.AsLongAs$On<T>;
     asLongAs(arg0: Func<Session, boolean | null>, arg1: string): io.gatling.javaapi.core.loop.AsLongAs$On<T>;
@@ -3147,6 +3155,9 @@ declare namespace io.gatling.javaapi.graphql {
 } // end namespace io.gatling.javaapi.graphql
 declare namespace io.gatling.javaapi.graphql {
   class GraphQl /* extends java.lang.Object*/ {
+    readonly data: GraphQlJsonScope;
+    readonly errors: GraphQlJsonScope;
+    readonly extensions: GraphQlJsonScope;
     automaticPersistedQueries(): GraphQlProtocolBuilder;
     automaticPersistedQueriesOverGet(): GraphQlProtocolBuilder;
     document(arg0: string): GraphQlRequestActionBuilder;
@@ -3322,6 +3333,9 @@ declare namespace io.gatling.javaapi.graphql {
 } // end namespace io.gatling.javaapi.graphql
 declare namespace io.gatling.javaapi.graphql {
   class GraphQlWs /* extends java.lang.Object*/ {
+    readonly data: GraphQlJsonScope;
+    readonly errors: GraphQlJsonScope;
+    readonly extensions: GraphQlJsonScope;
     checkNext(): GraphQlWsNextCheck;
     checkNext(arg0: string): GraphQlWsNextCheck;
     close(): io.gatling.javaapi.core.ActionBuilder;
@@ -3893,7 +3907,7 @@ declare namespace io.gatling.javaapi.http {
     acceptLanguageHeader(arg0: Func<io.gatling.javaapi.core.Session, string>): HttpProtocolBuilder;
     acceptLanguageHeader(arg0: string): HttpProtocolBuilder;
     asyncNameResolution(...arg0: string[]): HttpProtocolBuilder;
-    asyncNameResolution(arg0: [any /*java.net.InetSocketAddress*/]): HttpProtocolBuilder;
+    asyncNameResolution(arg0: any /*java.net.InetSocketAddress*/[]): HttpProtocolBuilder;
     authorizationHeader(arg0: Func<io.gatling.javaapi.core.Session, string>): HttpProtocolBuilder;
     authorizationHeader(arg0: string): HttpProtocolBuilder;
     baseUrl(arg0: string): HttpProtocolBuilder;
@@ -5065,12 +5079,12 @@ declare namespace io.gatling.javaapi.jms {
     notExists(): io.gatling.javaapi.core.CheckBuilder$Final;
     notNull(): io.gatling.javaapi.core.CheckBuilder$Final;
     ofBoolean(): io.gatling.javaapi.core.CheckBuilder$Find<boolean | null>;
-    ofByte(): io.gatling.javaapi.core.CheckBuilder$Find<any /*java.lang.Byte*/>;
+    ofByte(): io.gatling.javaapi.core.CheckBuilder$Find<byte | null>;
     ofDouble(): io.gatling.javaapi.core.CheckBuilder$Find<double | null>;
     ofInt(): io.gatling.javaapi.core.CheckBuilder$Find<int | null>;
     ofLong(): io.gatling.javaapi.core.CheckBuilder$Find<long | null>;
     ofObject(): io.gatling.javaapi.core.CheckBuilder$Find<any /*java.lang.Object*/>;
-    ofShort(): io.gatling.javaapi.core.CheckBuilder$Find<any /*java.lang.Short*/>;
+    ofShort(): io.gatling.javaapi.core.CheckBuilder$Find<short | null>;
     ofString(): io.gatling.javaapi.core.CheckBuilder$Find<string>;
     optional(): io.gatling.javaapi.core.CheckBuilder$Final;
     saveAs(arg0: string): io.gatling.javaapi.core.CheckBuilder$Final;
@@ -5141,12 +5155,12 @@ declare namespace io.gatling.javaapi.jms {
     notExists(): io.gatling.javaapi.core.CheckBuilder$Final;
     notNull(): io.gatling.javaapi.core.CheckBuilder$Final;
     ofBoolean(): io.gatling.javaapi.core.CheckBuilder$Find<boolean | null>;
-    ofByte(): io.gatling.javaapi.core.CheckBuilder$Find<any /*java.lang.Byte*/>;
+    ofByte(): io.gatling.javaapi.core.CheckBuilder$Find<byte | null>;
     ofDouble(): io.gatling.javaapi.core.CheckBuilder$Find<double | null>;
     ofInt(): io.gatling.javaapi.core.CheckBuilder$Find<int | null>;
     ofLong(): io.gatling.javaapi.core.CheckBuilder$Find<long | null>;
     ofObject(): io.gatling.javaapi.core.CheckBuilder$Find<any /*java.lang.Object*/>;
-    ofShort(): io.gatling.javaapi.core.CheckBuilder$Find<any /*java.lang.Short*/>;
+    ofShort(): io.gatling.javaapi.core.CheckBuilder$Find<short | null>;
     ofString(): io.gatling.javaapi.core.CheckBuilder$Find<string>;
     optional(): io.gatling.javaapi.core.CheckBuilder$Final;
     saveAs(arg0: string): io.gatling.javaapi.core.CheckBuilder$Final;
@@ -6012,7 +6026,7 @@ declare namespace io.netty.handler.codec.http {
     add(arg0: string, arg1: any /*java.lang.Object*/): HttpHeaders;
     add(arg0: string, arg1: java.lang.Iterable<any /*java.lang.Object*/>): HttpHeaders;
     addInt(arg0: any /*java.lang.CharSequence*/, arg1: int): HttpHeaders;
-    addShort(arg0: any /*java.lang.CharSequence*/, arg1: any /*short*/): HttpHeaders;
+    addShort(arg0: any /*java.lang.CharSequence*/, arg1: short): HttpHeaders;
     clear(): HttpHeaders;
     contains(arg0: any /*java.lang.CharSequence*/): boolean;
     contains(arg0: any /*java.lang.CharSequence*/, arg1: any /*java.lang.CharSequence*/, arg2: boolean): boolean;
@@ -6032,8 +6046,8 @@ declare namespace io.netty.handler.codec.http {
     getAsString(arg0: any /*java.lang.CharSequence*/): string;
     getInt(arg0: any /*java.lang.CharSequence*/): int | null;
     getInt(arg0: any /*java.lang.CharSequence*/, arg1: int): int;
-    getShort(arg0: any /*java.lang.CharSequence*/): any; /*java.lang.Short*/
-    getShort(arg0: any /*java.lang.CharSequence*/, arg1: any /*short*/): any; /*short*/
+    getShort(arg0: any /*java.lang.CharSequence*/): short | null;
+    getShort(arg0: any /*java.lang.CharSequence*/, arg1: short): short;
     getTimeMillis(arg0: any /*java.lang.CharSequence*/): long | null;
     getTimeMillis(arg0: any /*java.lang.CharSequence*/, arg1: long): long;
     isEmpty(): boolean;
@@ -6050,7 +6064,7 @@ declare namespace io.netty.handler.codec.http {
     set(arg0: string, arg1: java.lang.Iterable<any /*java.lang.Object*/>): HttpHeaders;
     setAll(arg0: HttpHeaders): HttpHeaders;
     setInt(arg0: any /*java.lang.CharSequence*/, arg1: int): HttpHeaders;
-    setShort(arg0: any /*java.lang.CharSequence*/, arg1: any /*short*/): HttpHeaders;
+    setShort(arg0: any /*java.lang.CharSequence*/, arg1: short): HttpHeaders;
     size(): int;
     spliterator(): any; /*java.util.Spliterator*/
     toString(): string;
@@ -6168,7 +6182,7 @@ declare namespace io.netty.handler.codec.mqtt {
 } // end namespace io.netty.handler.codec.mqtt
 declare namespace java.lang {
   class String /* extends Object implements java.io.Serializable, Comparable<any>, CharSequence, java.lang.constant.Constable, java.lang.constant.ConstantDesc*/ {
-    charAt(arg0: int): any; /*char*/
+    charAt(arg0: int): char;
     chars(): any; /*java.util.stream.IntStream*/
     codePointAt(arg0: int): int;
     codePointBefore(arg0: int): int;
@@ -6211,14 +6225,14 @@ declare namespace java.lang {
     regionMatches(arg0: boolean, arg1: int, arg2: string, arg3: int, arg4: int): boolean;
     regionMatches(arg0: int, arg1: string, arg2: int, arg3: int): boolean;
     repeat(arg0: int): string;
-    replace(arg0: any /*char*/, arg1: any /*char*/): string;
     replace(arg0: any /*java.lang.CharSequence*/, arg1: any /*java.lang.CharSequence*/): string;
+    replace(arg0: char, arg1: char): string;
     replaceAll(arg0: string, arg1: string): string;
     replaceFirst(arg0: string, arg1: string): string;
     resolveConstantDesc(arg0: any /*java.lang.invoke.MethodHandles$Lookup*/): string;
-    split(arg0: string): [string];
-    split(arg0: string, arg1: int): [string];
-    splitWithDelimiters(arg0: string, arg1: int): [string];
+    split(arg0: string): string[];
+    split(arg0: string, arg1: int): string[];
+    splitWithDelimiters(arg0: string, arg1: int): string[];
     startsWith(arg0: string): boolean;
     startsWith(arg0: string, arg1: int): boolean;
     strip(): string;
@@ -6400,7 +6414,7 @@ declare namespace java.util {
     size(): int;
     spliterator(): any /*java.util.Spliterator*/;
     stream(): java.util.stream.Stream<E>;
-    toArray(): [any /*java.lang.Object*/];
+    toArray(): any /*java.lang.Object*/[];
     toArray<T>(arg0: T[]): T[];
     toArray<T>(arg0: any /*java.util.function.IntFunction*/): T[];
   } // end Collection
@@ -6445,7 +6459,7 @@ declare namespace java.util {
     size(): int;
     spliterator(): any /*java.util.Spliterator*/;
     stream(): java.util.stream.Stream<E>;
-    toArray(): [any /*java.lang.Object*/];
+    toArray(): any /*java.lang.Object*/[];
     toArray<T>(arg0: T[]): T[];
     toArray<T>(arg0: any /*java.util.function.IntFunction*/): T[];
   } // end Set
@@ -6504,7 +6518,7 @@ declare namespace java.util.stream {
     sorted(arg0: any /*java.util.Comparator*/): Stream<T>;
     spliterator(): any /*java.util.Spliterator*/;
     takeWhile(arg0: Predicate<T>): Stream<T>;
-    toArray(): [any /*java.lang.Object*/];
+    toArray(): any /*java.lang.Object*/[];
     toArray<A>(arg0: any /*java.util.function.IntFunction*/): A[];
     toList(): java.util.List<T>;
     unordered<S>(): S;
