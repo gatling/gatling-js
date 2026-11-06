@@ -65,7 +65,7 @@ export namespace PublishActionBuilder {
     _underlying,
 
     qosAtMostOnce: () => wrapPublishActionBuilder(_underlying.qosAtMostOnce()),
-    qosAtLeastOnce: () => wrapPublishActionBuilder(_underlying.qosAtMostOnce()),
+    qosAtLeastOnce: () => wrapPublishActionBuilder(_underlying.qosAtLeastOnce()),
     qosExactlyOnce: () => wrapPublishActionBuilder(_underlying.qosExactlyOnce()),
 
     check: (...checks) => wrapCheckable(_underlying.check(checks.map((cb) => cb._underlying)))
