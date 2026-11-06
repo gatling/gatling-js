@@ -301,7 +301,7 @@ const wrapMqttProtocolBuilder = (_underlying: JvmMqttProtocolBuilder): MqttProto
 
   keepAlive: (timeout) => {
     if (isDuration(timeout)) {
-      return wrapMqttProtocolBuilder(_underlying.connectTimeout(toJvmDuration(timeout)));
+      return wrapMqttProtocolBuilder(_underlying.keepAlive(toJvmDuration(timeout)));
     }
 
     throw Error(`keepAlive() called with invalid argument ${timeout}`);
