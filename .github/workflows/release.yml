@@ -117,7 +117,7 @@ jobs:
           npm ci
           npm version "$VERSION"
           npm run build --workspaces
-          for pkg in "cli" "jvm-types" "core" "http" "graphql" "jdbc" "grpc" "kafka" "mqtt"; do
+          for pkg in "cli" "jvm-types" "core" "http" "graphql" "jdbc" "jms" "grpc" "kafka" "mqtt"; do
             cp ../LICENSE "./$pkg/LICENSE"
             npm publish --access public "--workspace=@gatling.io/$pkg"
           done

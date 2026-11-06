@@ -41,9 +41,10 @@ lazy val adapter = (project in file("adapter"))
     libraryDependencies ++= Seq(
       "io.gatling"           % "gatling-core-java"    % gatlingVersion        % "provided",
       "io.gatling"           % "gatling-graphql-java" % gatlingGraphqlVersion % "provided",
-      "io.gatling"           % "gatling-jdbc-java"    % gatlingJdbcVersion    % "provided",
       "io.gatling"           % "gatling-grpc-java"    % gatlingGrpcVersion    % "provided",
       "io.gatling"           % "gatling-http-java"    % gatlingVersion        % "provided",
+      "io.gatling"           % "gatling-jdbc-java"    % gatlingJdbcVersion    % "provided",
+      "io.gatling"           % "gatling-jms-java"     % gatlingJdbcVersion    % "provided",
       "io.gatling"           % "gatling-mqtt-java"    % gatlingMqttVersion    % "provided",
       "org.ow2.asm"          % "asm-tree"             % "9.11.1",
       "io.gatling"           % "gatling-grpc-java"    % gatlingGrpcVersion    % "provided",
@@ -102,9 +103,10 @@ lazy val java2ts = (project in file("java2ts"))
     libraryDependencies ++= Seq(
       "io.gatling" % "gatling-core-java"    % gatlingVersion,
       "io.gatling" % "gatling-graphql-java" % gatlingGraphqlVersion,
-      "io.gatling" % "gatling-jdbc-java"    % gatlingJdbcVersion,
       "io.gatling" % "gatling-grpc-java"    % gatlingGrpcVersion,
       "io.gatling" % "gatling-http-java"    % gatlingVersion,
+      "io.gatling" % "gatling-jdbc-java"    % gatlingJdbcVersion,
+      "io.gatling" % "gatling-jms-java"     % gatlingVersion,
       "io.gatling" % "gatling-kafka-java"   % gatlingKafkaVersion,
       "io.gatling" % "gatling-mqtt-java"    % gatlingMqttVersion
     ),

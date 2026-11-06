@@ -2222,6 +2222,202 @@ export const JdbcTransactionActionBuilder: JdbcTransactionActionBuilderStatic = 
   "io.gatling.javaapi.jdbc.JdbcTransactionActionBuilder"
 );
 
+interface JmsCheckBuilder$JmsPropertyOfTypeFind$DefaultStatic {
+  readonly class: any;
+  new <T>(
+    arg0: any /*io.gatling.core.check.CheckBuilder$Find*/,
+    arg1: any /*io.gatling.javaapi.core.CheckBuilder$CheckType*/
+  ): io.gatling.javaapi.jms.JmsCheckBuilder$JmsPropertyOfTypeFind$Default<T>;
+}
+
+export const JmsCheckBuilder$JmsPropertyOfTypeFind$Default: JmsCheckBuilder$JmsPropertyOfTypeFind$DefaultStatic =
+  Java.type("io.gatling.javaapi.jms.JmsCheckBuilder$JmsPropertyOfTypeFind$Default");
+
+interface JmsCheckBuilder$JmsPropertyOfTypeFindStatic {
+  readonly class: any;
+}
+
+export const JmsCheckBuilder$JmsPropertyOfTypeFind: JmsCheckBuilder$JmsPropertyOfTypeFindStatic = Java.type(
+  "io.gatling.javaapi.jms.JmsCheckBuilder$JmsPropertyOfTypeFind"
+);
+
+interface JmsCheckBuilder$JmsPropertyStatic {
+  readonly class: any;
+  new (arg0: any /*io.gatling.core.check.CheckBuilder$Find*/): io.gatling.javaapi.jms.JmsCheckBuilder$JmsProperty;
+}
+
+export const JmsCheckBuilder$JmsProperty: JmsCheckBuilder$JmsPropertyStatic = Java.type(
+  "io.gatling.javaapi.jms.JmsCheckBuilder$JmsProperty"
+);
+
+interface JmsCheckBuilderStatic {
+  readonly class: any;
+}
+
+export const JmsCheckBuilder: JmsCheckBuilderStatic = Java.type("io.gatling.javaapi.jms.JmsCheckBuilder");
+
+interface JmsDestinationStatic {
+  readonly class: any;
+}
+
+export const JmsDestination: JmsDestinationStatic = Java.type("io.gatling.javaapi.jms.JmsDestination");
+
+interface JmsDslStatic {
+  readonly class: any;
+  simpleCheck(arg0: Func<any /*jakarta.jms.Message*/, boolean | null>): io.gatling.javaapi.core.CheckBuilder;
+  jms(arg0: string): io.gatling.javaapi.jms.Jms;
+  jms(arg0: Func<io.gatling.javaapi.core.Session, string>): io.gatling.javaapi.jms.Jms;
+  jmsProperty(arg0: string): io.gatling.javaapi.jms.JmsCheckBuilder$JmsPropertyOfTypeFind;
+  queue(arg0: string): io.gatling.javaapi.jms.JmsDestination;
+  queue(arg0: Func<io.gatling.javaapi.core.Session, string>): io.gatling.javaapi.jms.JmsDestination;
+  topic(arg0: string): io.gatling.javaapi.jms.JmsDestination;
+  topic(arg0: Func<io.gatling.javaapi.core.Session, string>): io.gatling.javaapi.jms.JmsDestination;
+}
+
+export const JmsDsl: JmsDslStatic = Java.type("io.gatling.javaapi.jms.JmsDsl");
+
+interface JmsJndiConnectionFactoryBuilder$BaseStatic {
+  readonly class: any;
+}
+
+export const JmsJndiConnectionFactoryBuilder$Base: JmsJndiConnectionFactoryBuilder$BaseStatic = Java.type(
+  "io.gatling.javaapi.jms.JmsJndiConnectionFactoryBuilder$Base"
+);
+
+interface JmsJndiConnectionFactoryBuilder$ContextFactoryStatic {
+  readonly class: any;
+}
+
+export const JmsJndiConnectionFactoryBuilder$ContextFactory: JmsJndiConnectionFactoryBuilder$ContextFactoryStatic =
+  Java.type("io.gatling.javaapi.jms.JmsJndiConnectionFactoryBuilder$ContextFactory");
+
+interface JmsJndiConnectionFactoryBuilder$UrlStatic {
+  readonly class: any;
+}
+
+export const JmsJndiConnectionFactoryBuilder$Url: JmsJndiConnectionFactoryBuilder$UrlStatic = Java.type(
+  "io.gatling.javaapi.jms.JmsJndiConnectionFactoryBuilder$Url"
+);
+
+interface JmsJndiConnectionFactoryBuilderStatic {
+  readonly class: any;
+}
+
+export const JmsJndiConnectionFactoryBuilder: JmsJndiConnectionFactoryBuilderStatic = Java.type(
+  "io.gatling.javaapi.jms.JmsJndiConnectionFactoryBuilder"
+);
+
+interface JmsMessageMatcherStatic {
+  readonly class: any;
+}
+
+export const JmsMessageMatcher: JmsMessageMatcherStatic = Java.type("io.gatling.javaapi.jms.JmsMessageMatcher");
+
+interface JmsProtocolBuilder$BaseStatic {
+  readonly class: any;
+}
+
+export const JmsProtocolBuilder$Base: JmsProtocolBuilder$BaseStatic = Java.type(
+  "io.gatling.javaapi.jms.JmsProtocolBuilder$Base"
+);
+
+interface JmsProtocolBuilderStatic {
+  readonly class: any;
+  new (arg0: any /*io.gatling.jms.protocol.JmsProtocolBuilder*/): io.gatling.javaapi.jms.JmsProtocolBuilder;
+}
+
+export const JmsProtocolBuilder: JmsProtocolBuilderStatic = Java.type("io.gatling.javaapi.jms.JmsProtocolBuilder");
+
+interface JmsRequestReplyActionBuilder$MessageStatic {
+  readonly class: any;
+  new (
+    arg0: any /*io.gatling.jms.request.RequestReplyDslBuilder$Message*/
+  ): io.gatling.javaapi.jms.JmsRequestReplyActionBuilder$Message;
+}
+
+export const JmsRequestReplyActionBuilder$Message: JmsRequestReplyActionBuilder$MessageStatic = Java.type(
+  "io.gatling.javaapi.jms.JmsRequestReplyActionBuilder$Message"
+);
+
+interface JmsRequestReplyActionBuilder$QueueStatic {
+  readonly class: any;
+  new (
+    arg0: any /*io.gatling.jms.request.RequestReplyDslBuilder$Queue*/
+  ): io.gatling.javaapi.jms.JmsRequestReplyActionBuilder$Queue;
+}
+
+export const JmsRequestReplyActionBuilder$Queue: JmsRequestReplyActionBuilder$QueueStatic = Java.type(
+  "io.gatling.javaapi.jms.JmsRequestReplyActionBuilder$Queue"
+);
+
+interface JmsRequestReplyActionBuilder$TypedConditionStatic {
+  readonly class: any;
+  new (
+    arg0: any /*io.gatling.javaapi.jms.internal.ScalaJmsRequestReplyActionBuilderConditions$Typed*/
+  ): io.gatling.javaapi.jms.JmsRequestReplyActionBuilder$TypedCondition;
+}
+
+export const JmsRequestReplyActionBuilder$TypedCondition: JmsRequestReplyActionBuilder$TypedConditionStatic = Java.type(
+  "io.gatling.javaapi.jms.JmsRequestReplyActionBuilder$TypedCondition"
+);
+
+interface JmsRequestReplyActionBuilder$UntypedConditionStatic {
+  readonly class: any;
+  new (
+    arg0: any /*io.gatling.javaapi.jms.internal.ScalaJmsRequestReplyActionBuilderConditions$Untyped*/
+  ): io.gatling.javaapi.jms.JmsRequestReplyActionBuilder$UntypedCondition;
+}
+
+export const JmsRequestReplyActionBuilder$UntypedCondition: JmsRequestReplyActionBuilder$UntypedConditionStatic =
+  Java.type("io.gatling.javaapi.jms.JmsRequestReplyActionBuilder$UntypedCondition");
+
+interface JmsRequestReplyActionBuilderStatic {
+  readonly class: any;
+  new (
+    arg0: any /*io.gatling.jms.request.RequestReplyDslBuilder*/
+  ): io.gatling.javaapi.jms.JmsRequestReplyActionBuilder;
+}
+
+export const JmsRequestReplyActionBuilder: JmsRequestReplyActionBuilderStatic = Java.type(
+  "io.gatling.javaapi.jms.JmsRequestReplyActionBuilder"
+);
+
+interface JmsSendActionBuilder$MessageStatic {
+  readonly class: any;
+  new (
+    arg0: any /*io.gatling.jms.request.SendDslBuilder$Message*/
+  ): io.gatling.javaapi.jms.JmsSendActionBuilder$Message;
+}
+
+export const JmsSendActionBuilder$Message: JmsSendActionBuilder$MessageStatic = Java.type(
+  "io.gatling.javaapi.jms.JmsSendActionBuilder$Message"
+);
+
+interface JmsSendActionBuilder$QueueStatic {
+  readonly class: any;
+  new (arg0: any /*io.gatling.jms.request.SendDslBuilder$Queue*/): io.gatling.javaapi.jms.JmsSendActionBuilder$Queue;
+}
+
+export const JmsSendActionBuilder$Queue: JmsSendActionBuilder$QueueStatic = Java.type(
+  "io.gatling.javaapi.jms.JmsSendActionBuilder$Queue"
+);
+
+interface JmsSendActionBuilderStatic {
+  readonly class: any;
+  new (arg0: any /*io.gatling.jms.request.SendDslBuilder*/): io.gatling.javaapi.jms.JmsSendActionBuilder;
+}
+
+export const JmsSendActionBuilder: JmsSendActionBuilderStatic = Java.type(
+  "io.gatling.javaapi.jms.JmsSendActionBuilder"
+);
+
+interface JmsStatic {
+  readonly class: any;
+  new (arg0: any /*scala.Function1*/): io.gatling.javaapi.jms.Jms;
+}
+
+export const Jms: JmsStatic = Java.type("io.gatling.javaapi.jms.Jms");
+
 interface KafkaBuilderStatic {
   readonly class: any;
 }

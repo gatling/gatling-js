@@ -10,6 +10,7 @@
     "@gatling.io/grpc": "3.16.1",
     "@gatling.io/http": "3.16.1",
     "@gatling.io/jdbc": "3.16.1",
+    "@gatling.io/jms": "3.16.1",
     "@gatling.io/kafka": "3.16.1",
     "@gatling.io/mqtt": "3.16.1",
     "uuid": "14.0.3"
@@ -29,7 +30,7 @@
   },
   "gatling": {
     "jvmDependencies": {
-      "artifacts": ["org.postgresql:postgresql:42.7.14"]
+      "artifacts": ["org.apache.artemis:artemis-jakarta-client:2.57.0", "org.postgresql:postgresql:42.7.14"]
     }
   }
 }
