@@ -17,6 +17,7 @@
 package io.gatling.js;
 
 import com.oracle.truffle.js.lang.JavaScriptLanguageHack;
+import com.oracle.truffle.polyglot.PolyglotFunctionsHack;
 import io.gatling.javaapi.core.Simulation;
 import java.io.IOException;
 
@@ -27,6 +28,9 @@ public class JsSimulation extends Simulation {
       // Implemented in as separate class because Lookup#defineClass() needs to be called from the
       // same package as the class being defined
       JavaScriptLanguageHack.allowThreadAccess();
+      // Same constraint, redirects callbacks to the JavaScript context of the current thread, see
+      // JsRuntime
+      PolyglotFunctionsHack.redirectFunctions();
     } catch (IOException | IllegalAccessException e) {
       throw new RuntimeException(e);
     }
