@@ -1,4 +1,4 @@
-import { Simulation, StringBody, exec, jmesPath, jsonPath, regex, group } from "@gatling.io/core";
+import { StringBody, exec, jmesPath, jsonPath, regex } from "@gatling.io/core";
 
 import { http, sse } from "./index";
 

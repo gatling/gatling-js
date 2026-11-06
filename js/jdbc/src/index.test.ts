@@ -1,4 +1,4 @@
-import { Simulation, atOnceUsers, exec, feed, scenario } from "@gatling.io/core";
+import { Simulation, atOnceUsers, exec, scenario } from "@gatling.io/core";
 
 import {
   column,

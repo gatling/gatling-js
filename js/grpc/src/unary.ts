@@ -2,7 +2,6 @@ import { ActionBuilder, CheckBuilder, Duration, isDuration, Session, toJvmDurati
 
 import { underlyingSessionToJvmDynamicMessage, wrapToJvmDynamicMessage } from "./dynamic";
 import { GrpcHeaders, wrapGrpcHeaders } from "./headers";
-import JvmDynamicMessageBuilder = com.google.protobuf.DynamicMessage$Builder;
 import JvmDescriptorsDescriptor = com.google.protobuf.Descriptors$Descriptor;
 import JvmGrpcUnaryActionBuilder = io.gatling.javaapi.grpc.GrpcUnaryActionBuilder;
 import JvmGrpcUnaryServiceBuilder = io.gatling.javaapi.grpc.GrpcUnaryServiceBuilder;
