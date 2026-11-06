@@ -5021,6 +5021,453 @@ declare namespace io.gatling.javaapi.jdbc {
     toString(): string;
   } // end JdbcTransactionActionBuilder
 } // end namespace io.gatling.javaapi.jdbc
+declare namespace io.gatling.javaapi.jms {
+  class Jms /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    requestReply(): JmsRequestReplyActionBuilder$Queue;
+    send(): JmsSendActionBuilder$Queue;
+    toString(): string;
+  } // end Jms
+} // end namespace io.gatling.javaapi.jms
+declare namespace io.gatling.javaapi.jms {
+  class JmsCheckBuilder$JmsProperty /* extends JmsCheckBuilder$JmsPropertyOfTypeFind$Default<any>*/ {
+    asScala(): any; /*io.gatling.core.check.CheckBuilder*/
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    exists(): io.gatling.javaapi.core.CheckBuilder$Final;
+    find<JavaX>(): io.gatling.javaapi.core.CheckBuilder$Validate<JavaX>;
+    gt<JavaX>(arg0: Func<io.gatling.javaapi.core.Session, JavaX>): io.gatling.javaapi.core.CheckBuilder$Final;
+    gt<JavaX>(arg0: JavaX): io.gatling.javaapi.core.CheckBuilder$Final;
+    gtEL(arg0: string): io.gatling.javaapi.core.CheckBuilder$Final;
+    gte<JavaX>(arg0: Func<io.gatling.javaapi.core.Session, JavaX>): io.gatling.javaapi.core.CheckBuilder$Final;
+    gte<JavaX>(arg0: JavaX): io.gatling.javaapi.core.CheckBuilder$Final;
+    gteEL(arg0: string): io.gatling.javaapi.core.CheckBuilder$Final;
+    in<JavaX>(...arg0: JavaX[]): io.gatling.javaapi.core.CheckBuilder$Final;
+    in<JavaX>(
+      arg0: Func<io.gatling.javaapi.core.Session, java.util.List<JavaX>>
+    ): io.gatling.javaapi.core.CheckBuilder$Final;
+    in<JavaX>(arg0: java.util.List<JavaX>): io.gatling.javaapi.core.CheckBuilder$Final;
+    inEL(arg0: string): io.gatling.javaapi.core.CheckBuilder$Final;
+    is<JavaX>(arg0: Func<io.gatling.javaapi.core.Session, JavaX>): io.gatling.javaapi.core.CheckBuilder$Final;
+    is<JavaX>(arg0: JavaX): io.gatling.javaapi.core.CheckBuilder$Final;
+    isEL(arg0: string): io.gatling.javaapi.core.CheckBuilder$Final;
+    isNull(): io.gatling.javaapi.core.CheckBuilder$Final;
+    logActualValueInError(arg0: boolean): io.gatling.javaapi.core.CheckBuilder$Final;
+    lt<JavaX>(arg0: Func<io.gatling.javaapi.core.Session, JavaX>): io.gatling.javaapi.core.CheckBuilder$Final;
+    lt<JavaX>(arg0: JavaX): io.gatling.javaapi.core.CheckBuilder$Final;
+    ltEL(arg0: string): io.gatling.javaapi.core.CheckBuilder$Final;
+    lte<JavaX>(arg0: Func<io.gatling.javaapi.core.Session, JavaX>): io.gatling.javaapi.core.CheckBuilder$Final;
+    lte<JavaX>(arg0: JavaX): io.gatling.javaapi.core.CheckBuilder$Final;
+    lteEL(arg0: string): io.gatling.javaapi.core.CheckBuilder$Final;
+    name(arg0: string): io.gatling.javaapi.core.CheckBuilder$Final;
+    not<JavaX>(arg0: Func<io.gatling.javaapi.core.Session, JavaX>): io.gatling.javaapi.core.CheckBuilder$Final;
+    not<JavaX>(arg0: JavaX): io.gatling.javaapi.core.CheckBuilder$Final;
+    notEL(arg0: string): io.gatling.javaapi.core.CheckBuilder$Final;
+    notExists(): io.gatling.javaapi.core.CheckBuilder$Final;
+    notNull(): io.gatling.javaapi.core.CheckBuilder$Final;
+    ofBoolean(): io.gatling.javaapi.core.CheckBuilder$Find<boolean | null>;
+    ofByte(): io.gatling.javaapi.core.CheckBuilder$Find<any /*java.lang.Byte*/>;
+    ofDouble(): io.gatling.javaapi.core.CheckBuilder$Find<double | null>;
+    ofInt(): io.gatling.javaapi.core.CheckBuilder$Find<int | null>;
+    ofLong(): io.gatling.javaapi.core.CheckBuilder$Find<long | null>;
+    ofObject(): io.gatling.javaapi.core.CheckBuilder$Find<any /*java.lang.Object*/>;
+    ofShort(): io.gatling.javaapi.core.CheckBuilder$Find<any /*java.lang.Short*/>;
+    ofString(): io.gatling.javaapi.core.CheckBuilder$Find<string>;
+    optional(): io.gatling.javaapi.core.CheckBuilder$Final;
+    saveAs(arg0: string): io.gatling.javaapi.core.CheckBuilder$Final;
+    shouldBe<X>(arg0: Func<io.gatling.javaapi.core.Session, X>): io.gatling.javaapi.core.CheckBuilder$Final;
+    shouldBe<X>(arg0: X): io.gatling.javaapi.core.CheckBuilder$Final;
+    toString(): string;
+    transform<X2, JavaX>(arg0: Func<JavaX, X2>): io.gatling.javaapi.core.CheckBuilder$Validate<X2>;
+    transformWithSession<X2, JavaX>(
+      arg0: BiFunction<JavaX, io.gatling.javaapi.core.Session, X2>
+    ): io.gatling.javaapi.core.CheckBuilder$Validate<X2>;
+    type(): any; /*io.gatling.javaapi.core.CheckBuilder$CheckType*/
+    validate<JavaX>(
+      arg0: string,
+      arg1: BiFunction<JavaX, io.gatling.javaapi.core.Session, JavaX>
+    ): io.gatling.javaapi.core.CheckBuilder$Final;
+    verify<JavaX>(
+      arg0: string,
+      arg1: BiFunction<JavaX, io.gatling.javaapi.core.Session, string>
+    ): io.gatling.javaapi.core.CheckBuilder$Final;
+    withDefault<JavaX>(
+      arg0: Func<io.gatling.javaapi.core.Session, JavaX>
+    ): io.gatling.javaapi.core.CheckBuilder$Validate<JavaX>;
+    withDefault<JavaX>(arg0: JavaX): io.gatling.javaapi.core.CheckBuilder$Validate<JavaX>;
+    withDefaultEl<JavaX>(arg0: string): io.gatling.javaapi.core.CheckBuilder$Validate<JavaX>;
+    within<X>(...arg0: X[]): io.gatling.javaapi.core.CheckBuilder$Final;
+    within<X>(
+      arg0: Func<io.gatling.javaapi.core.Session, java.util.List<X>>
+    ): io.gatling.javaapi.core.CheckBuilder$Final;
+    within<X>(arg0: java.util.List<X>): io.gatling.javaapi.core.CheckBuilder$Final;
+    withinEL(arg0: string): io.gatling.javaapi.core.CheckBuilder$Final;
+  } // end JmsCheckBuilder$JmsProperty
+} // end namespace io.gatling.javaapi.jms
+declare namespace io.gatling.javaapi.jms {
+  class JmsCheckBuilder$JmsPropertyOfTypeFind$Default<
+    T
+  > /* extends io.gatling.javaapi.core.CheckBuilder$Find$Default<T, any, any, any> implements JmsCheckBuilder$JmsPropertyOfTypeFind*/ {
+    asScala(): any; /*io.gatling.core.check.CheckBuilder*/
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    exists(): io.gatling.javaapi.core.CheckBuilder$Final;
+    find<JavaX>(): io.gatling.javaapi.core.CheckBuilder$Validate<JavaX>;
+    gt<JavaX>(arg0: Func<io.gatling.javaapi.core.Session, JavaX>): io.gatling.javaapi.core.CheckBuilder$Final;
+    gt<JavaX>(arg0: JavaX): io.gatling.javaapi.core.CheckBuilder$Final;
+    gtEL(arg0: string): io.gatling.javaapi.core.CheckBuilder$Final;
+    gte<JavaX>(arg0: Func<io.gatling.javaapi.core.Session, JavaX>): io.gatling.javaapi.core.CheckBuilder$Final;
+    gte<JavaX>(arg0: JavaX): io.gatling.javaapi.core.CheckBuilder$Final;
+    gteEL(arg0: string): io.gatling.javaapi.core.CheckBuilder$Final;
+    in<JavaX>(...arg0: JavaX[]): io.gatling.javaapi.core.CheckBuilder$Final;
+    in<JavaX>(
+      arg0: Func<io.gatling.javaapi.core.Session, java.util.List<JavaX>>
+    ): io.gatling.javaapi.core.CheckBuilder$Final;
+    in<JavaX>(arg0: java.util.List<JavaX>): io.gatling.javaapi.core.CheckBuilder$Final;
+    inEL(arg0: string): io.gatling.javaapi.core.CheckBuilder$Final;
+    is<JavaX>(arg0: Func<io.gatling.javaapi.core.Session, JavaX>): io.gatling.javaapi.core.CheckBuilder$Final;
+    is<JavaX>(arg0: JavaX): io.gatling.javaapi.core.CheckBuilder$Final;
+    isEL(arg0: string): io.gatling.javaapi.core.CheckBuilder$Final;
+    isNull(): io.gatling.javaapi.core.CheckBuilder$Final;
+    logActualValueInError(arg0: boolean): io.gatling.javaapi.core.CheckBuilder$Final;
+    lt<JavaX>(arg0: Func<io.gatling.javaapi.core.Session, JavaX>): io.gatling.javaapi.core.CheckBuilder$Final;
+    lt<JavaX>(arg0: JavaX): io.gatling.javaapi.core.CheckBuilder$Final;
+    ltEL(arg0: string): io.gatling.javaapi.core.CheckBuilder$Final;
+    lte<JavaX>(arg0: Func<io.gatling.javaapi.core.Session, JavaX>): io.gatling.javaapi.core.CheckBuilder$Final;
+    lte<JavaX>(arg0: JavaX): io.gatling.javaapi.core.CheckBuilder$Final;
+    lteEL(arg0: string): io.gatling.javaapi.core.CheckBuilder$Final;
+    name(arg0: string): io.gatling.javaapi.core.CheckBuilder$Final;
+    not<JavaX>(arg0: Func<io.gatling.javaapi.core.Session, JavaX>): io.gatling.javaapi.core.CheckBuilder$Final;
+    not<JavaX>(arg0: JavaX): io.gatling.javaapi.core.CheckBuilder$Final;
+    notEL(arg0: string): io.gatling.javaapi.core.CheckBuilder$Final;
+    notExists(): io.gatling.javaapi.core.CheckBuilder$Final;
+    notNull(): io.gatling.javaapi.core.CheckBuilder$Final;
+    ofBoolean(): io.gatling.javaapi.core.CheckBuilder$Find<boolean | null>;
+    ofByte(): io.gatling.javaapi.core.CheckBuilder$Find<any /*java.lang.Byte*/>;
+    ofDouble(): io.gatling.javaapi.core.CheckBuilder$Find<double | null>;
+    ofInt(): io.gatling.javaapi.core.CheckBuilder$Find<int | null>;
+    ofLong(): io.gatling.javaapi.core.CheckBuilder$Find<long | null>;
+    ofObject(): io.gatling.javaapi.core.CheckBuilder$Find<any /*java.lang.Object*/>;
+    ofShort(): io.gatling.javaapi.core.CheckBuilder$Find<any /*java.lang.Short*/>;
+    ofString(): io.gatling.javaapi.core.CheckBuilder$Find<string>;
+    optional(): io.gatling.javaapi.core.CheckBuilder$Final;
+    saveAs(arg0: string): io.gatling.javaapi.core.CheckBuilder$Final;
+    shouldBe<X>(arg0: Func<io.gatling.javaapi.core.Session, X>): io.gatling.javaapi.core.CheckBuilder$Final;
+    shouldBe<X>(arg0: X): io.gatling.javaapi.core.CheckBuilder$Final;
+    toString(): string;
+    transform<X2, JavaX>(arg0: Func<JavaX, X2>): io.gatling.javaapi.core.CheckBuilder$Validate<X2>;
+    transformWithSession<X2, JavaX>(
+      arg0: BiFunction<JavaX, io.gatling.javaapi.core.Session, X2>
+    ): io.gatling.javaapi.core.CheckBuilder$Validate<X2>;
+    type(): any; /*io.gatling.javaapi.core.CheckBuilder$CheckType*/
+    validate<JavaX>(
+      arg0: string,
+      arg1: BiFunction<JavaX, io.gatling.javaapi.core.Session, JavaX>
+    ): io.gatling.javaapi.core.CheckBuilder$Final;
+    verify<JavaX>(
+      arg0: string,
+      arg1: BiFunction<JavaX, io.gatling.javaapi.core.Session, string>
+    ): io.gatling.javaapi.core.CheckBuilder$Final;
+    withDefault<JavaX>(
+      arg0: Func<io.gatling.javaapi.core.Session, JavaX>
+    ): io.gatling.javaapi.core.CheckBuilder$Validate<JavaX>;
+    withDefault<JavaX>(arg0: JavaX): io.gatling.javaapi.core.CheckBuilder$Validate<JavaX>;
+    withDefaultEl<JavaX>(arg0: string): io.gatling.javaapi.core.CheckBuilder$Validate<JavaX>;
+    within<X>(...arg0: X[]): io.gatling.javaapi.core.CheckBuilder$Final;
+    within<X>(
+      arg0: Func<io.gatling.javaapi.core.Session, java.util.List<X>>
+    ): io.gatling.javaapi.core.CheckBuilder$Final;
+    within<X>(arg0: java.util.List<X>): io.gatling.javaapi.core.CheckBuilder$Final;
+    withinEL(arg0: string): io.gatling.javaapi.core.CheckBuilder$Final;
+  } // end JmsCheckBuilder$JmsPropertyOfTypeFind$Default
+} // end namespace io.gatling.javaapi.jms
+declare namespace io.gatling.javaapi.jms {
+  class JmsDestination /* extends java.lang.Object*/ {
+    asScala(): any; /*io.gatling.jms.request.JmsDestination*/
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toString(): string;
+  } // end JmsDestination
+} // end namespace io.gatling.javaapi.jms
+declare namespace io.gatling.javaapi.jms {
+  class JmsDsl /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toString(): string;
+  } // end JmsDsl
+} // end namespace io.gatling.javaapi.jms
+declare namespace io.gatling.javaapi.jms {
+  class JmsJndiConnectionFactoryBuilder$Base /* extends java.lang.Object*/ {
+    connectionFactoryName(arg0: string): JmsJndiConnectionFactoryBuilder$Url;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toString(): string;
+  } // end JmsJndiConnectionFactoryBuilder$Base
+} // end namespace io.gatling.javaapi.jms
+declare namespace io.gatling.javaapi.jms {
+  class JmsJndiConnectionFactoryBuilder$ContextFactory /* extends java.lang.Object*/ {
+    contextFactory(arg0: string): JmsJndiConnectionFactoryBuilder;
+    credentials(arg0: string, arg1: string): JmsJndiConnectionFactoryBuilder$ContextFactory;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    property(arg0: string, arg1: string): JmsJndiConnectionFactoryBuilder$ContextFactory;
+    toString(): string;
+  } // end JmsJndiConnectionFactoryBuilder$ContextFactory
+} // end namespace io.gatling.javaapi.jms
+declare namespace io.gatling.javaapi.jms {
+  class JmsJndiConnectionFactoryBuilder$Url /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toString(): string;
+    url(arg0: string): JmsJndiConnectionFactoryBuilder$ContextFactory;
+  } // end JmsJndiConnectionFactoryBuilder$Url
+} // end namespace io.gatling.javaapi.jms
+declare namespace io.gatling.javaapi.jms {
+  class JmsJndiConnectionFactoryBuilder /* extends java.lang.Object*/ {
+    build(): any; /*jakarta.jms.ConnectionFactory*/
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toString(): string;
+  } // end JmsJndiConnectionFactoryBuilder
+} // end namespace io.gatling.javaapi.jms
+declare namespace io.gatling.javaapi.jms {
+  class JmsProtocolBuilder$Base /* extends java.lang.Object*/ {
+    connectionFactory(arg0: JmsJndiConnectionFactoryBuilder): JmsProtocolBuilder;
+    connectionFactory(arg0: any /*jakarta.jms.ConnectionFactory*/): JmsProtocolBuilder;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toString(): string;
+  } // end JmsProtocolBuilder$Base
+} // end namespace io.gatling.javaapi.jms
+declare namespace io.gatling.javaapi.jms {
+  class JmsProtocolBuilder /* extends java.lang.Object implements io.gatling.javaapi.core.ProtocolBuilder*/ {
+    credentials(arg0: string, arg1: string): JmsProtocolBuilder;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    listenerThreadCount(arg0: int): JmsProtocolBuilder;
+    matchByCorrelationId(): JmsProtocolBuilder;
+    matchByMessageId(): JmsProtocolBuilder;
+    messageMatcher(arg0: JmsMessageMatcher): JmsProtocolBuilder;
+    protocol(): any; /*io.gatling.core.protocol.Protocol*/
+    replyTimeout(arg0: java.time.Duration): JmsProtocolBuilder;
+    replyTimeout(arg0: long): JmsProtocolBuilder;
+    toString(): string;
+    useNonPersistentDeliveryMode(): JmsProtocolBuilder;
+    usePersistentDeliveryMode(): JmsProtocolBuilder;
+  } // end JmsProtocolBuilder
+} // end namespace io.gatling.javaapi.jms
+declare namespace io.gatling.javaapi.jms {
+  class JmsRequestReplyActionBuilder$Message /* extends java.lang.Object*/ {
+    bytesMessage(arg0: Func<io.gatling.javaapi.core.Session, bytearray>): JmsRequestReplyActionBuilder;
+    bytesMessage(arg0: bytearray): JmsRequestReplyActionBuilder;
+    bytesMessage(arg0: string): JmsRequestReplyActionBuilder;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    mapMessage(
+      arg0: Func<io.gatling.javaapi.core.Session, java.util.Map<string, any /*java.lang.Object*/>>
+    ): JmsRequestReplyActionBuilder;
+    mapMessage(arg0: java.util.Map<string, any /*java.lang.Object*/>): JmsRequestReplyActionBuilder;
+    mapMessage(arg0: string): JmsRequestReplyActionBuilder;
+    noJmsReplyTo(): JmsRequestReplyActionBuilder$Message;
+    objectMessage(arg0: Func<io.gatling.javaapi.core.Session, java.io.Serializable>): JmsRequestReplyActionBuilder;
+    objectMessage(arg0: java.io.Serializable): JmsRequestReplyActionBuilder;
+    objectMessage(arg0: string): JmsRequestReplyActionBuilder;
+    replyDestination(arg0: JmsDestination): JmsRequestReplyActionBuilder$Message;
+    replyQueue(arg0: Func<io.gatling.javaapi.core.Session, string>): JmsRequestReplyActionBuilder$Message;
+    replyQueue(arg0: string): JmsRequestReplyActionBuilder$Message;
+    selector(arg0: Func<io.gatling.javaapi.core.Session, string>): JmsRequestReplyActionBuilder$Message;
+    selector(arg0: string): JmsRequestReplyActionBuilder$Message;
+    textMessage(arg0: Func<io.gatling.javaapi.core.Session, string>): JmsRequestReplyActionBuilder;
+    textMessage(arg0: string): JmsRequestReplyActionBuilder;
+    toString(): string;
+    trackerDestination(arg0: JmsDestination): JmsRequestReplyActionBuilder$Message;
+    trackerQueue(arg0: Func<io.gatling.javaapi.core.Session, string>): JmsRequestReplyActionBuilder$Message;
+    trackerQueue(arg0: string): JmsRequestReplyActionBuilder$Message;
+  } // end JmsRequestReplyActionBuilder$Message
+} // end namespace io.gatling.javaapi.jms
+declare namespace io.gatling.javaapi.jms {
+  class JmsRequestReplyActionBuilder$Queue /* extends java.lang.Object*/ {
+    destination(arg0: JmsDestination): JmsRequestReplyActionBuilder$Message;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    queue(arg0: Func<io.gatling.javaapi.core.Session, string>): JmsRequestReplyActionBuilder$Message;
+    queue(arg0: string): JmsRequestReplyActionBuilder$Message;
+    toString(): string;
+  } // end JmsRequestReplyActionBuilder$Queue
+} // end namespace io.gatling.javaapi.jms
+declare namespace io.gatling.javaapi.jms {
+  class JmsRequestReplyActionBuilder$TypedCondition /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    then(...arg0: io.gatling.javaapi.core.CheckBuilder[]): JmsRequestReplyActionBuilder;
+    then(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): JmsRequestReplyActionBuilder;
+    toString(): string;
+  } // end JmsRequestReplyActionBuilder$TypedCondition
+} // end namespace io.gatling.javaapi.jms
+declare namespace io.gatling.javaapi.jms {
+  class JmsRequestReplyActionBuilder$UntypedCondition /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    then(...arg0: io.gatling.javaapi.core.CheckBuilder[]): JmsRequestReplyActionBuilder;
+    then(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): JmsRequestReplyActionBuilder;
+    toString(): string;
+  } // end JmsRequestReplyActionBuilder$UntypedCondition
+} // end namespace io.gatling.javaapi.jms
+declare namespace io.gatling.javaapi.jms {
+  class JmsRequestReplyActionBuilder /* extends java.lang.Object implements io.gatling.javaapi.core.ActionBuilder*/ {
+    asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
+    check(...arg0: io.gatling.javaapi.core.CheckBuilder[]): JmsRequestReplyActionBuilder;
+    check(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): JmsRequestReplyActionBuilder;
+    checkIf(
+      arg0: BiFunction<any /*jakarta.jms.Message*/, io.gatling.javaapi.core.Session, boolean | null>
+    ): JmsRequestReplyActionBuilder$TypedCondition;
+    checkIf(arg0: Func<io.gatling.javaapi.core.Session, boolean | null>): JmsRequestReplyActionBuilder$UntypedCondition;
+    checkIf(arg0: string): JmsRequestReplyActionBuilder$UntypedCondition;
+    correlationId(arg0: Func<io.gatling.javaapi.core.Session, string>): JmsRequestReplyActionBuilder;
+    correlationId(arg0: string): JmsRequestReplyActionBuilder;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    jmsType(arg0: Func<io.gatling.javaapi.core.Session, string>): JmsRequestReplyActionBuilder;
+    jmsType(arg0: string): JmsRequestReplyActionBuilder;
+    postCheck(
+      arg0: Func<io.gatling.javaapi.core.Session, io.gatling.javaapi.core.Session>
+    ): JmsRequestReplyActionBuilder;
+    priority(arg0: Func<io.gatling.javaapi.core.Session, int | null>): JmsRequestReplyActionBuilder;
+    priority(arg0: int): JmsRequestReplyActionBuilder;
+    priority(arg0: string): JmsRequestReplyActionBuilder;
+    property(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: Func<io.gatling.javaapi.core.Session, any /*java.lang.Object*/>
+    ): JmsRequestReplyActionBuilder;
+    property(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): JmsRequestReplyActionBuilder;
+    property(
+      arg0: string,
+      arg1: Func<io.gatling.javaapi.core.Session, any /*java.lang.Object*/>
+    ): JmsRequestReplyActionBuilder;
+    property(arg0: string, arg1: string): JmsRequestReplyActionBuilder;
+    timeToLive(arg0: Func<io.gatling.javaapi.core.Session, java.time.Duration>): JmsRequestReplyActionBuilder;
+    timeToLive(arg0: java.time.Duration): JmsRequestReplyActionBuilder;
+    timeToLive(arg0: long): JmsRequestReplyActionBuilder;
+    timeToLive(arg0: string): JmsRequestReplyActionBuilder;
+    toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
+    toString(): string;
+  } // end JmsRequestReplyActionBuilder
+} // end namespace io.gatling.javaapi.jms
+declare namespace io.gatling.javaapi.jms {
+  class JmsSendActionBuilder$Message /* extends java.lang.Object*/ {
+    bytesMessage(arg0: Func<io.gatling.javaapi.core.Session, bytearray>): JmsSendActionBuilder;
+    bytesMessage(arg0: bytearray): JmsSendActionBuilder;
+    bytesMessage(arg0: string): JmsSendActionBuilder;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    mapMessage(
+      arg0: Func<io.gatling.javaapi.core.Session, java.util.Map<string, any /*java.lang.Object*/>>
+    ): JmsSendActionBuilder;
+    mapMessage(arg0: java.util.Map<string, any /*java.lang.Object*/>): JmsSendActionBuilder;
+    mapMessage(arg0: string): JmsSendActionBuilder;
+    objectMessage(arg0: Func<io.gatling.javaapi.core.Session, java.io.Serializable>): JmsSendActionBuilder;
+    objectMessage(arg0: java.io.Serializable): JmsSendActionBuilder;
+    objectMessage(arg0: string): JmsSendActionBuilder;
+    textMessage(arg0: Func<io.gatling.javaapi.core.Session, string>): JmsSendActionBuilder;
+    textMessage(arg0: string): JmsSendActionBuilder;
+    toString(): string;
+  } // end JmsSendActionBuilder$Message
+} // end namespace io.gatling.javaapi.jms
+declare namespace io.gatling.javaapi.jms {
+  class JmsSendActionBuilder$Queue /* extends java.lang.Object*/ {
+    destination(arg0: JmsDestination): JmsSendActionBuilder$Message;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    queue(arg0: Func<io.gatling.javaapi.core.Session, string>): JmsSendActionBuilder$Message;
+    queue(arg0: string): JmsSendActionBuilder$Message;
+    toString(): string;
+  } // end JmsSendActionBuilder$Queue
+} // end namespace io.gatling.javaapi.jms
+declare namespace io.gatling.javaapi.jms {
+  class JmsSendActionBuilder /* extends java.lang.Object implements io.gatling.javaapi.core.ActionBuilder*/ {
+    asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
+    correlationId(arg0: Func<io.gatling.javaapi.core.Session, string>): JmsSendActionBuilder;
+    correlationId(arg0: string): JmsSendActionBuilder;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    jmsType(arg0: Func<io.gatling.javaapi.core.Session, string>): JmsSendActionBuilder;
+    jmsType(arg0: string): JmsSendActionBuilder;
+    priority(arg0: Func<io.gatling.javaapi.core.Session, int | null>): JmsSendActionBuilder;
+    priority(arg0: int): JmsSendActionBuilder;
+    priority(arg0: string): JmsSendActionBuilder;
+    property(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: Func<io.gatling.javaapi.core.Session, any /*java.lang.Object*/>
+    ): JmsSendActionBuilder;
+    property(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): JmsSendActionBuilder;
+    property(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, any /*java.lang.Object*/>): JmsSendActionBuilder;
+    property(arg0: string, arg1: string): JmsSendActionBuilder;
+    timeToLive(arg0: Func<io.gatling.javaapi.core.Session, java.time.Duration>): JmsSendActionBuilder;
+    timeToLive(arg0: java.time.Duration): JmsSendActionBuilder;
+    timeToLive(arg0: long): JmsSendActionBuilder;
+    timeToLive(arg0: string): JmsSendActionBuilder;
+    toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
+    toString(): string;
+  } // end JmsSendActionBuilder
+} // end namespace io.gatling.javaapi.jms
+declare namespace io.gatling.javaapi.jms {
+  interface JmsCheckBuilder {} // end JmsCheckBuilder
+} // end namespace io.gatling.javaapi.jms
+declare namespace io.gatling.javaapi.jms {
+  interface JmsCheckBuilder$JmsPropertyOfTypeFind /* extends io.gatling.javaapi.core.CheckBuilder$Find<any>*/ {
+    asScala(): any /*io.gatling.core.check.CheckBuilder*/;
+    exists(): io.gatling.javaapi.core.CheckBuilder$Final;
+    find<JavaX>(): io.gatling.javaapi.core.CheckBuilder$Validate<JavaX>;
+    gt<X>(arg0: Func<io.gatling.javaapi.core.Session, X>): io.gatling.javaapi.core.CheckBuilder$Final;
+    gt<X>(arg0: X): io.gatling.javaapi.core.CheckBuilder$Final;
+    gtEL(arg0: string): io.gatling.javaapi.core.CheckBuilder$Final;
+    gte<X>(arg0: Func<io.gatling.javaapi.core.Session, X>): io.gatling.javaapi.core.CheckBuilder$Final;
+    gte<X>(arg0: X): io.gatling.javaapi.core.CheckBuilder$Final;
+    gteEL(arg0: string): io.gatling.javaapi.core.CheckBuilder$Final;
+    in<X>(...arg0: X[]): io.gatling.javaapi.core.CheckBuilder$Final;
+    in<X>(arg0: Func<io.gatling.javaapi.core.Session, java.util.List<X>>): io.gatling.javaapi.core.CheckBuilder$Final;
+    in<X>(arg0: java.util.List<X>): io.gatling.javaapi.core.CheckBuilder$Final;
+    inEL(arg0: string): io.gatling.javaapi.core.CheckBuilder$Final;
+    is<X>(arg0: Func<io.gatling.javaapi.core.Session, X>): io.gatling.javaapi.core.CheckBuilder$Final;
+    is<X>(arg0: X): io.gatling.javaapi.core.CheckBuilder$Final;
+    isEL(arg0: string): io.gatling.javaapi.core.CheckBuilder$Final;
+    isNull(): io.gatling.javaapi.core.CheckBuilder$Final;
+    logActualValueInError(arg0: boolean): io.gatling.javaapi.core.CheckBuilder$Final;
+    lt<X>(arg0: Func<io.gatling.javaapi.core.Session, X>): io.gatling.javaapi.core.CheckBuilder$Final;
+    lt<X>(arg0: X): io.gatling.javaapi.core.CheckBuilder$Final;
+    ltEL(arg0: string): io.gatling.javaapi.core.CheckBuilder$Final;
+    lte<X>(arg0: Func<io.gatling.javaapi.core.Session, X>): io.gatling.javaapi.core.CheckBuilder$Final;
+    lte<X>(arg0: X): io.gatling.javaapi.core.CheckBuilder$Final;
+    lteEL(arg0: string): io.gatling.javaapi.core.CheckBuilder$Final;
+    name(arg0: string): io.gatling.javaapi.core.CheckBuilder$Final;
+    not<X>(arg0: Func<io.gatling.javaapi.core.Session, X>): io.gatling.javaapi.core.CheckBuilder$Final;
+    not<X>(arg0: X): io.gatling.javaapi.core.CheckBuilder$Final;
+    notEL(arg0: string): io.gatling.javaapi.core.CheckBuilder$Final;
+    notExists(): io.gatling.javaapi.core.CheckBuilder$Final;
+    notNull(): io.gatling.javaapi.core.CheckBuilder$Final;
+    ofBoolean(): io.gatling.javaapi.core.CheckBuilder$Find<boolean | null>;
+    ofDouble(): io.gatling.javaapi.core.CheckBuilder$Find<double | null>;
+    ofInt(): io.gatling.javaapi.core.CheckBuilder$Find<int | null>;
+    ofLong(): io.gatling.javaapi.core.CheckBuilder$Find<long | null>;
+    ofObject(): io.gatling.javaapi.core.CheckBuilder$Find<any /*java.lang.Object*/>;
+    ofString(): io.gatling.javaapi.core.CheckBuilder$Find<string>;
+    optional(): io.gatling.javaapi.core.CheckBuilder$Final;
+    saveAs(arg0: string): io.gatling.javaapi.core.CheckBuilder$Final;
+    shouldBe<X>(arg0: Func<io.gatling.javaapi.core.Session, X>): io.gatling.javaapi.core.CheckBuilder$Final;
+    shouldBe<X>(arg0: X): io.gatling.javaapi.core.CheckBuilder$Final;
+    transform<X, X2>(arg0: Func<X, X2>): io.gatling.javaapi.core.CheckBuilder$Validate<X2>;
+    transformWithSession<X, X2>(
+      arg0: BiFunction<X, io.gatling.javaapi.core.Session, X2>
+    ): io.gatling.javaapi.core.CheckBuilder$Validate<X2>;
+    type(): any /*io.gatling.javaapi.core.CheckBuilder$CheckType*/;
+    validate<X>(
+      arg0: string,
+      arg1: BiFunction<X, io.gatling.javaapi.core.Session, X>
+    ): io.gatling.javaapi.core.CheckBuilder$Final;
+    verify<X>(
+      arg0: string,
+      arg1: BiFunction<X, io.gatling.javaapi.core.Session, string>
+    ): io.gatling.javaapi.core.CheckBuilder$Final;
+    withDefault<X>(arg0: Func<io.gatling.javaapi.core.Session, X>): io.gatling.javaapi.core.CheckBuilder$Validate<X>;
+    withDefault<X>(arg0: X): io.gatling.javaapi.core.CheckBuilder$Validate<X>;
+    withDefaultEl<X>(arg0: string): io.gatling.javaapi.core.CheckBuilder$Validate<X>;
+    within<X>(...arg0: X[]): io.gatling.javaapi.core.CheckBuilder$Final;
+    within<X>(
+      arg0: Func<io.gatling.javaapi.core.Session, java.util.List<X>>
+    ): io.gatling.javaapi.core.CheckBuilder$Final;
+    within<X>(arg0: java.util.List<X>): io.gatling.javaapi.core.CheckBuilder$Final;
+    withinEL(arg0: string): io.gatling.javaapi.core.CheckBuilder$Final;
+  } // end JmsCheckBuilder$JmsPropertyOfTypeFind
+} // end namespace io.gatling.javaapi.jms
+declare namespace io.gatling.javaapi.jms {
+  interface JmsMessageMatcher {
+    prepareRequest(arg0: any /*jakarta.jms.Message*/): void;
+    requestMatchId(arg0: any /*jakarta.jms.Message*/): string;
+    responseMatchId(arg0: any /*jakarta.jms.Message*/): string;
+  } // end JmsMessageMatcher
+} // end namespace io.gatling.javaapi.jms
 declare namespace io.gatling.javaapi.kafka {
   class ConsumeActionBuilder$Base /* extends java.lang.Object*/ {
     correlationId(arg0: Func<io.gatling.javaapi.core.Session, string>): ConsumeActionBuilder;

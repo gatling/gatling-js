@@ -9,6 +9,7 @@
     "http",
     "graphql",
     "jdbc",
+    "jms",
     "grpc",
     "kafka",
     "mqtt"

@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./target",
+    "lib": ["es2023"],
+    "target": "es2024",
+    "module": "nodenext",
+    "moduleResolution": "node16",
+    "esModuleInterop": true,
+    "declaration": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["**/*.test.ts", "jest.config.ts"]
+}
