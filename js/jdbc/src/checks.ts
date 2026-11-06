@@ -35,9 +35,7 @@ export const rowCount = (): CheckBuilderFind<number> => wrapCheckBuilderFind(Jvm
  */
 export const column = (column: Expression<string> | number): CheckBuilderMultipleFind<unknown> =>
   wrapCheckBuilderMultipleFind(
-    (typeof column === "function"
-      ? JvmJdbcDsl.column(underlyingSessionTo(column))
-      : JvmJdbcDsl.column(column as any)) as any
+    typeof column === "function" ? JvmJdbcDsl.column(underlyingSessionTo(column)) : JvmJdbcDsl.column(column as any)
   );
 
 /**
@@ -47,7 +45,7 @@ export const column = (column: Expression<string> | number): CheckBuilderMultipl
  *
  * @returns the next DSL step
  */
-export const rows = (): CheckBuilderFind<unknown> => wrapCheckBuilderFind(JvmJdbcDsl.rows() as any);
+export const rows = (): CheckBuilderFind<unknown> => wrapCheckBuilderFind(JvmJdbcDsl.rows());
 
 /**
  * Bootstrap a check on the values of a column of the keys the database generated, one per inserted
@@ -59,11 +57,11 @@ export const rows = (): CheckBuilderFind<unknown> => wrapCheckBuilderFind(JvmJdb
  */
 export const generatedKey = (column?: Expression<string> | number): CheckBuilderMultipleFind<unknown> =>
   wrapCheckBuilderMultipleFind(
-    (column === undefined
+    column === undefined
       ? JvmJdbcDsl.generatedKey()
       : typeof column === "function"
         ? JvmJdbcDsl.generatedKey(underlyingSessionTo(column))
-        : JvmJdbcDsl.generatedKey(column as any)) as any
+        : JvmJdbcDsl.generatedKey(column as any)
   );
 
 /**
@@ -72,5 +70,4 @@ export const generatedKey = (column?: Expression<string> | number): CheckBuilder
  * @param index - the index of the parameter, starting at 1 like in JDBC
  * @returns the next DSL step
  */
-export const outValue = (index: number): CheckBuilderFind<unknown> =>
-  wrapCheckBuilderFind(JvmJdbcDsl.outValue(index) as any);
+export const outValue = (index: number): CheckBuilderFind<unknown> => wrapCheckBuilderFind(JvmJdbcDsl.outValue(index));

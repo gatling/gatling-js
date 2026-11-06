@@ -30,7 +30,7 @@ export namespace RequestReplyActionBuilder {
   }
 
   export const wrapBase = (_underlying: JvmRequestReplyActionBuilderBase): Base => ({
-    value: (body: Body | SchemaBody) => wrapRequestReplyActionBuilder(_underlying.value(body._underlying as any))
+    value: (body: Body | SchemaBody) => wrapRequestReplyActionBuilder(_underlying.value(body._underlying))
   });
 }
 

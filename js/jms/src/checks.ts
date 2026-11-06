@@ -58,7 +58,7 @@ export interface JmsPropertyOfTypeFind extends CheckBuilderFind<string> {
 }
 
 const wrapJmsPropertyOfTypeFind = (_underlying: JvmJmsPropertyOfTypeFind): JmsPropertyOfTypeFind => ({
-  ...wrapCheckBuilderFind<string>(_underlying as any),
+  ...wrapCheckBuilderFind<string>(_underlying),
   ofString: (): CheckBuilderFind<string> => wrapCheckBuilderFind(_underlying.ofString()),
   ofBoolean: (): CheckBuilderFind<boolean> =>
     wrapCheckBuilderFind(_underlying.ofBoolean() as JvmCheckBuilderFind<boolean>),

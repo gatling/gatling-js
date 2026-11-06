@@ -82,4 +82,4 @@ export const jdbc: JdbcApply & JdbcProtocolBuilderBase = Object.assign(jdbcApply
  * @returns a FeederBuilder
  */
 export const jdbcFeeder = (url: string, username: string, password: string, sql: string): FeederBuilder<unknown> =>
-  wrapFeederBuilder(JvmJdbcDsl.jdbcFeeder(url, username, password, sql) as any);
+  wrapFeederBuilder(JvmJdbcDsl.jdbcFeeder(url, username, password, sql));

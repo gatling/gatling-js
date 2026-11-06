@@ -30,7 +30,7 @@ export namespace SendActionBuilder {
   }
 
   export const wrapBase = (_underlying: JvmSendActionBuilderBase): Base => ({
-    value: (body: Body | SchemaBody) => wrapSendActionBuilder(_underlying.value(body._underlying as any))
+    value: (body: Body | SchemaBody) => wrapSendActionBuilder(_underlying.value(body._underlying))
   });
 }
 
