@@ -22,7 +22,6 @@ import { HttpDsl as JvmHttpDsl, Ws$Prefix as JvmWsPrefixStatic } from "@gatling.
 import { RequestActionBuilder, requestActionBuilderImpl } from "./request";
 
 import JvmWs = io.gatling.javaapi.http.Ws;
-import JvmWsPrefix = io.gatling.javaapi.http.Ws$Prefix;
 import JvmWsConnectActionBuilder = io.gatling.javaapi.http.WsConnectActionBuilder;
 import JvmWsSendTextActionBuilder = io.gatling.javaapi.http.WsSendTextActionBuilder;
 import JvmWsSendBinaryActionBuilder = io.gatling.javaapi.http.WsSendBinaryActionBuilder;
@@ -200,7 +199,7 @@ export interface WsPrefix {
   processUnmatchedMessages(wsName: (session: Session) => string, f: WsProcessUnmatchedMessagesCallback): ActionBuilder;
 }
 
-const jvmWsPrefix = (JvmWsPrefixStatic as any).INSTANCE as JvmWsPrefix;
+const jvmWsPrefix = JvmWsPrefixStatic.INSTANCE;
 const wsPrefix: WsPrefix = {
   checkBinaryMessage: (name) =>
     wrapWsFrameCheckBinary(

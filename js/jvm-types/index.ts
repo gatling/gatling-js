@@ -115,12 +115,14 @@ export const CallCredentials: CallCredentialsStatic = Java.type("io.grpc.CallCre
 
 interface CallOptionsStatic {
   readonly class: any;
+  readonly DEFAULT: io.grpc.CallOptions;
 }
 
 export const CallOptions: CallOptionsStatic = Java.type("io.grpc.CallOptions");
 
 interface ChainBuilderStatic {
   readonly class: any;
+  readonly EMPTY: io.gatling.javaapi.core.ChainBuilder;
 }
 
 export const ChainBuilder: ChainBuilderStatic = Java.type("io.gatling.javaapi.core.ChainBuilder");
@@ -226,27 +228,27 @@ interface ChoiceStatic {
 export const Choice: ChoiceStatic = Java.type("io.gatling.javaapi.core.Choice");
 
 interface ChronoUnitStatic {
-  NANOS: java.time.temporal.ChronoUnit;
-  MICROS: java.time.temporal.ChronoUnit;
-  MILLIS: java.time.temporal.ChronoUnit;
-  SECONDS: java.time.temporal.ChronoUnit;
-  MINUTES: java.time.temporal.ChronoUnit;
-  HOURS: java.time.temporal.ChronoUnit;
-  HALF_DAYS: java.time.temporal.ChronoUnit;
-  DAYS: java.time.temporal.ChronoUnit;
-  WEEKS: java.time.temporal.ChronoUnit;
-  MONTHS: java.time.temporal.ChronoUnit;
-  YEARS: java.time.temporal.ChronoUnit;
-  DECADES: java.time.temporal.ChronoUnit;
-  CENTURIES: java.time.temporal.ChronoUnit;
-  MILLENNIA: java.time.temporal.ChronoUnit;
-  ERAS: java.time.temporal.ChronoUnit;
-  FOREVER: java.time.temporal.ChronoUnit;
+  readonly NANOS: java.time.temporal.ChronoUnit;
+  readonly MICROS: java.time.temporal.ChronoUnit;
+  readonly MILLIS: java.time.temporal.ChronoUnit;
+  readonly SECONDS: java.time.temporal.ChronoUnit;
+  readonly MINUTES: java.time.temporal.ChronoUnit;
+  readonly HOURS: java.time.temporal.ChronoUnit;
+  readonly HALF_DAYS: java.time.temporal.ChronoUnit;
+  readonly DAYS: java.time.temporal.ChronoUnit;
+  readonly WEEKS: java.time.temporal.ChronoUnit;
+  readonly MONTHS: java.time.temporal.ChronoUnit;
+  readonly YEARS: java.time.temporal.ChronoUnit;
+  readonly DECADES: java.time.temporal.ChronoUnit;
+  readonly CENTURIES: java.time.temporal.ChronoUnit;
+  readonly MILLENNIA: java.time.temporal.ChronoUnit;
+  readonly ERAS: java.time.temporal.ChronoUnit;
+  readonly FOREVER: java.time.temporal.ChronoUnit;
 
   readonly class: any;
   valueOf<T>(arg0: java.lang.Class<T>, arg1: string): T;
   valueOf(arg0: string): java.time.temporal.ChronoUnit;
-  values(): [java.time.temporal.ChronoUnit];
+  values(): java.time.temporal.ChronoUnit[];
 }
 
 export const ChronoUnit: ChronoUnitStatic = Java.type("java.time.temporal.ChronoUnit");
@@ -427,12 +429,18 @@ export const ConsumeActionBuilder: ConsumeActionBuilderStatic = Java.type(
 
 interface CookieStatic {
   readonly class: any;
+  readonly UNDEFINED_MAX_AGE: long;
 }
 
 export const Cookie: CookieStatic = Java.type("io.netty.handler.codec.http.cookie.Cookie");
 
 interface CoreDslStatic {
   readonly class: any;
+  constantPauses: io.gatling.javaapi.core.PauseType;
+  readonly deploymentInfo: any /*io.gatling.javaapi.core.DeploymentInfo*/;
+  disabledPauses: io.gatling.javaapi.core.PauseType;
+  exponentialPauses: io.gatling.javaapi.core.PauseType;
+  readonly gzipBody: Func<io.gatling.javaapi.core.Body, io.gatling.javaapi.core.Body$WithBytes>;
   details(...arg0: string[]): io.gatling.javaapi.core.Assertion$WithPath;
   forAll(): io.gatling.javaapi.core.Assertion$WithPath;
   global(): io.gatling.javaapi.core.Assertion$WithPath;
@@ -666,17 +674,13 @@ interface CoreDslStatic {
   jsonFile(arg0: string): io.gatling.javaapi.core.FeederBuilder$FileBased<any /*java.lang.Object*/>;
   jsonlFile(arg0: string): io.gatling.javaapi.core.FeederBuilder$FileBased<any /*java.lang.Object*/>;
   csv(arg0: string): io.gatling.javaapi.core.FeederBuilder$SeparatedValues<string>;
-  csv(arg0: string, arg1: any /*char*/): io.gatling.javaapi.core.FeederBuilder$SeparatedValues<string>;
-  separatedValues(arg0: string, arg1: any /*char*/): io.gatling.javaapi.core.FeederBuilder$SeparatedValues<string>;
-  separatedValues(
-    arg0: string,
-    arg1: any /*char*/,
-    arg2: any /*char*/
-  ): io.gatling.javaapi.core.FeederBuilder$SeparatedValues<string>;
+  csv(arg0: string, arg1: char): io.gatling.javaapi.core.FeederBuilder$SeparatedValues<string>;
+  separatedValues(arg0: string, arg1: char): io.gatling.javaapi.core.FeederBuilder$SeparatedValues<string>;
+  separatedValues(arg0: string, arg1: char, arg2: char): io.gatling.javaapi.core.FeederBuilder$SeparatedValues<string>;
   ssv(arg0: string): io.gatling.javaapi.core.FeederBuilder$SeparatedValues<string>;
-  ssv(arg0: string, arg1: any /*char*/): io.gatling.javaapi.core.FeederBuilder$SeparatedValues<string>;
+  ssv(arg0: string, arg1: char): io.gatling.javaapi.core.FeederBuilder$SeparatedValues<string>;
   tsv(arg0: string): io.gatling.javaapi.core.FeederBuilder$SeparatedValues<string>;
-  tsv(arg0: string, arg1: any /*char*/): io.gatling.javaapi.core.FeederBuilder$SeparatedValues<string>;
+  tsv(arg0: string, arg1: char): io.gatling.javaapi.core.FeederBuilder$SeparatedValues<string>;
   arrayFeeder(
     arg0: java.util.Map<string, any /*java.lang.Object*/>[]
   ): io.gatling.javaapi.core.FeederBuilder<any /*java.lang.Object*/>;
@@ -1335,6 +1339,7 @@ export const DummyBuilder: DummyBuilderStatic = Java.type("io.gatling.javaapi.co
 
 interface DurationStatic {
   readonly class: any;
+  readonly ZERO: java.time.Duration;
   between(arg0: any /*java.time.temporal.Temporal*/, arg1: any /*java.time.temporal.Temporal*/): java.time.Duration;
   from(arg0: any /*java.time.temporal.TemporalAmount*/): java.time.Duration;
   of(arg0: long, arg1: java.time.temporal.TemporalUnit): java.time.Duration;
@@ -1488,6 +1493,8 @@ export const GraphQlDocument: GraphQlDocumentStatic = Java.type("io.gatling.java
 
 interface GraphQlDslStatic {
   readonly class: any;
+  readonly graphql: io.gatling.javaapi.graphql.GraphQl;
+  readonly graphqlWs: io.gatling.javaapi.graphql.GraphQlWs;
 }
 
 export const GraphQlDsl: GraphQlDslStatic = Java.type("io.gatling.javaapi.graphql.GraphQlDsl");
@@ -1516,14 +1523,14 @@ export const GraphQlOperationNaming: GraphQlOperationNamingStatic = Java.type(
 );
 
 interface GraphQlOperationTypeStatic {
-  QUERY: io.gatling.javaapi.graphql.GraphQlOperationType;
-  MUTATION: io.gatling.javaapi.graphql.GraphQlOperationType;
-  SUBSCRIPTION: io.gatling.javaapi.graphql.GraphQlOperationType;
+  readonly QUERY: io.gatling.javaapi.graphql.GraphQlOperationType;
+  readonly MUTATION: io.gatling.javaapi.graphql.GraphQlOperationType;
+  readonly SUBSCRIPTION: io.gatling.javaapi.graphql.GraphQlOperationType;
 
   readonly class: any;
   valueOf<T>(arg0: java.lang.Class<T>, arg1: string): T;
   valueOf(arg0: string): io.gatling.javaapi.graphql.GraphQlOperationType;
-  values(): [io.gatling.javaapi.graphql.GraphQlOperationType];
+  values(): io.gatling.javaapi.graphql.GraphQlOperationType[];
 }
 
 export const GraphQlOperationType: GraphQlOperationTypeStatic = Java.type(
@@ -1649,14 +1656,14 @@ export const GrpcClientStreamingServiceBuilder: GrpcClientStreamingServiceBuilde
 );
 
 interface GrpcDsl$MessageResponseTimePolicyStatic {
-  FromStreamStart: io.gatling.javaapi.grpc.GrpcDsl$MessageResponseTimePolicy;
-  FromLastMessageSent: io.gatling.javaapi.grpc.GrpcDsl$MessageResponseTimePolicy;
-  FromLastMessageReceived: io.gatling.javaapi.grpc.GrpcDsl$MessageResponseTimePolicy;
+  readonly FromStreamStart: io.gatling.javaapi.grpc.GrpcDsl$MessageResponseTimePolicy;
+  readonly FromLastMessageSent: io.gatling.javaapi.grpc.GrpcDsl$MessageResponseTimePolicy;
+  readonly FromLastMessageReceived: io.gatling.javaapi.grpc.GrpcDsl$MessageResponseTimePolicy;
 
   readonly class: any;
   valueOf<T>(arg0: java.lang.Class<T>, arg1: string): T;
   valueOf(arg0: string): io.gatling.javaapi.grpc.GrpcDsl$MessageResponseTimePolicy;
-  values(): [io.gatling.javaapi.grpc.GrpcDsl$MessageResponseTimePolicy];
+  values(): io.gatling.javaapi.grpc.GrpcDsl$MessageResponseTimePolicy[];
 }
 
 export const GrpcDsl$MessageResponseTimePolicy: GrpcDsl$MessageResponseTimePolicyStatic = Java.type(
@@ -1665,6 +1672,7 @@ export const GrpcDsl$MessageResponseTimePolicy: GrpcDsl$MessageResponseTimePolic
 
 interface GrpcDslStatic {
   readonly class: any;
+  // readonly grpc:io.gatling.javaapi.grpc.GrpcProtocolBuilder;
   response<X, X2>(arg0: Func<X, X2>): io.gatling.javaapi.core.CheckBuilder$Find<X2>;
   header<X>(arg0: io.grpc.Metadata$Key<X>): io.gatling.javaapi.core.CheckBuilder$MultipleFind<X>;
   trailer<X>(arg0: io.grpc.Metadata$Key<X>): io.gatling.javaapi.core.CheckBuilder$MultipleFind<X>;
@@ -1766,6 +1774,9 @@ export const GrpcUnaryServiceBuilder: GrpcUnaryServiceBuilderStatic = Java.type(
 
 interface HttpDslStatic {
   readonly class: any;
+  // readonly http:io.gatling.javaapi.http.HttpProtocolBuilder;
+  // readonly sse:io.gatling.javaapi.http.Sse$Prefix;
+  // readonly ws:io.gatling.javaapi.http.Ws$Prefix;
   addCookie(arg0: io.gatling.javaapi.http.AddCookie): io.gatling.javaapi.core.ActionBuilder;
   flushCookieJar(): io.gatling.javaapi.core.ActionBuilder;
   flushHttpCache(): io.gatling.javaapi.core.ActionBuilder;
@@ -1900,6 +1911,7 @@ export const HttpDsl: HttpDslStatic = Java.type("io.gatling.javaapi.http.HttpDsl
 
 interface HttpHeadersStatic {
   readonly class: any;
+  readonly EMPTY_HEADERS: io.netty.handler.codec.http.HttpHeaders;
   equalsIgnoreCase(arg0: any /*java.lang.CharSequence*/, arg1: any /*java.lang.CharSequence*/): boolean;
   is100ContinueExpected(arg0: any /*io.netty.handler.codec.http.HttpMessage*/): boolean;
   isContentLengthSet(arg0: any /*io.netty.handler.codec.http.HttpMessage*/): boolean;
@@ -2076,6 +2088,63 @@ export const HttpRequestActionBuilder: HttpRequestActionBuilderStatic = Java.typ
 
 interface HttpResponseStatusStatic {
   readonly class: any;
+  readonly ACCEPTED: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly BAD_GATEWAY: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly BAD_REQUEST: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly CONFLICT: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly CONTINUE: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly CREATED: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly EARLY_HINTS: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly EXPECTATION_FAILED: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly FAILED_DEPENDENCY: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly FORBIDDEN: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly FOUND: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly GATEWAY_TIMEOUT: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly GONE: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly HTTP_VERSION_NOT_SUPPORTED: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly INSUFFICIENT_STORAGE: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly INTERNAL_SERVER_ERROR: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly LENGTH_REQUIRED: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly LOCKED: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly METHOD_NOT_ALLOWED: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly MISDIRECTED_REQUEST: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly MOVED_PERMANENTLY: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly MULTIPLE_CHOICES: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly MULTI_STATUS: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly NETWORK_AUTHENTICATION_REQUIRED: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly NON_AUTHORITATIVE_INFORMATION: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly NOT_ACCEPTABLE: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly NOT_EXTENDED: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly NOT_FOUND: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly NOT_IMPLEMENTED: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly NOT_MODIFIED: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly NO_CONTENT: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly OK: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly PARTIAL_CONTENT: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly PAYMENT_REQUIRED: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly PERMANENT_REDIRECT: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly PRECONDITION_FAILED: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly PRECONDITION_REQUIRED: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly PROCESSING: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly PROXY_AUTHENTICATION_REQUIRED: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly REQUESTED_RANGE_NOT_SATISFIABLE: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly REQUEST_ENTITY_TOO_LARGE: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly REQUEST_HEADER_FIELDS_TOO_LARGE: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly REQUEST_TIMEOUT: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly REQUEST_URI_TOO_LONG: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly RESET_CONTENT: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly SEE_OTHER: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly SERVICE_UNAVAILABLE: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly SWITCHING_PROTOCOLS: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly TEMPORARY_REDIRECT: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly TOO_MANY_REQUESTS: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly UNAUTHORIZED: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly UNORDERED_COLLECTION: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly UNPROCESSABLE_ENTITY: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly UNSUPPORTED_MEDIA_TYPE: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly UPGRADE_REQUIRED: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly USE_PROXY: io.netty.handler.codec.http.HttpResponseStatus;
+  readonly VARIANT_ALSO_NEGOTIATES: io.netty.handler.codec.http.HttpResponseStatus;
   new (arg0: int, arg1: string): io.netty.handler.codec.http.HttpResponseStatus;
   parseLine(arg0: any /*io.netty.util.AsciiString*/): io.netty.handler.codec.http.HttpResponseStatus;
   parseLine(arg0: any /*java.lang.CharSequence*/): io.netty.handler.codec.http.HttpResponseStatus;
@@ -2117,6 +2186,7 @@ export const JdbcCallableStatementActionBuilder: JdbcCallableStatementActionBuil
 
 interface JdbcDslStatic {
   readonly class: any;
+  // readonly jdbc:io.gatling.javaapi.jdbc.JdbcProtocolBuilder$Base;
   rowCount(): io.gatling.javaapi.core.CheckBuilder$Find<int | null>;
   outValue(arg0: int): io.gatling.javaapi.core.CheckBuilder$Find<any /*java.lang.Object*/>;
   rows(): io.gatling.javaapi.core.CheckBuilder$Find<java.util.List<java.util.Map<string, any /*java.lang.Object*/>>>;
@@ -2172,6 +2242,7 @@ export const JdbcPreparedStatementActionBuilder: JdbcPreparedStatementActionBuil
 
 interface JdbcProtocolBuilder$BaseStatic {
   readonly class: any;
+  readonly INSTANCE: io.gatling.javaapi.jdbc.JdbcProtocolBuilder$Base;
 }
 
 export const JdbcProtocolBuilder$Base: JdbcProtocolBuilder$BaseStatic = Java.type(
@@ -2258,12 +2329,16 @@ export const JmsCheckBuilder: JmsCheckBuilderStatic = Java.type("io.gatling.java
 
 interface JmsDestinationStatic {
   readonly class: any;
+  readonly TemporaryQueue: io.gatling.javaapi.jms.JmsDestination;
+  readonly TemporaryTopic: io.gatling.javaapi.jms.JmsDestination;
 }
 
 export const JmsDestination: JmsDestinationStatic = Java.type("io.gatling.javaapi.jms.JmsDestination");
 
 interface JmsDslStatic {
   readonly class: any;
+  // readonly jms:io.gatling.javaapi.jms.JmsProtocolBuilder$Base;
+  jmsJndiConnectionFactory: io.gatling.javaapi.jms.JmsJndiConnectionFactoryBuilder$Base;
   simpleCheck(arg0: Func<any /*jakarta.jms.Message*/, boolean | null>): io.gatling.javaapi.core.CheckBuilder;
   jms(arg0: string): io.gatling.javaapi.jms.Jms;
   jms(arg0: Func<io.gatling.javaapi.core.Session, string>): io.gatling.javaapi.jms.Jms;
@@ -2278,6 +2353,7 @@ export const JmsDsl: JmsDslStatic = Java.type("io.gatling.javaapi.jms.JmsDsl");
 
 interface JmsJndiConnectionFactoryBuilder$BaseStatic {
   readonly class: any;
+  readonly INSTANCE: io.gatling.javaapi.jms.JmsJndiConnectionFactoryBuilder$Base;
 }
 
 export const JmsJndiConnectionFactoryBuilder$Base: JmsJndiConnectionFactoryBuilder$BaseStatic = Java.type(
@@ -2315,6 +2391,7 @@ export const JmsMessageMatcher: JmsMessageMatcherStatic = Java.type("io.gatling.
 
 interface JmsProtocolBuilder$BaseStatic {
   readonly class: any;
+  readonly INSTANCE: io.gatling.javaapi.jms.JmsProtocolBuilder$Base;
 }
 
 export const JmsProtocolBuilder$Base: JmsProtocolBuilder$BaseStatic = Java.type(
@@ -2426,6 +2503,7 @@ export const KafkaBuilder: KafkaBuilderStatic = Java.type("io.gatling.javaapi.ka
 
 interface KafkaDslStatic {
   readonly class: any;
+  // readonly kafka:io.gatling.javaapi.kafka.Kafka;
   kafkaHeader(arg0: string): io.gatling.javaapi.core.CheckBuilder$Find<string>;
   kafkaKey(): io.gatling.javaapi.core.CheckBuilder$Find<string>;
   kafka(arg0: string): io.gatling.javaapi.kafka.KafkaBuilder;
@@ -2485,6 +2563,9 @@ export const Metadata$Key: Metadata$KeyStatic = Java.type("io.grpc.Metadata$Key"
 
 interface MetadataStatic {
   readonly class: any;
+  readonly ASCII_STRING_MARSHALLER: io.grpc.Metadata$AsciiMarshaller<string>;
+  readonly BINARY_BYTE_MARSHALLER: io.grpc.Metadata$BinaryMarshaller<bytearray>;
+  readonly BINARY_HEADER_SUFFIX: string;
   new (): io.grpc.Metadata;
 }
 
@@ -2498,6 +2579,7 @@ export const MqttBuilder: MqttBuilderStatic = Java.type("io.gatling.javaapi.mqtt
 
 interface MqttDslStatic {
   readonly class: any;
+  // readonly mqtt:io.gatling.javaapi.mqtt.Mqtt;
   LastWill(arg0: string, arg1: io.gatling.javaapi.core.Body): io.gatling.javaapi.mqtt.LastWillBuilder;
   LastWill(
     arg0: Func<io.gatling.javaapi.core.Session, string>,
@@ -2539,33 +2621,61 @@ interface MqttInboundMessageStatic {
 export const MqttInboundMessage: MqttInboundMessageStatic = Java.type("io.gatling.mqtt.action.MqttInboundMessage");
 
 interface MqttMessageTypeStatic {
-  CONNECT: io.netty.handler.codec.mqtt.MqttMessageType;
-  CONNACK: io.netty.handler.codec.mqtt.MqttMessageType;
-  PUBLISH: io.netty.handler.codec.mqtt.MqttMessageType;
-  PUBACK: io.netty.handler.codec.mqtt.MqttMessageType;
-  PUBREC: io.netty.handler.codec.mqtt.MqttMessageType;
-  PUBREL: io.netty.handler.codec.mqtt.MqttMessageType;
-  PUBCOMP: io.netty.handler.codec.mqtt.MqttMessageType;
-  SUBSCRIBE: io.netty.handler.codec.mqtt.MqttMessageType;
-  SUBACK: io.netty.handler.codec.mqtt.MqttMessageType;
-  UNSUBSCRIBE: io.netty.handler.codec.mqtt.MqttMessageType;
-  UNSUBACK: io.netty.handler.codec.mqtt.MqttMessageType;
-  PINGREQ: io.netty.handler.codec.mqtt.MqttMessageType;
-  PINGRESP: io.netty.handler.codec.mqtt.MqttMessageType;
-  DISCONNECT: io.netty.handler.codec.mqtt.MqttMessageType;
-  AUTH: io.netty.handler.codec.mqtt.MqttMessageType;
+  readonly CONNECT: io.netty.handler.codec.mqtt.MqttMessageType;
+  readonly CONNACK: io.netty.handler.codec.mqtt.MqttMessageType;
+  readonly PUBLISH: io.netty.handler.codec.mqtt.MqttMessageType;
+  readonly PUBACK: io.netty.handler.codec.mqtt.MqttMessageType;
+  readonly PUBREC: io.netty.handler.codec.mqtt.MqttMessageType;
+  readonly PUBREL: io.netty.handler.codec.mqtt.MqttMessageType;
+  readonly PUBCOMP: io.netty.handler.codec.mqtt.MqttMessageType;
+  readonly SUBSCRIBE: io.netty.handler.codec.mqtt.MqttMessageType;
+  readonly SUBACK: io.netty.handler.codec.mqtt.MqttMessageType;
+  readonly UNSUBSCRIBE: io.netty.handler.codec.mqtt.MqttMessageType;
+  readonly UNSUBACK: io.netty.handler.codec.mqtt.MqttMessageType;
+  readonly PINGREQ: io.netty.handler.codec.mqtt.MqttMessageType;
+  readonly PINGRESP: io.netty.handler.codec.mqtt.MqttMessageType;
+  readonly DISCONNECT: io.netty.handler.codec.mqtt.MqttMessageType;
+  readonly AUTH: io.netty.handler.codec.mqtt.MqttMessageType;
 
   readonly class: any;
   valueOf<T>(arg0: java.lang.Class<T>, arg1: string): T;
   valueOf(arg0: int): io.netty.handler.codec.mqtt.MqttMessageType;
   valueOf(arg0: string): io.netty.handler.codec.mqtt.MqttMessageType;
-  values(): [io.netty.handler.codec.mqtt.MqttMessageType];
+  values(): io.netty.handler.codec.mqtt.MqttMessageType[];
 }
 
 export const MqttMessageType: MqttMessageTypeStatic = Java.type("io.netty.handler.codec.mqtt.MqttMessageType");
 
 interface MqttPropertiesStatic {
   readonly class: any;
+  readonly ASSIGNED_CLIENT_IDENTIFIER: int;
+  readonly AUTHENTICATION_DATA: int;
+  readonly AUTHENTICATION_METHOD: int;
+  readonly CONTENT_TYPE: int;
+  readonly CORRELATION_DATA: int;
+  readonly MAXIMUM_PACKET_SIZE: int;
+  readonly MAXIMUM_QOS: int;
+  readonly NO_PROPERTIES: io.netty.handler.codec.mqtt.MqttProperties;
+  readonly PAYLOAD_FORMAT_INDICATOR: int;
+  readonly PUBLICATION_EXPIRY_INTERVAL: int;
+  readonly REASON_STRING: int;
+  readonly RECEIVE_MAXIMUM: int;
+  readonly REQUEST_PROBLEM_INFORMATION: int;
+  readonly REQUEST_RESPONSE_INFORMATION: int;
+  readonly RESPONSE_INFORMATION: int;
+  readonly RESPONSE_TOPIC: int;
+  readonly RETAIN_AVAILABLE: int;
+  readonly SERVER_KEEP_ALIVE: int;
+  readonly SERVER_REFERENCE: int;
+  readonly SESSION_EXPIRY_INTERVAL: int;
+  readonly SHARED_SUBSCRIPTION_AVAILABLE: int;
+  readonly SUBSCRIPTION_IDENTIFIER: int;
+  readonly SUBSCRIPTION_IDENTIFIER_AVAILABLE: int;
+  readonly TOPIC_ALIAS: int;
+  readonly TOPIC_ALIAS_MAXIMUM: int;
+  readonly USER_PROPERTY: int;
+  readonly WILDCARD_SUBSCRIPTION_AVAILABLE: int;
+  readonly WILL_DELAY_INTERVAL: int;
   new (): io.netty.handler.codec.mqtt.MqttProperties;
 }
 
@@ -2592,16 +2702,16 @@ export const MqttPublishVariableHeader: MqttPublishVariableHeaderStatic = Java.t
 );
 
 interface MqttQoSStatic {
-  AT_MOST_ONCE: io.netty.handler.codec.mqtt.MqttQoS;
-  AT_LEAST_ONCE: io.netty.handler.codec.mqtt.MqttQoS;
-  EXACTLY_ONCE: io.netty.handler.codec.mqtt.MqttQoS;
-  FAILURE: io.netty.handler.codec.mqtt.MqttQoS;
+  readonly AT_MOST_ONCE: io.netty.handler.codec.mqtt.MqttQoS;
+  readonly AT_LEAST_ONCE: io.netty.handler.codec.mqtt.MqttQoS;
+  readonly EXACTLY_ONCE: io.netty.handler.codec.mqtt.MqttQoS;
+  readonly FAILURE: io.netty.handler.codec.mqtt.MqttQoS;
 
   readonly class: any;
   valueOf<T>(arg0: java.lang.Class<T>, arg1: string): T;
   valueOf(arg0: int): io.netty.handler.codec.mqtt.MqttQoS;
   valueOf(arg0: string): io.netty.handler.codec.mqtt.MqttQoS;
-  values(): [io.netty.handler.codec.mqtt.MqttQoS];
+  values(): io.netty.handler.codec.mqtt.MqttQoS[];
 }
 
 export const MqttQoS: MqttQoSStatic = Java.type("io.netty.handler.codec.mqtt.MqttQoS");
@@ -2760,6 +2870,9 @@ export const PauseType$UniformPercentage: PauseType$UniformPercentageStatic = Ja
 
 interface PauseTypeStatic {
   readonly class: any;
+  readonly Constant: io.gatling.javaapi.core.PauseType;
+  readonly Disabled: io.gatling.javaapi.core.PauseType;
+  readonly Exponential: io.gatling.javaapi.core.PauseType;
 }
 
 export const PauseType: PauseTypeStatic = Java.type("io.gatling.javaapi.core.PauseType");
@@ -3071,6 +3184,7 @@ export const Simulation: SimulationStatic = Java.type("io.gatling.javaapi.core.S
 
 interface Sse$PrefixStatic {
   readonly class: any;
+  readonly INSTANCE: io.gatling.javaapi.http.Sse$Prefix;
 }
 
 export const Sse$Prefix: Sse$PrefixStatic = Java.type("io.gatling.javaapi.http.Sse$Prefix");
@@ -3163,6 +3277,7 @@ export const Stream: StreamStatic = Java.type("java.util.stream.Stream");
 
 interface StringStatic {
   readonly class: any;
+  readonly CASE_INSENSITIVE_ORDER: any /*java.util.Comparator*/;
   new (arg0: any /*java.lang.StringBuilder*/): string;
   new (arg0: bytearray, arg1: int, arg2: int, arg3: any /*java.nio.charset.Charset*/): string;
   new (arg0: bytearray, arg1: string): string;
@@ -3177,7 +3292,7 @@ interface StringStatic {
   new (arg0: bytearray, arg1: int, arg2: int, arg3: string): string;
   new (arg0: bytearray, arg1: int): string;
   new (arg0: bytearray, arg1: int, arg2: int, arg3: int): string;
-  new (arg0: [int], arg1: int, arg2: int): string;
+  new (arg0: int[], arg1: int, arg2: int): string;
   copyValueOf(arg0: chararray): string;
   copyValueOf(arg0: chararray, arg1: int, arg2: int): string;
   format(arg0: string, ...arg1: any /*java.lang.Object*/[]): string;
@@ -3185,7 +3300,7 @@ interface StringStatic {
   join(arg0: any /*java.lang.CharSequence*/, ...arg1: any /*java.lang.CharSequence*/[]): string;
   join(arg0: any /*java.lang.CharSequence*/, arg1: java.lang.Iterable<any /*java.lang.CharSequence*/>): string;
   valueOf(arg0: boolean): string;
-  valueOf(arg0: any /*char*/): string;
+  valueOf(arg0: char): string;
   valueOf(arg0: chararray): string;
   valueOf(arg0: chararray, arg1: int, arg2: int): string;
   valueOf(arg0: double): string;
@@ -3229,6 +3344,9 @@ export const SubscribeActionBuilder: SubscribeActionBuilderStatic = Java.type(
 
 interface SystemStatic {
   readonly class: any;
+  readonly err: any /*java.io.PrintStream*/;
+  readonly in: any /*java.io.InputStream*/;
+  readonly out: any /*java.io.PrintStream*/;
   console(): any /*java.io.Console*/;
   getSecurityManager(): any /*java.lang.SecurityManager*/;
   clearProperty(arg0: string): string;
@@ -3299,6 +3417,7 @@ export const UniformRandomSwitch: UniformRandomSwitchStatic = Java.type(
 
 interface WaitForMessagesActionBuilderStatic {
   readonly class: any;
+  readonly DEFAULT: io.gatling.javaapi.mqtt.WaitForMessagesActionBuilder;
 }
 
 export const WaitForMessagesActionBuilder: WaitForMessagesActionBuilderStatic = Java.type(
@@ -3307,6 +3426,7 @@ export const WaitForMessagesActionBuilder: WaitForMessagesActionBuilderStatic = 
 
 interface Ws$PrefixStatic {
   readonly class: any;
+  readonly INSTANCE: io.gatling.javaapi.http.Ws$Prefix;
 }
 
 export const Ws$Prefix: Ws$PrefixStatic = Java.type("io.gatling.javaapi.http.Ws$Prefix");

@@ -20,13 +20,11 @@ const isPauseType = (x: unknown): x is PauseType =>
 
 export const toJvmPauseType = (pauseType: PauseType): JvmPauseType => {
   if (pauseType === "Disabled") {
-    // FIXME find better solution for generating static field definitions in java2typescript (without conflicting
-    //  with methods of the same name, e.g. 'JvmHttpDsl.http' vs. 'JvmHttpDsl.http(String)')
-    return (JvmCoreDsl as any).disabledPauses;
+    return JvmCoreDsl.disabledPauses;
   } else if (pauseType === "Constant") {
-    return (JvmCoreDsl as any).constantPauses;
+    return JvmCoreDsl.constantPauses;
   } else if (pauseType === "Exponential") {
-    return (JvmCoreDsl as any).exponentialPauses;
+    return JvmCoreDsl.exponentialPauses;
   } else if (pauseType.type === "NormalWithPercentageDuration") {
     return JvmCoreDsl.normalPausesWithPercentageDuration(pauseType.stdDev);
   } else if (pauseType.type === "NormalWithStdDevDuration") {
