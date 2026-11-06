@@ -13,7 +13,7 @@ import {
   RawFileBody
 } from "@gatling.io/core";
 
-import { http, isWsInboundMessageBinary, isWsInboundMessageText, ws } from "./index";
+import { http, isWsInboundMessageText, ws } from "./index";
 
 const httpProtocol = http
   .wsBaseUrl("ws://localhost:9000")

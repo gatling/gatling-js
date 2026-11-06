@@ -1,8 +1,4 @@
-import { MqttMessageType as JvmMqttMessageTypeStatic, MqttQoS as JvmMqttQosStatic } from "@gatling.io/jvm-types";
-
 import JvmMqttFixedHeader = io.netty.handler.codec.mqtt.MqttFixedHeader;
-import JvmMqttMessageType = io.netty.handler.codec.mqtt.MqttMessageType;
-import JvmMqttQos = io.netty.handler.codec.mqtt.MqttQoS;
 
 import JvmMqttInboundMessage = io.gatling.mqtt.action.MqttInboundMessage;
 

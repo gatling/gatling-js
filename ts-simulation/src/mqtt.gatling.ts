@@ -1,4 +1,4 @@
-import { atOnceUsers, jmesPath, pause, scenario, simulation, StringBody } from "@gatling.io/core";
+import { atOnceUsers, jmesPath, scenario, simulation, StringBody } from "@gatling.io/core";
 import { mqtt } from "@gatling.io/mqtt";
 import * as uuid from "uuid";
 
