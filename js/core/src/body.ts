@@ -25,7 +25,18 @@ const wrapBodyWithBytes = (_underlying: JvmBodyWithBytes): Body.WithBytes =>
 const wrapBodyWithString = (_underlying: JvmBodyWithString): Body.WithString =>
   Object.assign((session: Session): string => _underlying.apply(session._underlying), { _underlying });
 
-// TODO gzipBody
+export interface GzipBodyFunction {
+  /**
+   * Compress a body with GZIP before writing it on the wire
+   *
+   * @param body - the body to compress
+   * @returns a body
+   */
+  (body: Body): Body.WithBytes;
+}
+
+export const gzipBody: GzipBodyFunction = (body: Body): Body.WithBytes =>
+  wrapBodyWithBytes(JvmCoreDsl.gzipBody(body._underlying));
 
 export interface StringBodyFunction {
   /**

@@ -18,6 +18,7 @@ import {
   forAll,
   global,
   group,
+  gzipBody,
   holdFor,
   incrementConcurrentUsers,
   incrementUsersPerSec,
@@ -69,6 +70,8 @@ const pebbleFileBody1 = PebbleFileBody("path");
 const pebbleFileBody2 = PebbleFileBody((session) => "path");
 const byteArrayBody1 = ByteArrayBody([1]);
 const byteArrayBody2 = ByteArrayBody((session) => [1]);
+const gzipBody1 = gzipBody(stringBody1);
+const gzipBody2 = gzipBody(rawFileBody1);
 
 //const records = csv("foo").readRecords();
 const recordsCount = csv("foo").recordsCount();

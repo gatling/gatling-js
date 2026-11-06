@@ -19,6 +19,7 @@ import {
 import { BodyPart } from "../bodyPart";
 import { Proxy } from "../proxy";
 
+import JvmBody = io.gatling.javaapi.core.Body;
 import JvmRequestActionBuilder = io.gatling.javaapi.http.RequestActionBuilder;
 import JvmRequestWithBodyActionBuilder = io.gatling.javaapi.http.RequestWithBodyActionBuilder;
 import JvmHttpRequestActionBuilder = io.gatling.javaapi.http.HttpRequestActionBuilder;
@@ -450,7 +451,13 @@ export interface RequestWithBodyActionBuilder<T> {
    */
   body(body: Body): T;
 
-  // TODO processRequestBody
+  /**
+   * Define to transform the request body before writing it on the wire
+   *
+   * @param processor - the processing function, such as gzipBody
+   * @returns a new HttpRequestActionBuilder instance
+   */
+  processRequestBody(processor: (body: Body) => Body): T;
 
   /**
    * Set a multipart body part
@@ -675,6 +682,8 @@ export const requestWithBodyActionBuilderImpl = <T, J extends JvmRequestWithBody
   wrap: (_underlying: J) => T
 ): RequestWithBodyActionBuilder<T> => ({
   body: (body: Body): T => wrap(jvmBuilder.body(body._underlying)),
+  processRequestBody: (processor: (body: Body) => Body): T =>
+    wrap(jvmBuilder.processRequestBody((_underlying: JvmBody) => processor({ _underlying })._underlying)),
   bodyPart: (part: BodyPart): T => wrap(jvmBuilder.bodyPart(part._underlying)),
   bodyParts: (...parts: BodyPart[]): T => wrap(jvmBuilder.bodyParts(parts.map((part) => part._underlying))),
   asMultipartForm: (): T => wrap(jvmBuilder.asMultipartForm()),

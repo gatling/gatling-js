@@ -1,5 +1,6 @@
 import {
   AllowList,
+  ByteArrayBody,
   DenyList,
   ElFileBody,
   RawFileBody,
@@ -12,6 +13,7 @@ import {
   bodyString,
   css,
   form,
+  gzipBody,
   jmesPath,
   jsonPath,
   jsonpJmesPath,
@@ -469,18 +471,13 @@ const scn = scenario("scenario")
       })
   )
   // processRequestBody
-  //.exec(
-  //  http("Request")
-  //    .post("/things")
-  //    .body(StringBody("FOO#{BAR}BAZ"))
-  //    .processRequestBody(Function.identity())
-  //)
-  //.exec(
-  //  http("Request")
-  //    .post("/things")
-  //    .body(ByteArrayBody("#{bytes}"))
-  //    .processRequestBody(gzipBody)
-  //)
+  .exec(
+    http("Request")
+      .post("/things")
+      .body(StringBody("FOO#{BAR}BAZ"))
+      .processRequestBody((body) => body)
+  )
+  .exec(http("Request").post("/things").body(ByteArrayBody("#{bytes}")).processRequestBody(gzipBody))
   // proxy
   .exec(http("Request").head("/").proxy(Proxy("172.31.76.106", 8080).https()))
   .exec(http("Request").head("/").proxy(Proxy("172.31.76.106", 8080).socks4()))
