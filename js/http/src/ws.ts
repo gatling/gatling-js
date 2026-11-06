@@ -29,11 +29,11 @@ import JvmWsSendBinaryActionBuilder = io.gatling.javaapi.http.WsSendBinaryAction
 import JvmWsAwaitActionBuilder = io.gatling.javaapi.http.WsAwaitActionBuilder;
 import JvmWsAwaitActionBuilderOn = io.gatling.javaapi.http.WsAwaitActionBuilder$On;
 import JvmWsFrameCheckBinary = io.gatling.javaapi.http.WsFrameCheck$Binary;
-import JvmWsFrameCheckBinaryUntypedCondition = io.gatling.javaapi.http.Binary$TypedCondition; // TODO should be io.gatling.javaapi.http.WsFrameCheck$Binary$TypedCondition, bug in java2ts
-import JvmWsFrameCheckBinaryTypedCondition = io.gatling.javaapi.http.Binary$TypedCondition;
+import JvmWsFrameCheckBinaryUntypedCondition = io.gatling.javaapi.http.WsFrameCheck$Binary$UntypedCondition;
+import JvmWsFrameCheckBinaryTypedCondition = io.gatling.javaapi.http.WsFrameCheck$Binary$TypedCondition;
 import JvmWsFrameCheckText = io.gatling.javaapi.http.WsFrameCheck$Text;
-import JvmWsFrameCheckTextUntypedCondition = io.gatling.javaapi.http.Text$UntypedCondition;
-import JvmWsFrameCheckTextTypedCondition = io.gatling.javaapi.http.Text$TypedCondition;
+import JvmWsFrameCheckTextUntypedCondition = io.gatling.javaapi.http.WsFrameCheck$Text$UntypedCondition;
+import JvmWsFrameCheckTextTypedCondition = io.gatling.javaapi.http.WsFrameCheck$Text$TypedCondition;
 import JvmWsSetCheckActionBuilder = io.gatling.javaapi.http.WsSetCheckActionBuilder;
 
 /**

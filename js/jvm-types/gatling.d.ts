@@ -792,10 +792,30 @@ declare namespace io.gatling.javaapi.core {
   } // end ChainBuilder
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
+  class Choice$WithKey$Then /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    then(
+      arg0: io.gatling.javaapi.core.exec.Executable,
+      ...arg1: io.gatling.javaapi.core.exec.Executable[]
+    ): Choice$WithKey;
+    toString(): string;
+  } // end Choice$WithKey$Then
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
   class Choice$WithKey /* extends java.lang.Object*/ {
     equals(arg0: any /*java.lang.Object*/): boolean;
     toString(): string;
   } // end Choice$WithKey
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
+  class Choice$WithWeight$Then /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    then(
+      arg0: io.gatling.javaapi.core.exec.Executable,
+      ...arg1: io.gatling.javaapi.core.exec.Executable[]
+    ): Choice$WithWeight;
+    toString(): string;
+  } // end Choice$WithWeight$Then
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
   class Choice$WithWeight /* extends java.lang.Object*/ {
@@ -865,14 +885,6 @@ declare namespace io.gatling.javaapi.core {
   } // end ClosedInjectionStep
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
-  class ConstantRate$ConstantRateOpenInjectionStep /* extends OpenInjectionStep*/ {
-    asScala(): any; /*io.gatling.core.controller.inject.open.OpenInjectionStep*/
-    equals(arg0: any /*java.lang.Object*/): boolean;
-    randomized(): OpenInjectionStep;
-    toString(): string;
-  } // end ConstantRate$ConstantRateOpenInjectionStep
-} // end namespace io.gatling.javaapi.core
-declare namespace io.gatling.javaapi.core {
   class CoreDsl /* extends java.lang.Object*/ {
     equals(arg0: any /*java.lang.Object*/): boolean;
     toString(): string;
@@ -926,9 +938,17 @@ declare namespace io.gatling.javaapi.core {
   } // end Filter
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
+  class OpenInjectionStep$ConstantRate$ConstantRateOpenInjectionStep /* extends OpenInjectionStep*/ {
+    asScala(): any; /*io.gatling.core.controller.inject.open.OpenInjectionStep*/
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    randomized(): OpenInjectionStep;
+    toString(): string;
+  } // end OpenInjectionStep$ConstantRate$ConstantRateOpenInjectionStep
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
   class OpenInjectionStep$ConstantRate /* extends java.lang.Object*/ {
-    during(arg0: java.time.Duration): ConstantRate$ConstantRateOpenInjectionStep;
-    during(arg0: long): ConstantRate$ConstantRateOpenInjectionStep;
+    during(arg0: java.time.Duration): OpenInjectionStep$ConstantRate$ConstantRateOpenInjectionStep;
+    during(arg0: long): OpenInjectionStep$ConstantRate$ConstantRateOpenInjectionStep;
     equals(arg0: any /*java.lang.Object*/): boolean;
     toString(): string;
   } // end OpenInjectionStep$ConstantRate
@@ -942,16 +962,50 @@ declare namespace io.gatling.javaapi.core {
   } // end OpenInjectionStep$Ramp
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
+  class OpenInjectionStep$RampRate$During /* extends java.lang.Object*/ {
+    during(arg0: java.time.Duration): OpenInjectionStep$RampRate$RampRateOpenInjectionStep;
+    during(arg0: long): OpenInjectionStep$RampRate$RampRateOpenInjectionStep;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toString(): string;
+  } // end OpenInjectionStep$RampRate$During
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
+  class OpenInjectionStep$RampRate$RampRateOpenInjectionStep /* extends OpenInjectionStep*/ {
+    asScala(): any; /*io.gatling.core.controller.inject.open.OpenInjectionStep*/
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    randomized(): OpenInjectionStep;
+    toString(): string;
+  } // end OpenInjectionStep$RampRate$RampRateOpenInjectionStep
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
   class OpenInjectionStep$RampRate /* extends java.lang.Object*/ {
     equals(arg0: any /*java.lang.Object*/): boolean;
-    to(arg0: double): RampRate$During;
+    to(arg0: double): OpenInjectionStep$RampRate$During;
     toString(): string;
   } // end OpenInjectionStep$RampRate
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
+  class OpenInjectionStep$Stairs$Composite /* extends OpenInjectionStep*/ {
+    asScala(): any; /*io.gatling.core.controller.inject.open.OpenInjectionStep*/
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    separatedByRampsLasting(arg0: java.time.Duration): OpenInjectionStep$Stairs$Composite;
+    separatedByRampsLasting(arg0: long): OpenInjectionStep$Stairs$Composite;
+    startingFrom(arg0: double): OpenInjectionStep$Stairs$Composite;
+    toString(): string;
+  } // end OpenInjectionStep$Stairs$Composite
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
+  class OpenInjectionStep$Stairs$Times /* extends java.lang.Object*/ {
+    eachLevelLasting(arg0: java.time.Duration): OpenInjectionStep$Stairs$Composite;
+    eachLevelLasting(arg0: long): OpenInjectionStep$Stairs$Composite;
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toString(): string;
+  } // end OpenInjectionStep$Stairs$Times
+} // end namespace io.gatling.javaapi.core
+declare namespace io.gatling.javaapi.core {
   class OpenInjectionStep$Stairs /* extends java.lang.Object*/ {
     equals(arg0: any /*java.lang.Object*/): boolean;
-    times(arg0: int): Stairs$Times;
+    times(arg0: int): OpenInjectionStep$Stairs$Times;
     toString(): string;
   } // end OpenInjectionStep$Stairs
 } // end namespace io.gatling.javaapi.core
@@ -1050,22 +1104,6 @@ declare namespace io.gatling.javaapi.core {
     uniformPauses(arg0: double): PopulationBuilder;
     uniformPauses(arg0: java.time.Duration): PopulationBuilder;
   } // end PopulationBuilder
-} // end namespace io.gatling.javaapi.core
-declare namespace io.gatling.javaapi.core {
-  class RampRate$During /* extends java.lang.Object*/ {
-    during(arg0: java.time.Duration): RampRate$RampRateOpenInjectionStep;
-    during(arg0: long): RampRate$RampRateOpenInjectionStep;
-    equals(arg0: any /*java.lang.Object*/): boolean;
-    toString(): string;
-  } // end RampRate$During
-} // end namespace io.gatling.javaapi.core
-declare namespace io.gatling.javaapi.core {
-  class RampRate$RampRateOpenInjectionStep /* extends OpenInjectionStep*/ {
-    asScala(): any; /*io.gatling.core.controller.inject.open.OpenInjectionStep*/
-    equals(arg0: any /*java.lang.Object*/): boolean;
-    randomized(): OpenInjectionStep;
-    toString(): string;
-  } // end RampRate$RampRateOpenInjectionStep
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
   class ScenarioBuilder /* extends StructureBuilder<any, any>*/ {
@@ -1593,24 +1631,6 @@ declare namespace io.gatling.javaapi.core {
   } // end Simulation
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
-  class Stairs$Composite /* extends OpenInjectionStep*/ {
-    asScala(): any; /*io.gatling.core.controller.inject.open.OpenInjectionStep*/
-    equals(arg0: any /*java.lang.Object*/): boolean;
-    separatedByRampsLasting(arg0: java.time.Duration): Stairs$Composite;
-    separatedByRampsLasting(arg0: long): Stairs$Composite;
-    startingFrom(arg0: double): Stairs$Composite;
-    toString(): string;
-  } // end Stairs$Composite
-} // end namespace io.gatling.javaapi.core
-declare namespace io.gatling.javaapi.core {
-  class Stairs$Times /* extends java.lang.Object*/ {
-    eachLevelLasting(arg0: java.time.Duration): Stairs$Composite;
-    eachLevelLasting(arg0: long): Stairs$Composite;
-    equals(arg0: any /*java.lang.Object*/): boolean;
-    toString(): string;
-  } // end Stairs$Times
-} // end namespace io.gatling.javaapi.core
-declare namespace io.gatling.javaapi.core {
   class StructureBuilder<
     T,
     W
@@ -2052,26 +2072,6 @@ declare namespace io.gatling.javaapi.core {
     equals(arg0: any /*java.lang.Object*/): boolean;
     toString(): string;
   } // end ThrottleStep
-} // end namespace io.gatling.javaapi.core
-declare namespace io.gatling.javaapi.core {
-  class WithKey$Then /* extends java.lang.Object*/ {
-    equals(arg0: any /*java.lang.Object*/): boolean;
-    then(
-      arg0: io.gatling.javaapi.core.exec.Executable,
-      ...arg1: io.gatling.javaapi.core.exec.Executable[]
-    ): Choice$WithKey;
-    toString(): string;
-  } // end WithKey$Then
-} // end namespace io.gatling.javaapi.core
-declare namespace io.gatling.javaapi.core {
-  class WithWeight$Then /* extends java.lang.Object*/ {
-    equals(arg0: any /*java.lang.Object*/): boolean;
-    then(
-      arg0: io.gatling.javaapi.core.exec.Executable,
-      ...arg1: io.gatling.javaapi.core.exec.Executable[]
-    ): Choice$WithWeight;
-    toString(): string;
-  } // end WithWeight$Then
 } // end namespace io.gatling.javaapi.core
 declare namespace io.gatling.javaapi.core {
   interface ActionBuilder /* extends io.gatling.javaapi.core.exec.Executable*/ {
@@ -3796,22 +3796,6 @@ declare namespace io.gatling.javaapi.http {
   } // end AddCookie
 } // end namespace io.gatling.javaapi.http
 declare namespace io.gatling.javaapi.http {
-  class Binary$TypedCondition /* extends java.lang.Object*/ {
-    equals(arg0: any /*java.lang.Object*/): boolean;
-    then(...arg0: io.gatling.javaapi.core.CheckBuilder[]): WsFrameCheck$Binary;
-    then(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): WsFrameCheck$Binary;
-    toString(): string;
-  } // end Binary$TypedCondition
-} // end namespace io.gatling.javaapi.http
-declare namespace io.gatling.javaapi.http {
-  class Binary$UntypedCondition /* extends java.lang.Object*/ {
-    equals(arg0: any /*java.lang.Object*/): boolean;
-    then(...arg0: io.gatling.javaapi.core.CheckBuilder[]): WsFrameCheck$Binary;
-    then(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): WsFrameCheck$Binary;
-    toString(): string;
-  } // end Binary$UntypedCondition
-} // end namespace io.gatling.javaapi.http
-declare namespace io.gatling.javaapi.http {
   class BodyPart /* extends java.lang.Object*/ {
     asScala(): any; /*io.gatling.http.request.BodyPart*/
     charset(arg0: string): BodyPart;
@@ -4629,22 +4613,6 @@ declare namespace io.gatling.javaapi.http {
   } // end SseSetCheckActionBuilder
 } // end namespace io.gatling.javaapi.http
 declare namespace io.gatling.javaapi.http {
-  class Text$TypedCondition /* extends java.lang.Object*/ {
-    equals(arg0: any /*java.lang.Object*/): boolean;
-    then(...arg0: io.gatling.javaapi.core.CheckBuilder[]): WsFrameCheck$Text;
-    then(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): WsFrameCheck$Text;
-    toString(): string;
-  } // end Text$TypedCondition
-} // end namespace io.gatling.javaapi.http
-declare namespace io.gatling.javaapi.http {
-  class Text$UntypedCondition /* extends java.lang.Object*/ {
-    equals(arg0: any /*java.lang.Object*/): boolean;
-    then(...arg0: io.gatling.javaapi.core.CheckBuilder[]): WsFrameCheck$Text;
-    then(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): WsFrameCheck$Text;
-    toString(): string;
-  } // end Text$UntypedCondition
-} // end namespace io.gatling.javaapi.http
-declare namespace io.gatling.javaapi.http {
   class Ws$Prefix /* extends java.lang.Object*/ {
     checkBinaryMessage(arg0: Func<io.gatling.javaapi.core.Session, string>): WsFrameCheck$Binary;
     checkBinaryMessage(arg0: string): WsFrameCheck$Binary;
@@ -4783,13 +4751,31 @@ declare namespace io.gatling.javaapi.http {
   } // end WsConnectActionBuilder
 } // end namespace io.gatling.javaapi.http
 declare namespace io.gatling.javaapi.http {
+  class WsFrameCheck$Binary$TypedCondition /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    then(...arg0: io.gatling.javaapi.core.CheckBuilder[]): WsFrameCheck$Binary;
+    then(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): WsFrameCheck$Binary;
+    toString(): string;
+  } // end WsFrameCheck$Binary$TypedCondition
+} // end namespace io.gatling.javaapi.http
+declare namespace io.gatling.javaapi.http {
+  class WsFrameCheck$Binary$UntypedCondition /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    then(...arg0: io.gatling.javaapi.core.CheckBuilder[]): WsFrameCheck$Binary;
+    then(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): WsFrameCheck$Binary;
+    toString(): string;
+  } // end WsFrameCheck$Binary$UntypedCondition
+} // end namespace io.gatling.javaapi.http
+declare namespace io.gatling.javaapi.http {
   class WsFrameCheck$Binary /* extends WsFrameCheck*/ {
     asScala(): any; /*io.gatling.http.check.ws.WsFrameCheck*/
     check(...arg0: io.gatling.javaapi.core.CheckBuilder[]): WsFrameCheck$Binary;
     check(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): WsFrameCheck$Binary;
-    checkIf(arg0: BiFunction<bytearray, io.gatling.javaapi.core.Session, boolean | null>): Binary$TypedCondition;
-    checkIf(arg0: Func<io.gatling.javaapi.core.Session, boolean | null>): Binary$UntypedCondition;
-    checkIf(arg0: string): Binary$UntypedCondition;
+    checkIf(
+      arg0: BiFunction<bytearray, io.gatling.javaapi.core.Session, boolean | null>
+    ): WsFrameCheck$Binary$TypedCondition;
+    checkIf(arg0: Func<io.gatling.javaapi.core.Session, boolean | null>): WsFrameCheck$Binary$UntypedCondition;
+    checkIf(arg0: string): WsFrameCheck$Binary$UntypedCondition;
     equals(arg0: any /*java.lang.Object*/): boolean;
     matching(...arg0: io.gatling.javaapi.core.CheckBuilder[]): WsFrameCheck$Binary;
     matching(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): WsFrameCheck$Binary;
@@ -4799,13 +4785,31 @@ declare namespace io.gatling.javaapi.http {
   } // end WsFrameCheck$Binary
 } // end namespace io.gatling.javaapi.http
 declare namespace io.gatling.javaapi.http {
+  class WsFrameCheck$Text$TypedCondition /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    then(...arg0: io.gatling.javaapi.core.CheckBuilder[]): WsFrameCheck$Text;
+    then(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): WsFrameCheck$Text;
+    toString(): string;
+  } // end WsFrameCheck$Text$TypedCondition
+} // end namespace io.gatling.javaapi.http
+declare namespace io.gatling.javaapi.http {
+  class WsFrameCheck$Text$UntypedCondition /* extends java.lang.Object*/ {
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    then(...arg0: io.gatling.javaapi.core.CheckBuilder[]): WsFrameCheck$Text;
+    then(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): WsFrameCheck$Text;
+    toString(): string;
+  } // end WsFrameCheck$Text$UntypedCondition
+} // end namespace io.gatling.javaapi.http
+declare namespace io.gatling.javaapi.http {
   class WsFrameCheck$Text /* extends WsFrameCheck*/ {
     asScala(): any; /*io.gatling.http.check.ws.WsFrameCheck*/
     check(...arg0: io.gatling.javaapi.core.CheckBuilder[]): WsFrameCheck$Text;
     check(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): WsFrameCheck$Text;
-    checkIf(arg0: BiFunction<string, io.gatling.javaapi.core.Session, boolean | null>): Text$TypedCondition;
-    checkIf(arg0: Func<io.gatling.javaapi.core.Session, boolean | null>): Text$UntypedCondition;
-    checkIf(arg0: string): Text$UntypedCondition;
+    checkIf(
+      arg0: BiFunction<string, io.gatling.javaapi.core.Session, boolean | null>
+    ): WsFrameCheck$Text$TypedCondition;
+    checkIf(arg0: Func<io.gatling.javaapi.core.Session, boolean | null>): WsFrameCheck$Text$UntypedCondition;
+    checkIf(arg0: string): WsFrameCheck$Text$UntypedCondition;
     equals(arg0: any /*java.lang.Object*/): boolean;
     matching(...arg0: io.gatling.javaapi.core.CheckBuilder[]): WsFrameCheck$Text;
     matching(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): WsFrameCheck$Text;

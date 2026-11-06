@@ -7,13 +7,13 @@ import JvmOpenInjectionStep = io.gatling.javaapi.core.OpenInjectionStep;
 import JvmOpenInjectionStepRamp = io.gatling.javaapi.core.OpenInjectionStep$Ramp;
 import JvmOpenInjectionStepStressPeak = io.gatling.javaapi.core.OpenInjectionStep$StressPeak;
 import JvmOpenInjectionStepConstantRate = io.gatling.javaapi.core.OpenInjectionStep$ConstantRate;
-import JvmOpenInjectionStepConstantRateConstantRateOpenInjectionStep = io.gatling.javaapi.core.ConstantRate$ConstantRateOpenInjectionStep;
+import JvmOpenInjectionStepConstantRateConstantRateOpenInjectionStep = io.gatling.javaapi.core.OpenInjectionStep$ConstantRate$ConstantRateOpenInjectionStep;
 import JvmOpenInjectionStepRampRate = io.gatling.javaapi.core.OpenInjectionStep$RampRate;
-import JvmOpenInjectionStepRampRateDuring = io.gatling.javaapi.core.RampRate$During;
-import JvmOpenInjectionStepRampRateRampRateOpenInjectionStep = io.gatling.javaapi.core.RampRate$RampRateOpenInjectionStep;
+import JvmOpenInjectionStepRampRateDuring = io.gatling.javaapi.core.OpenInjectionStep$RampRate$During;
+import JvmOpenInjectionStepRampRateRampRateOpenInjectionStep = io.gatling.javaapi.core.OpenInjectionStep$RampRate$RampRateOpenInjectionStep;
 import JvmOpenInjectionStepStairs = io.gatling.javaapi.core.OpenInjectionStep$Stairs;
-import JvmOpenInjectionStepStairsTimes = io.gatling.javaapi.core.Stairs$Times;
-import JvmOpenInjectionStepStairsComposite = io.gatling.javaapi.core.Stairs$Composite;
+import JvmOpenInjectionStepStairsTimes = io.gatling.javaapi.core.OpenInjectionStep$Stairs$Times;
+import JvmOpenInjectionStepStairsComposite = io.gatling.javaapi.core.OpenInjectionStep$Stairs$Composite;
 
 /**
  * An injection profile step for using an open workload model where you control the arrival rate of
