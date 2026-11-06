@@ -92,9 +92,9 @@ export interface JdbcStatementActionBuilder extends JdbcRequestActionBuilder<Jdb
 }
 
 const wrapJdbcStatementActionBuilder = (_underlying: JvmJdbcStatementActionBuilder): JdbcStatementActionBuilder => ({
-  ...jdbcRequestActionBuilderImpl(_underlying as any, wrapJdbcStatementActionBuilder),
+  ...jdbcRequestActionBuilderImpl(_underlying, wrapJdbcStatementActionBuilder),
   returnGeneratedKeys: (...columns: string[]) =>
-    wrapJdbcStatementActionBuilder(returnGeneratedKeys(_underlying as any, columns))
+    wrapJdbcStatementActionBuilder(returnGeneratedKeys(_underlying, columns))
 });
 
 /**
@@ -143,9 +143,9 @@ export interface JdbcPreparedStatementActionBuilder extends JdbcRequestActionBui
 const wrapJdbcPreparedStatementActionBuilder = (
   _underlying: JvmJdbcPreparedStatementActionBuilder
 ): JdbcPreparedStatementActionBuilder => ({
-  ...jdbcRequestActionBuilderImpl(_underlying as any, wrapJdbcPreparedStatementActionBuilder),
+  ...jdbcRequestActionBuilderImpl(_underlying, wrapJdbcPreparedStatementActionBuilder),
   params: (...values: (JdbcValueExpression | JdbcParam)[]) =>
-    wrapJdbcPreparedStatementActionBuilder(_underlying.params(...(toJvmParams(values) as any[]))),
+    wrapJdbcPreparedStatementActionBuilder(_underlying.params(...toJvmParams(values))),
   batch: (rows: string | ((session: Session) => unknown[][])) =>
     wrapJdbcPreparedStatementActionBuilder(
       typeof rows === "function"
@@ -154,7 +154,7 @@ const wrapJdbcPreparedStatementActionBuilder = (
         : _underlying.batch(rows)
     ),
   returnGeneratedKeys: (...columns: string[]) =>
-    wrapJdbcPreparedStatementActionBuilder(returnGeneratedKeys(_underlying as any, columns))
+    wrapJdbcPreparedStatementActionBuilder(returnGeneratedKeys(_underlying, columns))
 });
 
 /**
@@ -175,9 +175,9 @@ export interface JdbcCallableStatementActionBuilder extends JdbcRequestActionBui
 const wrapJdbcCallableStatementActionBuilder = (
   _underlying: JvmJdbcCallableStatementActionBuilder
 ): JdbcCallableStatementActionBuilder => ({
-  ...jdbcRequestActionBuilderImpl(_underlying as any, wrapJdbcCallableStatementActionBuilder),
+  ...jdbcRequestActionBuilderImpl(_underlying, wrapJdbcCallableStatementActionBuilder),
   params: (...values: (JdbcValueExpression | JdbcParam)[]) =>
-    wrapJdbcCallableStatementActionBuilder(_underlying.params(...(toJvmParams(values) as any[])))
+    wrapJdbcCallableStatementActionBuilder(_underlying.params(...toJvmParams(values)))
 });
 
 /**
@@ -211,7 +211,7 @@ export interface JdbcBeginActionBuilder extends ActionBuilder {
 }
 
 const wrapJdbcBeginActionBuilder = (_underlying: JvmJdbcBeginActionBuilder): JdbcBeginActionBuilder => ({
-  _underlying: _underlying as any,
+  _underlying,
   transactionIsolation: (level: JdbcTransactionIsolation) =>
     wrapJdbcBeginActionBuilder(_underlying.transactionIsolation(JvmConnection[`TRANSACTION_${level}`])),
   readOnly: () => wrapJdbcBeginActionBuilder(_underlying.readOnly())
@@ -225,7 +225,7 @@ export interface JdbcTransactionActionBuilder extends ActionBuilder {}
 const wrapJdbcTransactionActionBuilder = (
   _underlying: JvmJdbcTransactionActionBuilder
 ): JdbcTransactionActionBuilder => ({
-  _underlying: _underlying as any
+  _underlying
 });
 
 /**
