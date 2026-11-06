@@ -15,7 +15,9 @@
     "load test",
     "load testing",
     "performance test",
-    "performance testing"
+    "performance testing",
+    "jdbc",
+    "sql"
   ],
   "main": "target/index.js",
   "types": "target/index.d.ts",
