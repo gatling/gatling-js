@@ -20,6 +20,7 @@ import {
 } from "./common";
 import { JmsDestination } from "./destination";
 import { JmsMessage, wrapJmsMessage } from "./message";
+import { safely } from "./safely";
 
 import JvmJmsRequestReplyActionBuilder = io.gatling.javaapi.jms.JmsRequestReplyActionBuilder;
 import JvmJmsRequestReplyActionBuilderMessage = io.gatling.javaapi.jms.JmsRequestReplyActionBuilder$Message;
@@ -203,6 +204,7 @@ export interface JmsRequestReplyActionBuilder
   /**
    * Apply checks on the reply only if some condition holds true. Declare both parameters, even if
    * the Session is unused: a function with a single parameter is called with the Session only.
+   * If the function throws, the error is logged and the checks are skipped.
    *
    * @param condition - the condition, expressed as a function that's aware of the reply and the
    *     Session
@@ -241,8 +243,14 @@ const wrapJmsRequestReplyActionBuilder = (
               underlyingSessionTo(condition as SessionTo<boolean>)
             )
           : (_underlying as any)["checkIf(java.util.function.BiFunction)"](
+              // unlike the Session-only variant, Gatling doesn't catch the exceptions of this one: skip the checks
               (message: any, session: io.gatling.javaapi.core.Session) =>
-                (condition as MessageAndSessionTo<boolean>)(wrapJmsMessage(message), wrapSession(session))
+                safely(
+                  "JMS checkIf condition",
+                  () =>
+                    Boolean((condition as MessageAndSessionTo<boolean>)(wrapJmsMessage(message), wrapSession(session))),
+                  false
+                )
             ),
       wrapJmsRequestReplyActionBuilder
     ),

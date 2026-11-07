@@ -1,3 +1,5 @@
+import { safely } from "./safely";
+
 /**
  * The JMS delivery mode of a message
  */
@@ -119,7 +121,8 @@ export const wrapJmsMessage = (_underlying: JvmMessage): JmsMessage => ({
 export interface JmsMessageMatcher {
   /**
    * Compute the match id of a request. Called before sending it, when its JMSMessageID isn't set
-   * yet: return null to be called again once it's sent.
+   * yet: return null to be called again once it's sent. If it throws, the error is logged and
+   * it counts as returning null: a request still without a match id once sent fails.
    *
    * @param message - the request
    * @returns the match id, or null
@@ -127,7 +130,8 @@ export interface JmsMessageMatcher {
   requestMatchId(message: JmsMessage): string | null;
 
   /**
-   * Compute the match id of a reply
+   * Compute the match id of a reply. If it throws, the error is logged and the reply is
+   * ignored.
    *
    * @param message - the reply
    * @returns the match id, or null if the message doesn't match any request
@@ -138,7 +142,10 @@ export interface JmsMessageMatcher {
 export const toJvmJmsMessageMatcher = (matcher: JmsMessageMatcher): io.gatling.javaapi.jms.JmsMessageMatcher => ({
   // set the correlation id or properties of requests with the action's correlationId() and property()
   prepareRequest: (_: JvmMessage) => {},
-  // Gatling handles null match ids, like those of its own matchByMessageId
-  requestMatchId: (message: JvmMessage) => matcher.requestMatchId(wrapJmsMessage(message)) as string,
-  responseMatchId: (message: JvmMessage) => matcher.responseMatchId(wrapJmsMessage(message)) as string
+  // Gatling handles null match ids, like those of its own matchByMessageId: a request still without one once sent
+  // fails, a reply without one is ignored. responseMatchId is called by the JMS listener, which must never throw.
+  requestMatchId: (message: JvmMessage) =>
+    safely("JMS requestMatchId", () => matcher.requestMatchId(wrapJmsMessage(message)), null) as string,
+  responseMatchId: (message: JvmMessage) =>
+    safely("JMS responseMatchId", () => matcher.responseMatchId(wrapJmsMessage(message)), null) as string
 });

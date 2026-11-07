@@ -1,14 +1,12 @@
 import { CheckBuilder, CheckBuilderFind, wrapCheckBuilder, wrapCheckBuilderFind } from "@gatling.io/core";
 
 import { JmsMessage, wrapJmsMessage } from "./message";
+import { safely } from "./safely";
 
 import { JmsDsl as JvmJmsDsl } from "@gatling.io/jvm-types";
 
 import JvmCheckBuilderFind = io.gatling.javaapi.core.CheckBuilder$Find;
 import JvmJmsPropertyOfTypeFind = io.gatling.javaapi.jms.JmsCheckBuilder$JmsPropertyOfTypeFind;
-
-// provided by GraalJS, but not declared by the es2023 lib
-declare const console: { error(message: string): void };
 
 /**
  * A special {@link CheckBuilderFind<string>} that works on JMS message properties
@@ -85,14 +83,5 @@ export const jmsProperty = (name: string): JmsPropertyOfTypeFind =>
  */
 export const simpleCheck = (f: (message: JmsMessage) => boolean): CheckBuilder =>
   wrapCheckBuilder(
-    JvmJmsDsl.simpleCheck((message: any) => {
-      // Gatling doesn't catch the exceptions of this function, which would crash the actor waiting for the replies and
-      // lose the virtual user, so never throw and always return a boolean
-      try {
-        return Boolean(f(wrapJmsMessage(message)));
-      } catch (e) {
-        console.error(`JMS simpleCheck failed: ${e}`);
-        return false;
-      }
-    })
+    JvmJmsDsl.simpleCheck((message: any) => safely("JMS simpleCheck", () => Boolean(f(wrapJmsMessage(message))), false))
   );
