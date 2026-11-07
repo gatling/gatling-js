@@ -123,6 +123,15 @@ export interface MqttProtocolBuilder extends ProtocolBuilder {
   keepAlive(timeout: Duration): MqttProtocolBuilder;
 
   /**
+   * Define the timeout for the broker to acknowledge a subscribe. When exceeded, the subscribe
+   * fails but the connection stays open. Default is 3 seconds.
+   *
+   * @param timeout - the timeout
+   * @returns a new MqttProtocolBuilder instance
+   */
+  subscribeTimeout(timeout: Duration): MqttProtocolBuilder;
+
+  /**
    * Use an at-most-once QoS
    *
    * @returns a new MqttProtocolBuilder instance
@@ -238,6 +247,17 @@ export interface MqttProtocolBuilder extends ProtocolBuilder {
   resendDelay(delay: Duration): MqttProtocolBuilder;
 
   /**
+   * Define the max number of times an unacknowledged packet is resent. When the broker still hasn't
+   * acknowledged it one resend delay after the last resend, the client gives up: a publish,
+   * subscribe or unsubscribe then fails. 0 disables resending, making the resend delay an
+   * acknowledgement timeout. Default is 3.
+   *
+   * @param max - the max number of resends, mustn't be negative
+   * @returns a new MqttProtocolBuilder instance
+   */
+  resendAttemptsMax(max: number): MqttProtocolBuilder;
+
+  /**
    * Define a check to extract the correlationId when applying check that have to match outbound
    * and inbound messages
    *
@@ -307,6 +327,14 @@ const wrapMqttProtocolBuilder = (_underlying: JvmMqttProtocolBuilder): MqttProto
     throw Error(`keepAlive() called with invalid argument ${timeout}`);
   },
 
+  subscribeTimeout: (timeout) => {
+    if (isDuration(timeout)) {
+      return wrapMqttProtocolBuilder(_underlying.subscribeTimeout(toJvmDuration(timeout)));
+    }
+
+    throw Error(`subscribeTimeout() called with invalid argument ${timeout}`);
+  },
+
   qosAtMostOnce: () => wrapMqttProtocolBuilder(_underlying.qosAtMostOnce()),
   qosAtLeastOnce: () => wrapMqttProtocolBuilder(_underlying.qosAtLeastOnce()),
   qosExactlyOnce: () => wrapMqttProtocolBuilder(_underlying.qosExactlyOnce()),
@@ -346,6 +374,7 @@ const wrapMqttProtocolBuilder = (_underlying: JvmMqttProtocolBuilder): MqttProto
 
     throw Error(`resendDelay() called with invalid argument ${delay}`);
   },
+  resendAttemptsMax: (max) => wrapMqttProtocolBuilder(_underlying.resendAttemptsMax(max)),
 
   correlateBy: (correlator) => wrapMqttProtocolBuilder(_underlying.correlateBy(correlator._underlying)),
 

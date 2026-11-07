@@ -3415,6 +3415,14 @@ export const UniformRandomSwitch: UniformRandomSwitchStatic = Java.type(
   "io.gatling.javaapi.core.condition.UniformRandomSwitch"
 );
 
+interface UnsubscribeActionBuilderStatic {
+  readonly class: any;
+}
+
+export const UnsubscribeActionBuilder: UnsubscribeActionBuilderStatic = Java.type(
+  "io.gatling.javaapi.mqtt.UnsubscribeActionBuilder"
+);
+
 interface WaitForMessagesActionBuilderStatic {
   readonly class: any;
   readonly DEFAULT: io.gatling.javaapi.mqtt.WaitForMessagesActionBuilder;

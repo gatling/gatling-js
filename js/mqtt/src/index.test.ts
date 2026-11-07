@@ -36,6 +36,8 @@ const mqttProtocol = mqtt
   .cleanSession(true)
   .credentials("#{userName}", "#{password}")
   .keepAlive(30)
+  .subscribeTimeout(5)
+  .subscribeTimeout({ amount: 5, unit: "seconds" })
   // default QoS
   .qosAtMostOnce()
   .qosAtLeastOnce()
@@ -53,6 +55,7 @@ const mqttProtocol = mqtt
   .reconnectDelay(1)
   .resendBackoffMultiplier(2.0) // FIXME float
   .resendDelay(1)
+  .resendAttemptsMax(5)
   .timeoutCheckInterval({ amount: 1, unit: "seconds" })
   .correlateBy(jsonPath("$.correlationId"))
   .correlateBy(jsonPath("$.correlationId").find())
@@ -71,12 +74,15 @@ scenario("MQTT Test").exec(
   mqtt("Subscribing").subscribe("#{myTopic2}").await(1).check(jsonPath("$.error").notExists()),
   mqtt("Subscribing").subscribe("#{myTopic2}").await({ amount: 100, unit: "milliseconds" }),
   mqtt("Subscribing").subscribe("#{myTopic2}").expect(1).check(jsonPath("$.error").notExists()),
+  mqtt("Unsubscribing").unsubscribe("#{myTopic2}"),
+  mqtt("Unsubscribing").unsubscribe((session) => session.get<string>("myTopic2")),
   mqtt("Publishing")
     .publish("#{myTopic}")
     .message(StringBody("#{myTextPayload}"))
     .qosAtMostOnce()
     .qosAtLeastOnce()
-    .qosExactlyOnce(),
+    .qosExactlyOnce()
+    .retain(true),
   mqtt("Publishing").publish("#{myTopic}").message(ElFileBody("file")),
   mqtt("Publishing").publish("#{myTopic}").message(PebbleFileBody("file")),
   mqtt("Publishing").publish("#{myTopic}").message(ByteArrayBody("#{myBinaryPayload}")),

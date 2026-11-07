@@ -5759,10 +5759,13 @@ declare namespace io.gatling.javaapi.mqtt {
     reconnectBackoffMultiplier<T>(arg0: float): T;
     reconnectDelay<T>(arg0: java.time.Duration): T;
     reconnectDelay<T>(arg0: long): T;
+    resendAttemptsMax<T>(arg0: int): T;
     resendBackoffMultiplier<T>(arg0: float): T;
     resendDelay<T>(arg0: java.time.Duration): T;
     resendDelay<T>(arg0: long): T;
     retain<T>(arg0: boolean): T;
+    subscribeTimeout<T>(arg0: java.time.Duration): T;
+    subscribeTimeout<T>(arg0: long): T;
     timeoutCheckInterval<T>(arg0: java.time.Duration): T;
     timeoutCheckInterval<T>(arg0: long): T;
     toString(): string;
@@ -5780,6 +5783,8 @@ declare namespace io.gatling.javaapi.mqtt {
     subscribe(arg0: Func<io.gatling.javaapi.core.Session, string>): SubscribeActionBuilder;
     subscribe(arg0: string): SubscribeActionBuilder;
     toString(): string;
+    unsubscribe(arg0: Func<io.gatling.javaapi.core.Session, string>): UnsubscribeActionBuilder;
+    unsubscribe(arg0: string): UnsubscribeActionBuilder;
   } // end MqttBuilder
 } // end namespace io.gatling.javaapi.mqtt
 declare namespace io.gatling.javaapi.mqtt {
@@ -5822,10 +5827,13 @@ declare namespace io.gatling.javaapi.mqtt {
     reconnectBackoffMultiplier<T>(arg0: float): T;
     reconnectDelay<T>(arg0: java.time.Duration): T;
     reconnectDelay<T>(arg0: long): T;
+    resendAttemptsMax<T>(arg0: int): T;
     resendBackoffMultiplier<T>(arg0: float): T;
     resendDelay<T>(arg0: java.time.Duration): T;
     resendDelay<T>(arg0: long): T;
     retain<T>(arg0: boolean): T;
+    subscribeTimeout<T>(arg0: java.time.Duration): T;
+    subscribeTimeout<T>(arg0: long): T;
     timeoutCheckInterval<T>(arg0: java.time.Duration): T;
     timeoutCheckInterval<T>(arg0: long): T;
     toString(): string;
@@ -5878,6 +5886,7 @@ declare namespace io.gatling.javaapi.mqtt {
     qosAtLeastOnce(): PublishActionBuilder;
     qosAtMostOnce(): PublishActionBuilder;
     qosExactlyOnce(): PublishActionBuilder;
+    retain(arg0: boolean): PublishActionBuilder;
     toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
     toString(): string;
   } // end PublishActionBuilder
@@ -5909,6 +5918,14 @@ declare namespace io.gatling.javaapi.mqtt {
     toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
     toString(): string;
   } // end SubscribeActionBuilder
+} // end namespace io.gatling.javaapi.mqtt
+declare namespace io.gatling.javaapi.mqtt {
+  class UnsubscribeActionBuilder /* extends java.lang.Object implements io.gatling.javaapi.core.ActionBuilder*/ {
+    asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
+    equals(arg0: any /*java.lang.Object*/): boolean;
+    toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
+    toString(): string;
+  } // end UnsubscribeActionBuilder
 } // end namespace io.gatling.javaapi.mqtt
 declare namespace io.gatling.javaapi.mqtt {
   class WaitForMessagesActionBuilder /* extends java.lang.Object implements io.gatling.javaapi.core.ActionBuilder*/ {
