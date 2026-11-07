@@ -414,13 +414,25 @@ export interface WsFrameCheckBinary extends Wrapper<JvmWsFrameCheckBinary> {
   checkIf(condition: string): WsFrameCheckBinaryUntypedCondition;
 
   /**
-   * Define the checks to apply on inbound messages when a condition holds true.
+   * Define the checks to apply on inbound messages when a condition holds true. The function must
+   * declare exactly 2 parameters: prefer checkIfResponse, which doesn't depend on that and whose
+   * parameter types TypeScript infers.
    *
    * @param condition - a condition, expressed as a function that's aware of the HTTP response and
    *     the Session
    * @returns the next DSL step
    */
   checkIf(condition: (response: number[], session: Session) => boolean): WsFrameCheckBinaryTypedCondition;
+
+  /**
+   * Define the checks to apply on inbound messages when a condition holds true. Unlike checkIf,
+   * doesn't depend on how many parameters the function declares.
+   *
+   * @param condition - a condition, expressed as a function that's aware of the inbound message and
+   *     the Session
+   * @returns the next DSL step
+   */
+  checkIfResponse(condition: (response: number[], session: Session) => boolean): WsFrameCheckBinaryTypedCondition;
 
   /**
    * Apply a function on the Session resulting from the checks, after they've been applied. Throw
@@ -439,6 +451,15 @@ export interface WsFrameCheckBinary extends Wrapper<JvmWsFrameCheckBinary> {
   silent(): WsFrameCheckBinary;
 }
 
+const wsFrameCheckBinaryCheckIfResponse = (
+  _underlying: JvmWsFrameCheckBinary,
+  condition: XWithSessionTo<number[], boolean>
+): WsFrameCheckBinaryTypedCondition =>
+  wrapWsFrameCheckBinaryTypedCondition(
+    // a JS function converts to both Function and BiFunction, and GraalJS picks Function: select the overload explicitly
+    (_underlying as any)["checkIf(java.util.function.BiFunction)"](underlyingXWithSessionTo(condition))
+  );
+
 const wrapWsFrameCheckBinary = (_underlying: JvmWsFrameCheckBinary): WsFrameCheckBinary => ({
   _underlying,
   matching: (...newMatchConditions) =>
@@ -452,17 +473,13 @@ const wrapWsFrameCheckBinary = (_underlying: JvmWsFrameCheckBinary): WsFrameChec
           _underlying.checkIf(underlyingSessionTo(condition as SessionTo<boolean>))
         );
       } else {
-        return wrapWsFrameCheckBinaryTypedCondition(
-          // a JS function converts to both Function and BiFunction, and GraalJS picks Function: select the overload explicitly
-          (_underlying as any)["checkIf(java.util.function.BiFunction)"](
-            underlyingXWithSessionTo(condition as XWithSessionTo<number[], boolean>)
-          )
-        );
+        return wsFrameCheckBinaryCheckIfResponse(_underlying, condition as XWithSessionTo<number[], boolean>);
       }
     } else {
       return wrapWsFrameCheckBinaryUntypedCondition(_underlying.checkIf(condition));
     }
   },
+  checkIfResponse: (condition) => wsFrameCheckBinaryCheckIfResponse(_underlying, condition),
   postCheck: (postCheck) => wrapWsFrameCheckBinary(_underlying.postCheck(underlyingSessionTransform(postCheck))),
   silent: () => wrapWsFrameCheckBinary(_underlying.silent())
 });
@@ -539,13 +556,25 @@ export interface WsFrameCheckText extends Wrapper<JvmWsFrameCheckText> {
   checkIf(condition: string): WsFrameCheckTextUntypedCondition;
 
   /**
-   * Define the checks to apply on inbound messages when a condition holds true.
+   * Define the checks to apply on inbound messages when a condition holds true. The function must
+   * declare exactly 2 parameters: prefer checkIfResponse, which doesn't depend on that and whose
+   * parameter types TypeScript infers.
    *
    * @param condition - a condition, expressed as a function that's aware of the HTTP response and
    *     the Session
    * @returns the next DSL step
    */
   checkIf(condition: (response: string, session: Session) => boolean): WsFrameCheckTextTypedCondition;
+
+  /**
+   * Define the checks to apply on inbound messages when a condition holds true. Unlike checkIf,
+   * doesn't depend on how many parameters the function declares.
+   *
+   * @param condition - a condition, expressed as a function that's aware of the inbound message and
+   *     the Session
+   * @returns the next DSL step
+   */
+  checkIfResponse(condition: (response: string, session: Session) => boolean): WsFrameCheckTextTypedCondition;
 
   /**
    * Apply a function on the Session resulting from the checks, after they've been applied. Throw
@@ -564,6 +593,15 @@ export interface WsFrameCheckText extends Wrapper<JvmWsFrameCheckText> {
   silent(): WsFrameCheckText;
 }
 
+const wsFrameCheckTextCheckIfResponse = (
+  _underlying: JvmWsFrameCheckText,
+  condition: XWithSessionTo<string, boolean>
+): WsFrameCheckTextTypedCondition =>
+  wrapWsFrameCheckTextTypedCondition(
+    // a JS function converts to both Function and BiFunction, and GraalJS picks Function: select the overload explicitly
+    (_underlying as any)["checkIf(java.util.function.BiFunction)"](underlyingXWithSessionTo(condition))
+  );
+
 const wrapWsFrameCheckText = (_underlying: JvmWsFrameCheckText): WsFrameCheckText => ({
   _underlying,
   matching: (...newMatchConditions) =>
@@ -577,17 +615,13 @@ const wrapWsFrameCheckText = (_underlying: JvmWsFrameCheckText): WsFrameCheckTex
           _underlying.checkIf(underlyingSessionTo(condition as SessionTo<boolean>))
         );
       } else {
-        return wrapWsFrameCheckTextTypedCondition(
-          // a JS function converts to both Function and BiFunction, and GraalJS picks Function: select the overload explicitly
-          (_underlying as any)["checkIf(java.util.function.BiFunction)"](
-            underlyingXWithSessionTo(condition as XWithSessionTo<string, boolean>)
-          )
-        );
+        return wsFrameCheckTextCheckIfResponse(_underlying, condition as XWithSessionTo<string, boolean>);
       }
     } else {
       return wrapWsFrameCheckTextUntypedCondition(_underlying.checkIf(condition));
     }
   },
+  checkIfResponse: (condition) => wsFrameCheckTextCheckIfResponse(_underlying, condition),
   postCheck: (postCheck) => wrapWsFrameCheckText(_underlying.postCheck(underlyingSessionTransform(postCheck))),
   silent: () => wrapWsFrameCheckText(_underlying.silent())
 });

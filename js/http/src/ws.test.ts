@@ -85,6 +85,10 @@ const chain = exec(
         .check(regex("somePattern1").saveAs("message1"), regex("somePattern2").saveAs("message2"))
         .checkIf("#{cond}")
         .then(regex("somePattern1"))
+        .checkIf((session) => session.contains("cond"))
+        .then(regex("somePattern1"))
+        .checkIfResponse((response, session) => response.length > session.get<number>("min"))
+        .then(regex("somePattern1"))
         .postCheck((session) => {
           if (!session.contains("foo")) {
             throw Error("foo is missing");
@@ -111,6 +115,8 @@ const chain = exec(
             .saveAs("bytesLength")
         )
         .checkIf("#{cond}")
+        .then(bodyLength().lte(10))
+        .checkIfResponse((response, session) => response.length > session.get<number>("min"))
         .then(bodyLength().lte(10))
         .postCheck((session) => {
           if (!session.contains("foo")) {
