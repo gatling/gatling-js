@@ -99,7 +99,8 @@ export interface JmsMessageBodyBuilder<T> {
 
   /**
    * Send an object message, whose body is a serialized Java object: numbers and booleans, arrays as
-   * java.util.ArrayList, objects as java.util.HashMap
+   * java.util.ArrayList, objects as java.util.HashMap. Strings take the Gatling Expression Language
+   * overload.
    *
    * @param message - the object
    * @returns the next DSL step
@@ -107,7 +108,10 @@ export interface JmsMessageBodyBuilder<T> {
   objectMessage(message: number | boolean | unknown[] | Record<string, any>): T;
 
   /**
-   * Send an object message, whose body is a serialized Java object
+   * Send an object message, whose body is a serialized Java object. The string is a Gatling
+   * Expression Language String: a lone "#{attribute}" sends the value of the Session attribute as
+   * is, which must be serializable, any other string is sent as a java.lang.String once resolved. To
+   * always send a string, use the function overload.
    *
    * @param message - the object, expressed as a Gatling Expression Language String
    * @returns the next DSL step
