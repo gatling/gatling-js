@@ -452,7 +452,10 @@ const wrapWsFrameCheckBinary = (_underlying: JvmWsFrameCheckBinary): WsFrameChec
         );
       } else {
         return wrapWsFrameCheckBinaryTypedCondition(
-          _underlying.checkIf(underlyingXWithSessionTo(condition as XWithSessionTo<number[], boolean>))
+          // a JS function converts to both Function and BiFunction, and GraalJS picks Function: select the overload explicitly
+          (_underlying as any)["checkIf(java.util.function.BiFunction)"](
+            underlyingXWithSessionTo(condition as XWithSessionTo<number[], boolean>)
+          )
         );
       }
     } else {
@@ -573,7 +576,10 @@ const wrapWsFrameCheckText = (_underlying: JvmWsFrameCheckText): WsFrameCheckTex
         );
       } else {
         return wrapWsFrameCheckTextTypedCondition(
-          _underlying.checkIf(underlyingXWithSessionTo(condition as XWithSessionTo<string, boolean>))
+          // a JS function converts to both Function and BiFunction, and GraalJS picks Function: select the overload explicitly
+          (_underlying as any)["checkIf(java.util.function.BiFunction)"](
+            underlyingXWithSessionTo(condition as XWithSessionTo<string, boolean>)
+          )
         );
       }
     } else {
