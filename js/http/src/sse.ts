@@ -127,7 +127,10 @@ const wrapSseMessageCheck = (_underlying: JvmSseMessageCheck): SseMessageCheck =
         return wrapUntypedCondition(_underlying.checkIf(underlyingSessionTo(condition as SessionTo<boolean>)));
       } else if (condition.length === 2) {
         return wrapTypedCondition(
-          _underlying.checkIf(underlyingXWithSessionTo(condition as XWithSessionTo<string, boolean>))
+          // a JS function converts to both Function and BiFunction, and GraalJS picks Function: select the overload explicitly
+          (_underlying as any)["checkIf(java.util.function.BiFunction)"](
+            underlyingXWithSessionTo(condition as XWithSessionTo<string, boolean>)
+          )
         );
       }
     }
