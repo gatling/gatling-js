@@ -90,26 +90,62 @@ const PERSISTENT = 2;
 
 const JvmTextMessage = Java.type<any>("jakarta.jms.TextMessage");
 
-export const wrapJmsMessage = (_underlying: JvmMessage): JmsMessage => ({
-  messageId: () => _underlying.getJMSMessageID(),
-  correlationId: () => _underlying.getJMSCorrelationID(),
-  type: () => _underlying.getJMSType(),
-  priority: () => _underlying.getJMSPriority(),
-  timestamp: () => _underlying.getJMSTimestamp(),
-  expiration: () => _underlying.getJMSExpiration(),
-  deliveryMode: () => (_underlying.getJMSDeliveryMode() === PERSISTENT ? "PERSISTENT" : "NON_PERSISTENT"),
-  redelivered: () => _underlying.getJMSRedelivered(),
-  property: (name: string) => _underlying.getObjectProperty(name),
-  propertyNames: () => {
+// A class rather than an object literal of closures: wrapped for every reply checked and every message matched, so
+// share the methods on the prototype and allocate a single object per message
+class JmsMessageImpl implements JmsMessage {
+  constructor(readonly _underlying: JvmMessage) {}
+
+  messageId(): string | null {
+    return this._underlying.getJMSMessageID();
+  }
+
+  correlationId(): string | null {
+    return this._underlying.getJMSCorrelationID();
+  }
+
+  type(): string | null {
+    return this._underlying.getJMSType();
+  }
+
+  priority(): number {
+    return this._underlying.getJMSPriority();
+  }
+
+  timestamp(): number {
+    return this._underlying.getJMSTimestamp();
+  }
+
+  expiration(): number {
+    return this._underlying.getJMSExpiration();
+  }
+
+  deliveryMode(): JmsDeliveryMode {
+    return this._underlying.getJMSDeliveryMode() === PERSISTENT ? "PERSISTENT" : "NON_PERSISTENT";
+  }
+
+  redelivered(): boolean {
+    return this._underlying.getJMSRedelivered();
+  }
+
+  property(name: string): string | number | boolean | null {
+    return this._underlying.getObjectProperty(name);
+  }
+
+  propertyNames(): string[] {
     const names: string[] = [];
-    const enumeration = _underlying.getPropertyNames();
+    const enumeration = this._underlying.getPropertyNames();
     while (enumeration.hasMoreElements()) {
       names.push(enumeration.nextElement());
     }
     return names;
-  },
-  text: () => (_underlying instanceof JvmTextMessage ? _underlying.getText() : null)
-});
+  }
+
+  text(): string | null {
+    return this._underlying instanceof JvmTextMessage ? this._underlying.getText() : null;
+  }
+}
+
+export const wrapJmsMessage = (_underlying: JvmMessage): JmsMessage => new JmsMessageImpl(_underlying);
 
 /**
  * A custom strategy for matching the replies of request-reply actions with their requests: a reply
