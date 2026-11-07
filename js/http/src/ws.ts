@@ -446,7 +446,8 @@ const wrapWsFrameCheckBinary = (_underlying: JvmWsFrameCheckBinary): WsFrameChec
   check: (...checks) => wrapWsFrameCheckBinary(_underlying.check(checks.map((cb) => cb._underlying))),
   checkIf: (condition) => {
     if (typeof condition === "function") {
-      if (condition.length === 1) {
+      // only 2 declared parameters select the response-aware variant, as other functions were always called with the Session
+      if (condition.length !== 2) {
         return wrapWsFrameCheckBinaryUntypedCondition(
           _underlying.checkIf(underlyingSessionTo(condition as SessionTo<boolean>))
         );
@@ -570,7 +571,8 @@ const wrapWsFrameCheckText = (_underlying: JvmWsFrameCheckText): WsFrameCheckTex
   check: (...checks) => wrapWsFrameCheckText(_underlying.check(checks.map((cb) => cb._underlying))),
   checkIf: (condition) => {
     if (typeof condition === "function") {
-      if (condition.length === 1) {
+      // only 2 declared parameters select the response-aware variant, as other functions were always called with the Session
+      if (condition.length !== 2) {
         return wrapWsFrameCheckTextUntypedCondition(
           _underlying.checkIf(underlyingSessionTo(condition as SessionTo<boolean>))
         );
