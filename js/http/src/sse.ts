@@ -96,13 +96,25 @@ export interface SseMessageCheck extends Wrapper<JvmSseMessageCheck> {
   checkIf(condition: string): SseUntypedCondition;
 
   /**
-   * Define the checks to apply on inbound messages when a condition holds true.
+   * Define the checks to apply on inbound messages when a condition holds true. The function must
+   * declare exactly 2 parameters: prefer checkIfResponse, which doesn't depend on that and whose
+   * parameter types TypeScript infers.
    *
    * @param condition - a condition, expressed as a function that's aware of the HTTP response and the
    *     Session
    * @returns the next DSL step
    */
   checkIf(condition: (response: string, session: Session) => boolean): SseTypedCondition;
+
+  /**
+   * Define the checks to apply on inbound messages when a condition holds true. Unlike checkIf,
+   * doesn't depend on how many parameters the function declares.
+   *
+   * @param condition - a condition, expressed as a function that's aware of the inbound message and
+   *     the Session
+   * @returns the next DSL step
+   */
+  checkIfResponse(condition: (response: string, session: Session) => boolean): SseTypedCondition;
 
   /**
    * Apply a function on the Session resulting from the checks, after they've been applied. Throw an
@@ -113,6 +125,15 @@ export interface SseMessageCheck extends Wrapper<JvmSseMessageCheck> {
    */
   postCheck(postCheck: SessionTransform): SseMessageCheck;
 }
+
+const sseMessageCheckCheckIfResponse = (
+  _underlying: JvmSseMessageCheck,
+  condition: XWithSessionTo<string, boolean>
+): SseTypedCondition =>
+  wrapTypedCondition(
+    // a JS function converts to both Function and BiFunction, and GraalJS picks Function: select the overload explicitly
+    (_underlying as any)["checkIf(java.util.function.BiFunction)"](underlyingXWithSessionTo(condition))
+  );
 
 const wrapSseMessageCheck = (_underlying: JvmSseMessageCheck): SseMessageCheck => ({
   _underlying,
@@ -126,17 +147,13 @@ const wrapSseMessageCheck = (_underlying: JvmSseMessageCheck): SseMessageCheck =
       if (condition.length === 1) {
         return wrapUntypedCondition(_underlying.checkIf(underlyingSessionTo(condition as SessionTo<boolean>)));
       } else if (condition.length === 2) {
-        return wrapTypedCondition(
-          // a JS function converts to both Function and BiFunction, and GraalJS picks Function: select the overload explicitly
-          (_underlying as any)["checkIf(java.util.function.BiFunction)"](
-            underlyingXWithSessionTo(condition as XWithSessionTo<string, boolean>)
-          )
-        );
+        return sseMessageCheckCheckIfResponse(_underlying, condition as XWithSessionTo<string, boolean>);
       }
     }
 
     throw Error(`checkIf() called with invalid argument ${condition}`);
   },
+  checkIfResponse: (condition) => sseMessageCheckCheckIfResponse(_underlying, condition),
   postCheck: (postCheck) => wrapSseMessageCheck(_underlying.postCheck(underlyingSessionTransform(postCheck)))
 });
 
