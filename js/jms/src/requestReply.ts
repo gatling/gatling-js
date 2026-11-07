@@ -202,15 +202,16 @@ export interface JmsRequestReplyActionBuilder
   checkIf(condition: (session: Session) => boolean): Condition<JmsRequestReplyActionBuilder>;
 
   /**
-   * Apply checks on the reply only if some condition holds true. Declare both parameters, even if
-   * the Session is unused: a function with a single parameter is called with the Session only.
-   * If the function throws, the error is logged and the checks are skipped.
+   * Apply checks on the reply only if some condition on the reply holds true. If the function
+   * throws, the error is logged and the checks are skipped.
    *
    * @param condition - the condition, expressed as a function that's aware of the reply and the
    *     Session
    * @returns the next DSL step
    */
-  checkIf(condition: (message: JmsMessage, session: Session) => boolean): Condition<JmsRequestReplyActionBuilder>;
+  checkIfResponse(
+    condition: (message: JmsMessage, session: Session) => boolean
+  ): Condition<JmsRequestReplyActionBuilder>;
 
   /**
    * Apply a function on the Session resulting from the checks, after they've been applied. Throw an
@@ -231,27 +232,26 @@ const wrapJmsRequestReplyActionBuilder = (
   ...jmsAttributesBuilderImpl(_underlying, wrapJmsRequestReplyActionBuilder),
   check: (...checks: CheckBuilder[]) =>
     wrapJmsRequestReplyActionBuilder(_underlying.check(...checks.map((check) => check._underlying))),
-  // a function is applicable to both checkIf(Function) and checkIf(BiFunction), so select the overload explicitly
-  checkIf: (
-    condition: string | SessionTo<boolean> | MessageAndSessionTo<boolean>
-  ): Condition<JmsRequestReplyActionBuilder> =>
+  checkIf: (condition: string | SessionTo<boolean>): Condition<JmsRequestReplyActionBuilder> =>
     wrapCondition<JvmJmsRequestReplyActionBuilder, JmsRequestReplyActionBuilder>(
       typeof condition === "string"
         ? _underlying.checkIf(condition)
-        : condition.length < 2
-          ? (_underlying as any)["checkIf(java.util.function.Function)"](
-              underlyingSessionTo(condition as SessionTo<boolean>)
-            )
-          : (_underlying as any)["checkIf(java.util.function.BiFunction)"](
-              // unlike the Session-only variant, Gatling doesn't catch the exceptions of this one: skip the checks
-              (message: any, session: io.gatling.javaapi.core.Session) =>
-                safely(
-                  "JMS checkIf condition",
-                  () =>
-                    Boolean((condition as MessageAndSessionTo<boolean>)(wrapJmsMessage(message), wrapSession(session))),
-                  false
-                )
-            ),
+        : // a JS function converts to both Function and BiFunction: select the overload explicitly
+          (_underlying as any)["checkIf(java.util.function.Function)"](underlyingSessionTo(condition)),
+      wrapJmsRequestReplyActionBuilder
+    ),
+  checkIfResponse: (condition: MessageAndSessionTo<boolean>): Condition<JmsRequestReplyActionBuilder> =>
+    wrapCondition<JvmJmsRequestReplyActionBuilder, JmsRequestReplyActionBuilder>(
+      // a JS function converts to both Function and BiFunction, and GraalJS picks Function: select the overload explicitly
+      (_underlying as any)["checkIf(java.util.function.BiFunction)"](
+        // unlike the Session-only variant, Gatling doesn't catch the exceptions of this one: skip the checks
+        (message: any, session: io.gatling.javaapi.core.Session) =>
+          safely(
+            "JMS checkIfResponse condition",
+            () => Boolean(condition(wrapJmsMessage(message), wrapSession(session))),
+            false
+          )
+      ),
       wrapJmsRequestReplyActionBuilder
     ),
   postCheck: (postCheck: SessionTransform) =>
