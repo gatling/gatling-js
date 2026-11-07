@@ -12,6 +12,7 @@ import { MqttInboundMessage, wrapMqttInboundMessages } from "./message";
 import { MqttProtocolBuilder, mqttProtocolBuilder } from "./protocol";
 import { PublishActionBuilder } from "./publish";
 import { SubscribeActionBuilder, wrapSubscribeActionBuilder } from "./subscribe";
+import { UnsubscribeActionBuilder, wrapUnsubscribeActionBuilder } from "./unsubscribe";
 import { WaitForMessagesActionBuilder, wrapWaitForMessagesActionBuilder } from "./wait";
 
 export * from "./connect";
@@ -20,6 +21,7 @@ export * from "./message";
 export * from "./protocol";
 export * from "./publish";
 export * from "./subscribe";
+export * from "./unsubscribe";
 export * from "./wait";
 
 import { MqttDsl as JvmMqttDsl } from "@gatling.io/jvm-types";
@@ -113,6 +115,22 @@ export interface MqttBuilder {
   subscribe(topic: (session: Session) => string): SubscribeActionBuilder;
 
   /**
+   * Create a builder for actions that unsubscribe from a MQTT topic
+   *
+   * @param topic - the name of the topic, expressed as a Gatling Expression Language String
+   * @returns a new ActionBuilder instance
+   */
+  unsubscribe(topic: string): UnsubscribeActionBuilder;
+
+  /**
+   * Create a builder for actions that unsubscribe from a MQTT topic
+   *
+   * @param topic - the name of the topic, expressed as a function
+   * @returns a new ActionBuilder instance
+   */
+  unsubscribe(topic: (session: Session) => string): UnsubscribeActionBuilder;
+
+  /**
    * Create a builder for actions that publish to a MQTT topic
    *
    * @param topic - the name of the topic, expressed as a Gatling Expression Language String
@@ -134,6 +152,10 @@ const wrapMqttBuilder = (jvmMqtt: JvmMqttBuilder): MqttBuilder => ({
   subscribe: (topic: Expression<string>) =>
     wrapSubscribeActionBuilder(
       typeof topic === "function" ? jvmMqtt.subscribe(underlyingSessionTo(topic)) : jvmMqtt.subscribe(topic)
+    ),
+  unsubscribe: (topic: Expression<string>) =>
+    wrapUnsubscribeActionBuilder(
+      typeof topic === "function" ? jvmMqtt.unsubscribe(underlyingSessionTo(topic)) : jvmMqtt.unsubscribe(topic)
     ),
   publish: (topic: Expression<string>): PublishActionBuilder.Base =>
     PublishActionBuilder.wrapBase(

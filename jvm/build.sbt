@@ -16,7 +16,7 @@ val gatlingGraphqlVersion = "3.16.0.4"
 val gatlingJdbcVersion = "3.16.1-M2"
 val gatlingGrpcVersion = "3.16.0"
 val gatlingKafkaVersion = "3.16.1-M2"
-val gatlingMqttVersion = "3.16.0"
+val gatlingMqttVersion = "3.16.1-M2"
 val protocVersion = "4.35.1"
 
 // bit weird cause this is not a dependency of this project

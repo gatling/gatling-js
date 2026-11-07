@@ -307,6 +307,7 @@
         @Type(value = io.gatling.javaapi.mqtt.PublishActionBuilder.Checkable.class, export = true),
         @Type(value = io.gatling.javaapi.mqtt.SubscribeActionBuilder.class, export = true),
         @Type(value = io.gatling.javaapi.mqtt.SubscribeActionBuilder.Checkable.class, export = true),
+        @Type(value = io.gatling.javaapi.mqtt.UnsubscribeActionBuilder.class, export = true),
         @Type(value = io.gatling.javaapi.mqtt.WaitForMessagesActionBuilder.class, export = true)
     })
 package io.gatling.javaapi;

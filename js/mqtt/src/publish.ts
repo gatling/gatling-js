@@ -99,6 +99,14 @@ export interface PublishActionBuilder extends ActionBuilder {
    */
   qosExactlyOnce(): PublishActionBuilder;
 
+  /**
+   * Set the retain flag, overriding the protocol's default
+   *
+   * @param retain - true to have the broker retain the message
+   * @returns a new ActionBuilder instance
+   */
+  retain(retain: boolean): PublishActionBuilder;
+
   // Checkable
 
   /**
@@ -168,6 +176,8 @@ const wrapPublishActionBuilder = (_underlying: JvmPublishActionBuilder): Publish
   qosAtMostOnce: () => wrapPublishActionBuilder(_underlying.qosAtMostOnce()),
   qosAtLeastOnce: () => wrapPublishActionBuilder(_underlying.qosAtLeastOnce()),
   qosExactlyOnce: () => wrapPublishActionBuilder(_underlying.qosExactlyOnce()),
+
+  retain: (retain) => wrapPublishActionBuilder(_underlying.retain(retain)),
 
   // Checkable
 
