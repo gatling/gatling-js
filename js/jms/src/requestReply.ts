@@ -217,9 +217,7 @@ const wrapJmsRequestReplyActionBuilder = (
   ...jmsAttributesBuilderImpl(_underlying, wrapJmsRequestReplyActionBuilder),
   check: (...checks: CheckBuilder[]) =>
     wrapJmsRequestReplyActionBuilder(_underlying.check(...checks.map((check) => check._underlying))),
-  checkIf: (
-    condition: string | ((session: Session, message: JmsMessage) => boolean)
-  ): Condition<JmsRequestReplyActionBuilder> =>
+  checkIf: (condition) =>
     wrapCondition<JvmJmsRequestReplyActionBuilder, JmsRequestReplyActionBuilder>(
       typeof condition === "string"
         ? _underlying.checkIf(condition)
