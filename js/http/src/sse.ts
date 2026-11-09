@@ -110,7 +110,7 @@ const wrapSseMessageCheck = (_underlying: JvmSseMessageCheck): SseMessageCheck =
   matching: (...newMatchConditions) =>
     wrapSseMessageCheck(_underlying.matching(newMatchConditions.map((cb) => cb._underlying))),
   check: (...checks) => wrapSseMessageCheck(_underlying.check(checks.map((cb) => cb._underlying))),
-  checkIf: (condition: string | ((session: Session, message: string) => boolean)) => {
+  checkIf: (condition) => {
     if (typeof condition === "string") {
       return wrapUntypedCondition(_underlying.checkIf(condition));
     } else if (typeof condition === "function") {

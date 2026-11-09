@@ -435,7 +435,7 @@ const wrapWsFrameCheckBinary = (_underlying: JvmWsFrameCheckBinary): WsFrameChec
   matching: (...newMatchConditions) =>
     wrapWsFrameCheckBinary(_underlying.check(newMatchConditions.map((cb) => cb._underlying))),
   check: (...checks) => wrapWsFrameCheckBinary(_underlying.check(checks.map((cb) => cb._underlying))),
-  checkIf: (condition: string | ((session: Session, message: number[]) => boolean)) =>
+  checkIf: (condition) =>
     typeof condition === "function"
       ? wrapWsFrameCheckBinaryTypedCondition(
           // always the message-aware variant, so a Session-only function simply ignores the message
@@ -543,7 +543,7 @@ const wrapWsFrameCheckText = (_underlying: JvmWsFrameCheckText): WsFrameCheckTex
   matching: (...newMatchConditions) =>
     wrapWsFrameCheckText(_underlying.check(newMatchConditions.map((cb) => cb._underlying))),
   check: (...checks) => wrapWsFrameCheckText(_underlying.check(checks.map((cb) => cb._underlying))),
-  checkIf: (condition: string | ((session: Session, message: string) => boolean)) =>
+  checkIf: (condition) =>
     typeof condition === "function"
       ? wrapWsFrameCheckTextTypedCondition(
           // always the message-aware variant, so a Session-only function simply ignores the message
