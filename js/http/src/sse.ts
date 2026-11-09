@@ -5,7 +5,6 @@ import {
   Session,
   SessionTo,
   SessionTransform,
-  XWithSessionTo,
   Wrapper,
   isDuration,
   toJvmDuration,
@@ -82,39 +81,19 @@ export interface SseMessageCheck extends Wrapper<JvmSseMessageCheck> {
   /**
    * Define the checks to apply on inbound messages when a condition holds true.
    *
-   * @param condition - a condition, expressed as a function
-   * @returns the next DSL step
-   */
-  checkIf(condition: (session: Session) => boolean): SseUntypedCondition;
-
-  /**
-   * Define the checks to apply on inbound messages when a condition holds true.
-   *
    * @param condition - a condition, expressed as a Gatling Expression Language String
    * @returns the next DSL step
    */
   checkIf(condition: string): SseUntypedCondition;
 
   /**
-   * Define the checks to apply on inbound messages when a condition holds true. The function must
-   * declare exactly 2 parameters: prefer checkIfResponse, which doesn't depend on that and whose
-   * parameter types TypeScript infers.
+   * Define the checks to apply on inbound messages when a condition holds true.
    *
-   * @param condition - a condition, expressed as a function that's aware of the HTTP response and the
-   *     Session
+   * @param condition - a condition, expressed as a function that's aware of the Session and,
+   *     optionally, of the inbound message: `(session) => …` or `(session, message) => …`
    * @returns the next DSL step
    */
-  checkIf(condition: (response: string, session: Session) => boolean): SseTypedCondition;
-
-  /**
-   * Define the checks to apply on inbound messages when a condition holds true. Unlike checkIf,
-   * doesn't depend on how many parameters the function declares.
-   *
-   * @param condition - a condition, expressed as a function that's aware of the inbound message and
-   *     the Session
-   * @returns the next DSL step
-   */
-  checkIfResponse(condition: (response: string, session: Session) => boolean): SseTypedCondition;
+  checkIf(condition: (session: Session, message: string) => boolean): SseTypedCondition;
 
   /**
    * Apply a function on the Session resulting from the checks, after they've been applied. Throw an
@@ -126,34 +105,26 @@ export interface SseMessageCheck extends Wrapper<JvmSseMessageCheck> {
   postCheck(postCheck: SessionTransform): SseMessageCheck;
 }
 
-const sseMessageCheckCheckIfResponse = (
-  _underlying: JvmSseMessageCheck,
-  condition: XWithSessionTo<string, boolean>
-): SseTypedCondition =>
-  wrapTypedCondition(
-    // a JS function converts to both Function and BiFunction, and GraalJS picks Function: select the overload explicitly
-    (_underlying as any)["checkIf(java.util.function.BiFunction)"](underlyingXWithSessionTo(condition))
-  );
-
 const wrapSseMessageCheck = (_underlying: JvmSseMessageCheck): SseMessageCheck => ({
   _underlying,
   matching: (...newMatchConditions) =>
     wrapSseMessageCheck(_underlying.matching(newMatchConditions.map((cb) => cb._underlying))),
   check: (...checks) => wrapSseMessageCheck(_underlying.check(checks.map((cb) => cb._underlying))),
-  checkIf: (condition) => {
+  checkIf: (condition: string | ((session: Session, message: string) => boolean)) => {
     if (typeof condition === "string") {
       return wrapUntypedCondition(_underlying.checkIf(condition));
     } else if (typeof condition === "function") {
-      if (condition.length === 1) {
-        return wrapUntypedCondition(_underlying.checkIf(underlyingSessionTo(condition as SessionTo<boolean>)));
-      } else if (condition.length === 2) {
-        return sseMessageCheckCheckIfResponse(_underlying, condition as XWithSessionTo<string, boolean>);
-      }
+      return wrapTypedCondition(
+        // always the message-aware variant, so a Session-only function simply ignores the message
+        // a JS function converts to both Function and BiFunction, and GraalJS picks Function: select the overload explicitly
+        (_underlying as any)["checkIf(java.util.function.BiFunction)"](
+          underlyingXWithSessionTo((message: string, session: Session) => condition(session, message))
+        )
+      );
     }
 
     throw Error(`checkIf() called with invalid argument ${condition}`);
   },
-  checkIfResponse: (condition) => sseMessageCheckCheckIfResponse(_underlying, condition),
   postCheck: (postCheck) => wrapSseMessageCheck(_underlying.postCheck(underlyingSessionTransform(postCheck)))
 });
 

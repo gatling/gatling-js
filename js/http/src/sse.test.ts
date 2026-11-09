@@ -16,7 +16,7 @@ const chain = exec(
         .check(regex("event: snapshot(.*)"))
         .checkIf("#{cond}")
         .then(regex("event: snapshot(.*)"))
-        .checkIfResponse((response, session) => response.startsWith(session.get<string>("prefix")))
+        .checkIf((session, message) => message.startsWith(session.get("prefix")))
         .then(regex("event: snapshot(.*)"))
         .postCheck((session) => {
           if (!session.contains("foo")) {

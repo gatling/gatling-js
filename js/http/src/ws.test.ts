@@ -87,7 +87,7 @@ const chain = exec(
         .then(regex("somePattern1"))
         .checkIf((session) => session.contains("cond"))
         .then(regex("somePattern1"))
-        .checkIfResponse((response, session) => response.length > session.get<number>("min"))
+        .checkIf((session, message) => message.length > session.get<number>("min"))
         .then(regex("somePattern1"))
         .postCheck((session) => {
           if (!session.contains("foo")) {
@@ -116,7 +116,7 @@ const chain = exec(
         )
         .checkIf("#{cond}")
         .then(bodyLength().lte(10))
-        .checkIfResponse((response, session) => response.length > session.get<number>("min"))
+        .checkIf((session, message) => message.length > session.get<number>("min"))
         .then(bodyLength().lte(10))
         .postCheck((session) => {
           if (!session.contains("foo")) {
