@@ -7,7 +7,6 @@ import {
   SessionTo,
   SessionTransform,
   Wrapper,
-  XWithSessionTo,
   isDuration,
   toJvmDuration,
   underlyingSessionTo,
@@ -400,39 +399,19 @@ export interface WsFrameCheckBinary extends Wrapper<JvmWsFrameCheckBinary> {
   /**
    * Define the checks to apply on inbound messages when a condition holds true.
    *
-   * @param condition - a condition, expressed as a function
-   * @returns the next DSL step
-   */
-  checkIf(condition: (session: Session) => boolean): WsFrameCheckBinaryUntypedCondition;
-
-  /**
-   * Define the checks to apply on inbound messages when a condition holds true.
-   *
    * @param condition - a condition, expressed as a Gatling Expression Language String
    * @returns the next DSL step
    */
   checkIf(condition: string): WsFrameCheckBinaryUntypedCondition;
 
   /**
-   * Define the checks to apply on inbound messages when a condition holds true. The function must
-   * declare exactly 2 parameters: prefer checkIfResponse, which doesn't depend on that and whose
-   * parameter types TypeScript infers.
+   * Define the checks to apply on inbound messages when a condition holds true.
    *
-   * @param condition - a condition, expressed as a function that's aware of the HTTP response and
-   *     the Session
+   * @param condition - a condition, expressed as a function that's aware of the Session and,
+   *     optionally, of the inbound message: `(session) => …` or `(session, message) => …`
    * @returns the next DSL step
    */
-  checkIf(condition: (response: number[], session: Session) => boolean): WsFrameCheckBinaryTypedCondition;
-
-  /**
-   * Define the checks to apply on inbound messages when a condition holds true. Unlike checkIf,
-   * doesn't depend on how many parameters the function declares.
-   *
-   * @param condition - a condition, expressed as a function that's aware of the inbound message and
-   *     the Session
-   * @returns the next DSL step
-   */
-  checkIfResponse(condition: (response: number[], session: Session) => boolean): WsFrameCheckBinaryTypedCondition;
+  checkIf(condition: (session: Session, message: number[]) => boolean): WsFrameCheckBinaryTypedCondition;
 
   /**
    * Apply a function on the Session resulting from the checks, after they've been applied. Throw
@@ -451,35 +430,21 @@ export interface WsFrameCheckBinary extends Wrapper<JvmWsFrameCheckBinary> {
   silent(): WsFrameCheckBinary;
 }
 
-const wsFrameCheckBinaryCheckIfResponse = (
-  _underlying: JvmWsFrameCheckBinary,
-  condition: XWithSessionTo<number[], boolean>
-): WsFrameCheckBinaryTypedCondition =>
-  wrapWsFrameCheckBinaryTypedCondition(
-    // a JS function converts to both Function and BiFunction, and GraalJS picks Function: select the overload explicitly
-    (_underlying as any)["checkIf(java.util.function.BiFunction)"](underlyingXWithSessionTo(condition))
-  );
-
 const wrapWsFrameCheckBinary = (_underlying: JvmWsFrameCheckBinary): WsFrameCheckBinary => ({
   _underlying,
   matching: (...newMatchConditions) =>
     wrapWsFrameCheckBinary(_underlying.check(newMatchConditions.map((cb) => cb._underlying))),
   check: (...checks) => wrapWsFrameCheckBinary(_underlying.check(checks.map((cb) => cb._underlying))),
-  checkIf: (condition) => {
-    if (typeof condition === "function") {
-      // only 2 declared parameters select the response-aware variant, as other functions were always called with the Session
-      if (condition.length !== 2) {
-        return wrapWsFrameCheckBinaryUntypedCondition(
-          _underlying.checkIf(underlyingSessionTo(condition as SessionTo<boolean>))
-        );
-      } else {
-        return wsFrameCheckBinaryCheckIfResponse(_underlying, condition as XWithSessionTo<number[], boolean>);
-      }
-    } else {
-      return wrapWsFrameCheckBinaryUntypedCondition(_underlying.checkIf(condition));
-    }
-  },
-  checkIfResponse: (condition) => wsFrameCheckBinaryCheckIfResponse(_underlying, condition),
+  checkIf: (condition: string | ((session: Session, message: number[]) => boolean)) =>
+    typeof condition === "function"
+      ? wrapWsFrameCheckBinaryTypedCondition(
+          // always the message-aware variant, so a Session-only function simply ignores the message
+          // a JS function converts to both Function and BiFunction, and GraalJS picks Function: select the overload explicitly
+          (_underlying as any)["checkIf(java.util.function.BiFunction)"](
+            underlyingXWithSessionTo((message: number[], session: Session) => condition(session, message))
+          )
+        )
+      : wrapWsFrameCheckBinaryUntypedCondition(_underlying.checkIf(condition)),
   postCheck: (postCheck) => wrapWsFrameCheckBinary(_underlying.postCheck(underlyingSessionTransform(postCheck))),
   silent: () => wrapWsFrameCheckBinary(_underlying.silent())
 });
@@ -542,39 +507,19 @@ export interface WsFrameCheckText extends Wrapper<JvmWsFrameCheckText> {
   /**
    * Define the checks to apply on inbound messages when a condition holds true.
    *
-   * @param condition - a condition, expressed as a function
-   * @returns the next DSL step
-   */
-  checkIf(condition: (session: Session) => boolean): WsFrameCheckTextUntypedCondition;
-
-  /**
-   * Define the checks to apply on inbound messages when a condition holds true.
-   *
    * @param condition - a condition, expressed as a Gatling Expression Language String
    * @returns the next DSL step
    */
   checkIf(condition: string): WsFrameCheckTextUntypedCondition;
 
   /**
-   * Define the checks to apply on inbound messages when a condition holds true. The function must
-   * declare exactly 2 parameters: prefer checkIfResponse, which doesn't depend on that and whose
-   * parameter types TypeScript infers.
+   * Define the checks to apply on inbound messages when a condition holds true.
    *
-   * @param condition - a condition, expressed as a function that's aware of the HTTP response and
-   *     the Session
+   * @param condition - a condition, expressed as a function that's aware of the Session and,
+   *     optionally, of the inbound message: `(session) => …` or `(session, message) => …`
    * @returns the next DSL step
    */
-  checkIf(condition: (response: string, session: Session) => boolean): WsFrameCheckTextTypedCondition;
-
-  /**
-   * Define the checks to apply on inbound messages when a condition holds true. Unlike checkIf,
-   * doesn't depend on how many parameters the function declares.
-   *
-   * @param condition - a condition, expressed as a function that's aware of the inbound message and
-   *     the Session
-   * @returns the next DSL step
-   */
-  checkIfResponse(condition: (response: string, session: Session) => boolean): WsFrameCheckTextTypedCondition;
+  checkIf(condition: (session: Session, message: string) => boolean): WsFrameCheckTextTypedCondition;
 
   /**
    * Apply a function on the Session resulting from the checks, after they've been applied. Throw
@@ -593,35 +538,21 @@ export interface WsFrameCheckText extends Wrapper<JvmWsFrameCheckText> {
   silent(): WsFrameCheckText;
 }
 
-const wsFrameCheckTextCheckIfResponse = (
-  _underlying: JvmWsFrameCheckText,
-  condition: XWithSessionTo<string, boolean>
-): WsFrameCheckTextTypedCondition =>
-  wrapWsFrameCheckTextTypedCondition(
-    // a JS function converts to both Function and BiFunction, and GraalJS picks Function: select the overload explicitly
-    (_underlying as any)["checkIf(java.util.function.BiFunction)"](underlyingXWithSessionTo(condition))
-  );
-
 const wrapWsFrameCheckText = (_underlying: JvmWsFrameCheckText): WsFrameCheckText => ({
   _underlying,
   matching: (...newMatchConditions) =>
     wrapWsFrameCheckText(_underlying.check(newMatchConditions.map((cb) => cb._underlying))),
   check: (...checks) => wrapWsFrameCheckText(_underlying.check(checks.map((cb) => cb._underlying))),
-  checkIf: (condition) => {
-    if (typeof condition === "function") {
-      // only 2 declared parameters select the response-aware variant, as other functions were always called with the Session
-      if (condition.length !== 2) {
-        return wrapWsFrameCheckTextUntypedCondition(
-          _underlying.checkIf(underlyingSessionTo(condition as SessionTo<boolean>))
-        );
-      } else {
-        return wsFrameCheckTextCheckIfResponse(_underlying, condition as XWithSessionTo<string, boolean>);
-      }
-    } else {
-      return wrapWsFrameCheckTextUntypedCondition(_underlying.checkIf(condition));
-    }
-  },
-  checkIfResponse: (condition) => wsFrameCheckTextCheckIfResponse(_underlying, condition),
+  checkIf: (condition: string | ((session: Session, message: string) => boolean)) =>
+    typeof condition === "function"
+      ? wrapWsFrameCheckTextTypedCondition(
+          // always the message-aware variant, so a Session-only function simply ignores the message
+          // a JS function converts to both Function and BiFunction, and GraalJS picks Function: select the overload explicitly
+          (_underlying as any)["checkIf(java.util.function.BiFunction)"](
+            underlyingXWithSessionTo((message: string, session: Session) => condition(session, message))
+          )
+        )
+      : wrapWsFrameCheckTextUntypedCondition(_underlying.checkIf(condition)),
   postCheck: (postCheck) => wrapWsFrameCheckText(_underlying.postCheck(underlyingSessionTransform(postCheck))),
   silent: () => wrapWsFrameCheckText(_underlying.silent())
 });
