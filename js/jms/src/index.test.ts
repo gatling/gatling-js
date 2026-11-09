@@ -2,7 +2,6 @@ import {
   ByteArrayBody,
   ElFileBody,
   RawFileBody,
-  Session,
   Simulation,
   StringBody,
   atOnceUsers,
@@ -17,7 +16,6 @@ import {
 } from "@gatling.io/core";
 
 import {
-  JmsMessage,
   JmsMessageMatcher,
   jms,
   jmsJndiConnectionFactory,
@@ -164,7 +162,7 @@ const scn = scenario("scn")
       .checkIf((session) => session.contains("bool"))
       .then(jsonPath("$..foo"))
       .checkIf(
-        (message: JmsMessage, session: Session) =>
+        (session, message) =>
           message.messageId() !== null &&
           message.correlationId() !== null &&
           message.type() !== null &&
