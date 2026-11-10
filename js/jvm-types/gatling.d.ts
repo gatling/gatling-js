@@ -5709,12 +5709,32 @@ declare namespace io.gatling.javaapi.mqtt {
 declare namespace io.gatling.javaapi.mqtt {
   class LastWillBuilder /* extends java.lang.Object*/ {
     asScala(): any; /*io.gatling.mqtt.protocol.LastWillBuilder*/
+    contentType(arg0: Func<io.gatling.javaapi.core.Session, string>): LastWillBuilder;
+    contentType(arg0: string): LastWillBuilder;
+    correlationData(arg0: Func<io.gatling.javaapi.core.Session, string>): LastWillBuilder;
+    correlationData(arg0: string): LastWillBuilder;
+    correlationDataBytes(arg0: Func<io.gatling.javaapi.core.Session, bytearray>): LastWillBuilder;
+    correlationDataBytes(arg0: bytearray): LastWillBuilder;
+    delayInterval(arg0: java.time.Duration): LastWillBuilder;
+    delayInterval(arg0: long): LastWillBuilder;
     equals(arg0: any /*java.lang.Object*/): boolean;
+    messageExpiryInterval(arg0: java.time.Duration): LastWillBuilder;
+    messageExpiryInterval(arg0: long): LastWillBuilder;
+    payloadFormatUtf8(): LastWillBuilder;
     qosAtLeastOnce(): LastWillBuilder;
     qosAtMostOnce(): LastWillBuilder;
     qosExactlyOnce(): LastWillBuilder;
+    responseTopic(arg0: Func<io.gatling.javaapi.core.Session, string>): LastWillBuilder;
+    responseTopic(arg0: string): LastWillBuilder;
     retain(arg0: boolean): LastWillBuilder;
     toString(): string;
+    userProperty(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: Func<io.gatling.javaapi.core.Session, string>
+    ): LastWillBuilder;
+    userProperty(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): LastWillBuilder;
+    userProperty(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, string>): LastWillBuilder;
+    userProperty(arg0: string, arg1: string): LastWillBuilder;
   } // end LastWillBuilder
 } // end namespace io.gatling.javaapi.mqtt
 declare namespace io.gatling.javaapi.mqtt {
@@ -5725,7 +5745,15 @@ declare namespace io.gatling.javaapi.mqtt {
     clientId<T>(arg0: string): T;
     connectTimeout<T>(arg0: java.time.Duration): T;
     connectTimeout<T>(arg0: long): T;
+    connectUserProperty<T>(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: Func<io.gatling.javaapi.core.Session, string>
+    ): T;
+    connectUserProperty<T>(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): T;
+    connectUserProperty<T>(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, string>): T;
+    connectUserProperty<T>(arg0: string, arg1: string): T;
     correlateBy<T>(arg0: io.gatling.javaapi.core.CheckBuilder): T;
+    correlateByCorrelationData<T>(): T;
     credentials<T>(
       arg0: Func<io.gatling.javaapi.core.Session, string>,
       arg1: Func<io.gatling.javaapi.core.Session, string>
@@ -5752,6 +5780,13 @@ declare namespace io.gatling.javaapi.mqtt {
       >
     ): io.gatling.javaapi.core.ActionBuilder;
     protocol(): any; /*io.gatling.core.protocol.Protocol*/
+    publishUserProperty<T>(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: Func<io.gatling.javaapi.core.Session, string>
+    ): T;
+    publishUserProperty<T>(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): T;
+    publishUserProperty<T>(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, string>): T;
+    publishUserProperty<T>(arg0: string, arg1: string): T;
     qosAtLeastOnce<T>(): T;
     qosAtMostOnce<T>(): T;
     qosExactlyOnce<T>(): T;
@@ -5764,6 +5799,8 @@ declare namespace io.gatling.javaapi.mqtt {
     resendDelay<T>(arg0: java.time.Duration): T;
     resendDelay<T>(arg0: long): T;
     retain<T>(arg0: boolean): T;
+    sessionExpiryInterval<T>(arg0: java.time.Duration): T;
+    sessionExpiryInterval<T>(arg0: long): T;
     subscribeTimeout<T>(arg0: java.time.Duration): T;
     subscribeTimeout<T>(arg0: long): T;
     timeoutCheckInterval<T>(arg0: java.time.Duration): T;
@@ -5801,7 +5838,15 @@ declare namespace io.gatling.javaapi.mqtt {
     clientId<T>(arg0: string): T;
     connectTimeout<T>(arg0: java.time.Duration): T;
     connectTimeout<T>(arg0: long): T;
+    connectUserProperty<T>(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: Func<io.gatling.javaapi.core.Session, string>
+    ): T;
+    connectUserProperty<T>(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): T;
+    connectUserProperty<T>(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, string>): T;
+    connectUserProperty<T>(arg0: string, arg1: string): T;
     correlateBy<T>(arg0: io.gatling.javaapi.core.CheckBuilder): T;
+    correlateByCorrelationData<T>(): T;
     credentials<T>(
       arg0: Func<io.gatling.javaapi.core.Session, string>,
       arg1: Func<io.gatling.javaapi.core.Session, string>
@@ -5820,6 +5865,13 @@ declare namespace io.gatling.javaapi.mqtt {
     perUserKeyManagerFactory<T>(arg0: string): T;
     perUserKeyManagerFactory<T>(arg0: string, arg1: string): T;
     protocol(): any; /*io.gatling.core.protocol.Protocol*/
+    publishUserProperty<T>(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: Func<io.gatling.javaapi.core.Session, string>
+    ): T;
+    publishUserProperty<T>(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): T;
+    publishUserProperty<T>(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, string>): T;
+    publishUserProperty<T>(arg0: string, arg1: string): T;
     qosAtLeastOnce<T>(): T;
     qosAtMostOnce<T>(): T;
     qosExactlyOnce<T>(): T;
@@ -5832,6 +5884,8 @@ declare namespace io.gatling.javaapi.mqtt {
     resendDelay<T>(arg0: java.time.Duration): T;
     resendDelay<T>(arg0: long): T;
     retain<T>(arg0: boolean): T;
+    sessionExpiryInterval<T>(arg0: java.time.Duration): T;
+    sessionExpiryInterval<T>(arg0: long): T;
     subscribeTimeout<T>(arg0: java.time.Duration): T;
     subscribeTimeout<T>(arg0: long): T;
     timeoutCheckInterval<T>(arg0: java.time.Duration): T;
@@ -5873,6 +5927,12 @@ declare namespace io.gatling.javaapi.mqtt {
     await(arg0: long): PublishActionBuilder$Checkable;
     await(arg0: long, arg1: Func<io.gatling.javaapi.core.Session, string>): PublishActionBuilder$Checkable;
     await(arg0: long, arg1: string): PublishActionBuilder$Checkable;
+    contentType(arg0: Func<io.gatling.javaapi.core.Session, string>): PublishActionBuilder;
+    contentType(arg0: string): PublishActionBuilder;
+    correlationData(arg0: Func<io.gatling.javaapi.core.Session, string>): PublishActionBuilder;
+    correlationData(arg0: string): PublishActionBuilder;
+    correlationDataBytes(arg0: Func<io.gatling.javaapi.core.Session, bytearray>): PublishActionBuilder;
+    correlationDataBytes(arg0: bytearray): PublishActionBuilder;
     equals(arg0: any /*java.lang.Object*/): boolean;
     expect(arg0: java.time.Duration): PublishActionBuilder$Checkable;
     expect(
@@ -5883,12 +5943,24 @@ declare namespace io.gatling.javaapi.mqtt {
     expect(arg0: long): PublishActionBuilder$Checkable;
     expect(arg0: long, arg1: Func<io.gatling.javaapi.core.Session, string>): PublishActionBuilder$Checkable;
     expect(arg0: long, arg1: string): PublishActionBuilder$Checkable;
+    messageExpiryInterval(arg0: java.time.Duration): PublishActionBuilder;
+    messageExpiryInterval(arg0: long): PublishActionBuilder;
+    payloadFormatUtf8(): PublishActionBuilder;
     qosAtLeastOnce(): PublishActionBuilder;
     qosAtMostOnce(): PublishActionBuilder;
     qosExactlyOnce(): PublishActionBuilder;
+    responseTopic(arg0: Func<io.gatling.javaapi.core.Session, string>): PublishActionBuilder;
+    responseTopic(arg0: string): PublishActionBuilder;
     retain(arg0: boolean): PublishActionBuilder;
     toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
     toString(): string;
+    userProperty(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: Func<io.gatling.javaapi.core.Session, string>
+    ): PublishActionBuilder;
+    userProperty(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): PublishActionBuilder;
+    userProperty(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, string>): PublishActionBuilder;
+    userProperty(arg0: string, arg1: string): PublishActionBuilder;
   } // end PublishActionBuilder
 } // end namespace io.gatling.javaapi.mqtt
 declare namespace io.gatling.javaapi.mqtt {
@@ -5912,9 +5984,17 @@ declare namespace io.gatling.javaapi.mqtt {
     equals(arg0: any /*java.lang.Object*/): boolean;
     expect(arg0: java.time.Duration): SubscribeActionBuilder$Checkable;
     expect(arg0: long): SubscribeActionBuilder$Checkable;
+    noLocal(): SubscribeActionBuilder;
     qosAtLeastOnce(): SubscribeActionBuilder;
     qosAtMostOnce(): SubscribeActionBuilder;
     qosExactlyOnce(): SubscribeActionBuilder;
+    retainAsPublished(): SubscribeActionBuilder;
+    retainHandlingDontSend(): SubscribeActionBuilder;
+    retainHandlingSendAtNewSubscribe(): SubscribeActionBuilder;
+    retainHandlingSendAtSubscribe(): SubscribeActionBuilder;
+    subscriptionIdentifier(arg0: Func<io.gatling.javaapi.core.Session, int | null>): SubscribeActionBuilder;
+    subscriptionIdentifier(arg0: int): SubscribeActionBuilder;
+    subscriptionIdentifier(arg0: string): SubscribeActionBuilder;
     toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
     toString(): string;
   } // end SubscribeActionBuilder
@@ -5943,6 +6023,7 @@ declare namespace io.gatling.mqtt.action {
     fixedHeader(): io.netty.handler.codec.mqtt.MqttFixedHeader;
     payload(): bytearray;
     payloadUtf8String(): string;
+    subscriptionIdentifiers(): java.util.List<int | null>;
     timestamp(): long;
     toString(): string;
     variableHeader(): io.netty.handler.codec.mqtt.MqttPublishVariableHeader;
