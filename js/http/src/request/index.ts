@@ -578,7 +578,14 @@ export interface RequestWithBodyActionBuilder<T> {
    */
   multivaluedFormParam(key: string, values: (session: Session) => any[]): T;
 
-  // FIXME missing overload multivaluedFormParam(name: (session: Session) => string, value: string): T;
+  /**
+   * Set an HTML form multivalued parameter
+   *
+   * @param key - the parameter key, expressed as a function
+   * @param values - the parameter values, as a Gatling EL string
+   * @returns a new HttpRequestActionBuilder instance
+   */
+  multivaluedFormParam(key: (session: Session) => string, values: string): T;
 
   /**
    * Set an HTML form multivalued parameter
@@ -724,7 +731,7 @@ export const requestWithBodyActionBuilderImpl = <T, J extends JvmRequestWithBody
       if (typeof values === "function") {
         return wrap(jvmBuilder.multivaluedFormParam(underlyingSessionTo(key), underlyingSessionToJava(values) as any));
       } else if (typeof values === "string") {
-        throw Error(`multivaluedFormParam() called with invalid arguments ${key}, ${values}`);
+        return wrap(jvmBuilder.multivaluedFormParam(underlyingSessionTo(key), values));
       } else {
         return wrap(jvmBuilder.multivaluedFormParam(underlyingSessionTo(key), values));
       }

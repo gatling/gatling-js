@@ -345,6 +345,8 @@ const scn = scenario("scenario")
       )
       .multivaluedFormParam("key", [1])
       .multivaluedFormParam((_: Session) => "key", [1])
+      .multivaluedFormParam("key", "#{values}")
+      .multivaluedFormParam((_: Session) => "key", "#{values}")
       .multivaluedFormParam("key", (_: Session) => [1])
       .multivaluedFormParam(
         (_: Session) => "key",
