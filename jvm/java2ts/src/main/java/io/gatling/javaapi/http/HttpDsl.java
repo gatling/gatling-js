@@ -42,9 +42,9 @@ public final class HttpDsl {
 
   ////////// HttpDsl
 
+  /** Bootstrap a HTTP protocol configuration */
   // TODO ggaly: find a better fix than overriding this entire file (currently fails during java2typescript processing
   //   because of this static field initialization)
-  /** Bootstrap a HTTP protocol configuration */
   public static final HttpProtocolBuilder http = null;
   //  new HttpProtocolBuilder(
   //    io.gatling.http.protocol.HttpProtocolBuilder.apply(
@@ -79,14 +79,14 @@ public final class HttpDsl {
    * @return an ActionBuilder
    */
   public static @NonNull ActionBuilder httpConcurrentRequests(
-    @NonNull HttpRequestActionBuilder head, HttpRequestActionBuilder... tail) {
+      @NonNull HttpRequestActionBuilder head, HttpRequestActionBuilder... tail) {
     List<io.gatling.http.request.builder.HttpRequestBuilder> requests = new ArrayList<>();
     requests.add(head.wrapped);
     Arrays.stream(tail).forEach(request -> requests.add(request.wrapped));
 
     return () ->
-      new io.gatling.http.action.HttpConcurrentRequestsActionBuilder(
-        Converters.toScalaSeq(requests).toList());
+        new io.gatling.http.action.HttpConcurrentRequestsActionBuilder(
+            Converters.toScalaSeq(requests).toList());
   }
 
   /**
@@ -97,12 +97,12 @@ public final class HttpDsl {
    * @return an ActionBuilder
    */
   public static @NonNull ActionBuilder httpConcurrentRequests(
-    @NonNull List<HttpRequestActionBuilder> list) {
+      @NonNull List<HttpRequestActionBuilder> list) {
     List<io.gatling.http.request.builder.HttpRequestBuilder> requests =
-      list.stream().map(request -> request.wrapped).collect(Collectors.toList());
+        list.stream().map(request -> request.wrapped).collect(Collectors.toList());
     return () ->
-      new io.gatling.http.action.HttpConcurrentRequestsActionBuilder(
-        Converters.toScalaSeq(requests).toList());
+        new io.gatling.http.action.HttpConcurrentRequestsActionBuilder(
+            Converters.toScalaSeq(requests).toList());
   }
 
   /**
@@ -118,6 +118,16 @@ public final class HttpDsl {
   /**
    * Bootstrap a WebSocket request configuration
    *
+   * @param name the WebSocket request name, expressed as a function
+   * @return the next DSL step
+   */
+  public static @NonNull Ws ws(@NonNull Function<Session, String> name) {
+    return new Ws(io.gatling.http.action.ws.Ws.apply(javaFunctionToExpression(name)));
+  }
+
+  /**
+   * Bootstrap a WebSocket request configuration
+   *
    * @param name the WebSocket request name, expressed as a Gatling Expression Language String
    * @param wsName the name of the WebSocket so multiple WebSockets for the same virtual users don't
    *     conflict, expressed as a Gatling Expression Language String
@@ -125,7 +135,50 @@ public final class HttpDsl {
    */
   public static @NonNull Ws ws(@NonNull String name, @NonNull String wsName) {
     return new Ws(
-      io.gatling.http.action.ws.Ws.apply(toStringExpression(name), toStringExpression(wsName)));
+        io.gatling.http.action.ws.Ws.apply(toStringExpression(name), toStringExpression(wsName)));
+  }
+
+  /**
+   * Bootstrap a WebSocket request configuration
+   *
+   * @param name the WebSocket request name, expressed as a Gatling Expression Language String
+   * @param wsName the name of the WebSocket so multiple WebSockets for the same virtual users don't
+   *     conflict, expressed as a function
+   * @return the next DSL step
+   */
+  public static @NonNull Ws ws(@NonNull String name, @NonNull Function<Session, String> wsName) {
+    return new Ws(
+        io.gatling.http.action.ws.Ws.apply(
+            toStringExpression(name), javaFunctionToExpression(wsName)));
+  }
+
+  /**
+   * Bootstrap a WebSocket request configuration
+   *
+   * @param name the WebSocket request name, expressed as a function
+   * @param wsName the name of the WebSocket so multiple WebSockets for the same virtual users don't
+   *     conflict, expressed as a Gatling Expression Language String
+   * @return the next DSL step
+   */
+  public static @NonNull Ws ws(@NonNull Function<Session, String> name, @NonNull String wsName) {
+    return new Ws(
+        io.gatling.http.action.ws.Ws.apply(
+            javaFunctionToExpression(name), toStringExpression(wsName)));
+  }
+
+  /**
+   * Bootstrap a WebSocket request configuration
+   *
+   * @param name the WebSocket request name, expressed as a function
+   * @param wsName the name of the WebSocket so multiple WebSockets for the same virtual users don't
+   *     conflict, expressed as a function
+   * @return the next DSL step
+   */
+  public static @NonNull Ws ws(
+      @NonNull Function<Session, String> name, @NonNull Function<Session, String> wsName) {
+    return new Ws(
+        io.gatling.http.action.ws.Ws.apply(
+            javaFunctionToExpression(name), javaFunctionToExpression(wsName)));
   }
 
   public static final Ws.Prefix ws = Ws.Prefix.INSTANCE;
@@ -147,6 +200,18 @@ public final class HttpDsl {
    * href="https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events">SSE</a> request
    * configuration
    *
+   * @param name the SSE request name, expressed as a function
+   * @return the next DSL step
+   */
+  public static @NonNull Sse sse(@NonNull Function<Session, String> name) {
+    return new Sse(io.gatling.http.action.sse.Sse.apply(javaFunctionToExpression(name)));
+  }
+
+  /**
+   * Bootstrap a <a
+   * href="https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events">SSE</a> request
+   * configuration
+   *
    * @param name the SSE request name, expressed as a Gatling Expression Language String
    * @param sseName the name of the SSE stream so multiple SSE streams for the same virtual users
    *     don't conflict, expressed as a Gatling Expression Language String
@@ -154,8 +219,57 @@ public final class HttpDsl {
    */
   public static @NonNull Sse sse(@NonNull String name, @NonNull String sseName) {
     return new Sse(
-      io.gatling.http.action.sse.Sse.apply(
-        toStringExpression(name), toStringExpression(sseName)));
+        io.gatling.http.action.sse.Sse.apply(
+            toStringExpression(name), toStringExpression(sseName)));
+  }
+
+  /**
+   * Bootstrap a <a
+   * href="https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events">SSE</a> request
+   * configuration
+   *
+   * @param name the SSE request name, expressed as a Gatling Expression Language String
+   * @param sseName the name of the SSE stream so multiple SSE streams for the same virtual users
+   *     don't conflict, expressed as a function
+   * @return the next DSL step
+   */
+  public static @NonNull Sse sse(@NonNull String name, @NonNull Function<Session, String> sseName) {
+    return new Sse(
+        io.gatling.http.action.sse.Sse.apply(
+            toStringExpression(name), javaFunctionToExpression(sseName)));
+  }
+
+  /**
+   * Bootstrap a <a
+   * href="https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events">SSE</a> request
+   * configuration
+   *
+   * @param name the SSE request name, expressed as a function
+   * @param sseName the name of the SSE stream so multiple SSE streams for the same virtual users
+   *     don't conflict, expressed as a Gatling Expression Language String
+   * @return the next DSL step
+   */
+  public static @NonNull Sse sse(@NonNull Function<Session, String> name, @NonNull String sseName) {
+    return new Sse(
+        io.gatling.http.action.sse.Sse.apply(
+            javaFunctionToExpression(name), toStringExpression(sseName)));
+  }
+
+  /**
+   * Bootstrap a <a
+   * href="https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events">SSE</a> request
+   * configuration
+   *
+   * @param name the SSE request name, expressed as a function
+   * @param sseName the name of the SSE stream so multiple SSE streams for the same virtual users
+   *     don't conflict, expressed as a function
+   * @return the next DSL step
+   */
+  public static @NonNull Sse sse(
+      @NonNull Function<Session, String> name, @NonNull Function<Session, String> sseName) {
+    return new Sse(
+        io.gatling.http.action.sse.Sse.apply(
+            javaFunctionToExpression(name), javaFunctionToExpression(sseName)));
   }
 
   /** The prefix to bootstrap SSE specific DSL */
@@ -185,10 +299,10 @@ public final class HttpDsl {
    */
   public static CheckBuilder.@NonNull Find<String> currentLocation() {
     return new CheckBuilder.Find.Default<>(
-      io.gatling.http.Predef.currentLocation(),
-      HttpCheckType.CurrentLocation,
-      String.class,
-      null);
+        io.gatling.http.Predef.currentLocation(),
+        HttpCheckType.CurrentLocation,
+        String.class,
+        null);
   }
 
   /**
@@ -201,10 +315,10 @@ public final class HttpDsl {
    * @return the next step in the check DSL
    */
   public static CheckBuilder.@NonNull CaptureGroupCheckBuilder currentLocationRegex(
-    @NonNull String pattern) {
+      @NonNull String pattern) {
     return new HttpCheckBuilder.CurrentLocationRegex(
-      io.gatling.http.Predef.currentLocationRegex(
-        toStringExpression(pattern), io.gatling.core.Predef.defaultPatterns()));
+        io.gatling.http.Predef.currentLocationRegex(
+            toStringExpression(pattern), io.gatling.core.Predef.defaultPatterns()));
   }
 
   /**
@@ -217,10 +331,10 @@ public final class HttpDsl {
    * @return the next step in the check DSL
    */
   public static HttpCheckBuilder.@NonNull CurrentLocationRegex currentLocationRegex(
-    @NonNull Function<Session, String> pattern) {
+      @NonNull Function<Session, String> pattern) {
     return new HttpCheckBuilder.CurrentLocationRegex(
-      io.gatling.http.Predef.currentLocationRegex(
-        javaFunctionToExpression(pattern), io.gatling.core.Predef.defaultPatterns()));
+        io.gatling.http.Predef.currentLocationRegex(
+            javaFunctionToExpression(pattern), io.gatling.core.Predef.defaultPatterns()));
   }
 
   /**
@@ -231,10 +345,10 @@ public final class HttpDsl {
    */
   public static CheckBuilder.@NonNull MultipleFind<String> header(@NonNull CharSequence name) {
     return new CheckBuilder.MultipleFind.Default<>(
-      io.gatling.http.Predef.header(toStaticValueExpression(name)),
-      HttpCheckType.Header,
-      String.class,
-      null);
+        io.gatling.http.Predef.header(toStaticValueExpression(name)),
+        HttpCheckType.Header,
+        String.class,
+        null);
   }
 
   /**
@@ -245,10 +359,10 @@ public final class HttpDsl {
    */
   public static CheckBuilder.@NonNull MultipleFind<String> header(@NonNull String name) {
     return new CheckBuilder.MultipleFind.Default<>(
-      io.gatling.http.Predef.header(toExpression(name, CharSequence.class)),
-      HttpCheckType.Header,
-      String.class,
-      null);
+        io.gatling.http.Predef.header(toExpression(name, CharSequence.class)),
+        HttpCheckType.Header,
+        String.class,
+        null);
   }
 
   /**
@@ -258,12 +372,12 @@ public final class HttpDsl {
    * @return the next step in the check DSL
    */
   public static CheckBuilder.@NonNull MultipleFind<String> header(
-    @NonNull Function<Session, CharSequence> name) {
+      @NonNull Function<Session, CharSequence> name) {
     return new CheckBuilder.MultipleFind.Default<>(
-      io.gatling.http.Predef.header(javaFunctionToExpression(name)),
-      HttpCheckType.Header,
-      String.class,
-      null);
+        io.gatling.http.Predef.header(javaFunctionToExpression(name)),
+        HttpCheckType.Header,
+        String.class,
+        null);
   }
 
   /**
@@ -276,12 +390,12 @@ public final class HttpDsl {
    * @return the next step in the check DSL
    */
   public static CheckBuilder.@NonNull CaptureGroupCheckBuilder headerRegex(
-    CharSequence name, String pattern) {
+      CharSequence name, String pattern) {
     return new HttpCheckBuilder.HeaderRegexCheck(
-      io.gatling.http.Predef.headerRegex(
-        toStaticValueExpression(name),
-        toStringExpression(pattern),
-        io.gatling.core.Predef.defaultPatterns()));
+        io.gatling.http.Predef.headerRegex(
+            toStaticValueExpression(name),
+            toStringExpression(pattern),
+            io.gatling.core.Predef.defaultPatterns()));
   }
 
   /**
@@ -294,12 +408,12 @@ public final class HttpDsl {
    * @return the next step in the check DSL
    */
   public static CheckBuilder.@NonNull CaptureGroupCheckBuilder headerRegex(
-    @NonNull String name, @NonNull String pattern) {
+      @NonNull String name, @NonNull String pattern) {
     return new HttpCheckBuilder.HeaderRegexCheck(
-      io.gatling.http.Predef.headerRegex(
-        toExpression(name, CharSequence.class),
-        toStringExpression(pattern),
-        io.gatling.core.Predef.defaultPatterns()));
+        io.gatling.http.Predef.headerRegex(
+            toExpression(name, CharSequence.class),
+            toStringExpression(pattern),
+            io.gatling.core.Predef.defaultPatterns()));
   }
 
   /**
@@ -312,12 +426,12 @@ public final class HttpDsl {
    * @return the next step in the check DSL
    */
   public static CheckBuilder.@NonNull CaptureGroupCheckBuilder headerRegex(
-    @NonNull Function<Session, CharSequence> name, @NonNull String pattern) {
+      @NonNull Function<Session, CharSequence> name, @NonNull String pattern) {
     return new HttpCheckBuilder.HeaderRegexCheck(
-      io.gatling.http.Predef.headerRegex(
-        javaFunctionToExpression(name),
-        toStringExpression(pattern),
-        io.gatling.core.Predef.defaultPatterns()));
+        io.gatling.http.Predef.headerRegex(
+            javaFunctionToExpression(name),
+            toStringExpression(pattern),
+            io.gatling.core.Predef.defaultPatterns()));
   }
 
   /**
@@ -330,12 +444,12 @@ public final class HttpDsl {
    * @return the next step in the check DSL
    */
   public static CheckBuilder.@NonNull CaptureGroupCheckBuilder headerRegex(
-    @NonNull CharSequence name, @NonNull Function<Session, String> pattern) {
+      @NonNull CharSequence name, @NonNull Function<Session, String> pattern) {
     return new HttpCheckBuilder.HeaderRegexCheck(
-      io.gatling.http.Predef.headerRegex(
-        toStaticValueExpression(name),
-        javaFunctionToExpression(pattern),
-        io.gatling.core.Predef.defaultPatterns()));
+        io.gatling.http.Predef.headerRegex(
+            toStaticValueExpression(name),
+            javaFunctionToExpression(pattern),
+            io.gatling.core.Predef.defaultPatterns()));
   }
 
   /**
@@ -348,12 +462,12 @@ public final class HttpDsl {
    * @return the next step in the check DSL
    */
   public static CheckBuilder.@NonNull CaptureGroupCheckBuilder headerRegex(
-    @NonNull String name, @NonNull Function<Session, String> pattern) {
+      @NonNull String name, @NonNull Function<Session, String> pattern) {
     return new HttpCheckBuilder.HeaderRegexCheck(
-      io.gatling.http.Predef.headerRegex(
-        toExpression(name, CharSequence.class),
-        javaFunctionToExpression(pattern),
-        io.gatling.core.Predef.defaultPatterns()));
+        io.gatling.http.Predef.headerRegex(
+            toExpression(name, CharSequence.class),
+            javaFunctionToExpression(pattern),
+            io.gatling.core.Predef.defaultPatterns()));
   }
 
   /**
@@ -366,12 +480,12 @@ public final class HttpDsl {
    * @return the next step in the check DSL
    */
   public static CheckBuilder.@NonNull CaptureGroupCheckBuilder headerRegex(
-    @NonNull Function<Session, CharSequence> name, @NonNull Function<Session, String> pattern) {
+      @NonNull Function<Session, CharSequence> name, @NonNull Function<Session, String> pattern) {
     return new HttpCheckBuilder.HeaderRegexCheck(
-      io.gatling.http.Predef.headerRegex(
-        javaFunctionToExpression(name),
-        javaFunctionToExpression(pattern),
-        io.gatling.core.Predef.defaultPatterns()));
+        io.gatling.http.Predef.headerRegex(
+            javaFunctionToExpression(name),
+            javaFunctionToExpression(pattern),
+            io.gatling.core.Predef.defaultPatterns()));
   }
 
   ////////// SitemapFeederSupport
@@ -385,7 +499,7 @@ public final class HttpDsl {
    */
   public static FeederBuilder.@NonNull FileBased<String> sitemap(@NonNull String filePath) {
     return new FeederBuilder.Impl<>(
-      io.gatling.http.Predef.sitemap(filePath, io.gatling.core.Predef.configuration()));
+        io.gatling.http.Predef.sitemap(filePath, io.gatling.core.Predef.configuration()));
   }
 
   ////////// BodyPartSupport
@@ -414,12 +528,12 @@ public final class HttpDsl {
   }
 
   private static BodyPart ElFileBodyPart(
-    @NonNull Function1<io.gatling.core.session.Session, Validation<String>> filePath) {
+      @NonNull Function1<io.gatling.core.session.Session, Validation<String>> filePath) {
     return new BodyPart(
-      io.gatling.http.Predef.ElFileBodyPart(
-        filePath,
-        io.gatling.core.Predef.configuration(),
-        io.gatling.core.Predef.elFileBodies()));
+        io.gatling.http.Predef.ElFileBodyPart(
+            filePath,
+            io.gatling.core.Predef.configuration(),
+            io.gatling.core.Predef.elFileBodies()));
   }
 
   /**
@@ -445,7 +559,7 @@ public final class HttpDsl {
    * @return the next DSL step
    */
   public static @NonNull BodyPart ElFileBodyPart(
-    @NonNull String name, @NonNull Function<Session, String> filePath) {
+      @NonNull String name, @NonNull Function<Session, String> filePath) {
     return ElFileBodyPart(toStringExpression(name), javaFunctionToExpression(filePath));
   }
 
@@ -459,7 +573,7 @@ public final class HttpDsl {
    * @return the next DSL step
    */
   public static @NonNull BodyPart ElFileBodyPart(
-    @NonNull Function<Session, String> name, @NonNull String filePath) {
+      @NonNull Function<Session, String> name, @NonNull String filePath) {
     return ElFileBodyPart(javaFunctionToExpression(name), toStringExpression(filePath));
   }
 
@@ -473,19 +587,19 @@ public final class HttpDsl {
    * @return the next DSL step
    */
   public static @NonNull BodyPart ElFileBodyPart(
-    @NonNull Function<Session, String> name, @NonNull Function<Session, String> filePath) {
+      @NonNull Function<Session, String> name, @NonNull Function<Session, String> filePath) {
     return ElFileBodyPart(javaFunctionToExpression(name), javaFunctionToExpression(filePath));
   }
 
   private static BodyPart ElFileBodyPart(
-    @NonNull Function1<io.gatling.core.session.Session, Validation<String>> name,
-    @NonNull Function1<io.gatling.core.session.Session, Validation<String>> filePath) {
+      @NonNull Function1<io.gatling.core.session.Session, Validation<String>> name,
+      @NonNull Function1<io.gatling.core.session.Session, Validation<String>> filePath) {
     return new BodyPart(
-      io.gatling.http.Predef.ElFileBodyPart(
-        name,
-        filePath,
-        io.gatling.core.Predef.configuration(),
-        io.gatling.core.Predef.elFileBodies()));
+        io.gatling.http.Predef.ElFileBodyPart(
+            name,
+            filePath,
+            io.gatling.core.Predef.configuration(),
+            io.gatling.core.Predef.elFileBodies()));
   }
 
   /**
@@ -495,9 +609,7 @@ public final class HttpDsl {
    * @return the next DSL step
    */
   public static @NonNull BodyPart StringBodyPart(@NonNull String string) {
-    return new BodyPart(
-      io.gatling.http.Predef.StringBodyPart(
-        toStringExpression(string), io.gatling.core.Predef.configuration()));
+    return StringBodyPart(toStringExpression(string));
   }
 
   /**
@@ -507,7 +619,13 @@ public final class HttpDsl {
    * @return the next DSL step
    */
   public static @NonNull BodyPart StringBodyPart(@NonNull Function<Session, String> string) {
-    return ElFileBodyPart(javaFunctionToExpression(string));
+    return StringBodyPart(javaFunctionToExpression(string));
+  }
+
+  private static BodyPart StringBodyPart(
+      Function1<io.gatling.core.session.Session, Validation<String>> string) {
+    return new BodyPart(
+        io.gatling.http.Predef.StringBodyPart(string, io.gatling.core.Predef.configuration()));
   }
 
   /**
@@ -529,7 +647,7 @@ public final class HttpDsl {
    * @return the next DSL step
    */
   public static @NonNull BodyPart StringBodyPart(
-    @NonNull String name, @NonNull Function<Session, String> string) {
+      @NonNull String name, @NonNull Function<Session, String> string) {
     return StringBodyPart(toStringExpression(name), javaFunctionToExpression(string));
   }
 
@@ -541,7 +659,7 @@ public final class HttpDsl {
    * @return the next DSL step
    */
   public static @NonNull BodyPart StringBodyPart(
-    @NonNull Function<Session, String> name, @NonNull String string) {
+      @NonNull Function<Session, String> name, @NonNull String string) {
     return StringBodyPart(javaFunctionToExpression(name), toStringExpression(string));
   }
 
@@ -553,16 +671,16 @@ public final class HttpDsl {
    * @return the next DSL step
    */
   public static @NonNull BodyPart StringBodyPart(
-    @NonNull Function<Session, String> name, @NonNull Function<Session, String> string) {
+      @NonNull Function<Session, String> name, @NonNull Function<Session, String> string) {
     return StringBodyPart(javaFunctionToExpression(name), javaFunctionToExpression(string));
   }
 
   private static BodyPart StringBodyPart(
-    Function1<io.gatling.core.session.Session, Validation<String>> name,
-    Function1<io.gatling.core.session.Session, Validation<String>> string) {
+      Function1<io.gatling.core.session.Session, Validation<String>> name,
+      Function1<io.gatling.core.session.Session, Validation<String>> string) {
     return new BodyPart(
-      io.gatling.http.Predef.StringBodyPart(
-        name, string, io.gatling.core.Predef.configuration()));
+        io.gatling.http.Predef.StringBodyPart(
+            name, string, io.gatling.core.Predef.configuration()));
   }
 
   /**
@@ -590,9 +708,9 @@ public final class HttpDsl {
   }
 
   private static BodyPart RawFileBodyPart(
-    Function1<io.gatling.core.session.Session, Validation<String>> filePath) {
+      Function1<io.gatling.core.session.Session, Validation<String>> filePath) {
     return new BodyPart(
-      io.gatling.http.Predef.RawFileBodyPart(filePath, io.gatling.core.Predef.rawFileBodies()));
+        io.gatling.http.Predef.RawFileBodyPart(filePath, io.gatling.core.Predef.rawFileBodies()));
   }
 
   /**
@@ -616,7 +734,7 @@ public final class HttpDsl {
    * @return the next DSL step
    */
   public static @NonNull BodyPart RawFileBodyPart(
-    @NonNull String name, @NonNull Function<Session, String> filePath) {
+      @NonNull String name, @NonNull Function<Session, String> filePath) {
     return RawFileBodyPart(toStringExpression(name), javaFunctionToExpression(filePath));
   }
 
@@ -629,7 +747,7 @@ public final class HttpDsl {
    * @return the next DSL step
    */
   public static @NonNull BodyPart RawFileBodyPart(
-    @NonNull Function<Session, String> name, @NonNull String filePath) {
+      @NonNull Function<Session, String> name, @NonNull String filePath) {
     return RawFileBodyPart(javaFunctionToExpression(name), toStringExpression(filePath));
   }
 
@@ -642,16 +760,16 @@ public final class HttpDsl {
    * @return the next DSL step
    */
   public static @NonNull BodyPart RawFileBodyPart(
-    @NonNull Function<Session, String> name, @NonNull Function<Session, String> filePath) {
+      @NonNull Function<Session, String> name, @NonNull Function<Session, String> filePath) {
     return RawFileBodyPart(javaFunctionToExpression(name), javaFunctionToExpression(filePath));
   }
 
   private static BodyPart RawFileBodyPart(
-    Function1<io.gatling.core.session.Session, Validation<String>> name,
-    Function1<io.gatling.core.session.Session, Validation<String>> filePath) {
+      Function1<io.gatling.core.session.Session, Validation<String>> name,
+      Function1<io.gatling.core.session.Session, Validation<String>> filePath) {
     return new BodyPart(
-      io.gatling.http.Predef.RawFileBodyPart(
-        name, filePath, io.gatling.core.Predef.rawFileBodies()));
+        io.gatling.http.Predef.RawFileBodyPart(
+            name, filePath, io.gatling.core.Predef.rawFileBodies()));
   }
 
   /**
@@ -681,12 +799,12 @@ public final class HttpDsl {
   }
 
   private static BodyPart PebbleFileBodyPart(
-    Function1<io.gatling.core.session.Session, Validation<String>> filePath) {
+      Function1<io.gatling.core.session.Session, Validation<String>> filePath) {
     return new BodyPart(
-      io.gatling.http.Predef.PebbleFileBodyPart(
-        filePath,
-        io.gatling.core.Predef.configuration(),
-        io.gatling.core.Predef.pebbleFileBodies()));
+        io.gatling.http.Predef.PebbleFileBodyPart(
+            filePath,
+            io.gatling.core.Predef.configuration(),
+            io.gatling.core.Predef.pebbleFileBodies()));
   }
 
   /**
@@ -699,7 +817,7 @@ public final class HttpDsl {
    * @return the next DSL step
    */
   public static @NonNull BodyPart PebbleFileBodyPart(
-    @NonNull String name, @NonNull String filePath) {
+      @NonNull String name, @NonNull String filePath) {
     return PebbleFileBodyPart(toStringExpression(name), toStringExpression(filePath));
   }
 
@@ -713,7 +831,7 @@ public final class HttpDsl {
    * @return the next DSL step
    */
   public static @NonNull BodyPart PebbleFileBodyPart(
-    @NonNull String name, @NonNull Function<Session, String> filePath) {
+      @NonNull String name, @NonNull Function<Session, String> filePath) {
     return PebbleFileBodyPart(toStringExpression(name), javaFunctionToExpression(filePath));
   }
 
@@ -727,7 +845,7 @@ public final class HttpDsl {
    * @return the next DSL step
    */
   public static @NonNull BodyPart PebbleFileBodyPart(
-    @NonNull Function<Session, String> name, @NonNull String filePath) {
+      @NonNull Function<Session, String> name, @NonNull String filePath) {
     return PebbleFileBodyPart(javaFunctionToExpression(name), toStringExpression(filePath));
   }
 
@@ -741,19 +859,19 @@ public final class HttpDsl {
    * @return the next DSL step
    */
   public static @NonNull BodyPart PebbleFileBodyPart(
-    @NonNull Function<Session, String> name, @NonNull Function<Session, String> filePath) {
+      @NonNull Function<Session, String> name, @NonNull Function<Session, String> filePath) {
     return PebbleFileBodyPart(javaFunctionToExpression(name), javaFunctionToExpression(filePath));
   }
 
   private static BodyPart PebbleFileBodyPart(
-    Function1<io.gatling.core.session.Session, Validation<String>> name,
-    Function1<io.gatling.core.session.Session, Validation<String>> filePath) {
+      Function1<io.gatling.core.session.Session, Validation<String>> name,
+      Function1<io.gatling.core.session.Session, Validation<String>> filePath) {
     return new BodyPart(
-      io.gatling.http.Predef.PebbleFileBodyPart(
-        name,
-        filePath,
-        io.gatling.core.Predef.configuration(),
-        io.gatling.core.Predef.pebbleFileBodies()));
+        io.gatling.http.Predef.PebbleFileBodyPart(
+            name,
+            filePath,
+            io.gatling.core.Predef.configuration(),
+            io.gatling.core.Predef.pebbleFileBodies()));
   }
 
   /**
@@ -765,8 +883,8 @@ public final class HttpDsl {
    */
   public static @NonNull BodyPart PebbleStringBodyPart(@NonNull String string) {
     return new BodyPart(
-      io.gatling.http.Predef.PebbleStringBodyPart(
-        string, io.gatling.core.Predef.configuration()));
+        io.gatling.http.Predef.PebbleStringBodyPart(
+            string, io.gatling.core.Predef.configuration()));
   }
 
   /**
@@ -778,7 +896,7 @@ public final class HttpDsl {
    * @return the next DSL step
    */
   public static @NonNull BodyPart PebbleStringBodyPart(
-    @NonNull String name, @NonNull String string) {
+      @NonNull String name, @NonNull String string) {
     return PebbleStringBodyPart(toStringExpression(name), string);
   }
 
@@ -791,15 +909,15 @@ public final class HttpDsl {
    * @return the next DSL step
    */
   public static @NonNull BodyPart PebbleStringBodyPart(
-    @NonNull Function<Session, String> name, @NonNull String string) {
+      @NonNull Function<Session, String> name, @NonNull String string) {
     return PebbleStringBodyPart(javaFunctionToExpression(name), string);
   }
 
   private static BodyPart PebbleStringBodyPart(
-    Function1<io.gatling.core.session.Session, Validation<String>> name, String string) {
+      Function1<io.gatling.core.session.Session, Validation<String>> name, String string) {
     return new BodyPart(
-      io.gatling.http.Predef.PebbleStringBodyPart(
-        name, string, io.gatling.core.Predef.configuration()));
+        io.gatling.http.Predef.PebbleStringBodyPart(
+            name, string, io.gatling.core.Predef.configuration()));
   }
 
   /**
@@ -821,7 +939,7 @@ public final class HttpDsl {
    * @return the next DSL step
    */
   public static @NonNull BodyPart ByteArrayBodyPart(
-    @NonNull Function<Session, String> name, byte[] bytes) {
+      @NonNull Function<Session, String> name, byte[] bytes) {
     return ByteArrayBodyPart(javaFunctionToExpression(name), toStaticValueExpression(bytes));
   }
 
@@ -844,7 +962,7 @@ public final class HttpDsl {
    * @return the next DSL step
    */
   public static @NonNull BodyPart ByteArrayBodyPart(
-    @NonNull Function<Session, String> name, @NonNull String bytes) {
+      @NonNull Function<Session, String> name, @NonNull String bytes) {
     return ByteArrayBodyPart(javaFunctionToExpression(name), toBytesExpression(bytes));
   }
 
@@ -856,7 +974,7 @@ public final class HttpDsl {
    * @return the next DSL step
    */
   public static @NonNull BodyPart ByteArrayBodyPart(
-    @NonNull String name, @NonNull Function<Session, byte[]> bytes) {
+      @NonNull String name, @NonNull Function<Session, byte[]> bytes) {
     return ByteArrayBodyPart(toStringExpression(name), javaFunctionToExpression(bytes));
   }
 
@@ -868,13 +986,13 @@ public final class HttpDsl {
    * @return the next DSL step
    */
   public static @NonNull BodyPart ByteArrayBodyPart(
-    @NonNull Function<Session, String> name, @NonNull Function<Session, byte[]> bytes) {
+      @NonNull Function<Session, String> name, @NonNull Function<Session, byte[]> bytes) {
     return ByteArrayBodyPart(javaFunctionToExpression(name), javaFunctionToExpression(bytes));
   }
 
   private static BodyPart ByteArrayBodyPart(
-    Function1<io.gatling.core.session.Session, Validation<String>> name,
-    Function1<io.gatling.core.session.Session, Validation<byte[]>> bytes) {
+      Function1<io.gatling.core.session.Session, Validation<String>> name,
+      Function1<io.gatling.core.session.Session, Validation<byte[]>> bytes) {
     return new BodyPart(io.gatling.http.Predef.ByteArrayBodyPart(name, bytes));
   }
 
@@ -935,7 +1053,7 @@ public final class HttpDsl {
    */
   public static @NonNull AddCookie Cookie(@NonNull String name, @NonNull String value) {
     return new AddCookie(
-      io.gatling.http.Predef.Cookie(toStringExpression(name), toStringExpression(value)));
+        io.gatling.http.Predef.Cookie(toStringExpression(name), toStringExpression(value)));
   }
 
   /**
@@ -946,9 +1064,9 @@ public final class HttpDsl {
    * @return the next DSL step
    */
   public static @NonNull AddCookie Cookie(
-    @NonNull Function<Session, String> name, @NonNull String value) {
+      @NonNull Function<Session, String> name, @NonNull String value) {
     return new AddCookie(
-      io.gatling.http.Predef.Cookie(javaFunctionToExpression(name), toStringExpression(value)));
+        io.gatling.http.Predef.Cookie(javaFunctionToExpression(name), toStringExpression(value)));
   }
 
   /**
@@ -959,9 +1077,9 @@ public final class HttpDsl {
    * @return the next DSL step
    */
   public static @NonNull AddCookie Cookie(
-    @NonNull String name, @NonNull Function<Session, String> value) {
+      @NonNull String name, @NonNull Function<Session, String> value) {
     return new AddCookie(
-      io.gatling.http.Predef.Cookie(toStringExpression(name), javaFunctionToExpression(value)));
+        io.gatling.http.Predef.Cookie(toStringExpression(name), javaFunctionToExpression(value)));
   }
 
   /**
@@ -972,10 +1090,10 @@ public final class HttpDsl {
    * @return the next DSL step
    */
   public static @NonNull AddCookie Cookie(
-    @NonNull Function<Session, String> name, @NonNull Function<Session, String> value) {
+      @NonNull Function<Session, String> name, @NonNull Function<Session, String> value) {
     return new AddCookie(
-      io.gatling.http.Predef.Cookie(
-        javaFunctionToExpression(name), javaFunctionToExpression(value)));
+        io.gatling.http.Predef.Cookie(
+            javaFunctionToExpression(name), javaFunctionToExpression(value)));
   }
 
   /**

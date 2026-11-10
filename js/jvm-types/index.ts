@@ -903,6 +903,26 @@ interface CoreDslStatic {
   ): io.gatling.javaapi.core.loop.AsLongAsDuring$On<io.gatling.javaapi.core.ChainBuilder>;
   asLongAsDuring(
     arg0: Func<io.gatling.javaapi.core.Session, boolean | null>,
+    arg1: string
+  ): io.gatling.javaapi.core.loop.AsLongAsDuring$On<io.gatling.javaapi.core.ChainBuilder>;
+  asLongAsDuring(
+    arg0: Func<io.gatling.javaapi.core.Session, boolean | null>,
+    arg1: string,
+    arg2: boolean
+  ): io.gatling.javaapi.core.loop.AsLongAsDuring$On<io.gatling.javaapi.core.ChainBuilder>;
+  asLongAsDuring(
+    arg0: Func<io.gatling.javaapi.core.Session, boolean | null>,
+    arg1: string,
+    arg2: string
+  ): io.gatling.javaapi.core.loop.AsLongAsDuring$On<io.gatling.javaapi.core.ChainBuilder>;
+  asLongAsDuring(
+    arg0: Func<io.gatling.javaapi.core.Session, boolean | null>,
+    arg1: string,
+    arg2: string,
+    arg3: boolean
+  ): io.gatling.javaapi.core.loop.AsLongAsDuring$On<io.gatling.javaapi.core.ChainBuilder>;
+  asLongAsDuring(
+    arg0: Func<io.gatling.javaapi.core.Session, boolean | null>,
     arg1: java.time.Duration
   ): io.gatling.javaapi.core.loop.AsLongAsDuring$On<io.gatling.javaapi.core.ChainBuilder>;
   asLongAsDuring(
@@ -1047,6 +1067,26 @@ interface CoreDslStatic {
   doWhileDuring(
     arg0: string,
     arg1: long,
+    arg2: string,
+    arg3: boolean
+  ): io.gatling.javaapi.core.loop.DoWhileDuring$On<io.gatling.javaapi.core.ChainBuilder>;
+  doWhileDuring(
+    arg0: Func<io.gatling.javaapi.core.Session, boolean | null>,
+    arg1: string
+  ): io.gatling.javaapi.core.loop.DoWhileDuring$On<io.gatling.javaapi.core.ChainBuilder>;
+  doWhileDuring(
+    arg0: Func<io.gatling.javaapi.core.Session, boolean | null>,
+    arg1: string,
+    arg2: boolean
+  ): io.gatling.javaapi.core.loop.DoWhileDuring$On<io.gatling.javaapi.core.ChainBuilder>;
+  doWhileDuring(
+    arg0: Func<io.gatling.javaapi.core.Session, boolean | null>,
+    arg1: string,
+    arg2: string
+  ): io.gatling.javaapi.core.loop.DoWhileDuring$On<io.gatling.javaapi.core.ChainBuilder>;
+  doWhileDuring(
+    arg0: Func<io.gatling.javaapi.core.Session, boolean | null>,
+    arg1: string,
     arg2: string,
     arg3: boolean
   ): io.gatling.javaapi.core.loop.DoWhileDuring$On<io.gatling.javaapi.core.ChainBuilder>;
@@ -1900,8 +1940,22 @@ interface HttpDslStatic {
   Proxy(arg0: string, arg1: int): io.gatling.javaapi.http.Proxy;
   sse(arg0: string): io.gatling.javaapi.http.Sse;
   sse(arg0: string, arg1: string): io.gatling.javaapi.http.Sse;
+  sse(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, string>): io.gatling.javaapi.http.Sse;
+  sse(arg0: Func<io.gatling.javaapi.core.Session, string>): io.gatling.javaapi.http.Sse;
+  sse(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): io.gatling.javaapi.http.Sse;
+  sse(
+    arg0: Func<io.gatling.javaapi.core.Session, string>,
+    arg1: Func<io.gatling.javaapi.core.Session, string>
+  ): io.gatling.javaapi.http.Sse;
   ws(arg0: string): io.gatling.javaapi.http.Ws;
   ws(arg0: string, arg1: string): io.gatling.javaapi.http.Ws;
+  ws(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, string>): io.gatling.javaapi.http.Ws;
+  ws(arg0: Func<io.gatling.javaapi.core.Session, string>): io.gatling.javaapi.http.Ws;
+  ws(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): io.gatling.javaapi.http.Ws;
+  ws(
+    arg0: Func<io.gatling.javaapi.core.Session, string>,
+    arg1: Func<io.gatling.javaapi.core.Session, string>
+  ): io.gatling.javaapi.http.Ws;
   currentLocationRegex(
     arg0: Func<io.gatling.javaapi.core.Session, string>
   ): any /*io.gatling.javaapi.http.internal.HttpCheckBuilder$CurrentLocationRegex*/;
