@@ -304,17 +304,83 @@ export interface SseApply {
    * configuration
    *
    * @param name - the SSE request name, expressed as a Gatling Expression Language String
+   * @returns the next DSL step
+   */
+  (name: string): Sse;
+
+  /**
+   * Bootstrap a <a
+   * href="https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events">SSE</a> request
+   * configuration
+   *
+   * @param name - the SSE request name, expressed as a function
+   * @returns the next DSL step
+   */
+  (name: (session: Session) => string): Sse;
+
+  /**
+   * Bootstrap a <a
+   * href="https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events">SSE</a> request
+   * configuration
+   *
+   * @param name - the SSE request name, expressed as a Gatling Expression Language String
    * @param sseName - the name of the SSE stream so multiple SSE streams for the same virtual users
    *     don't conflict, expressed as a Gatling Expression Language String
    * @returns the next DSL step
    */
-  (name: string, sseName?: string): Sse;
+  (name: string, sseName: string): Sse;
+
+  /**
+   * Bootstrap a <a
+   * href="https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events">SSE</a> request
+   * configuration
+   *
+   * @param name - the SSE request name, expressed as a Gatling Expression Language String
+   * @param sseName - the name of the SSE stream so multiple SSE streams for the same virtual users
+   *     don't conflict, expressed as a function
+   * @returns the next DSL step
+   */
+  (name: string, sseName: (session: Session) => string): Sse;
+
+  /**
+   * Bootstrap a <a
+   * href="https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events">SSE</a> request
+   * configuration
+   *
+   * @param name - the SSE request name, expressed as a function
+   * @param sseName - the name of the SSE stream so multiple SSE streams for the same virtual users
+   *     don't conflict, expressed as a Gatling Expression Language String
+   * @returns the next DSL step
+   */
+  (name: (session: Session) => string, sseName: string): Sse;
+
+  /**
+   * Bootstrap a <a
+   * href="https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events">SSE</a> request
+   * configuration
+   *
+   * @param name - the SSE request name, expressed as a function
+   * @param sseName - the name of the SSE stream so multiple SSE streams for the same virtual users
+   *     don't conflict, expressed as a function
+   * @returns the next DSL step
+   */
+  (name: (session: Session) => string, sseName: (session: Session) => string): Sse;
 }
 
-const sseApply = (name: string, sseName?: string): Sse => {
-  // Handle overloading
-  const jvmSse = typeof sseName === "undefined" ? JvmHttpDsl.sse(name) : JvmHttpDsl.sse(name, sseName);
-  return wrapSse(jvmSse);
+const sseApply: SseApply = (name: string | SessionTo<string>, sseName?: string | SessionTo<string>): Sse => {
+  if (sseName === undefined) {
+    return wrapSse(typeof name === "function" ? JvmHttpDsl.sse(underlyingSessionTo(name)) : JvmHttpDsl.sse(name));
+  } else if (typeof name === "function") {
+    return wrapSse(
+      typeof sseName === "function"
+        ? JvmHttpDsl.sse(underlyingSessionTo(name), underlyingSessionTo(sseName))
+        : JvmHttpDsl.sse(underlyingSessionTo(name), sseName)
+    );
+  } else {
+    return wrapSse(
+      typeof sseName === "function" ? JvmHttpDsl.sse(name, underlyingSessionTo(sseName)) : JvmHttpDsl.sse(name, sseName)
+    );
+  }
 };
 
 export interface SseInboundMessage {
