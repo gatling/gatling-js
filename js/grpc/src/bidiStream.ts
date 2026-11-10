@@ -25,7 +25,6 @@ import { GrpcHeaders, wrapGrpcHeaders } from "./headers";
 import JvmDescriptorsDescriptor = com.google.protobuf.Descriptors$Descriptor;
 import JvmGrpcBidiStreamAwaitStreamEndActionBuilder = io.gatling.javaapi.grpc.GrpcBidiStreamAwaitStreamEndActionBuilder;
 import JvmGrpcBidirectionalStreamingServiceBuilder = io.gatling.javaapi.grpc.GrpcBidirectionalStreamingServiceBuilder;
-import { GrpcServerStreamAwaitStreamEndActionBuilder } from "./serverStream";
 
 export interface GrpcBidiStreamAwaitStreamEndActionBuilder extends ActionBuilder {}
 
@@ -65,12 +64,13 @@ export interface GrpcBidirectionalStreamingServiceBuilder extends GrpcHeaders<Gr
   processUnmatchedMessages(f: (messages: GrpcInboundMessage[], session: Session) => Session): ActionBuilder;
   awaitStreamEnd(): GrpcBidiStreamAwaitStreamEndActionBuilder;
   awaitStreamEnd(reconcile: (main: Session, forked: Session) => Session): GrpcBidiStreamAwaitStreamEndActionBuilder;
-  awaitStreamEndAndProcessUnmatchedMessages(
-    processUnmatchedMessages: (messages: GrpcInboundMessage[], session: Session) => Session
-  ): GrpcServerStreamAwaitStreamEndActionBuilder;
+  /**
+   * @param f - processes the unmatched messages, aware of the main Session and, optionally, of the stream's forked
+   *     Session to reconcile them: `(messages, main) => …` or `(messages, main, forked) => …`
+   */
   awaitStreamEndAndProcessUnmatchedMessages(
     f: (messages: GrpcInboundMessage[], main: Session, forked: Session) => Session
-  ): GrpcServerStreamAwaitStreamEndActionBuilder;
+  ): GrpcBidiStreamAwaitStreamEndActionBuilder;
   cancel(): ActionBuilder; // FIXME return type
 }
 
@@ -131,19 +131,11 @@ export const wrapGrpcBidirectionalStreamingServiceBuilder =
         ),
       awaitStreamEndAndProcessUnmatchedMessages: (f) =>
         wrapGrpcBidiStreamAwaitStreamEndActionBuilder(
-          f.length <= 2
-            ? _underlying.awaitStreamEndAndProcessUnmatchedMessages(
-                underlyingJvmXToXWithSessionToSession(
-                  f as (messages: GrpcInboundMessage[], session: Session) => Session,
-                  transformJvmInboundMessages
-                )
-              )
-            : _underlying.awaitStreamEndAndProcessUnmatchedMessages(
-                underlyingJvmXToXWithBiSessionToSession(
-                  f as (messages: GrpcInboundMessage[], main: Session, forked: Session) => Session,
-                  transformJvmInboundMessages
-                )
-              )
+          // always the reconcile-aware variant, so a function without the forked Session simply ignores it
+          // a JS function converts to both BiFunction and GrpcProcessMessagesAndReconcile, and GraalJS can't choose: select the overload explicitly
+          (_underlying as any)[
+            "awaitStreamEndAndProcessUnmatchedMessages(io.gatling.javaapi.grpc.GrpcProcessMessagesAndReconcile)"
+          ](underlyingJvmXToXWithBiSessionToSession(f, transformJvmInboundMessages))
         ),
       cancel: () => wrapActionBuilder(_underlying.cancel())
     };
