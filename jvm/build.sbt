@@ -20,7 +20,7 @@ val gatlingMqttVersion = "3.16.1-M2"
 val protocVersion = "4.35.1"
 
 // bit weird cause this is not a dependency of this project
-val gatlingEnterprisePluginCommonsVersion = "1.26.3"
+val gatlingEnterprisePluginCommonsVersion = "1.27.0"
 
 lazy val root = rootProject
   .enablePlugins(GatlingOssPlugin)
