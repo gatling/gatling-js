@@ -47,6 +47,29 @@ const mqttProtocol = mqtt
   .lastWill(LastWill("#{willTopic}", StringBody("#{willMessage}")).qosAtLeastOnce().retain(true))
   .lastWill(LastWill("#{willTopic}", ByteArrayBody([0])))
   .lastWill(LastWill("#{willTopic}", RawFileBody("file")))
+  .lastWill(
+    LastWill("#{willTopic}", StringBody("#{willMessage}"))
+      .userProperty("#{propName}", "#{propValue}")
+      .userProperty((session) => session.get<string>("propName"), "#{propValue}")
+      .userProperty("#{propName}", (session) => session.get<string>("propValue"))
+      .userProperty(
+        (session) => session.get<string>("propName"),
+        (session) => session.get<string>("propValue")
+      )
+      .contentType("application/json")
+      .contentType((session) => session.get<string>("contentType"))
+      .responseTopic("#{responseTopic}")
+      .responseTopic((session) => session.get<string>("responseTopic"))
+      .correlationData("#{correlationData}")
+      .correlationData((session) => session.get<string>("correlationData"))
+      .correlationDataBytes([1, 2, 3])
+      .correlationDataBytes((session) => [1, 2, 3])
+      .messageExpiryInterval(60)
+      .messageExpiryInterval({ amount: 1, unit: "minutes" })
+      .payloadFormatUtf8()
+      .delayInterval(5)
+      .delayInterval({ amount: 5, unit: "seconds" })
+  )
   .mqttVersion_3_1()
   .mqttVersion_3_1_1()
   .mqttVersion_5()
@@ -63,7 +86,24 @@ const mqttProtocol = mqtt
   .correlateBy(regex("{correlationId=(.*)}.*").find())
   .correlateBy(bodyString().transform((text) => text.substring(3)))
   .correlateBy(bodyBytes().transform((bytes) => bytes)) // FIXME new String(bytes, 0, 3, UTF_8)))
-  .unmatchedInboundMessageBufferSize(10);
+  .unmatchedInboundMessageBufferSize(10)
+  .sessionExpiryInterval(60)
+  .sessionExpiryInterval({ amount: 1, unit: "hours" })
+  .connectUserProperty("#{propName}", "#{propValue}")
+  .connectUserProperty((session) => session.get<string>("propName"), "#{propValue}")
+  .connectUserProperty("#{propName}", (session) => session.get<string>("propValue"))
+  .connectUserProperty(
+    (session) => session.get<string>("propName"),
+    (session) => session.get<string>("propValue")
+  )
+  .publishUserProperty("#{propName}", "#{propValue}")
+  .publishUserProperty((session) => session.get<string>("propName"), "#{propValue}")
+  .publishUserProperty("#{propName}", (session) => session.get<string>("propValue"))
+  .publishUserProperty(
+    (session) => session.get<string>("propName"),
+    (session) => session.get<string>("propValue")
+  )
+  .correlateByCorrelationData();
 
 const scn = scenario("scenario");
 
@@ -74,6 +114,19 @@ scenario("MQTT Test").exec(
   mqtt("Subscribing").subscribe("#{myTopic2}").await(1).check(jsonPath("$.error").notExists()),
   mqtt("Subscribing").subscribe("#{myTopic2}").await({ amount: 100, unit: "milliseconds" }),
   mqtt("Subscribing").subscribe("#{myTopic2}").expect(1).check(jsonPath("$.error").notExists()),
+  mqtt("Subscribing")
+    .subscribe("$share/group/#{myTopic}")
+    .noLocal()
+    .retainAsPublished()
+    .retainHandlingSendAtSubscribe()
+    .retainHandlingSendAtNewSubscribe()
+    .retainHandlingDontSend(),
+  mqtt("Subscribing").subscribe("#{myTopic}").subscriptionIdentifier(1),
+  mqtt("Subscribing").subscribe("#{myTopic}").subscriptionIdentifier("#{subscriptionId}"),
+  mqtt("Subscribing")
+    .subscribe("#{myTopic}")
+    .subscriptionIdentifier((session) => session.get<number>("subscriptionId"))
+    .expect(1),
   mqtt("Unsubscribing").unsubscribe("#{myTopic2}"),
   mqtt("Unsubscribing").unsubscribe((session) => session.get<string>("myTopic2")),
   mqtt("Publishing")
@@ -83,6 +136,28 @@ scenario("MQTT Test").exec(
     .qosAtLeastOnce()
     .qosExactlyOnce()
     .retain(true),
+  mqtt("Publishing")
+    .publish("#{myTopic}")
+    .message(StringBody("#{myTextPayload}"))
+    .userProperty("#{propName}", "#{propValue}")
+    .userProperty((session) => session.get<string>("propName"), "#{propValue}")
+    .userProperty("#{propName}", (session) => session.get<string>("propValue"))
+    .userProperty(
+      (session) => session.get<string>("propName"),
+      (session) => session.get<string>("propValue")
+    )
+    .contentType("application/json")
+    .contentType((session) => session.get<string>("contentType"))
+    .responseTopic("#{responseTopic}")
+    .responseTopic((session) => session.get<string>("responseTopic"))
+    .correlationData("#{correlationData}")
+    .correlationData((session) => session.get<string>("correlationData"))
+    .correlationDataBytes([1, 2, 3])
+    .correlationDataBytes((session) => [1, 2, 3])
+    .messageExpiryInterval(60)
+    .messageExpiryInterval({ amount: 1, unit: "minutes" })
+    .payloadFormatUtf8()
+    .await(1, "#{responseTopic}"),
   mqtt("Publishing").publish("#{myTopic}").message(ElFileBody("file")),
   mqtt("Publishing").publish("#{myTopic}").message(PebbleFileBody("file")),
   mqtt("Publishing").publish("#{myTopic}").message(ByteArrayBody("#{myBinaryPayload}")),
@@ -126,6 +201,12 @@ scenario("MQTT Test").exec(
   mqtt.waitForMessages().timeout({ amount: 100, unit: "milliseconds" }),
   mqtt.processUnmatchedMessages("topic", (messages, session: Session) =>
     messages.length > 0 ? session.set("lastMessage", messages[messages.length - 1].payloadUtf8String()) : session
+  ),
+  mqtt.processUnmatchedMessages("topic", (messages, session: Session) =>
+    session.set(
+      "subscriptionIds",
+      messages.flatMap((message) => message.subscriptionIdentifiers())
+    )
   )
 );
 

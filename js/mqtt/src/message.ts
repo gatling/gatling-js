@@ -62,6 +62,12 @@ export interface MqttInboundMessage {
   variableHeader(): MqttPublishVariableHeader;
   payload(): number[]; // FIXME Uint8Array after introducing textencoder/decoder?
   payloadUtf8String(): string;
+  /**
+   * MQTT 5 only: the Subscription Identifiers of this virtual user's subscriptions this message
+   * matched, empty if none of them has one. An array because a message can match several
+   * subscriptions.
+   */
+  subscriptionIdentifiers(): number[];
 }
 
 const wrapMqttInboundMessage = (jvmMessage: JvmMqttInboundMessage): MqttInboundMessage => ({
@@ -69,7 +75,9 @@ const wrapMqttInboundMessage = (jvmMessage: JvmMqttInboundMessage): MqttInboundM
   fixedHeader: () => wrapFixedHeader(jvmMessage.fixedHeader()),
   variableHeader: () => jvmMessage.variableHeader(),
   payload: () => jvmMessage.payload(), // FIXME Uint8Array after introducing textencoder/decoder?
-  payloadUtf8String: () => jvmMessage.payloadUtf8String()
+  payloadUtf8String: () => jvmMessage.payloadUtf8String(),
+  // copy the JVM list (array-like through GraalJS) into a JS array
+  subscriptionIdentifiers: () => Array.from(jvmMessage.subscriptionIdentifiers()) as number[]
 });
 
 export const wrapMqttInboundMessages = (jvmMessages: JvmMqttInboundMessage[]): MqttInboundMessage[] => {

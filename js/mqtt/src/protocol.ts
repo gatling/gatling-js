@@ -282,6 +282,104 @@ export interface MqttProtocolBuilder extends ProtocolBuilder {
    * @returns a new MqttProtocolBuilder instance
    */
   unmatchedInboundMessageBufferSize(max: number): MqttProtocolBuilder;
+
+  /**
+   * MQTT 5 only: define how long the broker keeps the session after the connection closes. When not
+   * set, the session expires with the connection, unless cleanSession is false, in which case it
+   * never expires, as with MQTT 3.1.1.
+   *
+   * @param interval - the session expiry interval
+   * @returns a new MqttProtocolBuilder instance
+   */
+  sessionExpiryInterval(interval: Duration): MqttProtocolBuilder;
+
+  /**
+   * MQTT 5 only: add a user property sent in CONNECT. Can be called several times, also with the
+   * same name.
+   *
+   * @param name - the property name, expressed as a Gatling Expression Language String
+   * @param value - the property value, expressed as a Gatling Expression Language String
+   * @returns a new MqttProtocolBuilder instance
+   */
+  connectUserProperty(name: string, value: string): MqttProtocolBuilder;
+
+  /**
+   * MQTT 5 only: add a user property sent in CONNECT. Can be called several times, also with the
+   * same name.
+   *
+   * @param name - the property name, expressed as a Gatling Expression Language String
+   * @param value - the property value, expressed as a function
+   * @returns a new MqttProtocolBuilder instance
+   */
+  connectUserProperty(name: string, value: (session: Session) => string): MqttProtocolBuilder;
+
+  /**
+   * MQTT 5 only: add a user property sent in CONNECT. Can be called several times, also with the
+   * same name.
+   *
+   * @param name - the property name, expressed as a function
+   * @param value - the property value, expressed as a Gatling Expression Language String
+   * @returns a new MqttProtocolBuilder instance
+   */
+  connectUserProperty(name: (session: Session) => string, value: string): MqttProtocolBuilder;
+
+  /**
+   * MQTT 5 only: add a user property sent in CONNECT. Can be called several times, also with the
+   * same name.
+   *
+   * @param name - the property name, expressed as a function
+   * @param value - the property value, expressed as a function
+   * @returns a new MqttProtocolBuilder instance
+   */
+  connectUserProperty(name: (session: Session) => string, value: (session: Session) => string): MqttProtocolBuilder;
+
+  /**
+   * MQTT 5 only: add a user property sent with every PUBLISH, before the publish's own ones. Can be
+   * called several times, also with the same name.
+   *
+   * @param name - the property name, expressed as a Gatling Expression Language String
+   * @param value - the property value, expressed as a Gatling Expression Language String
+   * @returns a new MqttProtocolBuilder instance
+   */
+  publishUserProperty(name: string, value: string): MqttProtocolBuilder;
+
+  /**
+   * MQTT 5 only: add a user property sent with every PUBLISH, before the publish's own ones. Can be
+   * called several times, also with the same name.
+   *
+   * @param name - the property name, expressed as a Gatling Expression Language String
+   * @param value - the property value, expressed as a function
+   * @returns a new MqttProtocolBuilder instance
+   */
+  publishUserProperty(name: string, value: (session: Session) => string): MqttProtocolBuilder;
+
+  /**
+   * MQTT 5 only: add a user property sent with every PUBLISH, before the publish's own ones. Can be
+   * called several times, also with the same name.
+   *
+   * @param name - the property name, expressed as a function
+   * @param value - the property value, expressed as a Gatling Expression Language String
+   * @returns a new MqttProtocolBuilder instance
+   */
+  publishUserProperty(name: (session: Session) => string, value: string): MqttProtocolBuilder;
+
+  /**
+   * MQTT 5 only: add a user property sent with every PUBLISH, before the publish's own ones. Can be
+   * called several times, also with the same name.
+   *
+   * @param name - the property name, expressed as a function
+   * @param value - the property value, expressed as a function
+   * @returns a new MqttProtocolBuilder instance
+   */
+  publishUserProperty(name: (session: Session) => string, value: (session: Session) => string): MqttProtocolBuilder;
+
+  /**
+   * MQTT 5 only: match responses with the publish expecting them on the Correlation Data property,
+   * which responders send back unchanged. Publishes with an expectation must set correlationData.
+   *
+   * @returns a new MqttProtocolBuilder instance
+   */
+  correlateByCorrelationData(): MqttProtocolBuilder;
 }
 
 const wrapMqttProtocolBuilder = (_underlying: JvmMqttProtocolBuilder): MqttProtocolBuilder => ({
@@ -387,7 +485,39 @@ const wrapMqttProtocolBuilder = (_underlying: JvmMqttProtocolBuilder): MqttProto
   },
 
   unmatchedInboundMessageBufferSize: (max) =>
-    wrapMqttProtocolBuilder(_underlying.unmatchedInboundMessageBufferSize(max))
+    wrapMqttProtocolBuilder(_underlying.unmatchedInboundMessageBufferSize(max)),
+
+  sessionExpiryInterval: (interval) => {
+    if (isDuration(interval)) {
+      return wrapMqttProtocolBuilder(_underlying.sessionExpiryInterval(toJvmDuration(interval)));
+    }
+
+    throw Error(`sessionExpiryInterval() called with invalid argument ${interval}`);
+  },
+
+  connectUserProperty: (name: Expression<string>, value: Expression<string>) =>
+    wrapMqttProtocolBuilder(
+      typeof name === "function"
+        ? typeof value === "function"
+          ? _underlying.connectUserProperty(underlyingSessionTo(name), underlyingSessionTo(value))
+          : _underlying.connectUserProperty(underlyingSessionTo(name), value)
+        : typeof value === "function"
+          ? _underlying.connectUserProperty(name, underlyingSessionTo(value))
+          : _underlying.connectUserProperty(name, value)
+    ),
+
+  publishUserProperty: (name: Expression<string>, value: Expression<string>) =>
+    wrapMqttProtocolBuilder(
+      typeof name === "function"
+        ? typeof value === "function"
+          ? _underlying.publishUserProperty(underlyingSessionTo(name), underlyingSessionTo(value))
+          : _underlying.publishUserProperty(underlyingSessionTo(name), value)
+        : typeof value === "function"
+          ? _underlying.publishUserProperty(name, underlyingSessionTo(value))
+          : _underlying.publishUserProperty(name, value)
+    ),
+
+  correlateByCorrelationData: () => wrapMqttProtocolBuilder(_underlying.correlateByCorrelationData())
 });
 
 export const mqttProtocolBuilder = wrapMqttProtocolBuilder(
