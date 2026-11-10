@@ -421,25 +421,33 @@ export const requestActionBuilderImpl = <T, J extends JvmRequestActionBuilder<J,
     clientSharedSecret: Expression<string>,
     token: Expression<string>,
     tokenSecret: Expression<string>
-  ): T =>
-    wrap(
+  ): T => {
+    if (
       typeof consumerKey === "function" &&
-        typeof clientSharedSecret === "function" &&
-        typeof token === "function" &&
-        typeof tokenSecret === "function"
-        ? jvmBuilder.signWithOAuth1(
-            underlyingSessionTo(consumerKey),
-            underlyingSessionTo(clientSharedSecret),
-            underlyingSessionTo(token),
-            underlyingSessionTo(tokenSecret)
-          )
-        : jvmBuilder.signWithOAuth1(
-            consumerKey as string,
-            clientSharedSecret as string,
-            token as string,
-            tokenSecret as string
-          )
-    )
+      typeof clientSharedSecret === "function" &&
+      typeof token === "function" &&
+      typeof tokenSecret === "function"
+    ) {
+      return wrap(
+        jvmBuilder.signWithOAuth1(
+          underlyingSessionTo(consumerKey),
+          underlyingSessionTo(clientSharedSecret),
+          underlyingSessionTo(token),
+          underlyingSessionTo(tokenSecret)
+        )
+      );
+    } else if (
+      typeof consumerKey === "string" &&
+      typeof clientSharedSecret === "string" &&
+      typeof token === "string" &&
+      typeof tokenSecret === "string"
+    ) {
+      return wrap(jvmBuilder.signWithOAuth1(consumerKey, clientSharedSecret, token, tokenSecret));
+    }
+    throw Error(
+      `signWithOAuth1() called with invalid argument types ${typeof consumerKey}, ${typeof clientSharedSecret}, ${typeof token}, ${typeof tokenSecret}: they must be either all strings or all functions`
+    );
+  }
 });
 
 export interface RequestWithBodyActionBuilder<T> {
