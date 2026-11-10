@@ -5,6 +5,8 @@ import {
   Duration,
   Expression,
   Session,
+  asByteArray,
+  asByteArrayFunction,
   isDuration,
   toJvmDuration,
   underlyingSessionTo
@@ -107,6 +109,123 @@ export interface PublishActionBuilder extends ActionBuilder {
    */
   retain(retain: boolean): PublishActionBuilder;
 
+  /**
+   * MQTT 5 only: add a user property. Can be called several times, also with the same name.
+   *
+   * @param name - the property name, expressed as a Gatling Expression Language String
+   * @param value - the property value, expressed as a Gatling Expression Language String
+   * @returns a new ActionBuilder instance
+   */
+  userProperty(name: string, value: string): PublishActionBuilder;
+
+  /**
+   * MQTT 5 only: add a user property. Can be called several times, also with the same name.
+   *
+   * @param name - the property name, expressed as a Gatling Expression Language String
+   * @param value - the property value, expressed as a function
+   * @returns a new ActionBuilder instance
+   */
+  userProperty(name: string, value: (session: Session) => string): PublishActionBuilder;
+
+  /**
+   * MQTT 5 only: add a user property. Can be called several times, also with the same name.
+   *
+   * @param name - the property name, expressed as a function
+   * @param value - the property value, expressed as a Gatling Expression Language String
+   * @returns a new ActionBuilder instance
+   */
+  userProperty(name: (session: Session) => string, value: string): PublishActionBuilder;
+
+  /**
+   * MQTT 5 only: add a user property. Can be called several times, also with the same name.
+   *
+   * @param name - the property name, expressed as a function
+   * @param value - the property value, expressed as a function
+   * @returns a new ActionBuilder instance
+   */
+  userProperty(name: (session: Session) => string, value: (session: Session) => string): PublishActionBuilder;
+
+  /**
+   * MQTT 5 only: set the content type.
+   *
+   * @param contentType - the content type, expressed as a Gatling Expression Language String
+   * @returns a new ActionBuilder instance
+   */
+  contentType(contentType: string): PublishActionBuilder;
+
+  /**
+   * MQTT 5 only: set the content type.
+   *
+   * @param contentType - the content type, expressed as a function
+   * @returns a new ActionBuilder instance
+   */
+  contentType(contentType: (session: Session) => string): PublishActionBuilder;
+
+  /**
+   * MQTT 5 only: set the response topic.
+   *
+   * @param responseTopic - the response topic, expressed as a Gatling Expression Language String
+   * @returns a new ActionBuilder instance
+   */
+  responseTopic(responseTopic: string): PublishActionBuilder;
+
+  /**
+   * MQTT 5 only: set the response topic.
+   *
+   * @param responseTopic - the response topic, expressed as a function
+   * @returns a new ActionBuilder instance
+   */
+  responseTopic(responseTopic: (session: Session) => string): PublishActionBuilder;
+
+  /**
+   * MQTT 5 only: set the correlation data, encoded in UTF-8.
+   *
+   * @param correlationData - the correlation data, expressed as a Gatling Expression Language String
+   * @returns a new ActionBuilder instance
+   */
+  correlationData(correlationData: string): PublishActionBuilder;
+
+  /**
+   * MQTT 5 only: set the correlation data, encoded in UTF-8.
+   *
+   * @param correlationData - the correlation data, expressed as a function
+   * @returns a new ActionBuilder instance
+   */
+  correlationData(correlationData: (session: Session) => string): PublishActionBuilder;
+
+  /**
+   * MQTT 5 only: set the correlation data.
+   *
+   * @param correlationData - the correlation data bytes
+   * @returns a new ActionBuilder instance
+   */
+  correlationDataBytes(correlationData: number[]): PublishActionBuilder;
+
+  /**
+   * MQTT 5 only: set the correlation data.
+   *
+   * @param correlationData - the correlation data bytes, expressed as a function
+   * @returns a new ActionBuilder instance
+   */
+  correlationDataBytes(correlationData: (session: Session) => number[]): PublishActionBuilder;
+
+  /**
+   * MQTT 5 only: set how long the broker keeps the message for subscribers that haven't received it
+   * yet.
+   *
+   * @param interval - the message expiry interval
+   * @returns a new ActionBuilder instance
+   */
+  messageExpiryInterval(interval: Duration): PublishActionBuilder;
+
+  /**
+   * MQTT 5 only: set the Payload Format Indicator, meaning the payload is UTF-8 encoded text.
+   * Brokers may validate it, and refuse the message with PAYLOAD_FORMAT_INVALID otherwise.
+   *
+   * @returns a new ActionBuilder instance
+   */
+  payloadFormatUtf8(): PublishActionBuilder;
+
   // Checkable
 
   /**
@@ -178,6 +297,49 @@ const wrapPublishActionBuilder = (_underlying: JvmPublishActionBuilder): Publish
   qosExactlyOnce: () => wrapPublishActionBuilder(_underlying.qosExactlyOnce()),
 
   retain: (retain) => wrapPublishActionBuilder(_underlying.retain(retain)),
+
+  userProperty: (name: Expression<string>, value: Expression<string>) =>
+    wrapPublishActionBuilder(
+      typeof name === "function"
+        ? typeof value === "function"
+          ? _underlying.userProperty(underlyingSessionTo(name), underlyingSessionTo(value))
+          : _underlying.userProperty(underlyingSessionTo(name), value)
+        : typeof value === "function"
+          ? _underlying.userProperty(name, underlyingSessionTo(value))
+          : _underlying.userProperty(name, value)
+    ),
+  contentType: (contentType: Expression<string>) =>
+    wrapPublishActionBuilder(
+      typeof contentType === "function"
+        ? _underlying.contentType(underlyingSessionTo(contentType))
+        : _underlying.contentType(contentType)
+    ),
+  responseTopic: (responseTopic: Expression<string>) =>
+    wrapPublishActionBuilder(
+      typeof responseTopic === "function"
+        ? _underlying.responseTopic(underlyingSessionTo(responseTopic))
+        : _underlying.responseTopic(responseTopic)
+    ),
+  correlationData: (correlationData: Expression<string>) =>
+    wrapPublishActionBuilder(
+      typeof correlationData === "function"
+        ? _underlying.correlationData(underlyingSessionTo(correlationData))
+        : _underlying.correlationData(correlationData)
+    ),
+  correlationDataBytes: (correlationData: Expression<number[]>) =>
+    wrapPublishActionBuilder(
+      typeof correlationData === "function"
+        ? _underlying.correlationDataBytes(asByteArrayFunction(underlyingSessionTo(correlationData)))
+        : _underlying.correlationDataBytes(asByteArray(correlationData))
+    ),
+  messageExpiryInterval: (interval) => {
+    if (isDuration(interval)) {
+      return wrapPublishActionBuilder(_underlying.messageExpiryInterval(toJvmDuration(interval)));
+    }
+
+    throw Error(`messageExpiryInterval() called with invalid argument ${interval}`);
+  },
+  payloadFormatUtf8: () => wrapPublishActionBuilder(_underlying.payloadFormatUtf8()),
 
   // Checkable
 
