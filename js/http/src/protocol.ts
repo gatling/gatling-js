@@ -1029,13 +1029,15 @@ export const wrapHttpProtocolBuilder = (_underlying: JvmHttpProtocolBuilder): Ht
     token: Expression<string>,
     tokenSecret: Expression<string>,
     useAuthorizationHeader?: boolean
-  ): HttpProtocolBuilder =>
-    wrapHttpProtocolBuilder(
+  ): HttpProtocolBuilder => {
+    if (
       typeof consumerKey === "function" &&
-        typeof clientSharedSecret === "function" &&
-        typeof token === "function" &&
-        typeof tokenSecret === "function"
-        ? typeof useAuthorizationHeader !== "undefined"
+      typeof clientSharedSecret === "function" &&
+      typeof token === "function" &&
+      typeof tokenSecret === "function"
+    ) {
+      return wrapHttpProtocolBuilder(
+        typeof useAuthorizationHeader !== "undefined"
           ? _underlying.signWithOAuth1(
               underlyingSessionTo(consumerKey),
               underlyingSessionTo(clientSharedSecret),
@@ -1049,21 +1051,23 @@ export const wrapHttpProtocolBuilder = (_underlying: JvmHttpProtocolBuilder): Ht
               underlyingSessionTo(token),
               underlyingSessionTo(tokenSecret)
             )
-        : typeof useAuthorizationHeader !== "undefined"
-          ? _underlying.signWithOAuth1(
-              consumerKey as string,
-              clientSharedSecret as string,
-              token as string,
-              tokenSecret as string,
-              useAuthorizationHeader
-            )
-          : _underlying.signWithOAuth1(
-              consumerKey as string,
-              clientSharedSecret as string,
-              token as string,
-              tokenSecret as string
-            )
-    ),
+      );
+    } else if (
+      typeof consumerKey === "string" &&
+      typeof clientSharedSecret === "string" &&
+      typeof token === "string" &&
+      typeof tokenSecret === "string"
+    ) {
+      return wrapHttpProtocolBuilder(
+        typeof useAuthorizationHeader !== "undefined"
+          ? _underlying.signWithOAuth1(consumerKey, clientSharedSecret, token, tokenSecret, useAuthorizationHeader)
+          : _underlying.signWithOAuth1(consumerKey, clientSharedSecret, token, tokenSecret)
+      );
+    }
+    throw Error(
+      `signWithOAuth1() called with invalid argument types ${typeof consumerKey}, ${typeof clientSharedSecret}, ${typeof token}, ${typeof tokenSecret}: they must be either all strings or all functions`
+    );
+  },
   enableHttp2: (): HttpProtocolBuilder => wrapHttpProtocolBuilder(_underlying.enableHttp2()),
   http2PriorKnowledge: (remotes: Record<string, boolean>): HttpProtocolBuilder =>
     wrapHttpProtocolBuilder(_underlying.http2PriorKnowledge(remotes)),

@@ -275,6 +275,8 @@ export const doWhileDuringImpl =
             jvmDoWhileDuring.doWhileDuring(condition, underlyingSessionToDuration(duration), arg2, arg3),
             wrap
           );
+        } else if (typeof duration === "string") {
+          return wrapOn(jvmDoWhileDuring.doWhileDuring(condition, duration, arg2, arg3), wrap);
         }
       }
     } else if (typeof arg2 === "string") {
@@ -294,6 +296,8 @@ export const doWhileDuringImpl =
           return wrapOn(jvmDoWhileDuring.doWhileDuring(condition, toJvmDuration(duration), arg2), wrap);
         } else if (typeof duration === "function") {
           return wrapOn(jvmDoWhileDuring.doWhileDuring(condition, underlyingSessionToDuration(duration), arg2), wrap);
+        } else if (typeof duration === "string") {
+          return wrapOn(jvmDoWhileDuring.doWhileDuring(condition, duration, arg2), wrap);
         }
       }
     } else if (typeof arg2 === "boolean") {
@@ -313,6 +317,8 @@ export const doWhileDuringImpl =
           return wrapOn(jvmDoWhileDuring.doWhileDuring(condition, toJvmDuration(duration), arg2), wrap);
         } else if (typeof duration === "function") {
           return wrapOn(jvmDoWhileDuring.doWhileDuring(condition, underlyingSessionToDuration(duration), arg2), wrap);
+        } else if (typeof duration === "string") {
+          return wrapOn(jvmDoWhileDuring.doWhileDuring(condition, duration, arg2), wrap);
         }
       }
     } else if (arg2 === undefined) {
@@ -329,6 +335,8 @@ export const doWhileDuringImpl =
           return wrapOn(jvmDoWhileDuring.doWhileDuring(condition, toJvmDuration(duration)), wrap);
         } else if (typeof duration === "function") {
           return wrapOn(jvmDoWhileDuring.doWhileDuring(condition, underlyingSessionToDuration(duration)), wrap);
+        } else if (typeof duration === "string") {
+          return wrapOn(jvmDoWhileDuring.doWhileDuring(condition, duration), wrap);
         }
       }
     }
