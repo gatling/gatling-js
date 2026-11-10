@@ -66,10 +66,6 @@ export interface GrpcServerStreamingServiceBuilder extends GrpcHeaders<GrpcServe
   processUnmatchedMessages(f: (messages: GrpcInboundMessage[], session: Session) => Session): ActionBuilder;
   awaitStreamEnd(): GrpcServerStreamAwaitStreamEndActionBuilder;
   awaitStreamEnd(reconcile: (main: Session, forked: Session) => Session): GrpcServerStreamAwaitStreamEndActionBuilder;
-  /**
-   * @param f - processes the unmatched messages, aware of the main Session and, optionally, of the stream's forked
-   *     Session to reconcile them: `(messages, main) => …` or `(messages, main, forked) => …`
-   */
   awaitStreamEndAndProcessUnmatchedMessages(
     f: (messages: GrpcInboundMessage[], main: Session, forked: Session) => Session
   ): GrpcServerStreamAwaitStreamEndActionBuilder;
