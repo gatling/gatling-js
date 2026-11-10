@@ -133,6 +133,13 @@ const chain = exec(
   ws("Close WS").close(),
   ws("Close WS").close(1000, "Bye"),
   ws("Open Named", "foo").connect("/bar"),
+  ws((session) => "Open").connect("/bar"),
+  ws("Open Named", (session) => "foo").connect("/bar"),
+  ws((session) => "Open Named", "foo").connect("/bar"),
+  ws(
+    (session) => "Open Named",
+    (session) => "foo"
+  ).connect("/bar"),
   ws("SendTextMessageWithElFileBody").sendText(ElFileBody("pathToSomeFile")),
   ws("SendTextMessageWithPebbleStringBody").sendText(PebbleStringBody("somePebbleString")),
   ws("SendTextMessageWithPebbleFileBody").sendText(PebbleFileBody("pathToSomeFile")),

@@ -631,16 +631,73 @@ export interface WsApply {
    * Bootstrap a WebSocket request configuration
    *
    * @param name - the WebSocket request name, expressed as a Gatling Expression Language String
+   * @returns the next DSL step
+   */
+  (name: string): Ws;
+
+  /**
+   * Bootstrap a WebSocket request configuration
+   *
+   * @param name - the WebSocket request name, expressed as a function
+   * @returns the next DSL step
+   */
+  (name: (session: Session) => string): Ws;
+
+  /**
+   * Bootstrap a WebSocket request configuration
+   *
+   * @param name - the WebSocket request name, expressed as a Gatling Expression Language String
    * @param wsName - the name of the WebSocket so multiple WebSockets for the same virtual users don't
    *     conflict, expressed as a Gatling Expression Language String
    * @returns the next DSL step
    */
-  (name: string, wsName?: string): Ws;
+  (name: string, wsName: string): Ws;
+
+  /**
+   * Bootstrap a WebSocket request configuration
+   *
+   * @param name - the WebSocket request name, expressed as a Gatling Expression Language String
+   * @param wsName - the name of the WebSocket so multiple WebSockets for the same virtual users don't
+   *     conflict, expressed as a function
+   * @returns the next DSL step
+   */
+  (name: string, wsName: (session: Session) => string): Ws;
+
+  /**
+   * Bootstrap a WebSocket request configuration
+   *
+   * @param name - the WebSocket request name, expressed as a function
+   * @param wsName - the name of the WebSocket so multiple WebSockets for the same virtual users don't
+   *     conflict, expressed as a Gatling Expression Language String
+   * @returns the next DSL step
+   */
+  (name: (session: Session) => string, wsName: string): Ws;
+
+  /**
+   * Bootstrap a WebSocket request configuration
+   *
+   * @param name - the WebSocket request name, expressed as a function
+   * @param wsName - the name of the WebSocket so multiple WebSockets for the same virtual users don't
+   *     conflict, expressed as a function
+   * @returns the next DSL step
+   */
+  (name: (session: Session) => string, wsName: (session: Session) => string): Ws;
 }
 
-const wsApply: WsApply = (name, wsName) => {
-  const jvmWs = wsName === undefined ? JvmHttpDsl.ws(name) : JvmHttpDsl.ws(name, wsName);
-  return wrapWs(jvmWs);
+const wsApply: WsApply = (name: string | SessionTo<string>, wsName?: string | SessionTo<string>): Ws => {
+  if (wsName === undefined) {
+    return wrapWs(typeof name === "function" ? JvmHttpDsl.ws(underlyingSessionTo(name)) : JvmHttpDsl.ws(name));
+  } else if (typeof name === "function") {
+    return wrapWs(
+      typeof wsName === "function"
+        ? JvmHttpDsl.ws(underlyingSessionTo(name), underlyingSessionTo(wsName))
+        : JvmHttpDsl.ws(underlyingSessionTo(name), wsName)
+    );
+  } else {
+    return wrapWs(
+      typeof wsName === "function" ? JvmHttpDsl.ws(name, underlyingSessionTo(wsName)) : JvmHttpDsl.ws(name, wsName)
+    );
+  }
 };
 
 export const ws: WsApply & WsPrefix = Object.assign(wsApply, wsPrefix);
