@@ -238,6 +238,56 @@ export interface DoWhileDuringFunction<T extends DoWhileDuring<T>> {
    * @returns a DSL component for defining the loop content
    */
   (condition: SessionTo<boolean>, duration: SessionTo<Duration>, counterName: string, exitASAP: boolean): On<T>;
+
+  /**
+   * Define a loop that will iterate as long as the condition holds true and a maximum duration
+   * isn't reached. The condition is evaluated at the end of the loop.
+   *
+   * @param condition - the condition, expressed as a function
+   * @param duration - the maximum duration, expressed as a Gatling Expression Language String that
+   *     must either evaluate to an integer number of seconds or an object with an explicit time unit
+   * @returns a DSL component for defining the loop content
+   */
+  (condition: SessionTo<boolean>, duration: string): On<T>;
+
+  /**
+   * Define a loop that will iterate as long as the condition holds true and a maximum duration
+   * isn't reached. The condition is evaluated at the end of the loop.
+   *
+   * @param condition - the condition, expressed as a function
+   * @param duration - the maximum duration, expressed as a Gatling Expression Language String that
+   *     must either evaluate to an integer number of seconds or an object with an explicit time unit
+   * @param counterName - the name of the loop counter, as stored in the Session
+   * @returns a DSL component for defining the loop content
+   */
+  (condition: SessionTo<boolean>, duration: string, counterName: string): On<T>;
+
+  /**
+   * Define a loop that will iterate as long as the condition holds true and a maximum duration
+   * isn't reached. The condition is evaluated at the end of the loop.
+   *
+   * @param condition - the condition, expressed as a function
+   * @param duration - the maximum duration, expressed as a Gatling Expression Language String that
+   *     must either evaluate to an integer number of seconds or an object with an explicit time unit
+   * @param exitASAP - if the loop must be interrupted if the condition becomes false or the maximum duration is reached
+   * inside the loop
+   * @returns a DSL component for defining the loop content
+   */
+  (condition: SessionTo<boolean>, duration: string, exitASAP: boolean): On<T>;
+
+  /**
+   * Define a loop that will iterate as long as the condition holds true and a maximum duration
+   * isn't reached. The condition is evaluated at the end of the loop.
+   *
+   * @param condition - the condition, expressed as a function
+   * @param duration - the maximum duration, expressed as a Gatling Expression Language String that
+   *     must either evaluate to an integer number of seconds or an object with an explicit time unit
+   * @param counterName - the name of the loop counter, as stored in the Session
+   * @param exitASAP - if the loop must be interrupted if the condition becomes false or the maximum duration is reached
+   * inside the loop
+   * @returns a DSL component for defining the loop content
+   */
+  (condition: SessionTo<boolean>, duration: string, counterName: string, exitASAP: boolean): On<T>;
 }
 
 export interface DoWhileDuring<T extends DoWhileDuring<T>> {
@@ -266,6 +316,8 @@ export const doWhileDuringImpl =
             jvmDoWhileDuring.doWhileDuring(wrappedCondition, underlyingSessionToDuration(duration), arg2, arg3),
             wrap
           );
+        } else if (typeof duration === "string") {
+          return wrapOn(jvmDoWhileDuring.doWhileDuring(wrappedCondition, duration, arg2, arg3), wrap);
         }
       } else {
         if (isDuration(duration)) {
@@ -290,6 +342,8 @@ export const doWhileDuringImpl =
             jvmDoWhileDuring.doWhileDuring(wrappedCondition, underlyingSessionToDuration(duration), arg2),
             wrap
           );
+        } else if (typeof duration === "string") {
+          return wrapOn(jvmDoWhileDuring.doWhileDuring(wrappedCondition, duration, arg2), wrap);
         }
       } else {
         if (isDuration(duration)) {
@@ -311,6 +365,8 @@ export const doWhileDuringImpl =
             jvmDoWhileDuring.doWhileDuring(wrappedCondition, underlyingSessionToDuration(duration), arg2),
             wrap
           );
+        } else if (typeof duration === "string") {
+          return wrapOn(jvmDoWhileDuring.doWhileDuring(wrappedCondition, duration, arg2), wrap);
         }
       } else {
         if (isDuration(duration)) {
@@ -329,6 +385,8 @@ export const doWhileDuringImpl =
           return wrapOn(jvmDoWhileDuring.doWhileDuring(wrappedCondition, toJvmDuration(duration)), wrap);
         } else if (typeof duration === "function") {
           return wrapOn(jvmDoWhileDuring.doWhileDuring(wrappedCondition, underlyingSessionToDuration(duration)), wrap);
+        } else if (typeof duration === "string") {
+          return wrapOn(jvmDoWhileDuring.doWhileDuring(wrappedCondition, duration), wrap);
         }
       } else {
         if (isDuration(duration)) {
