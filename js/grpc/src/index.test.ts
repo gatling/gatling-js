@@ -181,6 +181,12 @@ const serverStreaming = scenario("name")
   .exec(serverStream.send((_: Session) => ({ sample })))
   .exec(serverStream.awaitStreamEnd())
   .exec(serverStream.awaitStreamEnd((_: Session, forked: Session) => forked))
+  .exec(serverStream.awaitStreamEndAndProcessUnmatchedMessages((messages, main) => main.set("count", messages.length)))
+  .exec(
+    serverStream.awaitStreamEndAndProcessUnmatchedMessages((messages, main, forked) =>
+      forked.set("count", messages.length)
+    )
+  )
   .exec(serverStream.cancel());
 
 const clientStream = grpc("streamRequestName")
@@ -289,7 +295,13 @@ const bidiStreaming = scenario("name")
   .exec(bidiStream.cancel())
   .exec(bidiStream.halfClose())
   .exec(bidiStream.awaitStreamEnd())
-  .exec(bidiStream.awaitStreamEnd((_: Session, forked: Session) => forked));
+  .exec(bidiStream.awaitStreamEnd((_: Session, forked: Session) => forked))
+  .exec(bidiStream.awaitStreamEndAndProcessUnmatchedMessages((messages, main) => main.set("count", messages.length)))
+  .exec(
+    bidiStream.awaitStreamEndAndProcessUnmatchedMessages((messages, main, forked) =>
+      forked.set("count", messages.length)
+    )
+  );
 
 runSimulationMock((setUp) => {
   setUp(
