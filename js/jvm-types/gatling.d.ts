@@ -435,6 +435,26 @@ declare namespace io.gatling.javaapi.core {
       arg3: boolean
     ): io.gatling.javaapi.core.loop.AsLongAsDuring$On<T>;
     asLongAsDuring<T>(
+      arg0: Func<Session, boolean | null>,
+      arg1: string
+    ): io.gatling.javaapi.core.loop.AsLongAsDuring$On<T>;
+    asLongAsDuring<T>(
+      arg0: Func<Session, boolean | null>,
+      arg1: string,
+      arg2: boolean
+    ): io.gatling.javaapi.core.loop.AsLongAsDuring$On<T>;
+    asLongAsDuring<T>(
+      arg0: Func<Session, boolean | null>,
+      arg1: string,
+      arg2: string
+    ): io.gatling.javaapi.core.loop.AsLongAsDuring$On<T>;
+    asLongAsDuring<T>(
+      arg0: Func<Session, boolean | null>,
+      arg1: string,
+      arg2: string,
+      arg3: boolean
+    ): io.gatling.javaapi.core.loop.AsLongAsDuring$On<T>;
+    asLongAsDuring<T>(
       arg0: string,
       arg1: Func<Session, java.time.Duration>
     ): io.gatling.javaapi.core.loop.AsLongAsDuring$On<T>;
@@ -602,6 +622,26 @@ declare namespace io.gatling.javaapi.core {
     doWhileDuring<T>(
       arg0: Func<Session, boolean | null>,
       arg1: long,
+      arg2: string,
+      arg3: boolean
+    ): io.gatling.javaapi.core.loop.DoWhileDuring$On<T>;
+    doWhileDuring<T>(
+      arg0: Func<Session, boolean | null>,
+      arg1: string
+    ): io.gatling.javaapi.core.loop.DoWhileDuring$On<T>;
+    doWhileDuring<T>(
+      arg0: Func<Session, boolean | null>,
+      arg1: string,
+      arg2: boolean
+    ): io.gatling.javaapi.core.loop.DoWhileDuring$On<T>;
+    doWhileDuring<T>(
+      arg0: Func<Session, boolean | null>,
+      arg1: string,
+      arg2: string
+    ): io.gatling.javaapi.core.loop.DoWhileDuring$On<T>;
+    doWhileDuring<T>(
+      arg0: Func<Session, boolean | null>,
+      arg1: string,
       arg2: string,
       arg3: boolean
     ): io.gatling.javaapi.core.loop.DoWhileDuring$On<T>;
@@ -1187,6 +1227,26 @@ declare namespace io.gatling.javaapi.core {
       arg3: boolean
     ): io.gatling.javaapi.core.loop.AsLongAsDuring$On<T>;
     asLongAsDuring<T>(
+      arg0: Func<Session, boolean | null>,
+      arg1: string
+    ): io.gatling.javaapi.core.loop.AsLongAsDuring$On<T>;
+    asLongAsDuring<T>(
+      arg0: Func<Session, boolean | null>,
+      arg1: string,
+      arg2: boolean
+    ): io.gatling.javaapi.core.loop.AsLongAsDuring$On<T>;
+    asLongAsDuring<T>(
+      arg0: Func<Session, boolean | null>,
+      arg1: string,
+      arg2: string
+    ): io.gatling.javaapi.core.loop.AsLongAsDuring$On<T>;
+    asLongAsDuring<T>(
+      arg0: Func<Session, boolean | null>,
+      arg1: string,
+      arg2: string,
+      arg3: boolean
+    ): io.gatling.javaapi.core.loop.AsLongAsDuring$On<T>;
+    asLongAsDuring<T>(
       arg0: string,
       arg1: Func<Session, java.time.Duration>
     ): io.gatling.javaapi.core.loop.AsLongAsDuring$On<T>;
@@ -1354,6 +1414,26 @@ declare namespace io.gatling.javaapi.core {
     doWhileDuring<T>(
       arg0: Func<Session, boolean | null>,
       arg1: long,
+      arg2: string,
+      arg3: boolean
+    ): io.gatling.javaapi.core.loop.DoWhileDuring$On<T>;
+    doWhileDuring<T>(
+      arg0: Func<Session, boolean | null>,
+      arg1: string
+    ): io.gatling.javaapi.core.loop.DoWhileDuring$On<T>;
+    doWhileDuring<T>(
+      arg0: Func<Session, boolean | null>,
+      arg1: string,
+      arg2: boolean
+    ): io.gatling.javaapi.core.loop.DoWhileDuring$On<T>;
+    doWhileDuring<T>(
+      arg0: Func<Session, boolean | null>,
+      arg1: string,
+      arg2: string
+    ): io.gatling.javaapi.core.loop.DoWhileDuring$On<T>;
+    doWhileDuring<T>(
+      arg0: Func<Session, boolean | null>,
+      arg1: string,
       arg2: string,
       arg3: boolean
     ): io.gatling.javaapi.core.loop.DoWhileDuring$On<T>;
@@ -1713,6 +1793,26 @@ declare namespace io.gatling.javaapi.core {
       arg3: boolean
     ): io.gatling.javaapi.core.loop.AsLongAsDuring$On<T>;
     asLongAsDuring(
+      arg0: Func<Session, boolean | null>,
+      arg1: string
+    ): io.gatling.javaapi.core.loop.AsLongAsDuring$On<T>;
+    asLongAsDuring(
+      arg0: Func<Session, boolean | null>,
+      arg1: string,
+      arg2: boolean
+    ): io.gatling.javaapi.core.loop.AsLongAsDuring$On<T>;
+    asLongAsDuring(
+      arg0: Func<Session, boolean | null>,
+      arg1: string,
+      arg2: string
+    ): io.gatling.javaapi.core.loop.AsLongAsDuring$On<T>;
+    asLongAsDuring(
+      arg0: Func<Session, boolean | null>,
+      arg1: string,
+      arg2: string,
+      arg3: boolean
+    ): io.gatling.javaapi.core.loop.AsLongAsDuring$On<T>;
+    asLongAsDuring(
       arg0: string,
       arg1: Func<Session, java.time.Duration>
     ): io.gatling.javaapi.core.loop.AsLongAsDuring$On<T>;
@@ -1880,6 +1980,23 @@ declare namespace io.gatling.javaapi.core {
     doWhileDuring(
       arg0: Func<Session, boolean | null>,
       arg1: long,
+      arg2: string,
+      arg3: boolean
+    ): io.gatling.javaapi.core.loop.DoWhileDuring$On<T>;
+    doWhileDuring(arg0: Func<Session, boolean | null>, arg1: string): io.gatling.javaapi.core.loop.DoWhileDuring$On<T>;
+    doWhileDuring(
+      arg0: Func<Session, boolean | null>,
+      arg1: string,
+      arg2: boolean
+    ): io.gatling.javaapi.core.loop.DoWhileDuring$On<T>;
+    doWhileDuring(
+      arg0: Func<Session, boolean | null>,
+      arg1: string,
+      arg2: string
+    ): io.gatling.javaapi.core.loop.DoWhileDuring$On<T>;
+    doWhileDuring(
+      arg0: Func<Session, boolean | null>,
+      arg1: string,
       arg2: string,
       arg3: boolean
     ): io.gatling.javaapi.core.loop.DoWhileDuring$On<T>;
@@ -2895,6 +3012,23 @@ declare namespace io.gatling.javaapi.core.loop {
       arg2: string,
       arg3: boolean
     ): AsLongAsDuring$On<T>;
+    asLongAsDuring(arg0: Func<io.gatling.javaapi.core.Session, boolean | null>, arg1: string): AsLongAsDuring$On<T>;
+    asLongAsDuring(
+      arg0: Func<io.gatling.javaapi.core.Session, boolean | null>,
+      arg1: string,
+      arg2: boolean
+    ): AsLongAsDuring$On<T>;
+    asLongAsDuring(
+      arg0: Func<io.gatling.javaapi.core.Session, boolean | null>,
+      arg1: string,
+      arg2: string
+    ): AsLongAsDuring$On<T>;
+    asLongAsDuring(
+      arg0: Func<io.gatling.javaapi.core.Session, boolean | null>,
+      arg1: string,
+      arg2: string,
+      arg3: boolean
+    ): AsLongAsDuring$On<T>;
     asLongAsDuring(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, java.time.Duration>): AsLongAsDuring$On<T>;
     asLongAsDuring(
       arg0: string,
@@ -2990,6 +3124,23 @@ declare namespace io.gatling.javaapi.core.loop {
     doWhileDuring(
       arg0: Func<io.gatling.javaapi.core.Session, boolean | null>,
       arg1: long,
+      arg2: string,
+      arg3: boolean
+    ): DoWhileDuring$On<T>;
+    doWhileDuring(arg0: Func<io.gatling.javaapi.core.Session, boolean | null>, arg1: string): DoWhileDuring$On<T>;
+    doWhileDuring(
+      arg0: Func<io.gatling.javaapi.core.Session, boolean | null>,
+      arg1: string,
+      arg2: boolean
+    ): DoWhileDuring$On<T>;
+    doWhileDuring(
+      arg0: Func<io.gatling.javaapi.core.Session, boolean | null>,
+      arg1: string,
+      arg2: string
+    ): DoWhileDuring$On<T>;
+    doWhileDuring(
+      arg0: Func<io.gatling.javaapi.core.Session, boolean | null>,
+      arg1: string,
       arg2: string,
       arg3: boolean
     ): DoWhileDuring$On<T>;
@@ -4119,6 +4270,7 @@ declare namespace io.gatling.javaapi.http {
       arg0: Func<io.gatling.javaapi.core.Session, string>,
       arg1: java.util.List<any /*java.lang.Object*/>
     ): T;
+    multivaluedFormParam<T>(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): T;
     multivaluedFormParam<T>(
       arg0: string,
       arg1: Func<io.gatling.javaapi.core.Session, java.util.List<any /*java.lang.Object*/>>
@@ -4358,6 +4510,7 @@ declare namespace io.gatling.javaapi.http {
       arg0: Func<io.gatling.javaapi.core.Session, string>,
       arg1: java.util.List<any /*java.lang.Object*/>
     ): T;
+    multivaluedFormParam(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): T;
     multivaluedFormParam(
       arg0: string,
       arg1: Func<io.gatling.javaapi.core.Session, java.util.List<any /*java.lang.Object*/>>
@@ -4530,6 +4683,7 @@ declare namespace io.gatling.javaapi.http {
       arg0: Func<io.gatling.javaapi.core.Session, string>,
       arg1: java.util.List<any /*java.lang.Object*/>
     ): T;
+    multivaluedFormParam<T>(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): T;
     multivaluedFormParam<T>(
       arg0: string,
       arg1: Func<io.gatling.javaapi.core.Session, java.util.List<any /*java.lang.Object*/>>
@@ -5554,6 +5708,8 @@ declare namespace io.gatling.javaapi.kafka {
       arg0: Func<io.gatling.javaapi.core.Session, string>,
       arg1: Func<io.gatling.javaapi.core.Session, string>
     ): RequestReplyActionBuilder$Base;
+    requestReply(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): RequestReplyActionBuilder$Base;
+    requestReply(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, string>): RequestReplyActionBuilder$Base;
     requestReply(arg0: string, arg1: string): RequestReplyActionBuilder$Base;
     send(arg0: Func<io.gatling.javaapi.core.Session, string>): SendActionBuilder$Base;
     send(arg0: string): SendActionBuilder$Base;
@@ -5626,6 +5782,11 @@ declare namespace io.gatling.javaapi.kafka {
     decodeJsonSchemaReply(): RequestReplyActionBuilder;
     decodeProtobufReply(): RequestReplyActionBuilder;
     equals(arg0: any /*java.lang.Object*/): boolean;
+    header(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: Func<io.gatling.javaapi.core.Session, string>
+    ): RequestReplyActionBuilder;
+    header(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): RequestReplyActionBuilder;
     header(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, string>): RequestReplyActionBuilder;
     header(arg0: string, arg1: string): RequestReplyActionBuilder;
     key(arg0: Func<io.gatling.javaapi.core.Session, string>): RequestReplyActionBuilder;
@@ -5637,7 +5798,42 @@ declare namespace io.gatling.javaapi.kafka {
     partition(arg0: string): RequestReplyActionBuilder;
     replyTimeout(arg0: java.time.Duration): RequestReplyActionBuilder;
     replyTimeout(arg0: long): RequestReplyActionBuilder;
+    subscribe(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: Func<io.gatling.javaapi.core.Session, string>,
+      arg2: Func<io.gatling.javaapi.core.Session, string>
+    ): RequestReplyActionBuilder;
+    subscribe(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: Func<io.gatling.javaapi.core.Session, string>,
+      arg2: string
+    ): RequestReplyActionBuilder;
+    subscribe(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: string,
+      arg2: Func<io.gatling.javaapi.core.Session, string>
+    ): RequestReplyActionBuilder;
+    subscribe(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: string,
+      arg2: string
+    ): RequestReplyActionBuilder;
     subscribe(arg0: SubscribeActionBuilder): RequestReplyActionBuilder;
+    subscribe(
+      arg0: string,
+      arg1: Func<io.gatling.javaapi.core.Session, string>,
+      arg2: Func<io.gatling.javaapi.core.Session, string>
+    ): RequestReplyActionBuilder;
+    subscribe(
+      arg0: string,
+      arg1: Func<io.gatling.javaapi.core.Session, string>,
+      arg2: string
+    ): RequestReplyActionBuilder;
+    subscribe(
+      arg0: string,
+      arg1: string,
+      arg2: Func<io.gatling.javaapi.core.Session, string>
+    ): RequestReplyActionBuilder;
     subscribe(arg0: string, arg1: string, arg2: string): RequestReplyActionBuilder;
     toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
     toString(): string;
@@ -5662,6 +5858,11 @@ declare namespace io.gatling.javaapi.kafka {
   class SendActionBuilder /* extends java.lang.Object implements io.gatling.javaapi.core.ActionBuilder*/ {
     asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
     equals(arg0: any /*java.lang.Object*/): boolean;
+    header(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: Func<io.gatling.javaapi.core.Session, string>
+    ): SendActionBuilder;
+    header(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string): SendActionBuilder;
     header(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, string>): SendActionBuilder;
     header(arg0: string, arg1: string): SendActionBuilder;
     key(arg0: Func<io.gatling.javaapi.core.Session, string>): SendActionBuilder;
@@ -5671,7 +5872,30 @@ declare namespace io.gatling.javaapi.kafka {
     partition(arg0: Func<io.gatling.javaapi.core.Session, int | null>): SendActionBuilder;
     partition(arg0: int): SendActionBuilder;
     partition(arg0: string): SendActionBuilder;
+    subscribe(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: Func<io.gatling.javaapi.core.Session, string>,
+      arg2: Func<io.gatling.javaapi.core.Session, string>
+    ): SendActionBuilder;
+    subscribe(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: Func<io.gatling.javaapi.core.Session, string>,
+      arg2: string
+    ): SendActionBuilder;
+    subscribe(
+      arg0: Func<io.gatling.javaapi.core.Session, string>,
+      arg1: string,
+      arg2: Func<io.gatling.javaapi.core.Session, string>
+    ): SendActionBuilder;
+    subscribe(arg0: Func<io.gatling.javaapi.core.Session, string>, arg1: string, arg2: string): SendActionBuilder;
     subscribe(arg0: SubscribeActionBuilder): SendActionBuilder;
+    subscribe(
+      arg0: string,
+      arg1: Func<io.gatling.javaapi.core.Session, string>,
+      arg2: Func<io.gatling.javaapi.core.Session, string>
+    ): SendActionBuilder;
+    subscribe(arg0: string, arg1: Func<io.gatling.javaapi.core.Session, string>, arg2: string): SendActionBuilder;
+    subscribe(arg0: string, arg1: string, arg2: Func<io.gatling.javaapi.core.Session, string>): SendActionBuilder;
     subscribe(arg0: string, arg1: string, arg2: string): SendActionBuilder;
     toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
     toString(): string;
