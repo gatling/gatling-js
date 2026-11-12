@@ -14,6 +14,7 @@ import { ThrottleStep } from "./throttling";
 export { asJava } from "./gatlingJvm/collections";
 export { asByteArray, asByteArrayFunction, asByteArrayMap } from "./gatlingJvm/byteArrays";
 export { readResourceAsBytes, readResourceAsString } from "./gatlingJvm/resources";
+export { shared } from "./gatlingJvm/shared";
 export * from "./utils/duration";
 export * from "./assertions";
 export * from "./body";
