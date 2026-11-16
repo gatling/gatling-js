@@ -5,6 +5,7 @@ import {
   Duration,
   Expression,
   Session,
+  SessionTo,
   SessionTransform,
   asJava,
   toJvmDuration,
@@ -167,7 +168,7 @@ export const graphQlRequestActionBuilderBaseImpl = <T, J extends JvmGraphQlReque
         : jvmBuilder.endpoint(endpoint)
     ),
   check: (...checks: CheckBuilder[]): T => wrap(jvmBuilder.check(checks.map((c: CheckBuilder) => c._underlying))),
-  checkIf: (condition: Expression<boolean>): Condition<T> =>
+  checkIf: (condition: string | SessionTo<boolean>): Condition<T> =>
     wrapCondition(
       typeof condition === "function"
         ? jvmBuilder.checkIf(underlyingSessionTo(condition))
