@@ -3365,6 +3365,13 @@ declare namespace io.gatling.javaapi.graphql {
     asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
     check<T>(...arg0: io.gatling.javaapi.core.CheckBuilder[]): T;
     check<T>(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): T;
+    checkIf(
+      arg0: BiFunction<io.gatling.http.response.Response, io.gatling.javaapi.core.Session, boolean | null>
+    ): any; /*io.gatling.javaapi.graphql.GraphQlRequestActionBuilderBase$Condition*/
+    checkIf(
+      arg0: Func<io.gatling.javaapi.core.Session, boolean | null>
+    ): any; /*io.gatling.javaapi.graphql.GraphQlRequestActionBuilderBase$Condition*/
+    checkIf(arg0: string): any; /*io.gatling.javaapi.graphql.GraphQlRequestActionBuilderBase$Condition*/
     endpoint<T>(arg0: Func<io.gatling.javaapi.core.Session, string>): T;
     endpoint<T>(arg0: string): T;
     equals(arg0: any /*java.lang.Object*/): boolean;
@@ -3426,6 +3433,13 @@ declare namespace io.gatling.javaapi.graphql {
     asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
     check<T>(...arg0: io.gatling.javaapi.core.CheckBuilder[]): T;
     check<T>(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): T;
+    checkIf(
+      arg0: BiFunction<io.gatling.http.response.Response, io.gatling.javaapi.core.Session, boolean | null>
+    ): any; /*io.gatling.javaapi.graphql.GraphQlRequestActionBuilderBase$Condition*/
+    checkIf(
+      arg0: Func<io.gatling.javaapi.core.Session, boolean | null>
+    ): any; /*io.gatling.javaapi.graphql.GraphQlRequestActionBuilderBase$Condition*/
+    checkIf(arg0: string): any; /*io.gatling.javaapi.graphql.GraphQlRequestActionBuilderBase$Condition*/
     endpoint<T>(arg0: Func<io.gatling.javaapi.core.Session, string>): T;
     endpoint<T>(arg0: string): T;
     equals(arg0: any /*java.lang.Object*/): boolean;
@@ -3459,6 +3473,13 @@ declare namespace io.gatling.javaapi.graphql {
     asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
     check(...arg0: io.gatling.javaapi.core.CheckBuilder[]): T;
     check(arg0: java.util.List<io.gatling.javaapi.core.CheckBuilder>): T;
+    checkIf(
+      arg0: BiFunction<io.gatling.http.response.Response, io.gatling.javaapi.core.Session, boolean | null>
+    ): any; /*io.gatling.javaapi.graphql.GraphQlRequestActionBuilderBase$Condition*/
+    checkIf(
+      arg0: Func<io.gatling.javaapi.core.Session, boolean | null>
+    ): any; /*io.gatling.javaapi.graphql.GraphQlRequestActionBuilderBase$Condition*/
+    checkIf(arg0: string): any; /*io.gatling.javaapi.graphql.GraphQlRequestActionBuilderBase$Condition*/
     endpoint(arg0: Func<io.gatling.javaapi.core.Session, string>): T;
     endpoint(arg0: string): T;
     equals(arg0: any /*java.lang.Object*/): boolean;
@@ -3513,8 +3534,10 @@ declare namespace io.gatling.javaapi.graphql {
     connectionInitPayload(arg0: string, arg1: any /*java.lang.Object*/): GraphQlWsConnectActionBuilder;
     connectionInitPayload(arg0: string, arg1: string): GraphQlWsConnectActionBuilder;
     connectionInitPayloadJson(arg0: string): GraphQlWsConnectActionBuilder;
+    endpoint(arg0: Func<io.gatling.javaapi.core.Session, string>): GraphQlWsConnectActionBuilder;
     endpoint(arg0: string): GraphQlWsConnectActionBuilder;
     equals(arg0: any /*java.lang.Object*/): boolean;
+    requestName(arg0: Func<io.gatling.javaapi.core.Session, string>): GraphQlWsConnectActionBuilder;
     requestName(arg0: string): GraphQlWsConnectActionBuilder;
     toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
     toString(): string;
@@ -3545,6 +3568,7 @@ declare namespace io.gatling.javaapi.graphql {
     awaitNext(arg0: java.time.Duration, arg1: int): GraphQlWsSubscribeActionBuilder;
     equals(arg0: any /*java.lang.Object*/): boolean;
     operationName(arg0: string): GraphQlWsSubscribeActionBuilder;
+    requestName(arg0: Func<io.gatling.javaapi.core.Session, string>): GraphQlWsSubscribeActionBuilder;
     requestName(arg0: string): GraphQlWsSubscribeActionBuilder;
     subscriptionName(arg0: string): GraphQlWsSubscribeActionBuilder;
     toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
@@ -3566,6 +3590,7 @@ declare namespace io.gatling.javaapi.graphql {
   class GraphQlWsUnsubscribeActionBuilder /* extends java.lang.Object implements io.gatling.javaapi.core.ActionBuilder*/ {
     asScala(): any; /*io.gatling.core.action.builder.ActionBuilder*/
     equals(arg0: any /*java.lang.Object*/): boolean;
+    requestName(arg0: Func<io.gatling.javaapi.core.Session, string>): GraphQlWsUnsubscribeActionBuilder;
     requestName(arg0: string): GraphQlWsUnsubscribeActionBuilder;
     toChainBuilder(): io.gatling.javaapi.core.ChainBuilder;
     toString(): string;
