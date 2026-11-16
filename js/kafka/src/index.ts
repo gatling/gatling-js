@@ -9,6 +9,7 @@ import {
 } from "@gatling.io/core";
 
 import { ConsumeActionBuilder } from "./consume";
+import { toJvmStringExpression } from "./internal";
 import { KafkaProtocolBuilder, wrapKafkaProtocolBuilder } from "./protocol";
 import { RequestReplyActionBuilder } from "./requestReply";
 import { SendActionBuilder } from "./send";
@@ -58,6 +59,28 @@ export interface KafkaBuilder {
    * @returns the next DSL step
    */
   requestReply(requestTopic: string, replyTopic: string): RequestReplyActionBuilder.Base;
+
+  /**
+   * Create a builder for actions that send a record to a Kafka topic and wait for its reply on
+   * another one
+   *
+   * @param requestTopic - the name of the topic to send the request to, expressed as a Gatling
+   *     Expression Language String
+   * @param replyTopic - the name of the topic to read the reply from, expressed as a function
+   * @returns the next DSL step
+   */
+  requestReply(requestTopic: string, replyTopic: (session: Session) => string): RequestReplyActionBuilder.Base;
+
+  /**
+   * Create a builder for actions that send a record to a Kafka topic and wait for its reply on
+   * another one
+   *
+   * @param requestTopic - the name of the topic to send the request to, expressed as a function
+   * @param replyTopic - the name of the topic to read the reply from, expressed as a Gatling
+   *     Expression Language String
+   * @returns the next DSL step
+   */
+  requestReply(requestTopic: (session: Session) => string, replyTopic: string): RequestReplyActionBuilder.Base;
 
   /**
    * Create a builder for actions that send a record to a Kafka topic and wait for its reply on
@@ -116,16 +139,10 @@ const wrapKafkaBuilder = (_underlying: JvmKafkaBuilder): KafkaBuilder => ({
     SendActionBuilder.wrapBase(
       typeof topic === "function" ? _underlying.send(underlyingSessionTo(topic)) : _underlying.send(topic)
     ),
-  requestReply: (requestTopic: Expression<string>, replyTopic: Expression<string>) => {
-    if (typeof requestTopic === "function" && typeof replyTopic === "function") {
-      return RequestReplyActionBuilder.wrapBase(
-        _underlying.requestReply(underlyingSessionTo(requestTopic), underlyingSessionTo(replyTopic))
-      );
-    } else if (typeof requestTopic === "string" && typeof replyTopic === "string") {
-      return RequestReplyActionBuilder.wrapBase(_underlying.requestReply(requestTopic, replyTopic));
-    }
-    throw Error(`requestReply() called with invalid arguments ${requestTopic}, ${replyTopic}`);
-  },
+  requestReply: (requestTopic: Expression<string>, replyTopic: Expression<string>) =>
+    RequestReplyActionBuilder.wrapBase(
+      _underlying.requestReply(toJvmStringExpression(requestTopic), toJvmStringExpression(replyTopic))
+    ),
   consume: (topic: Expression<string>) =>
     ConsumeActionBuilder.wrapBase(
       typeof topic === "function" ? _underlying.consume(underlyingSessionTo(topic)) : _underlying.consume(topic)

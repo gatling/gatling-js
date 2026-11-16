@@ -92,7 +92,12 @@ const scn = scenario("scenario").exec(
     .send("topic")
     .value(StringBody("value"))
     .header("correlationId", "#{correlationId}")
-    .header("type", (session) => "order"),
+    .header("type", (session) => "order")
+    .header((session) => "source", "gatling")
+    .header(
+      (session) => "trace",
+      (session) => session.get<string>("traceId")
+    ),
   kafka("send to partition").send("topic").value(StringBody("value")).partition(1),
   kafka("send to partition expression").send("topic").value(StringBody("value")).partition("#{partition}"),
   kafka("send to partition function")
@@ -164,6 +169,12 @@ const scn = scenario("scenario").exec(
     .check(bodyString().exists())
     .replyTimeout({ amount: 5, unit: "seconds" })
     .replyTimeout(5),
+  kafka("request reply mixed")
+    .requestReply("requests", (session) => session.get<string>("replyTopic"))
+    .value(StringBody("value")),
+  kafka("request reply mixed 2")
+    .requestReply((session) => session.get<string>("requestTopic"), "replies")
+    .value(StringBody("value")),
   kafka("pipeline latency")
     .consume("enriched-orders")
     .correlationId("#{orderId}")
@@ -198,7 +209,20 @@ const scn = scenario("scenario").exec(
     .value(StringBody('{"id": "#{orderId}"}'))
     .subscribe("order enriched", "enriched-orders", "#{orderId}")
     .subscribe(kafka("order shipped").subscribe("shipped-orders").correlationId("#{orderId}"))
+    .subscribe(
+      (session) => "order billed",
+      "billed-orders",
+      (session) => session.get<string>("orderId")
+    )
     .check(bodyString().exists()),
+  kafka("send with subscription functions")
+    .send("orders")
+    .value(StringBody('{"id": "#{orderId}"}'))
+    .subscribe(
+      "order enriched",
+      (session) => session.get<string>("topic"),
+      (session) => session.get<string>("orderId")
+    ),
   kafka.poll()
 );
 

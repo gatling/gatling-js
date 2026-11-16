@@ -1,5 +1,6 @@
-import { ActionBuilder, Body } from "@gatling.io/core";
+import { ActionBuilder, Body, Expression } from "@gatling.io/core";
 
+import { toJvmStringExpression } from "./internal";
 import { KafkaRecordBuilder, kafkaRecordBuilderImpl } from "./record";
 import { SchemaBody } from "./schemaBody";
 import { SubscribeActionBuilder } from "./subscribe";
@@ -45,12 +46,18 @@ export interface SendActionBuilder extends ActionBuilder, KafkaRecordBuilder<Sen
    * because of this one, without blocking the virtual user, which polls later with kafka.poll()
    *
    * @param requestName - the subscription's name, expressed as a Gatling Expression Language String
-   * @param topic - the name of the topic, expressed as a Gatling Expression Language String
+   *     or a function
+   * @param topic - the name of the topic, expressed as a Gatling Expression Language String or a
+   *     function
    * @param correlationId - the record's correlation id, expressed as a Gatling Expression Language
-   *     String
+   *     String or a function
    * @returns a new ActionBuilder instance
    */
-  subscribe(requestName: string, topic: string, correlationId: string): SendActionBuilder;
+  subscribe(
+    requestName: Expression<string>,
+    topic: Expression<string>,
+    correlationId: Expression<string>
+  ): SendActionBuilder;
 
   /**
    * Start waiting, before sending, for a record another part of the system produces because of this
@@ -65,10 +72,18 @@ export interface SendActionBuilder extends ActionBuilder, KafkaRecordBuilder<Sen
 const wrapSendActionBuilder = (_underlying: JvmSendActionBuilder): SendActionBuilder => ({
   _underlying,
   ...kafkaRecordBuilderImpl(_underlying, wrapSendActionBuilder),
-  subscribe: (requestNameOrSubscription: string | SubscribeActionBuilder, topic?: string, correlationId?: string) =>
+  subscribe: (
+    requestNameOrSubscription: Expression<string> | SubscribeActionBuilder,
+    topic?: Expression<string>,
+    correlationId?: Expression<string>
+  ) =>
     wrapSendActionBuilder(
-      typeof requestNameOrSubscription === "string"
-        ? _underlying.subscribe(requestNameOrSubscription, topic!, correlationId!)
-        : _underlying.subscribe(requestNameOrSubscription._underlying as any)
+      topic === undefined
+        ? _underlying.subscribe((requestNameOrSubscription as SubscribeActionBuilder)._underlying as any)
+        : _underlying.subscribe(
+            toJvmStringExpression(requestNameOrSubscription as Expression<string>),
+            toJvmStringExpression(topic),
+            toJvmStringExpression(correlationId!)
+          )
     )
 });
