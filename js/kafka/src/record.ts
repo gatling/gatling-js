@@ -1,5 +1,6 @@
 import { Body, Expression, Session, SessionTo, Wrapper, underlyingSessionTo } from "@gatling.io/core";
 
+import { toJvmStringExpression } from "./internal";
 import { SchemaBody } from "./schemaBody";
 
 import { Body as JvmBodyClass } from "@gatling.io/jvm-types";
@@ -70,6 +71,24 @@ export interface KafkaRecordBuilder<T> {
   header(name: string, value: (session: Session) => string): T;
 
   /**
+   * Add a header to the record
+   *
+   * @param name - the header name, expressed as a function
+   * @param value - the header value, expressed as a Gatling Expression Language String
+   * @returns a new ActionBuilder instance
+   */
+  header(name: (session: Session) => string, value: string): T;
+
+  /**
+   * Add a header to the record
+   *
+   * @param name - the header name, expressed as a function
+   * @param value - the header value, expressed as a function
+   * @returns a new ActionBuilder instance
+   */
+  header(name: (session: Session) => string, value: (session: Session) => string): T;
+
+  /**
    * Send the record to a given partition, instead of the one the producer's partitioner picks
    *
    * @param partition - the partition
@@ -100,7 +119,7 @@ const isWrapper = (value: unknown): value is Wrapper<unknown> =>
 
 interface JvmKafkaRecordBuilder<J> {
   key(key: any): J;
-  header(name: string, value: any): J;
+  header(name: any, value: any): J;
   partition(partition: any): J;
 }
 
@@ -120,12 +139,8 @@ export const kafkaRecordBuilderImpl = <J, T>(
             : _underlying.key(key._underlying)
           : _underlying.key(underlyingSessionTo(key as SessionTo<string>))
     ),
-  header: (name: string, value: Expression<string>): T =>
-    wrap(
-      typeof value === "function"
-        ? _underlying.header(name, underlyingSessionTo(value))
-        : _underlying.header(name, value)
-    ),
+  header: (name: Expression<string>, value: Expression<string>): T =>
+    wrap(_underlying.header(toJvmStringExpression(name), toJvmStringExpression(value))),
   partition: (partition: Expression<number> | string): T =>
     wrap(
       typeof partition === "function"
