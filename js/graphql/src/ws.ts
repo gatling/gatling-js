@@ -2,6 +2,7 @@ import {
   ActionBuilder,
   CheckBuilder,
   Duration,
+  Expression,
   Session,
   SessionTo,
   SessionTransform,
@@ -9,6 +10,7 @@ import {
   asJava,
   isSessionTo,
   toJvmDuration,
+  underlyingSessionTo,
   underlyingSessionToJava,
   underlyingSessionTransform,
   wrapActionBuilder
@@ -40,12 +42,28 @@ export interface GraphQlWsConnectActionBuilder extends ActionBuilder {
   requestName(name: string): GraphQlWsConnectActionBuilder;
 
   /**
+   * Override the request name
+   *
+   * @param name - the request name, expressed as a function
+   * @returns a new GraphQlWsConnectActionBuilder instance
+   */
+  requestName(name: (session: Session) => string): GraphQlWsConnectActionBuilder;
+
+  /**
    * Override the wsEndpoint defined in the protocol configuration
    *
    * @param endpoint - the endpoint, expressed as a Gatling Expression Language String
    * @returns a new GraphQlWsConnectActionBuilder instance
    */
   endpoint(endpoint: string): GraphQlWsConnectActionBuilder;
+
+  /**
+   * Override the wsEndpoint defined in the protocol configuration
+   *
+   * @param endpoint - the endpoint, expressed as a function
+   * @returns a new GraphQlWsConnectActionBuilder instance
+   */
+  endpoint(endpoint: (session: Session) => string): GraphQlWsConnectActionBuilder;
 
   /**
    * Set an entry of the connection_init payload, typically for passing credentials
@@ -114,8 +132,16 @@ export const wrapGraphQlWsConnectActionBuilder = (
   _underlying: JvmGraphQlWsConnectActionBuilder
 ): GraphQlWsConnectActionBuilder => ({
   _underlying,
-  requestName: (name: string) => wrapGraphQlWsConnectActionBuilder(_underlying.requestName(name)),
-  endpoint: (endpoint: string) => wrapGraphQlWsConnectActionBuilder(_underlying.endpoint(endpoint)),
+  requestName: (name: Expression<string>) =>
+    wrapGraphQlWsConnectActionBuilder(
+      typeof name === "function" ? _underlying.requestName(underlyingSessionTo(name)) : _underlying.requestName(name)
+    ),
+  endpoint: (endpoint: Expression<string>) =>
+    wrapGraphQlWsConnectActionBuilder(
+      typeof endpoint === "function"
+        ? _underlying.endpoint(underlyingSessionTo(endpoint))
+        : _underlying.endpoint(endpoint)
+    ),
   connectionInitPayload: (nameOrPayload: any, value?: any) =>
     wrapGraphQlWsConnectActionBuilder(
       typeof nameOrPayload === "string"
@@ -203,6 +229,14 @@ export interface GraphQlWsSubscribeActionBuilder extends ActionBuilder, WithVari
   requestName(name: string): GraphQlWsSubscribeActionBuilder;
 
   /**
+   * Override the request name
+   *
+   * @param name - the request name, expressed as a function
+   * @returns a new GraphQlWsSubscribeActionBuilder instance
+   */
+  requestName(name: (session: Session) => string): GraphQlWsSubscribeActionBuilder;
+
+  /**
    * Select the operation to execute when the document contains multiple operations, sent as the
    * operationName of the subscribe message payload. Defaults to the name of the operation of the
    * document, if any.
@@ -243,7 +277,10 @@ export const wrapGraphQlWsSubscribeActionBuilder = (
 ): GraphQlWsSubscribeActionBuilder => ({
   _underlying,
   ...withVariables(_underlying, wrapGraphQlWsSubscribeActionBuilder),
-  requestName: (name: string) => wrapGraphQlWsSubscribeActionBuilder(_underlying.requestName(name)),
+  requestName: (name: Expression<string>) =>
+    wrapGraphQlWsSubscribeActionBuilder(
+      typeof name === "function" ? _underlying.requestName(underlyingSessionTo(name)) : _underlying.requestName(name)
+    ),
   operationName: (name: string) => wrapGraphQlWsSubscribeActionBuilder(_underlying.operationName(name)),
   subscriptionName: (name: string) => wrapGraphQlWsSubscribeActionBuilder(_underlying.subscriptionName(name)),
   await: (timeout: Duration) => GraphQlWsSubscribeActionBuilder.wrapAwait(_underlying.await(toJvmDuration(timeout))),
@@ -264,13 +301,24 @@ export interface GraphQlWsUnsubscribeActionBuilder extends ActionBuilder {
    * @returns a new GraphQlWsUnsubscribeActionBuilder instance
    */
   requestName(name: string): GraphQlWsUnsubscribeActionBuilder;
+
+  /**
+   * Override the request name, defaults to "subscription &lt;name&gt; complete"
+   *
+   * @param name - the request name, expressed as a function
+   * @returns a new GraphQlWsUnsubscribeActionBuilder instance
+   */
+  requestName(name: (session: Session) => string): GraphQlWsUnsubscribeActionBuilder;
 }
 
 export const wrapGraphQlWsUnsubscribeActionBuilder = (
   _underlying: JvmGraphQlWsUnsubscribeActionBuilder
 ): GraphQlWsUnsubscribeActionBuilder => ({
   _underlying,
-  requestName: (name: string) => wrapGraphQlWsUnsubscribeActionBuilder(_underlying.requestName(name))
+  requestName: (name: Expression<string>) =>
+    wrapGraphQlWsUnsubscribeActionBuilder(
+      typeof name === "function" ? _underlying.requestName(underlyingSessionTo(name)) : _underlying.requestName(name)
+    )
 });
 
 /**
