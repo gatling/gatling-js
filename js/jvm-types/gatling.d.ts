@@ -5963,6 +5963,8 @@ declare namespace io.gatling.javaapi.mqtt {
 } // end namespace io.gatling.javaapi.mqtt
 declare namespace io.gatling.javaapi.mqtt {
   class Mqtt /* extends MqttProtocolBuilder*/ {
+    asyncNameResolution<T>(...arg0: string[]): T;
+    asyncNameResolution<T>(arg0: any /*java.net.InetSocketAddress*/[]): T;
     broker<T>(arg0: string, arg1: int): T;
     cleanSession<T>(arg0: boolean): T;
     clientId<T>(arg0: Func<io.gatling.javaapi.core.Session, string>): T;
@@ -5995,6 +5997,7 @@ declare namespace io.gatling.javaapi.mqtt {
     perUserKeyManagerFactory<T>(arg0: Func<long | null, any /*javax.net.ssl.KeyManagerFactory*/>): T;
     perUserKeyManagerFactory<T>(arg0: string): T;
     perUserKeyManagerFactory<T>(arg0: string, arg1: string): T;
+    perUserNameResolution<T>(): T;
     processUnmatchedMessages(
       arg0: string,
       arg1: BiFunction<
@@ -6056,6 +6059,8 @@ declare namespace io.gatling.javaapi.mqtt {
 } // end namespace io.gatling.javaapi.mqtt
 declare namespace io.gatling.javaapi.mqtt {
   class MqttProtocolBuilder /* extends MqttProtocolBuilderBase<any, any> implements io.gatling.javaapi.core.ProtocolBuilder*/ {
+    asyncNameResolution<T>(...arg0: string[]): T;
+    asyncNameResolution<T>(arg0: any /*java.net.InetSocketAddress*/[]): T;
     broker<T>(arg0: string, arg1: int): T;
     cleanSession<T>(arg0: boolean): T;
     clientId<T>(arg0: Func<io.gatling.javaapi.core.Session, string>): T;
@@ -6088,6 +6093,7 @@ declare namespace io.gatling.javaapi.mqtt {
     perUserKeyManagerFactory<T>(arg0: Func<long | null, any /*javax.net.ssl.KeyManagerFactory*/>): T;
     perUserKeyManagerFactory<T>(arg0: string): T;
     perUserKeyManagerFactory<T>(arg0: string, arg1: string): T;
+    perUserNameResolution<T>(): T;
     protocol(): any; /*io.gatling.core.protocol.Protocol*/
     publishUserProperty<T>(
       arg0: Func<io.gatling.javaapi.core.Session, string>,

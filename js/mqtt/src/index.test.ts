@@ -21,6 +21,9 @@ const runSimulationMock = (_: Simulation): void => {};
 
 const mqttProtocol = mqtt
   .broker("localhost", 1883)
+  .asyncNameResolution()
+  .asyncNameResolution("8.8.8.8", "1.1.1.1:53")
+  .perUserNameResolution()
   .useTls(false)
   //.perUserKeyManagerFactory(
   //  session -> {

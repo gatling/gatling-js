@@ -45,6 +45,23 @@ export interface MqttProtocolBuilder extends ProtocolBuilder {
   broker(hostname: string, port: number): MqttProtocolBuilder;
 
   /**
+   * Resolve the broker hostname with Gatling's non-blocking DNS resolver instead of Java's blocking
+   * one. Uses the system's DNS servers when none are provided.
+   *
+   * @param dnsServers - the DNS servers, as "host" or "host:port"
+   * @returns a new MqttProtocolBuilder instance
+   */
+  asyncNameResolution(...dnsServers: string[]): MqttProtocolBuilder;
+
+  /**
+   * Give each virtual user its own DNS cache, so each one resolves the broker hostname like a real
+   * device, instead of sharing the resolutions. Only applies with asyncNameResolution.
+   *
+   * @returns a new MqttProtocolBuilder instance
+   */
+  perUserNameResolution(): MqttProtocolBuilder;
+
+  /**
    * Use TLS
    *
    * @param useTls - true to enable TLS
@@ -390,6 +407,11 @@ const wrapMqttProtocolBuilder = (_underlying: JvmMqttProtocolBuilder): MqttProto
   mqttVersion_5: () => wrapMqttProtocolBuilder(_underlying.mqttVersion_5()),
 
   broker: (hostname, port): MqttProtocolBuilder => wrapMqttProtocolBuilder(_underlying.broker(hostname, port)),
+
+  asyncNameResolution: (...dnsServers: string[]): MqttProtocolBuilder =>
+    wrapMqttProtocolBuilder(_underlying.asyncNameResolution(...dnsServers)),
+
+  perUserNameResolution: (): MqttProtocolBuilder => wrapMqttProtocolBuilder(_underlying.perUserNameResolution()),
 
   useTls: (useTls): MqttProtocolBuilder => wrapMqttProtocolBuilder(_underlying.useTls(useTls)),
 
