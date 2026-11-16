@@ -135,6 +135,16 @@ graphql
     }
     return session.set("greeting", "Hello " + session.get<string>("userName"));
   });
+graphql
+  .file("graphql/getUser.graphql")
+  .checkIf("#{checkUser}")
+  .then(graphql.data.jsonPath("$.user.name").saveAs("userName"))
+  .checkIf((session) => session.contains("userId"))
+  .then(graphql.data.jsonPath("$.user.id").is("#{userId}"), status().is(200));
+graphql
+  .dynamicDocument("Dynamic", "#{document}")
+  .checkIf((session) => true)
+  .then(graphql.data.jsonPath("$.user.id").exists());
 
 // subscriptions
 exec(graphqlWs.connect());
@@ -143,6 +153,8 @@ exec(
     .connect()
     .requestName("Open GraphQL WebSocket")
     .endpoint("/other/graphql")
+    .requestName((session) => "Open GraphQL WebSocket " + session.userId())
+    .endpoint((session) => "/" + session.get<string>("tenant") + "/graphql")
     .connectionInitPayload("authorization", "Bearer #{token}")
     .connectionInitPayload("retries", 3)
     .connectionInitPayload("token", (session) => session.get<string>("token"))
@@ -162,6 +174,7 @@ exec(
   graphqlWs
     .subscribeFile("graphql/orderEvents.graphql")
     .requestName("Order events")
+    .requestName((session) => "Order events " + session.get<string>("customerId"))
     .operationName("OrderEvents")
     .variables((session) => ({ id: session.get<string>("customerId") }))
     .variablesJson('{"id": "#{customerId}"}')
@@ -187,6 +200,7 @@ exec(
 );
 exec(graphqlWs.unsubscribe("orders"));
 exec(graphqlWs.unsubscribe("orders").requestName("Stop orders"));
+exec(graphqlWs.unsubscribe("orders").requestName((session) => "Stop orders " + session.userId()));
 exec(graphqlWs.close());
 
 runSimulationMock((setUp) => {

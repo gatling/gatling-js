@@ -1,6 +1,7 @@
 import {
   ActionBuilder,
   CheckBuilder,
+  Condition,
   Duration,
   Expression,
   Session,
@@ -8,6 +9,7 @@ import {
   asJava,
   toJvmDuration,
   underlyingSessionTo,
+  wrapCondition,
   underlyingSessionTransform
 } from "@gatling.io/core";
 
@@ -69,6 +71,22 @@ export interface GraphQlRequestActionBuilderBase<T> extends WithVariables<T> {
    * @returns a new instance
    */
   check(...checks: CheckBuilder[]): T;
+
+  /**
+   * Apply some checks if some condition holds true
+   *
+   * @param condition - the condition, expressed as a Gatling Expression Language String
+   * @returns the next DSL step
+   */
+  checkIf(condition: string): Condition<T>;
+
+  /**
+   * Apply some checks if some condition holds true
+   *
+   * @param condition - the condition, expressed as a function
+   * @returns the next DSL step
+   */
+  checkIf(condition: (session: Session) => boolean): Condition<T>;
 
   /**
    * Apply a function on the Session resulting from the checks
@@ -149,6 +167,13 @@ export const graphQlRequestActionBuilderBaseImpl = <T, J extends JvmGraphQlReque
         : jvmBuilder.endpoint(endpoint)
     ),
   check: (...checks: CheckBuilder[]): T => wrap(jvmBuilder.check(checks.map((c: CheckBuilder) => c._underlying))),
+  checkIf: (condition: Expression<boolean>): Condition<T> =>
+    wrapCondition(
+      typeof condition === "function"
+        ? jvmBuilder.checkIf(underlyingSessionTo(condition))
+        : jvmBuilder.checkIf(condition),
+      wrap
+    ),
   postCheck: (postCheck: SessionTransform): T => wrap(jvmBuilder.postCheck(underlyingSessionTransform(postCheck))),
   header: (name: string, value: Expression<string>): T =>
     wrap(

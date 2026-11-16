@@ -28,6 +28,14 @@ const jdbcProtocol = jdbc
   .fetchSize(1000);
 
 const dataSourceProtocol = jdbc.dataSource({}).credentials("gatling", "gatling");
+const dataSourceClassNameProtocol = jdbc
+  .dataSource("org.postgresql.ds.PGSimpleDataSource", {
+    serverNames: ["localhost"],
+    portNumbers: [5432],
+    databaseName: "gatling",
+    ssl: false
+  })
+  .credentials("gatling", "gatling");
 
 // feeder
 const customers = jdbcFeeder(
@@ -135,5 +143,5 @@ runSimulationMock((setUp) => {
       .feed(customers)
       .exec(statements, preparedStatements, callableStatements, checks, transactions)
       .injectOpen(atOnceUsers(1))
-  ).protocols(jdbcProtocol, dataSourceProtocol);
+  ).protocols(jdbcProtocol, dataSourceProtocol, dataSourceClassNameProtocol);
 });
