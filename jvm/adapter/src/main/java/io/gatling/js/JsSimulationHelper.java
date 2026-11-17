@@ -18,6 +18,8 @@ package io.gatling.js;
 
 import io.gatling.javaapi.core.PopulationBuilder;
 import io.gatling.javaapi.core.Simulation;
+import io.netty.util.NettyRuntime;
+import io.netty.util.internal.SystemPropertyUtil;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -27,11 +29,9 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import org.graalvm.polyglot.Source;
-import org.graalvm.polyglot.TypeLiteral;
-import org.graalvm.polyglot.Value;
 
 public class JsSimulationHelper {
 
@@ -54,26 +54,41 @@ public class JsSimulationHelper {
                     new NoSuchElementException(
                         "One of the system properties gatling.js.bundle.filePath or gatling.js.bundle.resourcePath must be defined"));
 
-    // Context is never closed because it will live for the entire duration of the process
-    var context = JsContext.newContext();
+    Source bundle;
     try {
-      context.eval(
+      bundle =
           Source.newBuilder(JsContext.LANGUAGE, bundleUrl)
               .mimeType("application/javascript")
-              .build());
+              .build();
     } catch (IOException e) {
       throw new IllegalStateException("Cannot load Javascript bundle file at " + bundleUrl, e);
     }
-    Value jsIifeWrapper = context.getBindings(JsContext.LANGUAGE).getMember("gatling");
-    Value jsSimulationValue = jsIifeWrapper.getMember(simulationName);
-    if (jsSimulationValue == null) {
-      throw new NoSuchElementException(
-          "Simulation '" + simulationName + "' was not found in the JavaScript bundle");
-    }
 
-    jsSimulationValue
-        .as(new TypeLiteral<Consumer<Function<List<PopulationBuilder>, Simulation.SetUp>>>() {})
-        .accept(setUp);
+    // Engine and contexts are never closed because they will live for the entire duration of the
+    // process
+    var engine = JsContext.newEngine();
+    Supplier<Object> replicaSetUp =
+        () -> {
+          // throwaway simulation, so that setUp has no side effect
+          Function<List<PopulationBuilder>, Simulation.SetUp> noopSetUp =
+              new Simulation() {}::setUp;
+          return noopSetUp;
+        };
+    JsRuntime.load(
+        () -> JsContext.newContext(engine),
+        bundle,
+        simulationName,
+        setUp,
+        replicaSetUp,
+        Integer.getInteger("gatling.js.preloadedContexts", defaultEventLoopCount()));
+  }
+
+  // same as Netty's default, used by Gatling
+  private static int defaultEventLoopCount() {
+    return Math.max(
+        1,
+        SystemPropertyUtil.getInt(
+            "io.netty.eventLoopThreads", NettyRuntime.availableProcessors() * 2));
   }
 
   private static URL filePathToUrl(String filePath) {

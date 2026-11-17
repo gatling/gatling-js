@@ -21,6 +21,7 @@ import io.gatling.js.fs.JsFileSystem;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.graalvm.polyglot.Context;
+import org.graalvm.polyglot.Engine;
 import org.graalvm.polyglot.EnvironmentAccess;
 import org.graalvm.polyglot.HostAccess;
 import org.graalvm.polyglot.PolyglotAccess;
@@ -36,9 +37,20 @@ public class JsContext {
         .collect(Collectors.joining(","));
   }
 
-  private static Context newContext0(FileSystem fileSystem, String replacements) {
+  /**
+   * @return an engine to share between contexts, so that code is only parsed and compiled once
+   */
+  public static Engine newEngine() {
+    return Engine.newBuilder(LANGUAGE).allowExperimentalOptions(true).build();
+  }
+
+  private static Context newContext0(Engine engine, FileSystem fileSystem, String replacements) {
     IOAccess ioAccess = IOAccess.newBuilder().fileSystem(fileSystem).build();
-    return Context.newBuilder(LANGUAGE)
+    var builder = Context.newBuilder(LANGUAGE);
+    if (engine != null) {
+      builder.engine(engine);
+    }
+    return builder
         .allowCreateProcess(true)
         .allowCreateThread(true)
         .allowInnerContextOptions(true)
@@ -56,12 +68,16 @@ public class JsContext {
   }
 
   public static Context newContext() {
+    return newContext((Engine) null);
+  }
+
+  public static Context newContext(Engine engine) {
     var fileSystem = JsFileSystem.newFileSystem();
-    return newContext0(fileSystem, JsPolyfills.REPLACEMENTS);
+    return newContext0(engine, fileSystem, JsPolyfills.REPLACEMENTS);
   }
 
   public static Context newContext(FileSystem fileSystem, String additionalReplacements) {
     var replacements = JsPolyfills.REPLACEMENTS + "," + additionalReplacements;
-    return newContext0(fileSystem, replacements);
+    return newContext0(null, fileSystem, replacements);
   }
 }
