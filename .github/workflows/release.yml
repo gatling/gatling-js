@@ -13,9 +13,44 @@ defaults:
   run:
     shell: bash
 
+env:
+  # @gatling.io packages published to npm, in publication order
+  JS_PACKAGES: "cli jvm-types core http graphql jdbc jms grpc kafka mqtt"
+
 jobs:
+  check-prerequisites:
+    name: Check prerequisites
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      # Trusted publishing can only be configured for packages which already exist on npm
+      - name: Check JS packages exist on npm
+        run: |
+          failed=false
+          for pkg in $JS_PACKAGES; do
+            status=$(curl \
+              --location \
+              --silent \
+              --output /dev/null \
+              --write-out "%{http_code}" \
+              "https://registry.npmjs.org/@gatling.io%2F$pkg")
+            if [[ "$status" = "200" ]]; then
+              echo "@gatling.io/$pkg exists on npm"
+            elif [[ "$status" = "404" ]]; then
+              echo "::error::@gatling.io/$pkg does not exist on npm, publish a placeholder version and configure trusted publishing first (see `prepare-publish-new-npm-pkg.sh --help`)"
+              failed=true
+            else
+              echo "::error::Failed to check @gatling.io/$pkg on npm (HTTP status $status)"
+              failed=true
+            fi
+          done
+          if [[ "$failed" = "true" ]]; then
+            exit 1
+          fi
+
   release-jvm:
     name: Release JVM
+    needs: check-prerequisites
     runs-on: ubuntu-latest
     timeout-minutes: 60
     env:
@@ -117,7 +152,7 @@ jobs:
           npm ci
           npm version "$VERSION"
           npm run build --workspaces
-          for pkg in "cli" "jvm-types" "core" "http" "graphql" "jdbc" "jms" "grpc" "kafka" "mqtt"; do
+          for pkg in $JS_PACKAGES; do
             cp ../LICENSE "./$pkg/LICENSE"
             npm publish --access public "--workspace=@gatling.io/$pkg"
           done
