@@ -228,6 +228,8 @@ const scn = scenario("scenario")
   )
   // rendezVous
   .rendezVous(5)
+  .rendezVous(5, 10)
+  .rendezVous(5, { amount: 500, unit: "milliseconds" })
   // repeat
   .repeat(1)
   .on(chain1, chain2)
