@@ -42,6 +42,6 @@
     "format": "prettier --write '**/*.ts'",
     "format-check": "prettier --check '**/*.ts'",
     "test": "jest",
-    "build": "tsc -p ."
+    "build": "tsc -p . && tsc -p tsconfig.test.json"
   }
 }
