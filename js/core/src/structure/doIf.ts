@@ -50,6 +50,8 @@ export const doIfImpl =
       wrap
     );
 
+// The SessionTo overloads must come before the unknown ones: TypeScript picks the first matching overload, and a
+// function matched against unknown gets no contextual type (its session parameter would be an implicit any)
 export interface DoIfEqualsFunction<T extends DoIfEquals<T>> {
   /**
    * Execute the "then" block only if the actual value is equal to the expected one
@@ -64,19 +66,19 @@ export interface DoIfEqualsFunction<T extends DoIfEquals<T>> {
    * Execute the "then" block only if the actual value is equal to the expected one
    *
    * @param actual - the actual value expressed as a Gatling Expression Language String
-   * @param expected - the expected static value
+   * @param expected - the expected value expressed as a function
    * @returns a DSL component for defining the "then" block
    */
-  (actual: string, expected: unknown): Then<T>;
+  (actual: string, expected: SessionTo<unknown>): Then<T>;
 
   /**
    * Execute the "then" block only if the actual value is equal to the expected one
    *
    * @param actual - the actual value expressed as a Gatling Expression Language String
-   * @param expected - the expected value expressed as a function
+   * @param expected - the expected static value
    * @returns a DSL component for defining the "then" block
    */
-  (actual: string, expected: SessionTo<unknown>): Then<T>;
+  (actual: string, expected: unknown): Then<T>;
 
   /**
    * Execute the "then" block only if the actual value is equal to the expected one
@@ -91,19 +93,19 @@ export interface DoIfEqualsFunction<T extends DoIfEquals<T>> {
    * Execute the "then" block only if the actual value is equal to the expected one
    *
    * @param actual - the actual value expressed as a function
-   * @param expected - the expected static value
+   * @param expected - the expected value expressed as a function
    * @returns a DSL component for defining the "then" block
    */
-  (actual: SessionTo<unknown>, expected: unknown): Then<T>;
+  (actual: SessionTo<unknown>, expected: SessionTo<unknown>): Then<T>;
 
   /**
    * Execute the "then" block only if the actual value is equal to the expected one
    *
    * @param actual - the actual value expressed as a function
-   * @param expected - the expected value expressed as a function
+   * @param expected - the expected static value
    * @returns a DSL component for defining the "then" block
    */
-  (actual: SessionTo<unknown>, expected: SessionTo<unknown>): Then<T>;
+  (actual: SessionTo<unknown>, expected: unknown): Then<T>;
 }
 
 export interface DoIfEquals<T extends DoIfEquals<T>> {

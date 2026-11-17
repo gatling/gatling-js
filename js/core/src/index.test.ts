@@ -414,7 +414,7 @@ const scn = scenario("scenario")
   .then(chain1, chain2)
   .doIfEquals("#{actual}", "#{expected}")
   .then(chain1, chain2)
-  .doIfEquals("#{actual}", (session: Session) => 1)
+  .doIfEquals("#{actual}", (session) => 1)
   .then(chain1, chain2)
   .doIfEquals((session) => "actual", 1)
   .then(chain1, chain2)
@@ -422,7 +422,7 @@ const scn = scenario("scenario")
   .then(chain1, chain2)
   .doIfEquals(
     (session) => "actual",
-    (session: Session) => 1
+    (session) => 1
   )
   .then(chain1, chain2)
   // doIfEqualsOrElse
@@ -432,7 +432,7 @@ const scn = scenario("scenario")
   .doIfEqualsOrElse("#{actual}", "#{expected}")
   .then(chain1, chain2)
   .orElse(chain2, chain2)
-  .doIfEqualsOrElse("#{actual}", (session: Session) => 1)
+  .doIfEqualsOrElse("#{actual}", (session) => 1)
   .then(chain1, chain2)
   .orElse(chain2, chain2)
   .doIfEqualsOrElse((session) => "actual", 1)
@@ -443,7 +443,7 @@ const scn = scenario("scenario")
   .orElse(chain2, chain2)
   .doIfEqualsOrElse(
     (session) => "actual",
-    (session: Session) => 1
+    (session) => 1
   )
   .then(chain1, chain2)
   .orElse(chain2, chain2)
