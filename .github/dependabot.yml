@@ -27,6 +27,8 @@ updates:
         update-types: ["version-update:semver-major"]
     cooldown:
       default-days: 7
+      exclude:
+        - "@gatling.io/*"
   - package-ecosystem: "npm"
     directories:
       - "/js-simulation"
@@ -43,3 +45,5 @@ updates:
       time: "07:00" # UTC
     cooldown:
       default-days: 7
+      exclude:
+        - "@gatling.io/*"
