@@ -14,6 +14,16 @@ export const statusCode = (): CheckBuilderFind<Status.Code> =>
 
 export const statusDescription = (): CheckBuilderFind<string> => wrapCheckBuilderFind(JvmGrpcDsl.statusDescription());
 
+/**
+ * Bootstrap a check that captures the cause of the gRPC status, if any.
+ *
+ * The cause is a JVM `java.lang.Throwable`, typically used with `exists()`/`notExists()`, or transformed, for
+ * example with `transform((cause) => cause.getMessage())`.
+ *
+ * @returns the next step in the check DSL
+ */
+export const statusCause = (): CheckBuilderFind<any> => wrapCheckBuilderFind(JvmGrpcDsl.statusCause());
+
 export const asciiHeader = (key: string): CheckBuilderMultipleFind<string> =>
   wrapCheckBuilderMultipleFind(JvmGrpcDsl.asciiHeader(key));
 

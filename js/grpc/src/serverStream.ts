@@ -15,8 +15,10 @@ import {
 import { transformJvmInboundMessages, underlyingSessionToJvmDynamicMessage, wrapToJvmDynamicMessage } from "./dynamic";
 import { GrpcHeaders, wrapGrpcHeaders } from "./headers";
 import {
+  CallCredentials,
   GrpcInboundMessage,
   InitialTimestampFunction,
+  jvmCallCredentials,
   MessageResponseTimePolicy,
   toJvmInitialTimestampFunction,
   toJvmMessageResponseTimePolicy
@@ -45,9 +47,15 @@ const wrapGrpcServerStreamStreamSendActionBuilder = (
 export interface GrpcServerStreamingServiceBuilder extends GrpcHeaders<GrpcServerStreamingServiceBuilder> {
   // Chainable methods / global stream configuration
 
-  //callCredentials(credentials: CallCredentials): GrpcServerStreamingServiceBuilder;
-  //callCredentials(credentials: string): GrpcServerStreamingServiceBuilder;
-  //callCredentials(credentials: (session: Session) => CallCredentials): GrpcServerStreamingServiceBuilder;
+  /**
+   * Set the call credentials of this stream, overriding the ones of the server configuration.
+   *
+   * @param credentials - the call credentials, a Gatling Expression Language String resolving to call
+   *   credentials stored in the session, or a function computing them from the session
+   */
+  callCredentials(credentials: CallCredentials): GrpcServerStreamingServiceBuilder;
+  callCredentials(credentials: string): GrpcServerStreamingServiceBuilder;
+  callCredentials(credentials: (session: Session) => CallCredentials): GrpcServerStreamingServiceBuilder;
   // FIXME Force GrpcCheck?
   check(...checks: CheckBuilder[]): GrpcServerStreamingServiceBuilder;
   deadlineAfter(duration: Duration): GrpcServerStreamingServiceBuilder;
@@ -82,7 +90,8 @@ export const wrapGrpcServerStreamingServiceBuilder =
     return {
       ...wrapGrpcHeaders(_underlying, wrap),
       // Chainable methods / global stream configuration
-      // FIXME callCredentials
+      callCredentials: (credentials: CallCredentials | string | ((session: Session) => CallCredentials)) =>
+        wrap(jvmCallCredentials(_underlying, credentials)),
       check: (...checks) => wrap(_underlying.check(checks.map((check) => check._underlying))),
       deadlineAfter: (duration) => {
         if (isDuration(duration)) {

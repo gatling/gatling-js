@@ -1,6 +1,7 @@
-import { SessionTo, wrapSession } from "@gatling.io/core";
+import { Session, SessionTo, underlyingSessionTo, wrapSession } from "@gatling.io/core";
 import { GrpcDsl$MessageResponseTimePolicy as GrpcDslMessageResponseTimePolicyStatic } from "@gatling.io/jvm-types";
 
+import JvmCallCredentials = io.grpc.CallCredentials;
 import JvmChannelCredentials = io.grpc.ChannelCredentials;
 import JvmCheckBuilderFind = io.gatling.javaapi.core.CheckBuilder$Find;
 import JvmGrpcDslMessageResponseTimePolicy = io.gatling.javaapi.grpc.GrpcDsl$MessageResponseTimePolicy;
@@ -22,11 +23,30 @@ export interface GrpcDslAddonsStatic {
 
 export const GrpcDslAddons: GrpcDslAddonsStatic = Java.type("io.gatling.javaapi.grpc.GrpcDslAddons");
 
-// SecurityLevel
-// RequestInfo
-// CallOptions
+/**
+ * gRPC call credentials, attached to each call to add authentication metadata.
+ *
+ * This is the JVM `io.grpc.CallCredentials` class: get instances from a JVM library declared in the
+ * `gatling.jvmDependencies` section of your `package.json` (for example `MoreCallCredentials.from(...)` from
+ * `io.grpc:grpc-auth`), or implement one with `Java.extend(Java.type("io.grpc.CallCredentials"), {...})`.
+ */
+export type CallCredentials = JvmCallCredentials;
 
-export interface CallCredentials {}
+interface JvmCallCredentialsAware<B> {
+  callCredentials(credentials: string): B;
+  callCredentials(credentials: JvmCallCredentials): B;
+  callCredentials(credentials: (jvmSession: JvmSession) => JvmCallCredentials): B;
+}
+
+export const jvmCallCredentials = <B>(
+  _underlying: JvmCallCredentialsAware<B>,
+  credentials: CallCredentials | string | ((session: Session) => CallCredentials)
+): B =>
+  typeof credentials === "string"
+    ? _underlying.callCredentials(credentials)
+    : typeof credentials === "function"
+      ? _underlying.callCredentials(underlyingSessionTo(credentials as (session: Session) => CallCredentials))
+      : _underlying.callCredentials(credentials);
 
 export interface ChannelCredentials {
   rootCerts?: string;

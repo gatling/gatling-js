@@ -1,15 +1,28 @@
 import { Session, Wrapper } from "@gatling.io/core";
 
-import { GrpcDslAddons, ChannelCredentials, toJvmCredentials, underlyingSessionToCredentials } from "./grpc";
+import {
+  CallCredentials,
+  ChannelCredentials,
+  GrpcDslAddons,
+  jvmCallCredentials,
+  toJvmCredentials,
+  underlyingSessionToCredentials
+} from "./grpc";
 import { GrpcHeaders, wrapGrpcHeaders } from "./headers";
 
 import JvmGrpcServerConfigurationBuilder = io.gatling.javaapi.grpc.GrpcServerConfigurationBuilder;
 
 export interface GrpcServerConfigurationBuilder
   extends GrpcHeaders<GrpcServerConfigurationBuilder>, Wrapper<JvmGrpcServerConfigurationBuilder> {
-  //public GrpcServerConfigurationBuilder callCredentials(@NonNull Function<Session, CallCredentials> credentials) {
-  //public GrpcServerConfigurationBuilder callCredentials(@NonNull String credentials) {
-  //public GrpcServerConfigurationBuilder callCredentials(@NonNull CallCredentials credentials) {
+  /**
+   * Set the call credentials of the calls to this server, can be overridden on each request.
+   *
+   * @param credentials - the call credentials, a Gatling Expression Language String resolving to call
+   *   credentials stored in the session, or a function computing them from the session
+   */
+  callCredentials(credentials: CallCredentials): GrpcServerConfigurationBuilder;
+  callCredentials(credentials: string): GrpcServerConfigurationBuilder;
+  callCredentials(credentials: (session: Session) => CallCredentials): GrpcServerConfigurationBuilder;
 
   channelCredentials(credentials: ChannelCredentials): GrpcServerConfigurationBuilder;
   channelCredentials(credentials: string): GrpcServerConfigurationBuilder;
@@ -38,9 +51,8 @@ export const wrapGrpcServerConfigurationBuilder = (
   _underlying,
   ...wrapGrpcHeaders(_underlying, wrapGrpcServerConfigurationBuilder),
 
-  //public GrpcProtocolBuilder callCredentials(@NonNull Function<Session, CallCredentials> credentials) {
-  //public GrpcProtocolBuilder callCredentials(@NonNull String credentials) {
-  //public GrpcProtocolBuilder callCredentials(@NonNull CallCredentials credentials) {
+  callCredentials: (credentials: CallCredentials | string | ((session: Session) => CallCredentials)) =>
+    wrapGrpcServerConfigurationBuilder(jvmCallCredentials(_underlying, credentials)),
 
   channelCredentials: (credentials) =>
     wrapGrpcServerConfigurationBuilder(

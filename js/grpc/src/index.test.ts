@@ -1,17 +1,20 @@
 import { Session, Simulation, atOnceUsers, scenario } from "@gatling.io/core";
 
-import { grpc } from "./index";
+import { CallCredentials, grpc } from "./index";
 import {
   asciiHeader,
   asciiTrailer,
   binaryHeader,
   binaryTrailer,
   response,
+  statusCause,
   statusCode,
   statusDescription
 } from "./checks";
 
 const runSimulationMock = (_: Simulation): void => {};
+
+declare const callCredentials: CallCredentials;
 
 const serverConfiguration1 = grpc.serverConfiguration("serverConfiguration1").forTarget("target");
 
@@ -35,11 +38,9 @@ const serverConfiguration3 = grpc
   .binaryHeader("key")
   .value((session: Session) => session.get<number[]>("value"))
   .binaryHeaders({ key: [118, 97, 108, 117, 101] }) // FIXME "value".getBytes(UTF_8)))
-  /*.callCredentials((_: Session) => ({
-      requestInfo,
-      appExecutor,
-      applier
-  }))*/
+  .callCredentials(callCredentials)
+  .callCredentials("#{callCredentials}")
+  .callCredentials((_: Session) => callCredentials)
   //.channelCredentials(TlsChannelCredentials.create())
   //.channelCredentials(session -> TlsChannelCredentials.create())
   .overrideAuthority("io.gatling")
@@ -88,8 +89,17 @@ const unary = scenario("name")
       .send({ sample })
       .deadlineAfter(1)
       .deadlineAfter({ amount: 1, unit: "seconds" })
+      .callCredentials(callCredentials)
+      .callCredentials("#{callCredentials}")
+      .callCredentials((_: Session) => callCredentials)
       .check(statusCode().is("OK"))
       .check(statusDescription().is("OK"))
+      .check(statusCause().notExists())
+      .check(
+        statusCause()
+          .transform((cause) => cause.getMessage())
+          .is("message")
+      )
       .check(asciiHeader("key").is("value"))
       .check(binaryHeader("key").is([118, 97, 108, 117, 101])) // FIXME "value".getBytes(UTF_8)))
       .check(response((response: any) => response.result).saveAs("result"))
@@ -131,8 +141,12 @@ const serverStream = grpc("streamRequestName")
   .streamName("streamName")
   .deadlineAfter(1)
   .deadlineAfter({ amount: 1, unit: "seconds" })
+  .callCredentials(callCredentials)
+  .callCredentials("#{callCredentials}")
+  .callCredentials((_: Session) => callCredentials)
   .check(statusCode().is("OK"))
   .check(statusDescription().is("OK"))
+  .check(statusCause().notExists())
   .check(asciiHeader("key").is("value"))
   .check(binaryHeader("key").is([118, 97, 108, 117, 101])) // FIXME "value".getBytes(UTF_8)))
   .check(response((response: any) => response.result).saveAs("result"))
@@ -195,8 +209,12 @@ const clientStream = grpc("streamRequestName")
   .streamName("streamName")
   .deadlineAfter(1)
   .deadlineAfter({ amount: 1, unit: "seconds" })
+  .callCredentials(callCredentials)
+  .callCredentials("#{callCredentials}")
+  .callCredentials((_: Session) => callCredentials)
   .check(statusCode().is("OK"))
   .check(statusDescription().is("OK"))
+  .check(statusCause().notExists())
   .check(asciiHeader("key").is("value"))
   .check(binaryHeader("key").is([118, 97, 108, 117, 101])) // FIXME "value".getBytes(UTF_8)))
   .check(response((response: any) => response.result).saveAs("result"))
@@ -247,8 +265,12 @@ const bidiStream = grpc("streamRequestName")
   .streamName("streamName")
   .deadlineAfter(1)
   .deadlineAfter({ amount: 1, unit: "seconds" })
+  .callCredentials(callCredentials)
+  .callCredentials("#{callCredentials}")
+  .callCredentials((_: Session) => callCredentials)
   .check(statusCode().is("OK"))
   .check(statusDescription().is("OK"))
+  .check(statusCause().notExists())
   .check(asciiHeader("key").is("value"))
   .check(binaryHeader("key").is([118, 97, 108, 117, 101])) // FIXME "value".getBytes(UTF_8)))
   .check(response((response: any) => response.result).saveAs("result"))
