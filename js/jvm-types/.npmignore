@@ -1,5 +1,6 @@
 *
-!/**/*.js
-!/**/*.d.ts
+!/index.js
+!/index.d.ts
+!/gatling.d.ts
 !/package.json
 !/README.md
