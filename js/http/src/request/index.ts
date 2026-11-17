@@ -365,7 +365,7 @@ export const requestActionBuilderImpl = <T, J extends JvmRequestActionBuilder<J,
       } else if (typeof values === "string") {
         return wrap(jvmBuilder.multivaluedQueryParam(underlyingSessionTo(name), values));
       } else {
-        return wrap(jvmBuilder.multivaluedQueryParam(underlyingSessionTo(name), values));
+        return wrap(jvmBuilder.multivaluedQueryParam(underlyingSessionTo(name), asJava(values) as any));
       }
     } else {
       if (typeof values === "function") {
@@ -373,7 +373,7 @@ export const requestActionBuilderImpl = <T, J extends JvmRequestActionBuilder<J,
       } else if (typeof values === "string") {
         return wrap(jvmBuilder.multivaluedQueryParam(name, values));
       } else {
-        return wrap(jvmBuilder.multivaluedQueryParam(name, values));
+        return wrap(jvmBuilder.multivaluedQueryParam(name, asJava(values) as any));
       }
     }
   },
@@ -381,7 +381,7 @@ export const requestActionBuilderImpl = <T, J extends JvmRequestActionBuilder<J,
     if (typeof map === "function") {
       return wrap(jvmBuilder.queryParamMap(underlyingSessionToJava(map as SessionTo<Record<string, any>>)));
     } else if (typeof map === "object") {
-      return wrap(jvmBuilder.queryParamMap(map));
+      return wrap(jvmBuilder.queryParamMap(asJava(map) as any));
     } else {
       return wrap(jvmBuilder.queryParamMap(map));
     }
@@ -606,7 +606,7 @@ export interface RequestWithBodyActionBuilder<T> {
   multivaluedFormParam(key: (session: Session) => string, values: (session: Session) => any[]): T;
 
   /**
-   * Set multiple form parameters
+   * Set multiple form parameters. An array value sets a multivalued parameter.
    *
    * @param map - the static parameters
    * @returns a new HttpRequestActionBuilder instance
@@ -614,7 +614,7 @@ export interface RequestWithBodyActionBuilder<T> {
   formParamMap(map: Record<string, any>): T;
 
   /**
-   * Set multiple form parameters
+   * Set multiple form parameters. An array value sets a multivalued parameter.
    *
    * @param map - the parameters, expressed as a function
    * @returns a new HttpRequestActionBuilder instance
@@ -749,7 +749,7 @@ export const requestWithBodyActionBuilderImpl = <T, J extends JvmRequestWithBody
     wrap(
       typeof map === "function"
         ? (jvmBuilder as any)["formParamMap(java.util.function.Function)"](underlyingSessionToJava(map as any))
-        : jvmBuilder.formParamMap(map)
+        : jvmBuilder.formParamMap(asJava(map) as java.util.Map<string, any>)
     ),
   form: (form: string | ((session: Session) => Record<string, any>)): T =>
     wrap(typeof form === "function" ? jvmBuilder.form(underlyingSessionToJava(form) as any) : jvmBuilder.form(form)),
