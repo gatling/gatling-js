@@ -229,6 +229,135 @@ jobs:
           echo "upload_url=$upload_url"
           echo "upload_url=$upload_url" >> $GITHUB_OUTPUT
 
+  update-gatling-postman:
+    name: Update Gatling Postman project
+    needs:
+      - release-jvm
+      - release-js
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: read
+    env:
+      VERSION: ${{ needs.release-jvm.outputs.version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          path: gatling-js
+          sparse-checkout: jvm/build.sbt
+          sparse-checkout-cone-mode: false
+          persist-credentials: false
+
+      # The token is only exposed to the step which pushes, not to npm
+      - name: Checkout Gatling Postman
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: gatling/gatling-postman
+          token: ${{ secrets.GATLING_CI_TOKEN }}
+          path: gatling-postman
+          persist-credentials: false
+
+      - name: Set up Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+
+      - name: Update npm
+        run: npm install -g npm@latest
+
+      - name: Update Gatling JS version
+        id: update
+        working-directory: ./gatling-postman
+        run: |
+          if [[ "$VERSION" = *-* ]]; then
+            echo "::notice::Gatling Postman is not updated to milestone versions"
+            exit 0
+          fi
+          gatling_version=$(sed --quiet --regexp-extended 's/^val gatlingVersion = "([^"]+)"$/\1/p' ../gatling-js/jvm/build.sbt)
+          echo "gatling_version=$gatling_version"
+          if [[ -z "$gatling_version" ]]; then
+            echo "::error::Failed to read gatlingVersion from jvm/build.sbt"
+            exit 1
+          fi
+          sed --in-place --regexp-extended \
+            "s/(\"@gatling\.io\/jvm-types\": )\"[^\"]*\"/\1\"$VERSION\"/" \
+            dependencies/package.json
+          sed --in-place --regexp-extended \
+            "s/(\"@gatling\.io\/(core|http)\": )\"[^\"]*\"/\1\"$VERSION\"/" \
+            js/package.json
+          sed --in-place --regexp-extended \
+            --expression "s/(gatlingOssVersion = )\"[^\"]*\"/\1\"$gatling_version\"/" \
+            --expression "s/(gatlingPrivateVersion = )\"[^\"]*\"/\1\"$gatling_version.FL\"/" \
+            --expression "s/(gatlingJsVersion = )\"[^\"]*\"/\1\"$VERSION\"/" \
+            jvm/project/Dependencies.scala
+          # Fail if a replacement did not apply, e.g. because a file format changed
+          if ! jq --exit-status --arg v "$VERSION" '.devDependencies["@gatling.io/jvm-types"] == $v' dependencies/package.json > /dev/null \
+            || ! jq --exit-status --arg v "$VERSION" '.dependencies["@gatling.io/core"] == $v and .dependencies["@gatling.io/http"] == $v' js/package.json > /dev/null \
+            || ! grep --quiet --fixed-strings "gatlingOssVersion = \"$gatling_version\"" jvm/project/Dependencies.scala \
+            || ! grep --quiet --fixed-strings "gatlingPrivateVersion = \"$gatling_version.FL\"" jvm/project/Dependencies.scala \
+            || ! grep --quiet --fixed-strings "gatlingJsVersion = \"$VERSION\"" jvm/project/Dependencies.scala; then
+            git diff
+            echo "::error::Failed to update Gatling JS version"
+            exit 1
+          fi
+          if git diff --quiet; then
+            echo "::notice::Gatling Postman already uses Gatling JS $VERSION"
+            exit 0
+          fi
+          echo "updated=true" >> $GITHUB_OUTPUT
+
+      # npm scans newly published packages before making them available, which usually takes a few minutes
+      - name: Wait for npm packages
+        if: ${{ steps.update.outputs.updated == 'true' }}
+        timeout-minutes: 20
+        run: |
+          for pkg in jvm-types core http; do
+            until [[ "$(npm view "@gatling.io/$pkg@$VERSION" version 2> /dev/null)" = "$VERSION" ]]; do
+              echo "Waiting for @gatling.io/$pkg@$VERSION to be available on npm..."
+              sleep 15
+            done
+            echo "@gatling.io/$pkg@$VERSION is available on npm"
+          done
+
+      - name: Update npm dependencies
+        if: ${{ steps.update.outputs.updated == 'true' }}
+        working-directory: ./gatling-postman
+        run: |
+          for project in dependencies js; do
+            (
+              cd "$project"
+              npm install --ignore-scripts
+              npm update --ignore-scripts
+            )
+          done
+
+      - name: Create pull request
+        if: ${{ steps.update.outputs.updated == 'true' }}
+        working-directory: ./gatling-postman
+        env:
+          GH_TOKEN: ${{ secrets.GATLING_CI_TOKEN }}
+          COMMIT_AUTHOR_EMAIL: ${{ vars.GATLING_CI_EMAIL }}
+          COMMIT_AUTHOR_NAME: ${{ vars.GATLING_CI_NAME }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          branch="chore/upgrade-gatling-js-$VERSION"
+          title="chore: upgrade gatling-js to $VERSION"
+          pr_url=$(gh pr list --head "$branch" --json url --jq ".[0].url // empty")
+          if [[ -n "$pr_url" ]]; then
+            echo "::notice::Pull request already exists: $pr_url"
+            exit 0
+          fi
+          git config user.name "$COMMIT_AUTHOR_NAME"
+          git config user.email "$COMMIT_AUTHOR_EMAIL"
+          git switch --create "$branch"
+          git commit --all --message "$title"
+          gh auth setup-git
+          # No pull request uses this branch, so a leftover from a previous attempt can be overwritten
+          git push --force origin "$branch"
+          pr_url=$(gh pr create --base main --head "$branch" --title "$title" --body "Created by the Gatling JS release workflow: $RUN_URL")
+          echo "::notice::Pull request created: $pr_url"
+
   build-linux-x64:
     name: Build bundle for Linux x64
     needs:
