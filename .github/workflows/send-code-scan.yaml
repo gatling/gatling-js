@@ -27,6 +27,9 @@ jobs:
 
           git remote add code-scan "https://github.com/${GITHUB_REPO}"
 
-          TREE_SHA1="$(git rev-parse HEAD^{tree})"
+          # Don't ship the Dependabot config: the copy is only for security analysis
+          # (Dependabot alerts don't need it), not for version update PRs
+          git rm --cached --quiet .github/dependabot.yml
+          TREE_SHA1="$(git write-tree)"
           ORPHAN_COMMIT_SHA1="$(git commit-tree "$TREE_SHA1" -m "No history")"
           git push --verbose --force code-scan "$ORPHAN_COMMIT_SHA1":refs/heads/main
