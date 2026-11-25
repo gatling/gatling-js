@@ -8,9 +8,9 @@ gatlingDevelopers := Seq(
   GatlingDeveloper("ggaly@gatling.io", "Guillaume Galy", isGatlingCorp = true)
 )
 val compilerRelease = 21
-val graalvmJdkTag = "graal-25.5.5.0.3"
-val graalvmJdkVersion = "25i5-25.0.5.0.3"
-val graalvmJsVersion = "25.5.5.0.3"
+val graalvmJdkTag = "graal-25.6.5.1"
+val graalvmJdkVersion = "25i6-25.0.5.1"
+val graalvmJsVersion = "25.6.5.1"
 val gatlingVersion = "3.16.1"
 val gatlingGraphqlVersion = "3.16.1.1"
 val gatlingJdbcVersion = "3.16.1.1"
