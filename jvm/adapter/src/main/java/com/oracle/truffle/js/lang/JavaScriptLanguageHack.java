@@ -27,7 +27,8 @@ public class JavaScriptLanguageHack {
     final byte[] modifiedJavaScriptLanguage;
 
     try (final var classInputStream =
-        ClassLoader.getSystemClassLoader()
+        JavaScriptLanguageHack.class
+            .getClassLoader()
             .getResourceAsStream("com/oracle/truffle/js/lang/JavaScriptLanguage.class")) {
       if (classInputStream == null) {
         throw new IllegalStateException(

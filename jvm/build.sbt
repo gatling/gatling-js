@@ -36,6 +36,9 @@ lazy val adapter = (project in file("adapter"))
     gatlingCompilerRelease := compilerRelease,
     Compile / javacOptions ++= Seq("-encoding", "utf8", "-Xdoclint:none"), // FIXME: see why -Xdoclint:none does not seem to work
     Test / javacOptions ++= Seq("-encoding", "utf8"),
+    // JsRuntimeSpec patches Truffle classes, which must not be loaded yet
+    Test / fork := true,
+    Test / javaOptions += "-Dpolyglot.engine.WarnInterpreterOnly=false",
     javafmtOnCompile := !sys.env.getOrElse("CI", "false").toBoolean,
     autoScalaLibrary := false,
     libraryDependencies ++= Seq(
