@@ -1,6 +1,7 @@
 import { ActionBuilder, CheckBuilder, Duration, isDuration, Session, toJvmDuration } from "@gatling.io/core";
 
 import { underlyingSessionToJvmDynamicMessage, wrapToJvmDynamicMessage } from "./dynamic";
+import { CallCredentials, jvmCallCredentials } from "./grpc";
 import { GrpcHeaders, wrapGrpcHeaders } from "./headers";
 import JvmDescriptorsDescriptor = com.google.protobuf.Descriptors$Descriptor;
 import JvmGrpcUnaryActionBuilder = io.gatling.javaapi.grpc.GrpcUnaryActionBuilder;
@@ -8,9 +9,15 @@ import JvmGrpcUnaryServiceBuilder = io.gatling.javaapi.grpc.GrpcUnaryServiceBuil
 
 // FIXME ReqT, RespT
 export interface GrpcUnaryActionBuilder extends GrpcHeaders<GrpcUnaryActionBuilder>, ActionBuilder {
-  //callCredentials(credentials: CallCredentials): GrpcUnaryActionBuilder;
-  //callCredentials(credentials: string): GrpcUnaryActionBuilder;
-  //callCredentials(credentials: (session: Session) => CallCredentials): GrpcUnaryActionBuilder;
+  /**
+   * Set the call credentials of this request, overriding the ones of the server configuration.
+   *
+   * @param credentials - the call credentials, a Gatling Expression Language String resolving to call
+   *   credentials stored in the session, or a function computing them from the session
+   */
+  callCredentials(credentials: CallCredentials): GrpcUnaryActionBuilder;
+  callCredentials(credentials: string): GrpcUnaryActionBuilder;
+  callCredentials(credentials: (session: Session) => CallCredentials): GrpcUnaryActionBuilder;
   // FIXME Force GrpcCheck?
   check(...checks: CheckBuilder[]): GrpcUnaryActionBuilder;
   deadlineAfter(duration: Duration): GrpcUnaryActionBuilder;
@@ -19,14 +26,8 @@ export interface GrpcUnaryActionBuilder extends GrpcHeaders<GrpcUnaryActionBuild
 const wrapGrpcUnaryActionBuilder = (_underlying: JvmGrpcUnaryActionBuilder<any, any>): GrpcUnaryActionBuilder => ({
   _underlying,
   ...wrapGrpcHeaders(_underlying, wrapGrpcUnaryActionBuilder),
-  /*callCredentials: (credentials) =>
-    wrapGrpcUnaryActionBuilder(
-      typeof credentials === "string"
-        ? _underlying.callCredentials(credentials as string)
-        : typeof credentials === "function"
-          ? _underlying.callCredentials(underlyingSessionTo(credentials as any)) // FIXME ??
-          : _underlying.callCredentials(credentials as any)
-    ),*/
+  callCredentials: (credentials: CallCredentials | string | ((session: Session) => CallCredentials)) =>
+    wrapGrpcUnaryActionBuilder(jvmCallCredentials(_underlying, credentials)),
   check: (...checks) => wrapGrpcUnaryActionBuilder(_underlying.check(checks.map((check) => check._underlying))),
   deadlineAfter: (duration) => {
     if (isDuration(duration)) {
